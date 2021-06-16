@@ -6,6 +6,7 @@
   height: 120vh;
   /* transition: .3s ease-in-out; */
   background: rgb(240, 237, 230);
+  border-right: 1px solid rgb(197, 194, 173)
 }
 
 .sideBarSmall {
@@ -16,6 +17,7 @@
   top: 0;
   transition: .2s ease-in-out;
   background: rgb(240, 237, 230);
+  border-right: 1px solid rgb(197, 194, 173)
 }
 
 .sideBarItem:hover + .sideBarImageName {
@@ -58,9 +60,11 @@
   margin-top: 10px;
 }
 .bottomContent {
+  padding-top: 10px;
   height: 40vh;
   width: 100%;
   overflow: scroll;
+  border-top: 1px solid rgb(197, 194, 173)
 }
 .sideBarItem {
   display: flex;

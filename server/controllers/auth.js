@@ -56,9 +56,28 @@ export const login = async (req, res) => {
     });
 
     // send user as json response
-    res.json(user)
+    res.json(user);
   } catch (err) {
     console.log(err);
     return await res.status(400).send('Error logging in. Try again.');
+  }
+};
+
+export const logout = async (req, res) => {
+  try {
+    res.clearCookie('token');
+    return res.json({ message: 'Successfully signed out' });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const currentUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id).select('-password').exec();
+    console.log('CURRENT USER', user);
+    return res.json({ok: true});
+  } catch (err) {
+    console.log(err);
   }
 };

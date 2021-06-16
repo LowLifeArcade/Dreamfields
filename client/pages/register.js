@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Card from '../components/Card';
 import FormInput from '../components/FormInput';
 import Button from '../components/Button';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import Link from 'next/link';
+import { Context } from '../context';
+import router from 'next/router';
 
 // TODO: add hide password eye icon and functionality
 // Also add social login button
@@ -15,6 +17,13 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
+
+const {state: user} = useContext(Context)
+
+
+  useEffect(() => {
+    user && router.push('/')
+  }, [user])
 
   const handleSubmit = async (e) => {
     e.preventDefault();

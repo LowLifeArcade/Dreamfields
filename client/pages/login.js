@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import Card from '../components/Card';
 import FormInput from '../components/FormInput';
 import Button from '../components/Button';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import Link from 'next/link';
+import { Context } from '../context';
+import router, {useRouter} from 'next/router'
 
 // TODO: add hide password eye icon and functionality
 // Also add social login button
@@ -13,6 +15,18 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+
+  // context state
+  const {state, dispatch} = useContext(Context)
+  const {user} = state 
+
+  useEffect(() => {
+
+    user && router.push('/')
+
+  }, [user]);
+
+  console.log('STATE', state)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,15 +37,27 @@ const Login = () => {
         password,
       });
 
-      // toast.warning('Registration successfull', {
-      //   position: 'bottom-left',
-      //   autoClose: 5000,
-      //   hideProgressBar: false,
-      //   closeOnClick: true,
-      //   pauseOnHover: true,
-      //   draggable: true,
-      //   progress: undefined,
-      // });
+      // dispatch to context for globale state
+      dispatch({
+        type: "LOGIN",
+        payload: data,
+      })
+
+      // save in local storage
+      window.localStorage.setItem('user', JSON.stringify(data))
+
+      // redirect
+      router.push('/')
+
+      toast.warning('Login successfull', {
+        position: 'bottom-left',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       console.log('LOGIN RES', data);
       // setLoading(false);
     } catch (err) {
