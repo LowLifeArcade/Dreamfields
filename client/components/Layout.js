@@ -1,15 +1,20 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { Context } from '../context';
 import NavBar from './NavBar';
 import SideBar from './SideBar';
 
 const Layout = (props) => {
   const [sideBarSize, setSideBarSize] = useState();
+
+  const {
+    state: { user },
+  } = useContext(Context);
   return (
     <>
       {<NavBar sideBarSize={sideBarSize} onLogoClick={setSideBarSize} />}
       <div className="layoutContainer">
         <div className="flex-layout">
-          {props.showSideBar && <SideBar size={sideBarSize} />}
+          {props.showSideBar && user && <SideBar size={sideBarSize} />}
           <div className="content">{props.children}</div>
         </div>
       </div>

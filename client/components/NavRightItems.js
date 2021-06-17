@@ -7,12 +7,12 @@ const NavRightItems = ({ loggedIn, setCurrent, logOut }) => {
     <>
       <div className="rightNavItems">
         {loggedIn && (
-          <>
+          <div className="rightLoggedInNavItems">
             <SmallNavItem onClick={() => router.push('/user')} iconName="fas fa-user-astronaut" />
             <SmallNavItem iconName="fas fa-plus" />
             <SmallNavItem iconName="far fa-comments" />
             <SmallNavItem iconName="far fa-bell" />
-          </>
+          </div>
         )}
         {!loggedIn && (
           <p className="rightTitle">Alright signed up?&nbsp;&nbsp;</p>
@@ -34,6 +34,17 @@ const NavRightItems = ({ loggedIn, setCurrent, logOut }) => {
           justify-content: flex-end;
           color: rgb(95, 95, 95);
         }
+        .rightLoggedInNavItems {
+          display: flex;
+          flex-grow: 1;
+          align-items: center;
+          justify-content: flex-end;
+          color: rgb(95, 95, 95);
+        }
+        @media(max-width: 1060px) {
+          .rightLoggedInNavItems {
+            display: none;
+          }
         @media(max-width: 860px) {
           .rightTitle {
             display: none;

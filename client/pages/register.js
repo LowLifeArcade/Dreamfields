@@ -18,12 +18,15 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
-const {state: user} = useContext(Context)
+  const {
+    state: { user },
+  } = useContext(Context);
+  // const {user} = state
 
-
+  console.log('USER', user);
   useEffect(() => {
-    user && router.push('/')
-  }, [user])
+    user && router.push('/');
+  }, [user]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -44,7 +47,12 @@ const {state: user} = useContext(Context)
         draggable: true,
         progress: undefined,
       });
+      setName('')
+      setEmail('')
+      setPassword('')
+      setConfirmPassword('')
       setLoading(false);
+      router.push('/login')
     } catch (err) {
       toast.error(err.response.data, {
         position: 'bottom-left',
@@ -86,14 +94,14 @@ const {state: user} = useContext(Context)
               value={password}
               onChange={setPassword}
               htmlFor="Password"
-              type="new-password"
+              type="password"
               // placeholder="Enter New Password"
             />
             <FormInput
               value={confirmPassword}
               onChange={setConfirmPassword}
               htmlFor="Confirm Password"
-              type="new-password"
+              type="password"
               // placeholder="Confirm Password"
             />
             <div className="btn">
@@ -102,11 +110,11 @@ const {state: user} = useContext(Context)
                 buttonName="Submit"
               />
             </div>
-            <div className='loginlink' >
+            <div className="loginlink">
               <p>
                 Already registered? &nbsp;
                 <Link href="/login">
-                  <a  className='login' >Login</a>
+                  <a className="login">Login</a>
                 </Link>
               </p>
             </div>
@@ -122,7 +130,7 @@ const {state: user} = useContext(Context)
               height: 120vh;
             }
             .loginlink {
-              font-size: .8rem;
+              font-size: 0.8rem;
               margin-top: 15px;
             }
 

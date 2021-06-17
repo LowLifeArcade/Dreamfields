@@ -45,7 +45,6 @@ a {
   font-size: 5rem;
   padding: 20px;
   box-shadow: 0,3px,3px, rgba(0, 0, 0, .6);
-  outline: solid 1px;
 }
 .jumboTron > p {
   margin-top: 1rem;

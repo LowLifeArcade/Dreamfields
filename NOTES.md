@@ -57,3 +57,8 @@ Maybe dont put in too many social aspects. Or at least really make an effort to 
 
 
 ## TODO
+  Make newspaper section have a new picture in the background everyday. The newspaper starts off covering the image mostly. You can scroll down to see the whole image, but the newspaper is the primary focus. 
+
+
+arn:aws:iam::191648458087:user/Kevin
+arn:aws:ses:us-west-1:191648458087:identity/dreamfieldsproj@gmail.com

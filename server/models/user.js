@@ -32,6 +32,10 @@ const userSchema = new Schema(
     stripe_account_id: '',
     stripe_seller: {},
     stripeSession: {},
+    PasswordResetCode: {
+      data: String,
+      default: ''
+    }
   },
   { timestamps: true }
 );

@@ -1,4 +1,4 @@
-const FormInput = ({ htmlFor, type, placeholder, value, onChange }) => {
+const FormInput = ({ htmlFor, type, placeholder, value, onChange, disabled = false }) => {
   return (
     <>
       <div className="section">
@@ -11,6 +11,7 @@ const FormInput = ({ htmlFor, type, placeholder, value, onChange }) => {
           className="input"
           type={type}
           placeholder={placeholder}
+          disabled={disabled}
         />
       </div>
       <style jsx>{`

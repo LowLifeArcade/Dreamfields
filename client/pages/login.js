@@ -26,7 +26,6 @@ const Login = () => {
 
   }, [user]);
 
-  console.log('STATE', state)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -45,7 +44,9 @@ const Login = () => {
 
       // save in local storage
       window.localStorage.setItem('user', JSON.stringify(data))
-
+      setLoading(false);
+      setEmail('')
+      setPassword('')
       // redirect
       router.push('/')
 
@@ -59,7 +60,7 @@ const Login = () => {
         progress: undefined,
       });
       console.log('LOGIN RES', data);
-      // setLoading(false);
+      
     } catch (err) {
       toast.error(err.response.data, {
         position: 'bottom-left',
@@ -107,7 +108,7 @@ const Login = () => {
               value={password}
               onChange={setPassword}
               htmlFor="Password"
-              type="new-password"
+              type="password"
               // placeholder="Enter New Password"
             />
             <div className="btn">
@@ -115,6 +116,14 @@ const Login = () => {
                 disabled={!email || !password || loading}
                 buttonName="Submit"
               />
+            </div>
+            <div className="loginlink">
+              <p>
+                {/* Forgot Password? &nbsp; */}
+                <Link href="/forgot-password">
+                  <a className="login">Forgot Password</a>
+                </Link>
+              </p>
             </div>
             <div className="loginlink">
               <p>

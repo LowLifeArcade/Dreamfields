@@ -10,7 +10,7 @@ const NavMainSection = ({ setCurrent, loggedIn }) => {
         {loggedIn ? <>
         <NavMainItems
           setCurrent={setCurrent}
-          iconName="fas fa-home fa-2x"
+          iconName="far fa-newspaper fa-2x"
           location="/"
         />
         <NavMainItems
@@ -23,9 +23,10 @@ const NavMainSection = ({ setCurrent, loggedIn }) => {
           iconName="far fa-edit fa-2x"
           location="/edit"
         />
+        {/* far fa-edit fa-2x */}
         <NavMainItems
           setCurrent={setCurrent}
-          iconName="fas fa-sign-in-alt fa-2x"
+          iconName="fas fa-satellite fa-2x"
           location="/login"
         />
         <NavMainItems
