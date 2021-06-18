@@ -1,9 +1,12 @@
+
+
 import { useState, useContext } from 'react';
 import SideBarItem from './SideBarItem';
-import styles from '../styles/SideBar.module.css';
-import Size from '../contexts/SideBarSize';
+import SideBarShortcuts from '../SideBarShortcuts';
+import styles from '../../styles/SideBar.module.css';
+import Size from '../../contexts/SideBarSize';
 
-const SideBar = (props) => {
+const DashboardSidebar = (props) => {
   const [clicked, setClicked] = useState(false);
   const [projects, setProjects] = useState([
     {
@@ -97,9 +100,9 @@ const SideBar = (props) => {
             </div>
           </div>
           <div className={styles.bottomContent}>
-            {favorites.map((project, i) => (
+            {favorites.map((project) => (
               <>
-                <SideBarItem key={i}  size={props.size} {...project} />
+                <SideBarItem  size={props.size} {...project} />
               </>
             ))}
           </div>
@@ -109,4 +112,4 @@ const SideBar = (props) => {
   );
 };
 
-export default SideBar;
+export default DashboardSidebar;

@@ -14,7 +14,8 @@ PAGES
 ## PROJECTS
   -this is an overview of the projects you are working on
   -clicking on a project brings its slug page overview still in the projects page on the layout
-  -
+  -Sidebar: Each project has a unique sidebar that has all the overview links you'd need. Assets, people, story, data. Everything you need to nativgate the project
+  
 
 ## EDIT 
   -this is where you work
@@ -58,6 +59,12 @@ Maybe dont put in too many social aspects. Or at least really make an effort to 
 
 ## TODO
   Make newspaper section have a new picture in the background everyday. The newspaper starts off covering the image mostly. You can scroll down to see the whole image, but the newspaper is the primary focus. 
+
+  SIDEBAR:
+  Make more like discord
+  add hover tool tip that tells you the project name
+
+  
 
 
 arn:aws:iam::191648458087:user/Kevin

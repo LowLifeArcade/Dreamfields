@@ -22,6 +22,21 @@ a {
   /* align-items: center; */
   justify-content: center;
 }
+.pageContainer {
+  /* display: flex; */
+  justify-content: flex-start;
+  width: 60vw;
+  border-left: solid 1px rgb(173, 173, 173);
+  border-right: solid 1px rgb(173, 173, 173);
+  height: 100vh;
+  padding: 10px 20px;
+}
+.leftSideContainer {
+  width: 20vw
+}
+.rightSideContainer {
+  width: 20vw
+}
 
 .jumboTron {
   color: rgb(253, 251, 251);
@@ -52,11 +67,12 @@ a {
 }
 
 .miniJumboTron {
-  color: rgb(253, 251, 251);
+  color: rgb(109, 102, 96);
+  font-family: 'Anton', sans-serif;
   display: flex;
   flex-direction: column;
   height: 80px;
-  background: url('https://images.unsplash.com/photo-1506869640319-fe1a24fd76dc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2850&q=80') rgb(219, 195, 150) no-repeat bottom center/cover   ;
+  background: url('https://images.unsplash.com/photo-1506869640319-fe1a24fd76dc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2850&q=80') rgb(219, 195, 150) no-repeat center center/cover   ;
   width: 100%;
   background-size: 800px;
   align-items: center;
@@ -78,4 +94,17 @@ a {
 .miniJumboTron > p {
   margin-top: 1rem;
   font-style: italic;
+}
+
+@media (max-width: 800px) {
+  .leftSideContainer {
+    display: none;
+  }
+  .rightSideContainer {
+    display: none;
+  }
+  
+  .pageContainer {
+    width: 100%;
+  }
 }

@@ -10,6 +10,7 @@ const FormInput = ({ htmlFor, type, placeholder, value, onChange, disabled = fal
           onChange={(e) => onChange(e.target.value)}
           className="input"
           type={type}
+          autoComplete={'text' && true}
           placeholder={placeholder}
           disabled={disabled}
         />

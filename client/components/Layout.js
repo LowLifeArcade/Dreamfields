@@ -24,7 +24,7 @@ const Layout = (props) => {
           width: 100%;
         }
         .flex-layout {
-          top: 55px;
+          top: 49px;
 
           position: fixed;
           display: flex;

@@ -32,7 +32,7 @@ const NavMainSection = ({ setCurrent, loggedIn }) => {
         <NavMainItems
           setCurrent={setCurrent}
           iconName="far fa-id-badge fa-2x"
-          location="/register"
+          location="/user"
         />
         </> : <NavMainPlaceholder
           setCurrent={setCurrent}

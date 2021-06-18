@@ -1,9 +1,22 @@
 import React from 'react';
 
-const Button = ({ buttonName, color, hoverColor, clickedColor, disabled, ...props }) => {
+const Button = ({
+  buttonName,
+  color,
+  onClick,
+  hoverColor,
+  clickedColor,
+  disabled,
+  ...props
+}) => {
   return (
     <div>
-      <button disabled={disabled}  className={disabled ? 'disabledBtn' : 'btn'} type="submit">
+      <button
+        disabled={disabled}
+        onClick={onClick}
+        className={disabled ? 'disabledBtn' : 'btn'}
+        type="submit"
+      >
         {buttonName}
       </button>
       <style jsx>{`
@@ -27,7 +40,7 @@ const Button = ({ buttonName, color, hoverColor, clickedColor, disabled, ...prop
           box-shadow: inset 0 0px 3px rgba(0, 0, 0, 0.2);
           transition: 0.4s ease-in;
           color: rgb(255, 255, 255);
-          background: ${hoverColor};
+          background: ${color};
         }
         .btn:hover:active {
           background-color: rgb(32, 141, 141);

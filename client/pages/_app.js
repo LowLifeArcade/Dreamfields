@@ -18,12 +18,11 @@ function MyApp({ Component, pageProps }) {
           url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
           @import
           url('https://fonts.googleapis.com/css2?family=Shadows+Into+Light&display=swap');
-          {/* @import
-          url('https://fonts.googleapis.com/css2?family=Anton&display=swap'); */}
-        {/* @import
-        url('https://fonts.googleapis.com/css2?family=Marck+Script&display=swap'); */}
+          @import
+          url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+          @import
+          url('https://fonts.googleapis.com/css2?family=Marck+Script&display=swap');
         </style>
-
       </head>
       <ToastContainer
         position="bottom-left"
