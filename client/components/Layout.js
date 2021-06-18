@@ -26,7 +26,7 @@ const Layout = (props) => {
         .flex-layout {
           top: 49px;
 
-          position: fixed;
+          position: fixed; // this did it
           display: flex;
           height: 100vh;
           width: inherit;

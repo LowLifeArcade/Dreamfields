@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import DashboardSideBarItem from './DashboardSidebarItem';
+// TODO: make groupings of items. arrays in arrays. sections basically
 
 const DashboardSidebar = (props) => {
   const [clicked, setClicked] = useState(false);
@@ -24,6 +25,7 @@ const DashboardSidebar = (props) => {
           padding: 10px 7px;
           flex: 0 1 75px;
           position: sticky;
+          overflow: scroll;
           top: 0;
           transition: 0.2s ease-in-out;
           background: rgb(240, 240, 240);

@@ -34,9 +34,9 @@ a {
 /* .leftSideContainer {
   width: 20vw
 } */
-.rightSideContainer {
+/* .rightSideContainer {
   width: 20vw
-}
+} */
 
 .jumboTron {
   color: rgb(253, 251, 251);
@@ -65,7 +65,7 @@ a {
   margin-top: 1rem;
   font-style: italic;
 }
-
+/* 
 .miniJumboTron {
   color: rgb(109, 102, 96);
   font-family: 'Anton', sans-serif;
@@ -89,14 +89,14 @@ a {
   font-size: 3rem;
   padding: 20px;
   box-shadow: 0,3px,3px, rgba(0, 0, 0, .6);
-  /* outline: solid 1px; */
+  outline: solid 1px;
 }
 .miniJumboTron > p {
   margin-top: 1rem;
   font-style: italic;
-}
+} */
 
-@media (max-width: 800px) {
+/* @media (max-width: 800px) {
   .leftSideContainer {
     display: none;
   }
@@ -107,4 +107,4 @@ a {
   .pageContainer {
     width: 100%;
   }
-}
+} */
