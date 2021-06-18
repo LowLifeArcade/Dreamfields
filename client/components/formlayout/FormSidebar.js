@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import DashboardSideBarItem from './DashboardSidebarItem';
+import FormSideBarItem from './FormSidebarItem';
 // TODO: make groupings of items. arrays in arrays. sections basically
 
-const DashboardSidebar = (props) => {
+const FormSidebar = (props) => {
   return (
     <>
       <div className="left-dash-container">
@@ -10,7 +10,7 @@ const DashboardSidebar = (props) => {
           {props.items &&
             props.items.map((item, i) => (
               <>
-                <DashboardSideBarItem {...item} key={i} name={item.name} />
+                <FormSideBarItem {...item} key={i} name={item.name} />
               </>
             ))}
         </div>
@@ -45,4 +45,4 @@ const DashboardSidebar = (props) => {
   );
 };
 
-export default DashboardSidebar;
+export default FormSidebar;

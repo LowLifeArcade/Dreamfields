@@ -5,7 +5,7 @@ import Link from 'next/dist/client/link';
 import { Context } from '../context';
 import router from 'next/router';
 import CardPlain from '../components/CardPlain';
-import FormInput from '../components/FormInput';
+import FormInput from '../components/formlayout/FormInput';
 import Button from '../components/Button';
 
 const forgotPassword = () => {

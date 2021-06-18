@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect } from 'react';
 import Card from '../components/Card';
-import FormInput from '../components/FormInput';
+import FormInput from '../components/formlayout/FormInput';
 import Button from '../components/Button';
 import axios from 'axios';
 import { toast } from 'react-toastify';

@@ -31,7 +31,10 @@ const NavMainSection = ({ setCurrent, loggedIn, current }) => {
               active={current === '/edit' && true}
               setCurrent={setCurrent}
               iconName="far fa-edit fa-2x"
-              location="/edit"
+              location={
+                (user && !user.role.includes('Creator') && '/edit') ||
+                (user.role.includes('Creator') && '/edit/creator')
+              }
             />
             {/* far fa-edit fa-2x */}
             <NavMainItems

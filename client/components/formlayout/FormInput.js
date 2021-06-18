@@ -1,4 +1,12 @@
-const FormInput = ({ htmlFor, type, placeholder, value, onChange, disabled = false }) => {
+const FormInput = ({
+  name,
+  htmlFor,
+  type,
+  placeholder,
+  value,
+  onChange,
+  disabled = false,
+}) => {
   return (
     <>
       <div className="section">
@@ -7,9 +15,10 @@ const FormInput = ({ htmlFor, type, placeholder, value, onChange, disabled = fal
         </label>
         <input
           value={value}
-          onChange={(e) => onChange(e.target.value)}
+          onChange={name ? onChange : (e) => onChange(e.target.value)}
           className="input"
           type={type}
+          name={name} // use this field to handle state with [e.target.name]: [e.target.value] in the object
           autoComplete={'text' && true}
           placeholder={placeholder}
           disabled={disabled}
