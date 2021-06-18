@@ -14,7 +14,7 @@ const BecomeCreator = () => {
 
   const becomeCreator = () => {
       setLoading(true)
-      axios.post('/api/make-instructor')
+      axios.post('/api/make-creator')
       .then((res) => {
         console.log(res)
         window.location.href = res.data

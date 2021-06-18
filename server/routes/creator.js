@@ -6,9 +6,10 @@ const router = express.Router();
 import { requireSignin } from '../middlewares';
 
 // controllers
-import { makeCreator } from '../controllers/creator';
+import { makeCreator, getAccountStatus } from '../controllers/creator';
 
 // endpoints
 router.post('/make-creator', requireSignin, makeCreator)
+router.post('/get-account-status', requireSignin, getAccountStatus)
 
 module.exports = router;
