@@ -1,27 +1,26 @@
-import {useState} from 'react';
-import styles from '../../styles/SideBar.module.css';
 import Link from 'next/link';
 
-const SideBarItem = ({ size, slug, avatarImg, title, clicked, ...rest }) => {
+const DashboardSideBarItem = (props) => {
   return (
-    <Link href={slug}>
-      <a>
-        <div className={styles.sideBarItem}>
-          <div>
-            {avatarImg ? (
-              <img className={styles.sideBarImage} src={avatarImg} alt="Proj" />
-            ) : (
-              <div className={styles.sideBarAdd}>
-                <i class="fas fa-plus fa-2x"></i>
-              </div>
-            )}
-          </div>
-          {avatarImg && <div className={size ? `${styles.sideBarContent}` : `${styles.hide}`}>{title}</div>}
-        </div> 
-        
-      </a>
-    </Link>
+    <>
+      <Link href={props.slug}>
+        <a>
+          <div className="item">{props.name}</div>
+        </a>
+      </Link>
+      <style jsx>
+        {`
+          .item {
+            padding: 15px 0;
+            border-bottom: 1px solid rgb(155, 155, 155);
+          }
+          .item ::after {
+            border-bottom: none;
+          }
+        `}
+      </style>
+    </>
   );
 };
 
-export default SideBarItem;
+export default DashboardSideBarItem;

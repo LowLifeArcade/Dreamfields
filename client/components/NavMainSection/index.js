@@ -41,7 +41,7 @@ const NavMainSection = ({ setCurrent, loggedIn, current }) => {
               location="/login"
             />
             <NavMainItems
-              active={current === '/user' && true || current === '/creator' && true}
+              active={current === '/user' || current === '/creator' || current === '/creator/field/create' }
               setCurrent={setCurrent}
               iconName="far fa-id-badge fa-2x"
               location={
