@@ -49,9 +49,22 @@ export const getAccountStatus = async (req, res) => {
           $addToSet: { role: 'Creator' }, // better than push for array as it checks to see if there is anything in their already like this
         },
         { new: true }
-      ).select('-password').exec();
-      
-      res.json(statusUpdated)
+      )
+        .select('-password')
+        .exec();
+
+      res.json(statusUpdated);
     }
   } catch (err) {}
+};
+
+export const currentCreator = async (req, res) => {
+  try {
+    let user = await User.findById(req.user._id).select('-password').exec();
+    if (!user.role.includes('Creator')) {
+      res.sendStatus(403);
+    } else res.json({ ok: true });
+  } catch (err) {
+    console.log(err)
+  }
 };

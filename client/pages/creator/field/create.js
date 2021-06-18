@@ -1,10 +1,11 @@
-import React from 'react'
+import CreatorRoute from "../../../components/routes/CreatorRoute"
 
 const CreateField = () => {
   return (
-    <div>
-      
-    </div>
+    <CreatorRoute>
+      <h1>Create Field</h1>
+      <p>Layout with different sidebar</p>
+    </CreatorRoute>
   )
 }
 

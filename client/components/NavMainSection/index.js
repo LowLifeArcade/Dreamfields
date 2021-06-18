@@ -2,43 +2,61 @@ import styles from '../../styles/NavBar.module.css';
 import Link from 'next/link';
 import NavMainItems from '../NavMainItems';
 import NavMainPlaceholder from '../NavMainPlaceholder';
+import { Context } from '../../context';
+import { useContext , useState} from 'react';
 
-const NavMainSection = ({ setCurrent, loggedIn }) => {
+const NavMainSection = ({ setCurrent, loggedIn, current }) => {
+  // const [currentLocation, setCurrentLocation] = useState('');
+  const {
+    state: { user },
+  } = useContext(Context);
   return (
     <>
       <div className={styles.mainNavItems}>
-        {loggedIn ? <>
-        <NavMainItems
-          setCurrent={setCurrent}
-          iconName="far fa-newspaper fa-2x"
-          location="/"
-        />
-        <NavMainItems
-          setCurrent={setCurrent}
-          iconName="fas fa-briefcase fa-2x"
-          location="/projects"
-        />
-        <NavMainItems
-          setCurrent={setCurrent}
-          iconName="far fa-edit fa-2x"
-          location="/edit"
-        />
-        {/* far fa-edit fa-2x */}
-        <NavMainItems
-          setCurrent={setCurrent}
-          iconName="fas fa-satellite fa-2x"
-          location="/login"
-        />
-        <NavMainItems
-          setCurrent={setCurrent}
-          iconName="far fa-id-badge fa-2x"
-          location="/user"
-        />
-        </> : <NavMainPlaceholder
-          setCurrent={setCurrent}
-          name="Dream Fields"
-          location="/register"
-        />}
+        {loggedIn ? (
+          <>
+            <NavMainItems
+              active={current === '/' && true}
+              setCurrent={setCurrent}
+              iconName="far fa-newspaper fa-2x"
+              location="/"
+            />
+            <NavMainItems
+              active={current === '/projects' && true}
+              setCurrent={setCurrent}
+              iconName="fas fa-briefcase fa-2x"
+              location="/projects"
+            />
+            <NavMainItems
+              active={current === '/edit' && true}
+              setCurrent={setCurrent}
+              iconName="far fa-edit fa-2x"
+              location="/edit"
+            />
+            {/* far fa-edit fa-2x */}
+            <NavMainItems
+              active={current === '/login' && true}
+              setCurrent={setCurrent}
+              iconName="fas fa-satellite fa-2x"
+              location="/login"
+            />
+            <NavMainItems
+              active={current === '/user' && true || current === '/creator' && true}
+              setCurrent={setCurrent}
+              iconName="far fa-id-badge fa-2x"
+              location={
+                (user && !user.role.includes('Creator') && '/user') ||
+                (user.role.includes('Creator') && '/creator')
+              }
+            />
+          </>
+        ) : (
+          <NavMainPlaceholder
+            setCurrent={setCurrent}
+            name="Dream Fields"
+            location="/register"
+          />
+        )}
       </div>
     </>
   );

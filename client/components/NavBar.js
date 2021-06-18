@@ -41,7 +41,7 @@ const NavBar = (props) => {
           </div>
         </div>
 
-        <NavMainSection loggedIn={user} setCurrent={setCurrent} />
+        <NavMainSection loggedIn={user} current={current} setCurrent={setCurrent} />
         <NavRightItems loggedIn={user} logOut={logout} setCurrent={setCurrent} />
       </div>
     </>

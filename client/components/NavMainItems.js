@@ -1,10 +1,10 @@
 import styles from '../styles/NavBar.module.css';
 import Link from 'next/link';
 
-const NavMainItems = ({setCurrent, iconName, location}) => {
+const NavMainItems = ({setCurrent, iconName, location, active}) => {
   return (
     <>
-      <div key={location || ''} onClick={(e) => setCurrent(e.key)} className={styles.links}>
+      <div key={location || ''} onClick={(e) => setCurrent(e.key)} className={`${active && 'active'}  + ${styles.links}`}>
         <Link href={location || ''}>
           <a>
             <span>
@@ -13,6 +13,12 @@ const NavMainItems = ({setCurrent, iconName, location}) => {
           </a>
         </Link>
       </div>
+      <style jsx>{`
+          .active {
+            color: rgb(5, 137, 224);
+            transition: .4s ease-in;
+          }
+        `}</style>
     </>
   );
 };
