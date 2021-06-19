@@ -7,7 +7,7 @@ import FormTextArea from '../../../components/formlayout/FormTextArea';
 import FormSelect from '../../../components/formlayout/FormSelect';
 import ButtonUpload from '../../../components/ButtonUpload';
 import Button from '../../../components/Button';
-import Resizer from 'react-image-file-resizer'
+import Resizer from 'react-image-file-resizer';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 
@@ -31,31 +31,32 @@ const CreateField = () => {
     category: '',
     loading: false,
   });
-  const [image, setImage] = useState('');
+  const [image, setImage] = useState({});
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
   const handleImg = (e) => {
-    let file = e.target.files[0]
+    let file = e.target.files[0];
     setPreview(window.URL.createObjectURL(file));
-    setValues({...values, loading: true})
-    
+    setValues({ ...values, loading: true });
+
     // resize image
     Resizer.imageFileResizer(file, 720, 500, 'JPEG', 100, 0, async (uri) => {
       try {
-        let {data}= await axios.post('/api/course/upload-image', {
+        let { data } = await axios.post('/api/field/upload-image', {
           image: uri,
-        })
-        console.log('IMAGE UPLOADED', data)
-        // set image in state 
-        
-        setValues({...values, loading: false})
-        } catch (err) {
-          setValues({...values, loading: false})
-          toast.warning('failed uploadd')
-        }
-    })
+        });
+        console.log('IMAGE UPLOADED', data);
+        // set image in state
+        setImage(data);
+
+        setValues({ ...values, loading: false });
+      } catch (err) {
+        setValues({ ...values, loading: false });
+        toast.warning('failed uploadd');
+      }
+    });
   };
 
   const handleSubmit = (e) => {
@@ -103,16 +104,27 @@ const CreateField = () => {
               color={'#3f3f3f'}
               disabled={values.loading || preview}
               uploadType="image"
-              buttonName={preview ? 'Preview' : "Upload Banner Image"}
+              buttonName={preview ? 'Preview' : 'Upload Banner Image'}
               onChange={handleImg}
             />
-          
-            {preview ? <div className='banner-preview-container' > <img className='banner-preview' src={preview} alt="" /></div> :  <div className="description">
-              Think of this as the image you want to represent your dream. It
-              should have the characters and setting you want to convey in the
-              story. The dimensions should stretch across the screen at about
-              1200 x 600
-            </div> }
+
+            {preview ? (
+              <div>
+                <div className="banner-preview-container">
+                  <img className="banner-preview" src={preview} alt="" />
+                </div>
+                {/* <div className="banner-preview-container">
+                  <img className="banner-preview" src={image.Location} alt="" />
+                </div> */}
+              </div>
+            ) : (
+              <div className="description">
+                Think of this as the image you want to represent your dream. It
+                should have the characters and setting you want to convey in the
+                story. The dimensions should stretch across the screen at about
+                1200 x 600
+              </div>
+            )}
 
             <Button
               color={'#3f3f3f'}
@@ -148,13 +160,11 @@ const style = (
     }
     .banner-preview-container {
       margin: 20px 0;
-
     }
     .banner-preview {
       height: 200px;
       width: 100%;
       object-fit: cover;
-
     }
   `}</style>
 );
