@@ -7,11 +7,21 @@ import FormTextArea from '../../../components/formlayout/FormTextArea';
 import FormSelect from '../../../components/formlayout/FormSelect';
 import ButtonUpload from '../../../components/ButtonUpload';
 import Button from '../../../components/Button';
+import Resizer from 'react-image-file-resizer'
+import { toast } from 'react-toastify';
+import axios from 'axios';
 
 const fakeData = ['Love Story', 'Adventure', 'Comedy'];
+const links = [
+  { slug: 'pie', name: 'Home' },
+  { slug: 'pie', name: 'Resume' },
+  { slug: 'pie', name: 'Tools' },
+  { slug: 'pie', name: 'Migrate' },
+  { slug: 'pie', name: 'Overview' },
+];
 
 const CreateField = () => {
-  const [preview, setPreview] = useState('pic');
+  const [preview, setPreview] = useState('');
   const [values, setValues] = useState({
     name: '',
     description: '',
@@ -21,13 +31,31 @@ const CreateField = () => {
     category: '',
     loading: false,
   });
-  console.log('preview', preview);
+  const [image, setImage] = useState('');
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
   const handleImg = (e) => {
-    setPreview(window.URL.createObjectURL(e.target.files[0]));
+    let file = e.target.files[0]
+    setPreview(window.URL.createObjectURL(file));
+    setValues({...values, loading: true})
+    
+    // resize image
+    Resizer.imageFileResizer(file, 720, 500, 'JPEG', 100, 0, async (uri) => {
+      try {
+        let {data}= await axios.post('/api/course/upload-image', {
+          image: uri,
+        })
+        console.log('IMAGE UPLOADED', data)
+        // set image in state 
+        
+        setValues({...values, loading: false})
+        } catch (err) {
+          setValues({...values, loading: false})
+          toast.warning('failed uploadd')
+        }
+    })
   };
 
   const handleSubmit = (e) => {
@@ -37,7 +65,7 @@ const CreateField = () => {
   console.log(values);
   return (
     <CreatorRoute>
-      <FormLayout rightBoxItems={values}>
+      <FormLayout items={links} rightBoxItems={values}>
         <FormCard title="Create Field">
           <FormInput
             onChange={handleChange}
@@ -73,18 +101,18 @@ const CreateField = () => {
           <div className="submit-section">
             <ButtonUpload
               color={'#3f3f3f'}
-              disabled={values.loading}
+              disabled={values.loading || preview}
               uploadType="image"
-              buttonName="Upload Banner Image"
-              onClick={handleImg}
+              buttonName={preview ? 'Preview' : "Upload Banner Image"}
+              onChange={handleImg}
             />
-            <div className="description">
+          
+            {preview ? <div className='banner-preview-container' > <img className='banner-preview' src={preview} alt="" /></div> :  <div className="description">
               Think of this as the image you want to represent your dream. It
               should have the characters and setting you want to convey in the
               story. The dimensions should stretch across the screen at about
               1200 x 600
-            </div>
-            {preview && <div>hi</div>}
+            </div> }
 
             <Button
               color={'#3f3f3f'}
@@ -117,6 +145,16 @@ const style = (
       margin: 20px 0;
       font-size: 0.9rem;
       color: rgb(97, 97, 97);
+    }
+    .banner-preview-container {
+      margin: 20px 0;
+
+    }
+    .banner-preview {
+      height: 200px;
+      width: 100%;
+      object-fit: cover;
+
     }
   `}</style>
 );

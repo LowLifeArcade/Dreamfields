@@ -3,7 +3,7 @@ import React from 'react';
 const ButtonUpload = ({
   buttonName,
   color,
-  onClick,
+  onChange,
   hoverColor,
   clickedColor,
   disabled,
@@ -14,12 +14,12 @@ const ButtonUpload = ({
     <div>
       <label
         disabled={disabled}
-        onClick={onClick}
+
         className={disabled ? 'disabledBtn' : 'btn'}
         type="submit"
         >
         {buttonName}
-        <input type="file" name={uploadType} accept={`${uploadType}/*`} hidden />
+        <input type="file" onChange={onChange} name={uploadType} accept={`${uploadType}/*`} hidden />
       </label>
       <style jsx>{`
         .disabledBtn {
