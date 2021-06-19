@@ -10,6 +10,7 @@ import Button from '../../../components/Button';
 import Resizer from 'react-image-file-resizer';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import router from 'next/router';
 
 const fakeData = ['Love Story', 'Adventure', 'Comedy'];
 const links = [
@@ -77,9 +78,20 @@ const CreateField = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(values);
+    try {
+      const { data } = await axios.post('/api/field', {
+        ...values,
+        image,
+      });
+      toast.success('Awesome! Now we can start adding scenes to your field.');
+      setTimeout(() => {
+        router.push('/creator');
+      }, 2000);
+    } catch (err) {
+      toast.error(err.response.data);
+    }
   };
 
   return (

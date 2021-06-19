@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 const SideBarItem = ({ size, slug, avatarImg, title, clicked, ...rest }) => {
   return (
-    <Link href={slug}>
+    <Link href={slug || ''}>
       <a>
         <div className={styles.sideBarItem}>
           <div>

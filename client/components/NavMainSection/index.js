@@ -25,7 +25,7 @@ const NavMainSection = ({ setCurrent, loggedIn, current }) => {
               active={current === '/projects' && true}
               setCurrent={setCurrent}
               iconName="fas fa-briefcase fa-2x"
-              location="/projects"
+              location="/projects" // TODO: add turnery for context if i've clicked on a project anywhere else that it stores it here so I go right to that project overview page.
             />
             <NavMainItems
               active={current === '/edit' && true}
@@ -34,7 +34,7 @@ const NavMainSection = ({ setCurrent, loggedIn, current }) => {
               location={
                 (user && !user.role.includes('Creator') && '/edit') ||
                 (user.role.includes('Creator') && '/edit/creator')
-              }
+              }// TODO: add turnery for context if i've clicked on a project anywhere else that it stores it here so I go right to that edit page.
             />
             {/* far fa-edit fa-2x */}
             <NavMainItems

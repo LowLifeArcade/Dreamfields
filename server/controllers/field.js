@@ -1,5 +1,7 @@
 import AWS from 'aws-sdk';
 import { nanoid } from 'nanoid';
+import Field from '../models/field';
+import slugify from 'slugify';
 
 const awsConfig = {
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -66,4 +68,34 @@ export const removeImage = async (req, res) => {
   } catch (err) {
     console.log(err);
   }
+};
+
+export const create = async (req, res) => {
+  // console.log('CREATE FIELD', req.body)
+  // return
+  try {
+    const alreadyExists = await Field.findOne({
+      slug: slugify(req.body.name.toLowerCase()),
+    });
+    if (alreadyExists) return res.status(400).send('Field is taken');
+
+    const field = await new Field({
+      slug: slugify(req.body.name),
+      creator: req.user._id,
+      ...req.body,
+    }).save();
+    res.json(field);
+  } catch (err) {
+    console.log(err);
+    return res.status(400).send('Field creation failed. Try again.');
+  }
+};
+
+export const read = async (req, res) => {
+  try {
+    const field = await Field.findOne({ slug: req.params.slug })
+      .populate('creator', '_id name')
+      .exec();
+      res.json(field)
+  } catch (err) {}
 };

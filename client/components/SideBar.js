@@ -9,16 +9,16 @@ const SideBar = (props) => {
     {
       id: '',
       avatarImg:
-        'https://images.unsplash.com/photo-1622601803994-c70eb8ed6dbb?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80',
+        'https://cdnb.artstation.com/p/assets/images/images/020/562/285/large/sonny-sortzen-illustration136.jpg?1568253414',
       title: 'Paul Saves All',
-      slug: '',
+      slug: '/creator/field/view/paul-saves-all',
     },
     {
       id: '',
       avatarImg:
         'https://images.unsplash.com/photo-1603344204980-4edb0ea63148?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80',
       title: 'Intentionally ',
-      slug: '',
+      slug: '/creator/field/view/test-2',
     },
     {
       id: '',

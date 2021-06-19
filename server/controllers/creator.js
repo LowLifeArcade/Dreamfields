@@ -1,6 +1,7 @@
 import User from '../models/user';
 // import stripe from 'stripe';
 import queryString from 'query-string';
+import Field from '../models/field';
 const stripe = require('stripe')(process.env.STRIPE_SECRET);
 
 export const makeCreator = async (req, res) => {
@@ -65,6 +66,17 @@ export const currentCreator = async (req, res) => {
       res.sendStatus(403);
     } else res.json({ ok: true });
   } catch (err) {
-    console.log(err)
+    console.log(err);
+  }
+};
+
+export const creatorFields = async (req, res) => {
+  try {
+    const fields = await Field.find({ creator: req.user._id })
+    .sort({ createdAt: -1 })
+    .exec();
+    res.json(fields)
+  } catch (err) {
+    console.log(err);
   }
 };
