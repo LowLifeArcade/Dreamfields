@@ -59,11 +59,29 @@ const CreateField = () => {
     });
   };
 
+  const handleImageRemove = async () => {
+    let confirm = window.confirm('Do you want to remove this image?');
+
+    if (confirm) {
+      try {
+        setValues({ ...values, loading: true });
+        await axios.post('/api/field/remove-image', { image });
+        setImage({});
+        setPreview('');
+        setValues({ ...values, loading: false });
+      } catch (err) {
+        console.log(err);
+        setValues({ ...values, loading: false });
+        toast.warn('Image upload failed.');
+      }
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(values);
   };
-  console.log(values);
+
   return (
     <CreatorRoute>
       <FormLayout items={links} rightBoxItems={values}>
@@ -110,7 +128,10 @@ const CreateField = () => {
 
             {preview ? (
               <div>
-                <div className="banner-preview-container">
+                <div
+                  onClick={handleImageRemove}
+                  className="banner-preview-container"
+                >
                   <img className="banner-preview" src={preview} alt="" />
                 </div>
                 {/* <div className="banner-preview-container">
