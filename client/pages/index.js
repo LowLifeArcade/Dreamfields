@@ -133,6 +133,7 @@ export default function Home() {
           column-rule: 1px solid #ccc;
           column-gap: 4em;
           text-align: justify;
+          {/* overflow-y: scroll; */}
         }
         
       `}</style>
