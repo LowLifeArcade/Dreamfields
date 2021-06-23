@@ -4,6 +4,7 @@ import CreatorRoute from '../../../../components/routes/CreatorRoute';
 import axios from 'axios';
 import OVSidebarItems from '../../../../components/overview/OVSidebarItem';
 import SceneMachine from '../../../../components/SceneMachine';
+import ReactMarkdown from 'react-markdown';
 
 // TODO: implement smooth scrolling from link to link on page
 
@@ -79,9 +80,11 @@ const FieldView = () => {
                       </div>
                     </div>
 
-                    <div id="about" className="fo-section-container">
+                    <div id="about" className="">
                       <div className="fo-section-about-container">
                         <div className="fo-section-about">
+                          <ReactMarkdown children={field.description}  />
+                          {/* <ReactMarkdown>{field.description}</ReactMarkdown> */}
                           Paul Saves All Lorem ipsum dolor sit amet consectetur
                           adipisicing elit. Est unde perspiciatis suscipit,
                           laborum explicabo dolorum error magnam omnis quisquam
@@ -196,12 +199,16 @@ const style = (
       overflow: hidden;
     }
     #about {
+      transform: rotate(4deg);
       background: #fff;
+      height: 300px;
+      width: 500px;
       margin: 90px 60px;
       // padding: 40px 0;
     }
-    .fo-section-about {
-      columns: 3;
+    .fo-section-about-container {
+      // columns: 3;
+      overflow-y: hidden;
       background-image: 
       linear-gradient(0deg, transparent 5em, rgba(255,0,0,.2) 0, transparent 5.1em), 
       linear-gradient(rgba(0,0,255,.3) 1px, transparent 0);
