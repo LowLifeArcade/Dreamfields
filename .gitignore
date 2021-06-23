@@ -2,4 +2,5 @@
 .DS_Store
 *.pem
 
-NOTES.md
+NOTES_TODO.md
+package-lock-old.json
