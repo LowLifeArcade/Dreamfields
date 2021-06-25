@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 const initialButtonState = {
-  button1: { active: false },
+  button1: { active: true },
   button2: { active: false },
   button3: { active: false },
   button4: { active: false },
@@ -133,6 +133,7 @@ const SceneMachine = () => {
   const scenes = [
     {
       id: 210501,
+      title: 'Paul Saves All',
       sceneName: '001',
       stripImage: '//unsplash.it/id/1/200/130',
       description: 'Paul slides down a hill into a pit of vipers.',
@@ -155,9 +156,10 @@ const SceneMachine = () => {
     {
       id: 410502,
       sceneName: '002',
+      title: 'Paul Saves All',
       stripImage: '//unsplash.it/id/22/200/130',
       description:
-        'Paul runs from said vipers. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Exercitationem asperiores rerum numquam. Ratione perferendis obcaecati magni sequi harum quae suscipit, sit fuga optio facilis consequuntur! Quas nulla dolorum earum maiores corporis ut, totam, qui inventore libero nisi, quis eius? Consequatur possimus veritatis consectetur nisi natus asperiores eos iure facilis. Possimus.',
+        'Paul runs from said vipers. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Exercitationem asperiores rerum numquam. Ratione perferendis obcaecati magni sequi harum quae suscipit, sit fuga optio facilis consequuntur! Quas nulla dolorum earum maiores corpoadipisicing elit. Exercitationem asperiores rerum numquam. Ratione perferendis obcaecati magni sequi harum quae suscipit, sit fuga optio facilis consequuntur! Quas nulla dolorum earum maiores corpoadipisicing elit. Exercitationem asperiores rerum numquam. Ratione perferendis obcaecati magni sequi harum quae suscipit, sit fuga optio facilis consequuntur! Quas nulla dolorum earum maiores corpoadipisicing elit. Exercitationem asperiores rerum numquam. Ratione perferendis obcaecati magni sequi harum quae suscipit, sit fuga optio facilis consequuntur! Quas nulla dolorum earum maiores corpoadipisicing elit. Exercitationem asperiores rerum numquam. Ratione perferendis obcaecati magni sequi harum quae suscipit, sit fuga optio facilis consequuntur! Quas nulla dolorum earum maiores corpoadipisicing elit. Exercitationem asperiores rerum numquam. Ratione perferendis obcaecati magni sequi harum quae suscipit, sit fuga optio facilis consequuntur! Quas nulla dolorum earum maiores corpoadipisicing elit. Exercitationem asperiores rerum numquam. Ratione perferendis obcaecati magni sequi harum quae suscipit, sit fuga optio facilis consequuntur! Quas nulla dolorum earum maiores corporis ut, totam, qui inventore libero nisi, quis eius? Consequatur possimus veritatis consectetur nisi natus asperiores eos iure facilis. Possimus.',
       mainImage: '//unsplash.it/id/22/500/300',
       boards: [
         {
@@ -180,9 +182,10 @@ const SceneMachine = () => {
       {style}
       <div id="scene-machine" className="">
         <div id="scene-machine-location" className="">
-          <h1>
-            <div className="scene-machine-title">Scene Machine</div>
-          </h1>
+          <div className="scene-machine-title">
+
+            <h1>Scene Machine</h1>
+          </div>
           <div className="section-container">
             <div id="act1" className="scenes-section-strip">
               {scenes.map((scene, i) => (
@@ -205,7 +208,10 @@ const SceneMachine = () => {
                 onClick={() =>
                   setButtons({
                     ...buttons,
-                    button1: { active: !button1.active },
+                    button1: { active: true },
+                    button2: { active: false },
+                    button3: { active: false },
+                    button4: { active: false },
                   })
                 }
                 className={`btn-inside ${button1.active && 'active'}`}
@@ -216,7 +222,10 @@ const SceneMachine = () => {
                 onClick={() =>
                   setButtons({
                     ...buttons,
-                    button2: { active: !button2.active },
+                    button1: { active: false },
+                    button2: { active: true },
+                    button3: { active: false },
+                    button4: { active: false },
                   })
                 }
                 className={`btn-inside ${button2.active && 'active'}`}
@@ -227,7 +236,10 @@ const SceneMachine = () => {
                 onClick={() =>
                   setButtons({
                     ...buttons,
-                    button3: { active: !button3.active },
+                    button1: { active: false },
+                    button2: { active: false },
+                    button3: { active: true },
+                    button4: { active: false },
                   })
                 }
                 className={`btn-inside ${button3.active && 'active'}`}
@@ -238,7 +250,10 @@ const SceneMachine = () => {
                 onClick={() =>
                   setButtons({
                     ...buttons,
-                    button4: { active: !button4.active },
+                    button1: { active: false },
+                    button2: { active: false },
+                    button3: { active: false },
+                    button4: { active: true },
                   })
                 }
                 className={`btn-inside ${button4.active && 'active'}`}
@@ -262,20 +277,28 @@ const SceneMachine = () => {
                 <div>
                   <div className="transport">
                     {/* this should download all coresponding data like concept art. Maybe */}
-                    <button>Download</button>
-                    <div className="transport-controls">
-                      <button>Test</button>
-                      <button>Test</button>
-                      <button>Test</button>
-                      <button>Test</button>
-                      <button>Test</button>
+                    <div>
+                      <button>Overview</button>
+                      <button>Boards</button>
+                      <button>Video</button>
                     </div>
-                    <button>Upload</button>
+                    <div className="transport-controls">
+                      {/* <button>&lArr;</button> */}
+                      <button>&larr;</button>
+                      <button>Play</button>
+                      <button>Stop</button>
+                      <button>&rarr;</button>
+                      {/* <button>&rArr;</button> */}
+                    </div>
+                    <div>
+                      <button>Upload</button>
+                      <button>Download</button>
+                    </div>
                   </div>
 
                   <div className="transport-overview">
                     <p>{viewer.description}</p>
-                    
+
                     <p>
                       <img src={viewer.stripImage} alt="" />
                     </p>
@@ -295,27 +318,28 @@ export default SceneMachine;
 const style = (
   <style jsx>{`
     #scene-machine {
-      padding: 0 5px;
-      background: rgb(43, 38, 38);
-      padding-top: 100px;
+      // padding: 0 5px;
+      // background: rgb(43, 38, 38);
+      // padding-top: 100px;
 
-      border-top: solid 10px rgb(194, 187, 167);
-      box-shadow: inset 0 10px 10px rgba(0, 0, 0, 0.808),
-        inset 0 10px 30px rgba(0, 0, 0, 0.808),
-        inset 0 20px 100px rgba(0, 0, 0, 0.808);
+      // border-top: solid 10px rgb(194, 187, 167);
+      // box-shadow: inset 0 10px 10px rgba(0, 0, 0, 0.808),
+      //   inset 0 10px 30px rgba(0, 0, 0, 0.808),
+      //   inset 0 20px 100px rgba(0, 0, 0, 0.808);
     }
 
     .scene-machine-title {
       box-shadow: 0 10px 10px rgba(256 256, 256, 256, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
     }
 
-    #scene-machine > div > h1 {
+    #scene-machine > div > div > h1 {
       background: rgb(247, 229, 229);
-      margin-bottom: 4px;
-      margin-bottom: 10px;
-      font-size: 2rem;
-      text-align: center;
-      padding: 10px;
+      font-size: 1.6rem;
+      padding: 2px 40px;
       box-shadow: inset 0 0 15px rgb(39, 38, 31), inset 0 0 30px rgb(55, 55, 75),
         0 0 20px rgb(55, 55, 75);
       border-radius: 10px;
@@ -323,6 +347,7 @@ const style = (
     }
 
     #scene-machine > div {
+      height: 94vh;
       background: rgb(68, 48, 48);
       padding: 27px;
       width: 100%;
@@ -343,7 +368,7 @@ const style = (
     .scenes-section-strip {
       background: rgb(29, 24, 24);
       display: flex;
-      padding: 20px;
+      padding: 6px;
       overflow-x: scroll;
       margin: 10px 0;
       box-shadow: 0 0 3px;
@@ -357,6 +382,7 @@ const style = (
     .scene-strip {
       padding: 0px 30px;
       border-right: solid 1px rgb(75, 75, 75);
+      cursor: pointer;
     }
 
     .scene-strip > img {
@@ -383,6 +409,7 @@ const style = (
       display: flex;
       align-items: center;
       justify-content: center;
+      cursor: pointer;
     }
 
     .btn:last-child {
@@ -417,8 +444,8 @@ const style = (
     .scene-overview {
       background: rgb(46, 35, 35);
       // padding: 20px;
+      height: 440px;
       width: 100%;
-      height: 370px;
       display: flex;
       border: solid 1px rgb(22, 19, 19);
       border-radius: 10px;
@@ -427,13 +454,14 @@ const style = (
 
     .left-panel {
       padding: 10px;
-      width: 50%;
-      height: 370px;
+      width: 40%;
+      height: 100%;
     }
 
     .viewer {
       // height: 370px;
       border-radius: 5px;
+      // height: 100%;
       // border: solid 15px rgb(24, 4, 4);
       box-shadow: inset 0 0px 10px rgba(0, 0, 0, 1);
     }
@@ -442,9 +470,10 @@ const style = (
       padding: 8px;
       height: 100%;
       width: 100%;
+      max-height: 270px;
     }
     .right-panel {
-      width: 50%;
+      width: 60%;
     }
 
     .scene-overview-about {
@@ -468,7 +497,7 @@ const style = (
       // border-radius: 5px;
       padding: 10px;
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       justify-content: space-between;
     }
     .transport-title {
@@ -505,6 +534,16 @@ const style = (
       .scene-overview {
         flex-direction: column;
         height: 100%;
+      }
+
+      .left-panel {
+        width: 100%;
+      }
+      .right-panel {
+        width: 100%;
+      }
+      .scene-overview-about > div {
+        max-height: 300px;
       }
     }
   `}</style>

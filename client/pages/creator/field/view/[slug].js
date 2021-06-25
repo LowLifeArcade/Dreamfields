@@ -83,7 +83,7 @@ const FieldView = () => {
                     <div id="about" className="">
                       <div className="fo-section-about-container">
                         <div className="fo-section-about">
-                          <ReactMarkdown children={field.description}  />
+                          <ReactMarkdown children={field.description} />
                           {/* <ReactMarkdown>{field.description}</ReactMarkdown> */}
                           Paul Saves All Lorem ipsum dolor sit amet consectetur
                           adipisicing elit. Est unde perspiciatis suscipit,
@@ -108,8 +108,9 @@ const FieldView = () => {
                         </div>
                       </div>
                     </div>
-
-                    <SceneMachine id="scene-machine" />
+                    <div className="scene-machine-container">
+                      <SceneMachine id="scene-machine" />
+                    </div>
                   </div>
                 </div>
                 <div className="fo-sidebar">
@@ -139,7 +140,6 @@ const FieldView = () => {
                   />
                   <OVSidebarItems slug="#assets" name="Assets" />
                   <OVSidebarItems slug="#contributors" name="Contributors" />
-
                 </div>
               </div>
             </div>
@@ -155,10 +155,10 @@ export default FieldView;
 
 const style = (
   <style jsx>{`
-  .fo-window {
-    width: 100%;
+    .fo-window {
+      width: 100%;
 
-  }
+    }
     .fo-container {
       display: flex;
       // position: fixed;
@@ -171,8 +171,8 @@ const style = (
     .fo-main {
       width: 80vw;
       overflow-y: scroll;
-      height: 93vh;
-      padding-top: 93vh;
+      height: 94vh;
+      padding-top: 94vh;
     }
     
     .fo-content {
@@ -267,10 +267,10 @@ const style = (
       transform: rotate(10deg);
       transition: .2s ease-in-out;
     }
-    .fo-section-cork > img:focus {
+    .fo-section-cork > img:active {
       max-height: 800px;
       padding: 30px;
-      transform: rotate(3deg);
+      transform: rotate(0deg);
     }
     .fo-section-cork > img:nth-of-type(+1) {
       max-height: 400px;
@@ -323,6 +323,17 @@ const style = (
       object-fit: contain;
     }
 
+    .scene-machine-container {
+      padding: 0 5px;
+      background: rgb(43, 38, 38);
+      padding-top: 100px;
+
+      border-top: solid 10px rgb(194, 187, 167);
+      box-shadow: inset 0 10px 10px rgba(0, 0, 0, 0.808),
+        inset 0 10px 30px rgba(0, 0, 0, 0.808),
+        inset 0 20px 100px rgba(0, 0, 0, 0.808);
+    }
+
     // .control-panel {
     //   height: 60px;
     //   display: flex;
@@ -352,7 +363,7 @@ const style = (
       max-width: 20vw;
       border-left: solid 1px rgb(209, 206, 199);
       padding-left: 10px;
-      height: 93vh;
+      height: 94vh;
       overflow-y: scroll;
       display: inline-block;
       position: sticky;

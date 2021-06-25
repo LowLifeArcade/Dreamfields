@@ -1,7 +1,7 @@
 .navbar {
   display: flex;
   padding: .55rem .75rem;
-  height: 7vh;
+  height: 6vh;
   justify-content: space-between;
   width: 100%;
   position: sticky;
@@ -20,7 +20,8 @@
 }
 
 .leftNavItems > h1 {
-  font-size: 1.6rem;
+  margin-right: 10px;
+  font-size: 1.4rem;
  border: solid 1px;
  padding: 3px 8px;
  cursor: pointer;
@@ -57,8 +58,8 @@
   display: flex;
   align-items: center;
   background: #eff2f5;
-  padding: .65rem;
-  margin-left: .65rem;
+  padding: .60rem;
+  margin-left: .60rem;
   border-radius: 2rem;
   box-shadow: inset 0px 1px 3px rgba(0, 0, 0, .2);
 

@@ -11,8 +11,8 @@
 
 .sideBarSmall {
   /* height: 100vh; */
-  padding: 10px 7px;
-  flex: 0 1 75px;
+  padding: 10px 2px;
+  flex: 0 1 55px;
   position: sticky;
   top: 0;
   transition: .2s ease-in-out;

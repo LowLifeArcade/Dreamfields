@@ -1,18 +1,9 @@
-import React from 'react'
+import SceneMachine from "../../../components/SceneMachine"
 
 const CreatorEdit = () => {
   return (
     <>
-      <div className="edit-container">
-
-      <h1>Creator Edit</h1>
-      </div>
-      <style jsx>{`
-      .edit-container {
-        display: flex;
-        flex-direction: column;
-      }
-    `}</style>
+      <SceneMachine />
     </>
   )
 }
