@@ -7,9 +7,30 @@ const initialButtonState = {
   button4: { active: false },
 };
 
+const initialViewerState = {
+  id: 210501,
+  sceneName: '001',
+  stripImage: '//unsplash.it/200/130',
+  description: 'Paul slides down a hill into a pit of vipers.',
+  mainImage: '//unsplash.it/500/300',
+  boards: [
+    {
+      boards: [{ panel: 1, artist: 'objectId' }],
+      artist: 'objectId',
+      createdAt: 'date',
+      revision: 1,
+    },
+  ],
+
+  video: 's3-videoURL',
+  revision: 1,
+};
+
 const SceneMachine = () => {
   const [buttons, setButtons] = useState(initialButtonState);
   const { button1, button2, button3, button4 } = buttons;
+
+  const [viewer, setViewer] = useState(initialViewerState);
   /* NOTES:
   -tracking code: 
   -title
@@ -109,9 +130,50 @@ const SceneMachine = () => {
     revision: 1,
   };
 
-  const activateButton = () => {
-    document.getElementById('btn');
-  };
+  const scenes = [
+    {
+      id: 210501,
+      sceneName: '001',
+      stripImage: '//unsplash.it/id/1/200/130',
+      description: 'Paul slides down a hill into a pit of vipers.',
+      mainImage: '//unsplash.it/id/1/500/300',
+      boards: [
+        {
+          id: 2240,
+          panel: 1, // this needs to be unique
+          artist: 'objectId',
+          board: '//unsplash.it/id/23/500/300',
+          artist: 'objectId',
+          createdAt: 'date',
+          revision: 1,
+        },
+      ],
+
+      video: 's3-videoURL',
+      revision: 1,
+    },
+    {
+      id: 410502,
+      sceneName: '002',
+      stripImage: '//unsplash.it/id/22/200/130',
+      description:
+        'Paul runs from said vipers. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Exercitationem asperiores rerum numquam. Ratione perferendis obcaecati magni sequi harum quae suscipit, sit fuga optio facilis consequuntur! Quas nulla dolorum earum maiores corporis ut, totam, qui inventore libero nisi, quis eius? Consequatur possimus veritatis consectetur nisi natus asperiores eos iure facilis. Possimus.',
+      mainImage: '//unsplash.it/id/22/500/300',
+      boards: [
+        {
+          id: 2140,
+          panel: 1, // this needs to be unique
+          artist: 'objectId',
+          board: '//unsplash.it/id/25/500/300',
+          artist: 'objectId',
+          createdAt: 'date',
+          revision: 1,
+        },
+      ],
+      video: 's3-videoURL',
+      revision: 1,
+    },
+  ];
 
   return (
     <>
@@ -123,17 +185,28 @@ const SceneMachine = () => {
           </h1>
           <div className="section-container">
             <div id="act1" className="scenes-section-strip">
-              <div className="scene-strip">
-                <img src="//unsplash.it/200/130" alt="" />
-                <p>Scene 1-1:a</p>
-              </div>
+              {scenes.map((scene, i) => (
+                <>
+                  <div
+                    key={scene.id}
+                    onClick={() => setViewer(scene)}
+                    className="scene-strip"
+                  >
+                    <img src={scene.stripImage} alt="" />
+                    <p>Scene: {scene.sceneName}</p>
+                  </div>
+                </>
+              ))}
             </div>
           </div>
           <div className="control-panel">
             <div className="btn">
               <div
                 onClick={() =>
-                  setButtons({ ...buttons, button1: { active: !button1.active } })
+                  setButtons({
+                    ...buttons,
+                    button1: { active: !button1.active },
+                  })
                 }
                 className={`btn-inside ${button1.active && 'active'}`}
               ></div>
@@ -141,7 +214,10 @@ const SceneMachine = () => {
             <div className="btn">
               <div
                 onClick={() =>
-                  setButtons({ ...buttons, button2: { active: !button2.active } })
+                  setButtons({
+                    ...buttons,
+                    button2: { active: !button2.active },
+                  })
                 }
                 className={`btn-inside ${button2.active && 'active'}`}
               ></div>
@@ -149,7 +225,10 @@ const SceneMachine = () => {
             <div className="btn">
               <div
                 onClick={() =>
-                  setButtons({ ...buttons, button3: { active: !button3.active } })
+                  setButtons({
+                    ...buttons,
+                    button3: { active: !button3.active },
+                  })
                 }
                 className={`btn-inside ${button3.active && 'active'}`}
               ></div>
@@ -157,20 +236,52 @@ const SceneMachine = () => {
             <div className="btn">
               <div
                 onClick={() =>
-                  setButtons({ ...buttons, button4: { active: !button4.active } })
+                  setButtons({
+                    ...buttons,
+                    button4: { active: !button4.active },
+                  })
                 }
                 className={`btn-inside ${button4.active && 'active'}`}
               ></div>
             </div>
           </div>
+
           <div className="scene-overview">
             <div className="left-panel">
               <div className="viewer">
-                <img src="//unsplash.it/500/300" alt="" />
+                <img src={viewer.mainImage} alt="" />
+              </div>
+              <div className="transport-title">
+                <div>Scene: {viewer.sceneName}</div>
+                <div>Panel: {viewer.boards[0].panel}</div>
+                <div>ID: {viewer.id}</div>
               </div>
             </div>
             <div className="right-panel">
-              <div className="scene-overview-about">INFO about the scene</div>
+              <div className="scene-overview-about">
+                <div>
+                  <div className="transport">
+                    {/* this should download all coresponding data like concept art. Maybe */}
+                    <button>Download</button>
+                    <div className="transport-controls">
+                      <button>Test</button>
+                      <button>Test</button>
+                      <button>Test</button>
+                      <button>Test</button>
+                      <button>Test</button>
+                    </div>
+                    <button>Upload</button>
+                  </div>
+
+                  <div className="transport-overview">
+                    <p>{viewer.description}</p>
+                    
+                    <p>
+                      <img src={viewer.stripImage} alt="" />
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -322,13 +433,13 @@ const style = (
 
     .viewer {
       // height: 370px;
-      box-shadow: inset 0 0px 10px rgba(0, 0, 0, 1),
-        inset 0 0px 10px rgba(0, 0, 0, 1);
       border-radius: 5px;
-      border: solid 15px;
+      // border: solid 15px rgb(24, 4, 4);
+      box-shadow: inset 0 0px 10px rgba(0, 0, 0, 1);
     }
     .viewer > img {
       // max-height: 90%;
+      padding: 8px;
       height: 100%;
       width: 100%;
     }
@@ -338,7 +449,51 @@ const style = (
 
     .scene-overview-about {
       // background: #fff;
+      padding: 10px;
       height: 100%;
+    }
+
+    .scene-overview-about > div {
+      box-shadow: inset 0 0 10px;
+      height: 100%;
+      border-radius: 5px;
+      display: flex;
+      flex-direction: column;
+      // align-items: flex-start;
+    }
+
+    .transport {
+      // box-shadow: inset 0 0 10px;
+      border: solid 1px;
+      // border-radius: 5px;
+      padding: 10px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+    .transport-title {
+      padding: 10px;
+      border-bottom: solid 1px;
+      background: rgb(206, 230, 169);
+      border: solid 1px rgb(65, 11, 11);
+      border-radius: 3px;
+      margin: 10px 0;
+      box-shadow: inset 0 0 10px;
+      padding: 5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .transport-overview {
+      background: rgb(218, 214, 208);
+      border: solid 1px rgb(65, 11, 11);
+      margin: 10px;
+      height: 100%;
+      border-radius: 10px;
+      box-shadow: inset 0 0 10px;
+      padding: 5px;
+      overflow-y: scroll;
     }
 
     #scene {
