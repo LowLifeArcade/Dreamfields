@@ -323,25 +323,25 @@ const style = (
       object-fit: contain;
     }
 
-    .control-panel {
-      height: 60px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+    // .control-panel {
+    //   height: 60px;
+    //   display: flex;
+    //   justify-content: center;
+    //   align-items: center;
+    // }
 
-    .btn {
-      width: 50px;
-      height: 50px;
-      border: solid 1px;
-    }
+    // .btn {
+    //   width: 50px;
+    //   height: 50px;
+    //   border: solid 1px;
+    // }
 
-    .btn::after {
-      width: 3px;
-      height: 3px;
-      // border-radius: 50%;
-      border: solid 10px #fff;
-    }
+    // .btn::after {
+    //   width: 3px;
+    //   height: 3px;
+    //   // border-radius: 50%;
+    //   border: solid 10px #fff;
+    // }
        
 
     .fo-sidebar {
