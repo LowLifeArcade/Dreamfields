@@ -10,19 +10,112 @@ const initialButtonState = {
 
 const initialViewerState = {
   id: 210501,
-  sceneName: '001',
-  stripImage: '//unsplash.it/200/130',
+  forReel: 'ObjectId - Paul Saves All Movie',
+  launched: false,
+  productionStage: 'boards',
+  sceneName: 'Vipers',
+  stripImage: '//unsplash.it/id/1/200/130',
+  setting: 'ext. School - Day ',
+  script: `<br />
+  <p>EXT. SCHOOL - DAY</p>
+  <br>
+  <p>
+    PAUL, running from a gang of teenagers. He huffs and puffs
+    as he looks back in terror. The gang cackles in the chase.
+    Paul, not looking where he's going, slips and falls into a
+    hole. He slides down the mud...
+  </p>
+  <br>
+  <p>Paul </p>
+  <div style={{'text-align': 'center'}}>Ahhhhhh </div>
+  <br>
+  <p>
+    SID and his BUDDIES stop short of the hole. They hear
+    Paul's cavernous cry as he falls. Sid and his buddies look
+    concerned through their cool. Finally:
+  </p>
+  <br>
+  <p>Sid </p>
+  <p>
+    Dummy. Let's go, guys.
+  </p>
+  <br>
+  <p>
+    After a long decent, Paul drops into a DEN OF VIPERS. Paul
+    is petrified.
+  </p>`,
   description: 'Paul slides down a hill into a pit of vipers.',
-  mainImage: '//unsplash.it/500/300',
+  mainImage: '//unsplash.it/id/1/500/300',
+  beatBoards: [],
   storyBoards: [
     {
-      boards: [{ panel: 1, artist: 'objectId' }],
+      id: 2240,
+      panel: 7, // this needs to be unique
+      artist: 'objectId',
+      board: '//unsplash.it/id/23/500/300',
+      action: '',
+      dialogue: '',
+      artist: 'objectId',
+      createdAt: 'date',
+      revision: 1,
+    },
+    {
+      id: 2240,
+      panel: 10, // this needs to be unique
+      artist: 'objectId',
+      board: '//unsplash.it/id/24/500/300',
+      action: '',
+      dialogue: '',
+      artist: 'objectId',
+      createdAt: 'date',
+      revision: 1,
+    },
+    {
+      id: 2240,
+      panel: 3, // this needs to be unique
+      artist: 'objectId',
+      board: '//unsplash.it/id/26/500/300',
+      action: '',
+      dialogue: '',
+      artist: 'objectId',
+      createdAt: 'date',
+      revision: 1,
+    },
+    {
+      id: 2240,
+      panel: 5, // this needs to be unique
+      artist: 'objectId',
+      board: '//unsplash.it/id/27/500/300',
+      action: '',
+      dialogue: '',
+      artist: 'objectId',
+      createdAt: 'date',
+      revision: 1,
+    },
+    {
+      id: 2240,
+      panel: 8, // this needs to be unique
+      artist: 'objectId',
+      board: '//unsplash.it/id/28/500/300',
+      action: '',
+      dialogue: '',
+      artist: 'objectId',
+      createdAt: 'date',
+      revision: 1,
+    },
+    {
+      id: 2240,
+      panel: 11, // this needs to be unique
+      artist: 'objectId',
+      board: '//unsplash.it/id/29/500/300',
+      action: '',
+      dialogue: '',
       artist: 'objectId',
       createdAt: 'date',
       revision: 1,
     },
   ],
-
+  storyBoards3: [1, 2, 3],
   video: 's3-videoURL',
   revision: 1,
 };
@@ -128,8 +221,8 @@ const SceneMachine = () => {
     __V: 0
      */
 
-  const scenes = {
-    Vipers: {
+  const scenes = [
+    {
       id: 210501,
       forReel: 'ObjectId - Paul Saves All Movie',
       launched: false,
@@ -185,7 +278,7 @@ const SceneMachine = () => {
       video: 's3-videoURL',
       revision: 1,
     },
-  };
+  ];
 
   const field = {
     _id: 1234, // from db creation
@@ -255,15 +348,15 @@ const SceneMachine = () => {
           </div>
           <div className="section-container">
             <div id="act1" className="scenes-section-strip">
-              {Object.keys(scenes).map((key, i) => (
+              {scenes.map((scene, i) => (
                 <>
                   <div
-                    key={scenes[key].id}
-                    onClick={() => setViewer(scenes[key])}
+                    key={scene.id}
+                    onClick={() => setViewer(scene)}
                     className="scene-strip"
                   >
-                    <img src={scenes[key].stripImage} alt="" />
-                    <p>Scene: {scenes[key].sceneName}</p>
+                    <img src={scene.stripImage} alt="" />
+                    <p>Scene: {scene.sceneName}</p>
                   </div>
                 </>
               ))}
@@ -385,13 +478,17 @@ const SceneMachine = () => {
                       ></div>
                     </div>
                     <hr />
-                    <div className="transport-panels">
+                    <div className="transport-panels-section">
                       <h2>Scene Panels: </h2>
-                      <label htmlFor="img">panel 001</label>
-                      <img src={viewer.stripImage} alt="" />
-                      <img src={viewer.stripImage} alt="" />
-                      <img src={viewer.stripImage} alt="" />
-                      <img src={viewer.stripImage} alt="" />
+                      <div className="transport-panels">
+                        {viewer.storyBoards.map((board, i) => (
+                          <div className="transport-panel">
+                            <label htmlFor="img">{board.panel}</label>
+                            <div className='panel-index'>{i + 1}</div>
+                            <img src={board.board} alt="" />
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -668,8 +765,38 @@ const style = (
     .transport-script {
       padding: 10px 0;
     }
+    .transport-panels-section {
+      padding: 10px 0;
+    }
     .transport-panels {
       padding: 10px 0;
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .transport-panel {
+      position: relative;
+      max-width: 100px;
+      padding: 10px 0;
+      margin: 5px;
+    }
+    .transport-panel > img {
+      width: 100%;
+    }
+    .transport-panel > label {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 2px;
+      color: #fff;
+      position: absolute;
+      padding: 1px 4px;
+      font-size: 0.5em;
+      right: 0
+    }
+
+    .panel-index {
+      position: absolute;
+      background: rgba(256, 256, 256, 0.8);
+      font-size: .6rem;
+      padding: 1px 4px;
     }
 
     #scene {
