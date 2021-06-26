@@ -120,11 +120,16 @@ const initialViewerState = {
   revision: 1,
 };
 
+const initPreviewState = { image: '//unsplash.it/id/1/500/300',
+panel: '', id: '' };
+
 const SceneMachine = () => {
   const [buttons, setButtons] = useState(initialButtonState);
   const { button1, button2, button3, button4 } = buttons;
 
   const [viewer, setViewer] = useState(initialViewerState);
+
+  const [preview, setPreview] = useState(initPreviewState);
   /* NOTES:
   -tracking code: 
   -title
@@ -431,12 +436,13 @@ const SceneMachine = () => {
           <div className="scene-overview">
             <div className="left-panel">
               <div className="viewer">
-                <img src={viewer.mainImage} alt="" />
+                <img src={preview.image} alt="" />
+                {/* change to state */}
               </div>
               <div className="transport-title">
                 <div>Scene: {viewer.sceneName}</div>
-                <div>Panel: {viewer.storyBoards[0].panel}</div>
-                <div>ID: {viewer.id}</div>
+                <div>Panel: {preview.panel}</div>
+                <div>ID: {preview.id}</div>
               </div>
             </div>
             <div className="right-panel">
@@ -478,18 +484,20 @@ const SceneMachine = () => {
                       ></div>
                     </div>
                     <hr />
+
                     <div className="transport-panels-section">
                       <h2>Scene Panels: </h2>
                       <div className="transport-panels">
                         {viewer.storyBoards.map((board, i) => (
-                          <div className="transport-panel">
+                          <div onClick={() => setPreview({image: board.board, panel: i + 1, id: board.panel})} className="transport-panel">
                             <label htmlFor="img">{board.panel}</label>
-                            <div className='panel-index'>{i + 1}</div>
+                            <div className="panel-index">{i + 1}</div>
                             <img src={board.board} alt="" />
                           </div>
                         ))}
                       </div>
                     </div>
+
                   </div>
                 </div>
               </div>
@@ -774,6 +782,7 @@ const style = (
       flex-wrap: wrap;
     }
     .transport-panel {
+      cursor: pointer;
       position: relative;
       max-width: 100px;
       padding: 10px 0;
@@ -789,13 +798,14 @@ const style = (
       position: absolute;
       padding: 1px 4px;
       font-size: 0.5em;
-      right: 0
+      right: 0;
+      cursor: pointer;
     }
-
+    
     .panel-index {
       position: absolute;
       background: rgba(256, 256, 256, 0.8);
-      font-size: .6rem;
+      font-size: 0.6rem;
       padding: 1px 4px;
     }
 
