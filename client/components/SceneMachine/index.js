@@ -14,9 +14,9 @@ const initialViewerState = {
   launched: false,
   productionStage: 'boards',
   sceneName: 'Vipers',
-  stripImage: '//unsplash.it/id/1/200/130',
+  stripImage: '//unsplash.it/id/1/400/225',
   setting: 'ext. School - Day ',
-  characters: ['Paul', 'Sid', 'Joey', 'Ugly friend 1', 'Ugly friend 2', ],
+  characters: ['Paul', 'Sid', 'Joey', 'Ugly friend 1', 'Ugly friend 2'],
   script: `<br />
   <p>EXT. SCHOOL - DAY</p>
   <br>
@@ -121,8 +121,11 @@ const initialViewerState = {
   revision: 1,
 };
 
-const initPreviewState = { image: '//unsplash.it/id/1/500/300',
-panel: '', id: '' };
+const initPreviewState = {
+  image: '//unsplash.it/id/1/400/225',
+  panel: '',
+  id: '',
+};
 
 const SceneMachine = () => {
   const [buttons, setButtons] = useState(initialButtonState);
@@ -235,7 +238,7 @@ const SceneMachine = () => {
       launched: false,
       productionStage: 'boards',
       sceneName: 'Vipers',
-      stripImage: '//unsplash.it/id/12/200/130',
+      stripImage: '//unsplash.it/id/12/400/225',
       setting: 'ext. School - Day ',
       script: `<br />
       <p>EXT. SCHOOL - DAY</p>
@@ -291,7 +294,7 @@ const SceneMachine = () => {
       launched: false,
       productionStage: 'boards',
       sceneName: 'Tip Toe',
-      stripImage: '//unsplash.it/id/16/200/130',
+      stripImage: '//unsplash.it/id/16/400/225',
       setting: 'ext. School - Day ',
       script: `<br />
       <p>EXT. SCHOOL - DAY</p>
@@ -321,7 +324,7 @@ const SceneMachine = () => {
         After a long decent, Paul drops into a DEN OF VIPERS. Paul
         is petrified.
       </p>`,
-      description: 'Paul slides down a hill into a pit of vipers.',
+      description: 'Paul runs from the Vipers.',
       mainImage: '//unsplash.it/id/1/500/300',
       beatBoards: [],
       storyBoards: [
@@ -402,7 +405,7 @@ const SceneMachine = () => {
       launched: false,
       productionStage: 'boards',
       sceneName: 'Todaloo',
-      stripImage: '//unsplash.it/id/21/200/130',
+      stripImage: '//unsplash.it/id/21/400/225',
       setting: 'ext. School - Day ',
       script: `<br />
       <p>EXT. SCHOOL - DAY</p>
@@ -432,7 +435,7 @@ const SceneMachine = () => {
         After a long decent, Paul drops into a DEN OF VIPERS. Paul
         is petrified.
       </p>`,
-      description: 'Paul slides down a hill into a pit of vipers.',
+      description: 'And on we go!',
       mainImage: '//unsplash.it/id/1/500/300',
       beatBoards: [],
       storyBoards: [
@@ -513,7 +516,7 @@ const SceneMachine = () => {
       launched: false,
       productionStage: 'boards',
       sceneName: 'Here they come!',
-      stripImage: '//unsplash.it/id/18/200/130',
+      stripImage: '//unsplash.it/id/18/400/225',
       setting: 'ext. School - Day ',
       script: `<br />
       <p>EXT. SCHOOL - DAY</p>
@@ -624,7 +627,7 @@ const SceneMachine = () => {
       launched: false,
       productionStage: 'boards',
       sceneName: 'Uh oh',
-      stripImage: '//unsplash.it/id/231/200/130',
+      stripImage: '//unsplash.it/id/231/400/225',
       setting: 'ext. School - Day ',
       script: `<br />
       <p>EXT. SCHOOL - DAY</p>
@@ -735,7 +738,7 @@ const SceneMachine = () => {
       launched: false,
       productionStage: 'boards',
       sceneName: 'Hurry',
-      stripImage: '//unsplash.it/id/123/200/130',
+      stripImage: '//unsplash.it/id/123/400/225',
       setting: 'ext. School - Day ',
       script: `<br />
       <p>EXT. SCHOOL - DAY</p>
@@ -846,7 +849,7 @@ const SceneMachine = () => {
       launched: false,
       productionStage: 'boards',
       sceneName: 'Already there',
-      stripImage: '//unsplash.it/id/261/200/130',
+      stripImage: '//unsplash.it/id/261/400/225',
       setting: 'ext. School - Day ',
       script: `<br />
       <p>EXT. SCHOOL - DAY</p>
@@ -957,7 +960,7 @@ const SceneMachine = () => {
       launched: false,
       productionStage: 'boards',
       sceneName: 'My my',
-      stripImage: '//unsplash.it/id/219/200/130',
+      stripImage: '//unsplash.it/id/219/400/225',
       setting: 'ext. School - Day ',
       script: `<br />
       <p>EXT. SCHOOL - DAY</p>
@@ -1068,7 +1071,7 @@ const SceneMachine = () => {
       launched: false,
       productionStage: 'boards',
       sceneName: 'Stu did it',
-      stripImage: '//unsplash.it/id/29/200/130',
+      stripImage: '//unsplash.it/id/29/400/225',
       setting: 'ext. School - Day ',
       script: `<br />
       <p>EXT. SCHOOL - DAY</p>
@@ -1179,7 +1182,7 @@ const SceneMachine = () => {
       launched: false,
       productionStage: 'boards',
       sceneName: 'Help!',
-      stripImage: '//unsplash.it/id/149/200/130',
+      stripImage: '//unsplash.it/id/149/400/225',
       setting: 'ext. School - Day ',
       script: `<br />
       <p>EXT. SCHOOL - DAY</p>
@@ -1344,22 +1347,42 @@ const SceneMachine = () => {
     
    */
 
+    const handleViewer = (e, scene) => {
+      e.preventDefault()
+      // TODO: find way to set scroll to top of scene overview display
+      setPreview({
+        image: scene.stripImage,
+        // image: scene.storyBoards[0].board,
+        sceneName: scene.sceneName,
+        panel: 'Cover',
+        id: 0,
+        // id: scene.storyBoards[0].panel,
+      })
+      setViewer(scene)
+    }
+
   return (
     <>
       {style}
       <div id="scene-machine" className="">
         <div id="scene-machine-location" className="">
           <div className="scene-machine-title">
-            <div className='title-buttons-left'>
-            <div className='btn'><div className="btn-inside"></div></div>
-            <div className='btn'><div className="btn-inside"></div></div>
-
+            <div className="title-buttons-left">
+              <div className="btn">
+                <div className="btn-inside"></div>
+              </div>
+              <div className="btn">
+                <div className="btn-inside"></div>
+              </div>
             </div>
             <h1>Scene Machine</h1>
-            <div className='title-buttons-right'>
-            <div className='btn'><div className="btn-inside">X</div></div>
-            <div className='btn'><div className="btn-inside">V</div></div>
-
+            <div className="title-buttons-right">
+              <div className="btn">
+                <div className="btn-inside">X</div>
+              </div>
+              <div className="btn">
+                <div className="btn-inside">V</div>
+              </div>
             </div>
           </div>
           <div className="section-strip-container">
@@ -1368,7 +1391,7 @@ const SceneMachine = () => {
                 <>
                   <div
                     key={scene.id}
-                    onClick={() => setViewer(scene)}
+                    onClick={(e) => handleViewer(e, scene)}
                     className="scene-strip"
                   >
                     <img src={scene.stripImage} alt="" />
@@ -1379,7 +1402,9 @@ const SceneMachine = () => {
             </div>
           </div>
           <div className="control-panel">
-            <code className="control-panel-display"><strong>{buttons.display} View</strong></code>
+            <code className="control-panel-display">
+              <strong>{buttons.display} View</strong>
+            </code>
             <div className="control-panel-buttons">
               <div className="btn">
                 <div
@@ -1451,9 +1476,15 @@ const SceneMachine = () => {
                 {/* change to state */}
               </div>
               <div className="transport-title">
-                <div><p>Scene:</p> {preview.sceneName}</div>
-                <div><p>Panel:</p> {preview.panel}</div>
-                <div><p>ID:</p> {preview.id}</div>
+                <div>
+                  <p>Scene:</p> {preview.sceneName}
+                </div>
+                <div>
+                  <p>Panel:</p> {preview.panel}
+                </div>
+                <div>
+                  <p>ID:</p> {preview.id}
+                </div>
               </div>
               <div className="transport-viewer-controls">
                 <button>Back</button>
@@ -1477,8 +1508,7 @@ const SceneMachine = () => {
                     <div className="transport-center-controls">
                       {/* <button>&lArr;</button> */}
                       <button>&larr;</button>
-                      <button>Play</button>
-                      <button>Stop</button>
+
                       <button>&rarr;</button>
                       {/* <button>&rArr;</button> */}
                     </div>
@@ -1489,33 +1519,46 @@ const SceneMachine = () => {
                   </div>
 
                   <div className="transport-overview">
-                    <div className="transport-description">
-                      <h2>Scene Card: </h2>
-                      <br />
-                      {viewer.description}
-                    </div>
-                    <hr />
-                    <div className="transport-script">
-                      <h2>Scene Script:</h2>
-                      <div
-                        dangerouslySetInnerHTML={{ __html: viewer.script }}
-                      ></div>
-                    </div>
-                    <hr />
+                    {viewer.storyBoards && ( // this is unneccesary
+                      <>
+                        <div id='scene-card' className="transport-description">
+                          <h2>Scene Card: </h2>
+                          <br />
+                          {viewer.description}
+                        </div>
+                        <hr />
+                        <div className="transport-script">
+                          <h2>Scene Script:</h2>
+                          <div
+                            dangerouslySetInnerHTML={{ __html: viewer.script }}
+                          ></div>
+                        </div>
+                        <hr />
 
-                    <div className="transport-panels-section">
-                      <h2>Scene Panels: </h2>
-                      <div className="transport-panels">
-                        {viewer.storyBoards.map((board, i) => (
-                          <div onClick={() => setPreview({image: board.board, sceneName: board.sceneName, panel: i + 1, id: board.panel})} className="transport-panel">
-                            <label htmlFor="img">{board.panel}</label>
-                            <div className="panel-index">{i + 1}</div>
-                            <img src={board.board} alt="" />
+                        <div className="transport-panels-section">
+                          <h2>Scene Panels: </h2>
+                          <div className="transport-panels">
+                            {viewer.storyBoards.map((board, i) => (
+                              <div
+                                onClick={() =>
+                                  setPreview({
+                                    image: board.board,
+                                    sceneName: viewer.sceneName,
+                                    panel: i + 1,
+                                    id: board.panel,
+                                  })
+                                }
+                                className="transport-panel"
+                              >
+                                <label htmlFor="img">{board.panel}</label>
+                                <div className="panel-index">{i + 1}</div>
+                                <img src={board.board} alt="" />
+                              </div>
+                            ))}
                           </div>
-                        ))}
-                      </div>
-                    </div>
-
+                        </div>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>
@@ -1548,7 +1591,6 @@ const style = (
       align-items: center;
       justify-content: space-between;
       margin-bottom: 5px;
-      
     }
 
     .title-buttons-left {
@@ -1568,19 +1610,21 @@ const style = (
       width: 300px;
       color: rgb(107, 105, 105);
       // color: rgb(104, 70, 70);
-      box-shadow: inset 0 0 15px rgb(14, 13, 12), inset 0 0 15px rgb(39, 38, 31), inset 0 0 30px rgb(55, 55, 75),
-        inset 0 0 20px rgb(55, 55, 75);
+      box-shadow: inset 0 0 15px rgb(14, 13, 12), inset 0 0 15px rgb(39, 38, 31),
+        inset 0 0 30px rgb(55, 55, 75), inset 0 0 20px rgb(55, 55, 75);
       background: rgb(247, 229, 229);
       font-size: 1.3rem;
       padding: 8px 40px;
       border-radius: 10px;
       // border: solid 1px rgb(43, 38, 38);
-      box-shadow: 0 0px 10px rgba(95, 98, 104, 0.4), 0 0px 10px rgba(200, 200, 256, 0.1), 0 0 10px rgba(200, 180, 0, 0.2), inset 0 0 10px, inset 0 0 3px, inset 0 0 1px,inset 0 0 2px;
+      box-shadow: 0 0px 10px rgba(95, 98, 104, 0.4),
+        0 0px 10px rgba(200, 200, 256, 0.1), 0 0 10px rgba(200, 180, 0, 0.2),
+        inset 0 0 10px, inset 0 0 3px, inset 0 0 1px, inset 0 0 2px;
       // box-shadow: 0 0px 10px rgba(200, 256, 256, 0.8), 0 0px 5px rgba(200, 256, 256, 0.8), 0 0px 50px rgba(200, 256, 256, 0.8), inset 0 0 50px rgba(0, 0, 0, 0.1);
     }
 
     #scene-machine > div {
-      height: 94vh; 
+      height: 94vh;
       background: rgb(65, 78, 83);
       // background: rgb(68, 48, 48);
       padding: 27px;
@@ -1611,7 +1655,7 @@ const style = (
       // margin-left: 30px;
       // margin-right: 30px;
     }
-    
+
     .scene-strip {
       border-top: dashed 6px rgb(201, 196, 196);
       border-bottom: dashed 6px rgb(201, 196, 196);
@@ -1627,7 +1671,7 @@ const style = (
     .scenes-section-strip::-webkit-scrollbar {
       display: none;
     }
-    
+
     .scene-strip > img {
       height: 70px;
       // transform: rotate(-90deg);
@@ -1703,7 +1747,7 @@ const style = (
       border-radius: 3px;
       background: rgb(240, 248, 204);
       border: solid 1px rgb(17, 5, 1);
-      
+
       box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8),
         inset 0 0 3px rgba(0, 0, 0, 1), 0 0 1px rgba(0, 0, 0, 0.8);
       display: flex;
@@ -1718,9 +1762,9 @@ const style = (
       background: rgb(248, 227, 42);
       // background: rgb(248, 227, 42);
       // background: rgb(210, 248, 42);
-      
-      box-shadow:  0 0 5px rgba(209, 209, 209, 0.8),
-         0 0 3px rgb(214, 214, 214), inset 0 0 1px rgba(228, 228, 228, 0.8);
+
+      box-shadow: 0 0 5px rgba(209, 209, 209, 0.8), 0 0 3px rgb(214, 214, 214),
+        inset 0 0 1px rgba(228, 228, 228, 0.8);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -1778,7 +1822,7 @@ const style = (
     }
 
     .transport > div > button {
-      font-size: .6rem;
+      font-size: 0.6rem;
       cursor: pointer;
       color: #fff;
       background: rgb(57, 92, 97);
@@ -1812,8 +1856,9 @@ const style = (
       flex-direction: row-reverse;
     }
     .transport-title > div {
-      width: 150px;
+      width: 100%;
       display: flex;
+      flex-wrap: nowrap;
       flex-direction: column;
       align-items: center;
       justify-content: center;
@@ -1835,7 +1880,9 @@ const style = (
       margin-top: 10px;
       padding: 13px 10px;
       margin: 2px;
-      box-shadow: inset 0 4px 0px, inset -2px -2px 2px 0px rgba(102, 91, 91, 0.774), inset 2px -2px 2px 0px rgba(102, 91, 91, 0.774);
+      box-shadow: inset 0 4px 0px,
+        inset -2px -2px 2px 0px rgba(102, 91, 91, 0.774),
+        inset 2px -2px 2px 0px rgba(102, 91, 91, 0.774);
       color: rgb(141, 29, 29);
       cursor: pointer;
     }
@@ -1894,7 +1941,7 @@ const style = (
       right: 0;
       cursor: pointer;
     }
-    
+
     .panel-index {
       position: absolute;
       background: rgba(256, 256, 256, 0.8);
