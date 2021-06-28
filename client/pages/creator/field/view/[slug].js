@@ -384,6 +384,7 @@ const style = (
       }
       .fo-main {
         width: 100vw;
+        height: 100%;
       }
       .banner-img {
         width: 100vw;
