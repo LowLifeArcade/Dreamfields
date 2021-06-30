@@ -27,7 +27,7 @@ const initialViewerState = {
   launched: false,
   productionStage: 'boards',
   description:
-    'The final bell has rang and school is out. We see Paul huffing it from a gang of bullies he seems to have ticked off. They chase him off of school grounds and into a field where he falls into a pit of vipers.',
+    'The final bell has rung and school is out. We see Paul huffing it from a gang of bullies he seems to have ticked off. They chase him off of school grounds and into a field where he falls into a pit of vipers.',
   details: {
     setting: 'ext. School - Day ',
     frameRate: '24',
@@ -81,8 +81,7 @@ const initialViewerState = {
   </p>
   <br>
   <p>
-    After a long decent, Paul drops into a DEN OF VIPERS. Paul
-    is petrified.
+    After a long descent, Paul lands into a DEN OF VIPERS. Paul's teeth clater.
   </p>`,
     rev: 1,
   },
@@ -194,6 +193,8 @@ const SceneMachine = () => {
   const [viewer, setViewer] = useState(initialViewerState);
 
   const [preview, setPreview] = useState(initPreviewState);
+
+  const [background, setBackground] = useState('rgb(218, 214, 208)');
 
   /* NOTES:
   -tracking code: 
@@ -1429,7 +1430,7 @@ const SceneMachine = () => {
           rel="stylesheet"
         />
       </head>
-      {style}
+      {style(background)}
       <div id="scene-machine" className="">
         <div id="scene-machine-location" className="">
           <div className="scene-machine-title">
@@ -1470,19 +1471,19 @@ const SceneMachine = () => {
                 <i className="fas fa-cut"></i>
               </div>
               <div className="btn-mini">
-              <i class="far fa-clone"></i>
+                <i class="far fa-clone"></i>
               </div>
               <div className="btn-mini">
-              <i class="fas fa-power-off"></i>
+                <i class="fas fa-power-off"></i>
               </div>
               <div className="btn-mini">
-              <i class="far fa-save"></i>
+                <i class="far fa-save"></i>
               </div>
               <div className="btn-mini">
-              <i class="far fa-share-square"></i>
+                <i class="far fa-share-square"></i>
               </div>
               <div className="btn-mini">
-              <i class="fas fa-film"></i>
+                <i class="fas fa-film"></i>
               </div>
             </div>
           </div>
@@ -1495,7 +1496,11 @@ const SceneMachine = () => {
                     onClick={(e) => handleViewer(e, scene)}
                     className="scene-strip"
                   >
-                    <img className={scene.id === viewer.id && 'active'} src={scene.stripImage} alt="" />
+                    <img
+                      className={scene.id === viewer.id && 'active'}
+                      src={scene.stripImage}
+                      alt=""
+                    />
                     <p>{scene.sceneName}</p>
                   </div>
                 </>
@@ -1590,31 +1595,31 @@ const SceneMachine = () => {
             </div>
             <div className="control-panel-other">
               <div className="btn-mini">
-              <i class="fas fa-redo-alt"></i>
+                <i class="fas fa-redo-alt"></i>
               </div>
               <div className="btn-mini">
-              <i class="fas fa-undo-alt"></i>
+                <i class="fas fa-undo-alt"></i>
               </div>
               <div className="btn-mini">
-              <i class="fas fa-times"></i>
+                <i class="fas fa-times"></i>
               </div>
               <div className="btn-mini">
-              <i class="fas fa-check"></i>
+                <i class="fas fa-check"></i>
               </div>
               <div className="btn-mini">
-              <i class="fas fa-pager"></i>
+                <i class="fas fa-pager"></i>
               </div>
               <div className="btn-mini">
-              <i class="fas fa-photo-video"></i>
+                <i class="fas fa-photo-video"></i>
               </div>
               <div className="btn-mini">
-              <i class="fas fa-file-export"></i>
+                <i class="fas fa-file-export"></i>
               </div>
               <div className="btn-mini">
-              <i class="fas fa-info-circle"></i>
+                <i class="fas fa-info-circle"></i>
               </div>
               <div className="btn-mini">
-              <i class="fas fa-expand"></i>
+                <i class="fas fa-expand"></i>
               </div>
             </div>
           </div>
@@ -1636,11 +1641,15 @@ const SceneMachine = () => {
                 </div>
               </div>
               <div className="transport-viewer-controls">
-                <button><i class="fas fa-chevron-left"></i></button>
+                <button>
+                  <i class="fas fa-chevron-left"></i>
+                </button>
                 <button>Stop</button>
                 <button>Play</button>
                 <button>Pause</button>
-                <button><i class="fas fa-chevron-right"></i></button>
+                <button>
+                  <i class="fas fa-chevron-right"></i>
+                </button>
               </div>
             </div>
             <div className="right-panel">
@@ -1649,30 +1658,102 @@ const SceneMachine = () => {
                   <div className="transport">
                     {/* this should download all coresponding data like concept art. Maybe */}
                     <div className="transport-left-controls">
-                      <button onClick={() => setDetail('overview')}>
+                      <button
+                        className={`btn-small ${
+                          detail === 'overview' ? 'active' : ''
+                        }`}
+                        onClick={() => {
+                          setDetail('overview');
+                          setBackground('rgb(218, 214, 208)');
+                        }}
+                      >
                         Overview
                       </button>
-                      <button onClick={() => setDetail('script')}>
+                      <button
+                        className={`btn-small ${
+                          detail === 'script' ? 'active' : ''
+                        }`}
+                        onClick={() => {
+                          setDetail('script');
+                          setBackground('white');
+                        }}
+                      >
                         Script
                       </button>
-                      <button onClick={() => setDetail('breakdown')}>
+                      <button
+                        className={`btn-small ${
+                          detail === 'breakdown' ? 'active' : ''
+                        }`}
+                        onClick={() => {
+                          setDetail('breakdown');
+                          setBackground('rgb(218, 214, 208)');
+                        }}
+                      >
                         Breakdown
                       </button>
-                      <button onClick={() => setDetail('boards')}>
+                      <button
+                        className={`btn-small ${
+                          detail === 'boards' ? 'active' : ''
+                        }`}
+                        onClick={() => {
+                          setDetail('boards');
+                          setBackground('rgb(59, 63, 63)');
+                        }}
+                      >
                         Boards
                       </button>
-                      <button onClick={() => setDetail('video')}>Video</button>
+                      <button
+                        className={`btn-small ${
+                          detail === 'video' ? 'active' : ''
+                        }`}
+                        onClick={() => {
+                          setDetail('video');
+                          setBackground('rgb(59, 63, 63)');
+                        }}
+                      >
+                        Video
+                      </button>
                     </div>
                     <div className="transport-center-controls">
                       {/* <button>&lArr;</button> */}
-                      <button>&larr;</button>
-                      <button>Checkout</button>
-                      <button>&rarr;</button>
+                      <button
+                        className={`btn-small ${
+                          detail === 'none' ? 'active' : ''
+                        }`}
+                      >
+                        &larr;
+                      </button>
+                      <button
+                        className={`btn-small ${
+                          detail === 'checkout' ? 'active' : ''
+                        }`}
+                      >
+                        Checkout
+                      </button>
+                      <button
+                        className={`btn-small ${
+                          detail === 'none' ? 'active' : ''
+                        }`}
+                      >
+                        &rarr;
+                      </button>
                       {/* <button>&rArr;</button> */}
                     </div>
                     <div className="transport-right-controls">
-                      <button>Upload</button>
-                      <button>Download</button>
+                      <button
+                        className={`btn-small ${
+                          detail === 'none' ? 'active' : ''
+                        }`}
+                      >
+                        Upload
+                      </button>
+                      <button
+                        className={`btn-small ${
+                          detail === 'none' ? 'active' : ''
+                        }`}
+                      >
+                        Download
+                      </button>
                     </div>
                   </div>
 
@@ -1684,14 +1765,19 @@ const SceneMachine = () => {
                             id="scene-card"
                             className="transport-description"
                           >
-                            <h2>Scene Card: </h2>
-                            Description: {viewer.description}
+                            {/* <h2>Scene Card: </h2> */}
+                            <h3>Scene: "{viewer.sceneName}"</h3>
+                            <div className="transport-description-detail">
+                              {viewer.description}
+                            </div>
                             <table className="details-table">
                               {/* <caption>Details Table</caption> */}
-                              <tr>
-                                <th>Item</th>
-                                <th>Detail</th>
-                              </tr>
+                              <thead>
+                                <tr>
+                                  <th>Item</th>
+                                  <th>Detail</th>
+                                </tr>
+                              </thead>
 
                               <tbody>
                                 <tr>
@@ -1729,12 +1815,36 @@ const SceneMachine = () => {
                                 </tr>
                               </tbody>
                             </table>
+                            Contributers and their hard work are how this project gets made
+                            <table className="details-table">
+                              <thead>
+                                <tr>
+                                  <th>Contributers</th>
+                                  <th>Job</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {/* obviously do a map here from viewer */}
+                                <tr>
+                                  <td>Keith</td>
+                                  <td>Key Frames</td>
+                                </tr>
+                                <tr>
+                                  <td>Sonny</td>
+                                  <td>Inbetweens</td>
+                                </tr>
+                                <tr>
+                                  <td>Loralai</td>
+                                  <td>Inbetweens</td>
+                                </tr>
+                              </tbody>
+                            </table>
                           </div>
                         )}
                         {/* <hr /> */}
                         {detail === 'script' && (
                           <div className="transport-script">
-                            <h2>Scene Script:</h2>
+                            {/* <h2>Scene Script:</h2> */}
                             <div
                               dangerouslySetInnerHTML={{
                                 __html: viewer.script.script,
@@ -1744,31 +1854,28 @@ const SceneMachine = () => {
                         )}
                         {detail === 'breakdown' && (
                           <div className="transport-breakdown">
-                            <h2>Scene Breakdown:</h2>
+                            {/* <h2>Scene Breakdown:</h2> */}
                             {viewer.details.shotList.map((shot, i) => (
-                              <table>
-                                <h3>Shot number {i + 1}</h3>
-                                <p>Complexity: {shot.complexity}</p>
-                                <tbody>
-                                  <tr>
-                                    <td>{shot.breakdown}</td>
-                                  </tr>
-                                </tbody>
-                              </table>
+                              <div>
+                                <h3>Shot Number {i + 1}</h3>
+                                <div><strong>Complexity: </strong>{shot.complexity}</div>
+                                <div>{shot.breakdown}</div>
+                              </div>
                             ))}
 
-                            <div
+                            {/* <div
                               dangerouslySetInnerHTML={{
                                 __html: viewer.details.shotList.breakdown,
                               }}
-                            ></div>
+                            ></div> */}
                           </div>
                         )}
                         {/* <hr /> */}
 
                         {detail === 'boards' && (
                           <div className="transport-panels-section">
-                            <h2>Scene Panels: </h2>
+                            {console.log(background)}
+                            {/* <h2>Scene Panels: </h2> */}
                             <div className="transport-panels">
                               {viewer.storyBoards.map((board, i) => (
                                 <div
@@ -1784,8 +1891,17 @@ const SceneMachine = () => {
                                 >
                                   <label htmlFor="img">{board.panel}</label>
                                   <div className="panel-index">{i + 1}</div>
-                                  <img src={board.board} alt="" />
-                                  <p>shot: {board.shotNumber}</p>
+                                  <div className="panel-shot">
+                                    {board.shotNumber}
+                                  </div>
+                                  <img
+                                    className={
+                                      i + 1 === preview.panel && 'active'
+                                    }
+                                    src={board.board}
+                                    alt=""
+                                  />
+                                  {/* <p>shot: {board.shotNumber}</p> */}
                                 </div>
                               ))}
                             </div>
@@ -1806,7 +1922,7 @@ const SceneMachine = () => {
 
 export default SceneMachine;
 
-const style = (
+const style = (background) => (
   <style jsx>{`
     #scene-machine {
       // background: #fff;
@@ -1924,11 +2040,10 @@ const style = (
       position: relative;
     }
 
-    
     .scenes-section-strip::-webkit-scrollbar {
       display: none;
     }
-    
+
     .scene-strip > img {
       height: 60px;
       // position: relative;
@@ -1940,7 +2055,8 @@ const style = (
       // position: absolute;
       opacity: 1;
       background: rgba(3, 150, 3);
-      box-shadow: 0 0 2px rgba(231, 230, 230, .2), 0 0 6px rgba(231, 230, 230, .4), 0 0 15px white;
+      box-shadow: 0 0 2px rgba(231, 230, 230, 0.2),
+        0 0 6px rgba(231, 230, 230, 0.4), 0 0 15px white;
       // margin: 1px;
     }
     .scene-strip > p {
@@ -2087,6 +2203,15 @@ const style = (
       padding: 2px 8px;
     }
 
+    .btn-small {
+      // color: rgb(7, 245, 233);
+    }
+
+    .btn-small.active {
+      color: rgb(7, 245, 233);
+      box-shadow: 0 0 1px rgba(167, 175, 175, 0.3);
+    }
+
     .scene-overview {
       background: rgb(46, 35, 35);
       // padding: 20px;
@@ -2214,14 +2339,14 @@ const style = (
     }
 
     .transport-overview {
-      background: rgb(218, 214, 208);
-      border: solid 1px rgb(65, 11, 11);
+      background-color: ${background};
+      // border: solid 1px rgb(65, 11, 11);
       margin: 10px;
       height: 385px;
       // height: 100%;
       // max-height: 530px;
       border-radius: 10px;
-      box-shadow: inset 0 0 10px;
+      box-shadow: inset 0 0 10px, inset 0 0 3px;
       padding: 5px;
       overflow-y: scroll;
       display: flex;
@@ -2229,6 +2354,8 @@ const style = (
     }
 
     .details-table {
+      padding: 20px;
+      width: 100%;
       border-collapse: collapse;
       margin: 25px 0;
       font-size: 0.9em;
@@ -2265,14 +2392,40 @@ const style = (
     //     font-weight: bold;
     //     color: #009879;
     // }
+    .transport-description > h3 {
+      margin-bottom: 20px;
+      background: #fff;
+      padding: 10px 30px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+    }
 
+    .transport-description-detail {
+      background: #fff;
+      line-height: 1.8rem;
+      text-indent: 2rem;
+      padding: 20px;
+      border: solid 1px;
+    }
     .transport-description {
-      padding: 10px 0;
+      padding: 20px;
       display: flex;
       flex-direction: column;
+      align-items: center;
     }
     .transport-script {
-      padding: 10px 0;
+      font-family: 'Courier New', Courier, monospace;
+      padding: 10px 20px;
+    }
+    .transport-breakdown {
+      padding: 20px 10px;
+    }
+    .transport-breakdown > div {
+      background-color: white;
+      padding: 20px;
+      margin-bottom: 10px;
+    }
+    .transport-breakdown > div > div {
+      margin: 20px;
     }
     .transport-panels-section {
       padding: 10px 0;
@@ -2282,6 +2435,9 @@ const style = (
       display: flex;
       flex-wrap: wrap;
     }
+    .transport-panel.active {
+      // border: solid;
+    }
     .transport-panel {
       cursor: pointer;
       position: relative;
@@ -2289,7 +2445,11 @@ const style = (
       padding: 10px 0;
       margin: 5px;
     }
+    .transport-panel > img.active {
+      border: solid 2px rgb(28, 226, 183);
+    }
     .transport-panel > img {
+      border: solid 2px rgba(0, 0, 0, 0.3);
       width: 100%;
     }
     .transport-panel > label {
@@ -2306,6 +2466,13 @@ const style = (
     .panel-index {
       position: absolute;
       background: rgba(256, 256, 256, 0.8);
+      font-size: 0.6rem;
+      padding: 1px 4px;
+    }
+    .panel-shot {
+      position: absolute;
+      right: 42px;
+      background: rgba(256, 256, 256, 0.4);
       font-size: 0.6rem;
       padding: 1px 4px;
     }
