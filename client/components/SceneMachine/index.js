@@ -189,6 +189,9 @@ const SceneMachine = () => {
   const [buttons, setButtons] = useState(initialButtonState);
   const { button1, button2, button3, button4, button5 } = buttons;
   const [detail, setDetail] = useState('overview');
+  const [checkout, setCheckout] = useState();
+  const [activeItem, setActiveItem] = useState();
+  const [navigation, setNavigation] = useState();
 
   const [viewer, setViewer] = useState(initialViewerState);
 
@@ -1725,10 +1728,10 @@ const SceneMachine = () => {
                       </button>
                       <button
                         className={`btn-small ${
-                          detail === 'checkout' ? 'active' : ''
+                          detail === 'select' ? 'active' : ''
                         }`}
                       >
-                        Checkout
+                        Select
                       </button>
                       <button
                         className={`btn-small ${
@@ -1740,20 +1743,57 @@ const SceneMachine = () => {
                       {/* <button>&rArr;</button> */}
                     </div>
                     <div className="transport-right-controls">
-                      <button
-                        className={`btn-small ${
-                          detail === 'none' ? 'active' : ''
-                        }`}
-                      >
-                        Upload
-                      </button>
-                      <button
-                        className={`btn-small ${
-                          detail === 'none' ? 'active' : ''
-                        }`}
-                      >
-                        Download
-                      </button>
+                      {detail === 'boards' && preview.panel && (
+                        <>
+                          <button
+                            className={`btn-small ${
+                              detail === 'none' ? 'active' : ''
+                            }`}
+                          >
+                            Upload
+                          </button>
+                          <button
+                            className={`btn-small ${
+                              detail === 'none' ? 'active' : ''
+                            }`}
+                          >
+                            Download
+                          </button>
+                          <button
+                            onClick={() => setDetail('panel details')}
+                            className={`btn-small ${
+                              detail === 'none' ? 'active' : ''
+                            }`}
+                          >
+                            Details
+                          </button>
+                        </>
+                      )}
+                      {detail === 'breakdown' && activeItem != null && (
+                        <>
+                          <button
+                            className={`btn-small ${
+                              detail === 'none' ? 'active' : ''
+                            }`}
+                          >
+                            Notes
+                          </button>
+                          <button
+                            className={`btn-small ${
+                              detail === 'none' ? 'active' : ''
+                            }`}
+                          >
+                            Update
+                          </button>
+                          <button
+                            className={`btn-small ${
+                              detail === 'none' ? 'active' : ''
+                            }`}
+                          >
+                            Checkout
+                          </button>
+                        </>
+                      )}
                     </div>
                   </div>
 
@@ -1815,7 +1855,8 @@ const SceneMachine = () => {
                                 </tr>
                               </tbody>
                             </table>
-                            Contributers and their hard work are how this project gets made
+                            Contributers and their hard work are how this
+                            project gets made
                             <table className="details-table">
                               <thead>
                                 <tr>
@@ -1856,10 +1897,23 @@ const SceneMachine = () => {
                           <div className="transport-breakdown">
                             {/* <h2>Scene Breakdown:</h2> */}
                             {viewer.details.shotList.map((shot, i) => (
-                              <div>
+                              <div
+                                className={`transport-breakdown-shot ${
+                                  activeItem === i && 'active'
+                                }`}
+                                onClick={() => setActiveItem(i)}
+                              >
                                 <h3>Shot Number {i + 1}</h3>
-                                <div><strong>Complexity: </strong>{shot.complexity}</div>
+                                <div>
+                                  <strong>Complexity: </strong>
+                                  {shot.complexity}
+                                </div>
                                 <div>{shot.breakdown}</div>
+                                {/* {activeItem === i ? (
+                                  <div>Checkout Scene | Add Notes | Update</div>
+                                ) : (
+                                  <div>Checked Out or not should be here</div>
+                                )} */}
                               </div>
                             ))}
 
@@ -1876,6 +1930,7 @@ const SceneMachine = () => {
                           <div className="transport-panels-section">
                             {console.log(background)}
                             {/* <h2>Scene Panels: </h2> */}
+                            Boards &gt; Details
                             <div className="transport-panels">
                               {viewer.storyBoards.map((board, i) => (
                                 <div
@@ -1904,8 +1959,18 @@ const SceneMachine = () => {
                                   {/* <p>shot: {board.shotNumber}</p> */}
                                 </div>
                               ))}
+                              <section className="transport-panel-add">
+                                <div
+                                  onClick={() => setPreview(initPreviewState)}
+                                >
+                                  <i class="fas fa-plus fa-2x"></i>
+                                </div>
+                              </section>
                             </div>
                           </div>
+                        )}
+                        {detail === 'panel details' && (
+                          <div>panel details</div>
                         )}
                       </>
                     )}
@@ -1941,7 +2006,8 @@ const style = (background) => (
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 5px;
+      margin-bottom: 6px;
+      margin-top: 5px;
     }
 
     .title-buttons-left > div {
@@ -1951,7 +2017,7 @@ const style = (background) => (
     }
     .title-buttons-left {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: flex-start;
       width: 300px;
     }
@@ -1978,7 +2044,7 @@ const style = (background) => (
       box-shadow: 0 0px 10px rgba(95, 98, 104, 0.4),
         0 0px 10px rgba(200, 200, 256, 0.1), 0 0 10px rgba(200, 180, 0, 0.2),
         inset 0 0 10px, inset 0 0 3px, inset 0 0 1px, inset 0 0 2px;
-      margin-bottom: 10px;
+      // margin-bottom: 10px;
       // box-shadow: 0 0px 10px rgba(200, 256, 256, 0.8), 0 0px 5px rgba(200, 256, 256, 0.8), 0 0px 50px rgba(200, 256, 256, 0.8), inset 0 0 50px rgba(0, 0, 0, 0.1);
     }
 
@@ -1991,7 +2057,8 @@ const style = (background) => (
       background: rgba(89, 119, 131, 0.6);
       // background: rgba(65, 78, 83, 0.6);
       // background: rgb(68, 48, 48);
-      padding: 27px 40px;
+      padding: 10px 40px;
+      padding-bottom: 30px;
       width: 100%;
       max-width: 1200px;
       // border: solid 3px rgb(43, 38, 38);
@@ -2419,6 +2486,13 @@ const style = (background) => (
     .transport-breakdown {
       padding: 20px 10px;
     }
+    .transport-breakdown-shot {
+      cursor: pointer;
+      border: solid rgba(0, 0, 0, 0.15);
+    }
+    .transport-breakdown-shot.active {
+      border: solid;
+    }
     .transport-breakdown > div {
       background-color: white;
       padding: 20px;
@@ -2429,6 +2503,26 @@ const style = (background) => (
     }
     .transport-panels-section {
       padding: 10px 0;
+    }
+    .transport-panel-add {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 110px;
+    }
+
+    .transport-panel-add > div {
+      cursor: pointer;
+      color: #2f3c41;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      padding: 10px 0;
+      border: none;
     }
     .transport-panels {
       padding: 10px 0;
