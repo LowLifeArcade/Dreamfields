@@ -113,7 +113,7 @@ const FieldView = () => {
                     </div>
                   </div>
                 </div>
-                <div className="fo-sidebar">
+                {/* <div className="fo-sidebar">
                   <div className="fo-title-card">
                     <div className="fo-sidebar-item">Title: {field.name}</div>
                     <div className="fo-sidebar-item">
@@ -140,7 +140,7 @@ const FieldView = () => {
                   />
                   <OVSidebarItems slug="#assets" name="Assets" />
                   <OVSidebarItems slug="#contributors" name="Contributors" />
-                </div>
+                </div> */}
               </div>
             </div>
           </>
@@ -169,7 +169,7 @@ const style = (
       display: none;
     }
     .fo-main {
-      width: 80vw;
+      width: 100vw;
       overflow-y: scroll;
       height: 94vh;
       padding-top: 94vh;
@@ -324,8 +324,10 @@ const style = (
     }
 
     .scene-machine-container {
-      padding: 0 5px;
-      background: rgb(43, 38, 38);
+      display: flex;
+      justify-content: center;
+      padding: 0px 5px;
+      background: linear-gradient(rgb(52, 75, 97), rgb(180, 216, 147));
       padding-top: 100px;
 
       border-top: solid 10px rgb(194, 187, 167);
