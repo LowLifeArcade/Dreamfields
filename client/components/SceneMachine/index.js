@@ -25,34 +25,53 @@ const initialViewerState = {
   forProject: 'ObjectId',
   forReel: 'ObjectId - Paul Saves All Movie',
   launched: false,
-  productionStage: 'boards',
+  productionStage: 'pre production', // ['pre', 'beat boards', 'story boards', 'production']
   description:
     'The final bell has rung and school is out. We see Paul huffing it from a gang of bullies he seems to have ticked off. They chase him off of school grounds and into a field where he falls into a pit of vipers.',
   details: {
     setting: 'ext. School - Day ',
     frameRate: '24',
     aspectRatio: '16:9',
-    assets: ['Sword', 'Mud Slide', 'Book'],
-    FX: ['3d pit of vipers', 'green glow in background'],
+    assets: [
+      { id: 11, name: 'Sword', location: 's3-bucket' },
+      { id: 12, name: 'Mud Slide', location: 's3-bucket' },
+      { id: 14, name: 'Book', location: 's3-bucket' },
+    ],
+    FX: [
+      { id: 3, name: '3d pit of vipers', location: 's3' },
+      { id: 6, name: 'green glow', location: 's3' },
+    ],
     shotList: [
       {
         shot: 1,
         complexity: 'high',
+        assets: 'Sword',
+        FX: '',
+        characters: 'Paul, Sid, Ugly friend 1, Ugly friend 2',
+        backgrounds: 'School',
         description:
           'Paul runs full sprint in center frame, huffing and pumping his arms.',
-        breakdown: `This should be a table or something structure wise where it's easy to look at the breakdown `,
+        breakdown:
+          'Close up of Paul bobbing up and down, sweat running down his face. We pull out to see him full sprint running from a gang behind him.',
         preProdBoard: '',
       },
       {
         shot: 2,
         complexity: 'medium',
+        assets: 'snakes',
+        FX: 'green glow',
+        characters: 'Sid, Ugly friend 1, Ugly friend 2',
+        backgrounds: 'Pit',
         description: 'Sid and gang cacalking as they chase.',
         breakdown: `This should be a table or something structure wise where it's easy to look at the breakdown `,
         preProdBoard: '',
       },
     ], // maybe every time you add to this array it makes an index card
     characters: ['Paul', 'Sid', 'Joey', 'Ugly friend 1', 'Ugly friend 2'],
-    backgrounds: [{ id: 253 }, { id: 233 }],
+    backgrounds: [
+      { id: 253, name: 'School', location: 's3' },
+      { id: 233, name: 'Pit', location: 's3' },
+    ],
   },
 
   script: {
@@ -468,7 +487,7 @@ const SceneMachine = () => {
       forReel: 'ObjectId - Paul Saves All Movie',
       launched: false,
       productionStage: 'boards',
-      sceneName: 'Todaloo',
+      sceneName: 'Toodaloo',
       stripImage: '//unsplash.it/id/21/400/225',
       setting: 'ext. School - Day ',
       script: `<br />
@@ -1433,7 +1452,7 @@ const SceneMachine = () => {
           rel="stylesheet"
         />
       </head>
-      {style(background)}
+      <Style background={background} />
       <div id="scene-machine" className="">
         <div id="scene-machine-location" className="">
           <div className="scene-machine-title">
@@ -1728,10 +1747,10 @@ const SceneMachine = () => {
                       </button>
                       <button
                         className={`btn-small ${
-                          detail === 'select' ? 'active' : ''
+                          detail === 'main' ? 'active' : ''
                         }`}
                       >
-                        Select
+                        Main
                       </button>
                       <button
                         className={`btn-small ${
@@ -1794,11 +1813,54 @@ const SceneMachine = () => {
                           </button>
                         </>
                       )}
+                      {detail === 'overview' &&  (
+                        <>
+                          <button
+                            className={`btn-small ${
+                              detail === 'none' ? 'active' : ''
+                            }`}
+                          >
+                            Backgrounds
+                          </button>
+                          <button
+                            className={`btn-small ${
+                              detail === 'none' ? 'active' : ''
+                            }`}
+                          >
+                            Assets
+                          </button>
+                          <button
+                            className={`btn-small ${
+                              detail === 'none' ? 'active' : ''
+                            }`}
+                          >
+                            ModelSheets
+                          </button>
+                        </>
+                      )}
+                      {detail === 'script' &&  (
+                        <>
+                          <button
+                            className={`btn-small ${
+                              detail === 'none' ? 'active' : ''
+                            }`}
+                          >
+                            Revisions
+                          </button>
+                          <button
+                            className={`btn-small ${
+                              detail === 'none' ? 'active' : ''
+                            }`}
+                          >
+                            Edit
+                          </button>
+                        </>
+                      )}
                     </div>
                   </div>
 
                   <div className="transport-overview">
-                    {viewer.storyBoards && ( // this is unneccesary
+                    {( // this is unneccesary
                       <>
                         {detail === 'overview' && (
                           <div
@@ -1853,6 +1915,14 @@ const SceneMachine = () => {
                                   <td>Aspect Ratio: </td>
                                   <td>{viewer.details.aspectRatio}</td>
                                 </tr>
+                                <tr>
+                                  <td>Launched: </td>
+                                  <td>{viewer.launched ? 'true' : 'false'}</td>
+                                </tr>
+                                <tr>
+                                  <td>Production Stage: </td>
+                                  <td>{viewer.productionStage}</td>
+                                </tr>
                               </tbody>
                             </table>
                             Contributers and their hard work are how this
@@ -1885,7 +1955,7 @@ const SceneMachine = () => {
                         {/* <hr /> */}
                         {detail === 'script' && (
                           <div className="transport-script">
-                            {/* <h2>Scene Script:</h2> */}
+                            Revision: {viewer.script.rev}
                             <div
                               dangerouslySetInnerHTML={{
                                 __html: viewer.script.script,
@@ -1909,11 +1979,21 @@ const SceneMachine = () => {
                                   {shot.complexity}
                                 </div>
                                 <div>{shot.breakdown}</div>
-                                {/* {activeItem === i ? (
-                                  <div>Checkout Scene | Add Notes | Update</div>
+                                <div>
+                                  <strong>Characters: </strong>
+                                  {shot.characters}
+                                  <br />
+                                  <strong>Assets: </strong>
+                                  {shot.assets}
+                                  <br />
+                                  <strong>Backgrounds: </strong>
+                                  {shot.backgrounds}
+                                </div>
+                                {false ? (
+                                  <div><strong>Checked out by Sonny</strong></div>
                                 ) : (
-                                  <div>Checked Out or not should be here</div>
-                                )} */}
+                                  <div><strong>Open for checkout</strong></div>
+                                )}
                               </div>
                             ))}
 
@@ -1969,9 +2049,7 @@ const SceneMachine = () => {
                             </div>
                           </div>
                         )}
-                        {detail === 'panel details' && (
-                          <div>panel details</div>
-                        )}
+                        {detail === 'panel details' && <div>panel details</div>}
                       </>
                     )}
                   </div>
@@ -1987,7 +2065,7 @@ const SceneMachine = () => {
 
 export default SceneMachine;
 
-const style = (background) => (
+const Style = ({ background }) => (
   <style jsx>{`
     #scene-machine {
       // background: #fff;
@@ -2115,7 +2193,7 @@ const style = (background) => (
       height: 60px;
       // position: relative;
       // transform: rotate(-90deg);
-      opacity: 0.3;
+      opacity: 0.6;
     }
     .scene-strip > img.active {
       // border: solid 2px green;
@@ -2123,7 +2201,7 @@ const style = (background) => (
       opacity: 1;
       background: rgba(3, 150, 3);
       box-shadow: 0 0 2px rgba(231, 230, 230, 0.2),
-        0 0 6px rgba(231, 230, 230, 0.4), 0 0 15px white;
+        0 0 6px rgba(231, 230, 230, 0.4), 0 0 1px white;
       // margin: 1px;
     }
     .scene-strip > p {
@@ -2387,10 +2465,9 @@ const style = (background) => (
       align-items: center;
     }
     .transport-viewer-controls > button {
-      // width: 70px;
-      margin-top: 10px;
+      // margin-top: 10px;
       padding: 13px 10px;
-      margin: 2px;
+      margin: 1px;
       box-shadow: inset 0 4px 0px,
         inset -2px -2px 2px 0px rgba(102, 91, 91, 0.774),
         inset 2px -2px 2px 0px rgba(102, 91, 91, 0.774);
