@@ -1968,7 +1968,8 @@ const SceneMachine = () => {
                           </div>
                         )}
                         {/* <hr /> */}
-                        {detail === 'script' && (
+                        {detail === 'script' && ( 
+                          // TODO: add undo function to changes in text area. Maybe store viewer.script.script in a backup field when you hit edit button.
                           <div className="transport-script">
                             Revision: {viewer.script.rev}
                             <div
@@ -1976,6 +1977,9 @@ const SceneMachine = () => {
                                 __html: viewer.script.script,
                               }}
                             ></div>
+                            <textarea cols='60' rows='40' type="text" value ={viewer.script.script} onChange={(e) => setViewer({
+                              ...viewer, script: {script: e.target.value}
+                            })}/>
                           </div>
                         )}
                         {detail === 'breakdown' && (
