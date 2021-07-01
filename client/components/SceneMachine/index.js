@@ -43,6 +43,7 @@ const initialViewerState = {
     ],
     shotList: [
       {
+        id: 1,
         shot: 1,
         complexity: 'high',
         assets: 'Sword',
@@ -56,6 +57,7 @@ const initialViewerState = {
         preProdBoard: '',
       },
       {
+        id: 2,
         shot: 2,
         complexity: 'medium',
         assets: 'snakes',
@@ -209,7 +211,7 @@ const SceneMachine = () => {
   const { button1, button2, button3, button4, button5 } = buttons;
   const [detail, setDetail] = useState('overview');
   const [checkout, setCheckout] = useState();
-  const [activeItem, setActiveItem] = useState();
+  const [activeShot, setActiveShot] = useState('');
   const [navigation, setNavigation] = useState();
 
   const [viewer, setViewer] = useState(initialViewerState);
@@ -1788,7 +1790,19 @@ const SceneMachine = () => {
                           </button>
                         </>
                       )}
-                      {detail === 'breakdown' && activeItem != null && (
+                      {detail === 'boards' && (
+                        <>
+                          <button
+                            onClick={() => setActiveShot('')}
+                            className={`btn-small ${
+                              detail === 'none' ? 'active' : ''
+                            }`}
+                          >
+                            SeeAll
+                          </button>
+                        </>
+                      )}
+                      {detail === 'breakdown' && activeShot != '' && (
                         <>
                           <button
                             className={`btn-small ${
@@ -1813,7 +1827,7 @@ const SceneMachine = () => {
                           </button>
                         </>
                       )}
-                      {detail === 'overview' &&  (
+                      {detail === 'overview' && (
                         <>
                           <button
                             className={`btn-small ${
@@ -1838,7 +1852,7 @@ const SceneMachine = () => {
                           </button>
                         </>
                       )}
-                      {detail === 'script' &&  (
+                      {detail === 'script' && (
                         <>
                           <button
                             className={`btn-small ${
@@ -1860,7 +1874,8 @@ const SceneMachine = () => {
                   </div>
 
                   <div className="transport-overview">
-                    {( // this is unneccesary
+                    {
+                      // this is unneccesary
                       <>
                         {detail === 'overview' && (
                           <div
@@ -1969,9 +1984,9 @@ const SceneMachine = () => {
                             {viewer.details.shotList.map((shot, i) => (
                               <div
                                 className={`transport-breakdown-shot ${
-                                  activeItem === i && 'active'
+                                  activeShot.id === shot.id && 'active'
                                 }`}
-                                onClick={() => setActiveItem(i)}
+                                onClick={() => setActiveShot(shot)}
                               >
                                 <h3>Shot Number {i + 1}</h3>
                                 <div>
@@ -1990,12 +2005,19 @@ const SceneMachine = () => {
                                   {shot.backgrounds}
                                 </div>
                                 {false ? (
-                                  <div><strong>Checked out by Sonny</strong></div>
+                                  <div>
+                                    <strong>Checked out by Sonny</strong>
+                                  </div>
                                 ) : (
-                                  <div><strong>Open for checkout</strong></div>
+                                  <div>
+                                    <strong>Open for checkout</strong>
+                                  </div>
                                 )}
                               </div>
                             ))}
+                            <div className='add' onClick={() => setAddBreakdown()}>
+                              <i class="fas fa-plus fa-2x"></i>
+                            </div>
 
                             {/* <div
                               dangerouslySetInnerHTML={{
@@ -2010,35 +2032,70 @@ const SceneMachine = () => {
                           <div className="transport-panels-section">
                             {console.log(background)}
                             {/* <h2>Scene Panels: </h2> */}
-                            Boards &gt; Details
+                            <div className="bread-crumb">
+
+                            Boards &gt; {activeShot.shot ? 'Shot number: ' +activeShot.shot : 'All'} 
+                            </div>
                             <div className="transport-panels">
-                              {viewer.storyBoards.map((board, i) => (
-                                <div
-                                  onClick={() =>
-                                    setPreview({
-                                      image: board.board,
-                                      sceneName: viewer.sceneName,
-                                      panel: i + 1,
-                                      shotNumber: board.shotNumber,
-                                    })
-                                  }
-                                  className="transport-panel"
-                                >
-                                  <label htmlFor="img">{board.panel}</label>
-                                  <div className="panel-index">{i + 1}</div>
-                                  <div className="panel-shot">
-                                    {board.shotNumber}
-                                  </div>
-                                  <img
-                                    className={
-                                      i + 1 === preview.panel && 'active'
-                                    }
-                                    src={board.board}
-                                    alt=""
-                                  />
-                                  {/* <p>shot: {board.shotNumber}</p> */}
-                                </div>
-                              ))}
+                              {viewer.storyBoards.map(
+                                (board, i) =>
+                                  (activeShot.shot === board.shotNumber && (
+                                    <>
+                                    <div
+                                      onClick={() =>
+                                        setPreview({
+                                          image: board.board,
+                                          sceneName: viewer.sceneName,
+                                          panel: i + 1,
+                                          shotNumber: board.shotNumber,
+                                        })
+                                      }
+                                      className="transport-panel"
+                                      >
+                                      <div className="transport-label">{board.panel}</div>
+                                      <div className="panel-index">{i + 1}</div>
+                                      <div className="panel-shot">
+                                        {board.shotNumber}
+                                      </div>
+                                      <img
+                                        className={
+                                          i + 1 === preview.panel && 'active'
+                                        }
+                                        src={board.board}
+                                        alt=""
+                                        />
+                                      {/* <p>shot: {board.shotNumber}</p> */}
+                                        </div>
+                                    </>
+                                  )) ||
+                                  (activeShot === '' && (
+                                    <div
+                                      onClick={() =>
+                                        setPreview({
+                                          image: board.board,
+                                          sceneName: viewer.sceneName,
+                                          panel: i + 1,
+                                          shotNumber: board.shotNumber,
+                                        })
+                                      }
+                                      className="transport-panel"
+                                    >
+                                      <div className="transport-label">{board.panel}</div>
+                                      <div className="panel-index">{i + 1}</div>
+                                      <div className="panel-shot">
+                                        {board.shotNumber}
+                                      </div>
+                                      <img
+                                        className={
+                                          i + 1 === preview.panel && 'active'
+                                        }
+                                        src={board.board}
+                                        alt=""
+                                      />
+                                      {/* <p>shot: {board.shotNumber}</p> */}
+                                    </div>
+                                  ))
+                              )}
                               <section className="transport-panel-add">
                                 <div
                                   onClick={() => setPreview(initPreviewState)}
@@ -2051,7 +2108,7 @@ const SceneMachine = () => {
                         )}
                         {detail === 'panel details' && <div>panel details</div>}
                       </>
-                    )}
+                    }
                   </div>
                 </div>
               </div>
@@ -2331,7 +2388,7 @@ const Style = ({ background }) => (
       height: 24.3px;
       border-radius: 3px;
       border: solid 1px rgb(165, 150, 86);
-      background: rgb(148, 255, 8);
+      background: rgb(255, 230, 8);
       // background: rgb(248, 227, 42);
       // background: rgb(210, 248, 42);
 
@@ -2579,7 +2636,13 @@ const Style = ({ background }) => (
       margin: 20px;
     }
     .transport-panels-section {
-      padding: 10px 0;
+      padding: 10px 10px;
+    }
+    .bread-crumb {
+      font-size: .8rem;
+      color: #e4e4e4;
+      padding: 5px 10px;
+      box-shadow: 0 0px 1px;
     }
     .transport-panel-add {
       display: flex;
@@ -2589,6 +2652,20 @@ const Style = ({ background }) => (
     }
 
     .transport-panel-add > div {
+      cursor: pointer;
+      color: #2f3c41;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      padding: 10px 0;
+      border: none;
+    }
+
+    .add {
       cursor: pointer;
       color: #2f3c41;
       display: flex;
@@ -2623,18 +2700,21 @@ const Style = ({ background }) => (
       border: solid 2px rgba(0, 0, 0, 0.3);
       width: 100%;
     }
-    .transport-panel > label {
+    .transport-label {
       background: rgba(0, 0, 0, 0.3);
-      border-radius: 2px;
+      // border-radius: 2px;
       color: #fff;
       position: absolute;
-      padding: 1px 4px;
+      padding: 1px 5px;
       font-size: 0.5em;
-      right: 0;
+      top: 12px;
+      right: 2px;
       cursor: pointer;
     }
 
     .panel-index {
+      top: 12px;
+      left: 2px;
       position: absolute;
       background: rgba(256, 256, 256, 0.8);
       font-size: 0.6rem;
@@ -2642,6 +2722,7 @@ const Style = ({ background }) => (
     }
     .panel-shot {
       position: absolute;
+      top: 12px;
       right: 42px;
       background: rgba(256, 256, 256, 0.4);
       font-size: 0.6rem;
