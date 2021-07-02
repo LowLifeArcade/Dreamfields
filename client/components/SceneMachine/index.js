@@ -1,10 +1,4 @@
-import { useState } from 'react';
-
-/* 
-Project details
-epidsodic or not
-  -aspect ratio
- */
+import { useState, useReducer } from 'react';
 
 const initialButtonState = {
   machine: 'scene',
@@ -20,8 +14,8 @@ const initialButtonState = {
 const initialViewerState = {
   id: 210501,
   sceneName: 'Vipers',
-  mainImage: '//unsplash.it/id/1/500/300',
-  stripImage: '//unsplash.it/id/1/400/225',
+  mainImage: '//unsplash.it/id/12/500/300',
+  stripImage: '//unsplash.it/id/12/400/225',
   forProject: 'ObjectId',
   forReel: 'ObjectId - Paul Saves All Movie',
   launched: false,
@@ -206,6 +200,26 @@ const initPreviewState = {
   id: '',
 };
 
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'EDIT_SCRIPT': {
+      return {
+        ...state,
+        edit: true
+      };
+    }
+    case 'SAVE_SCRIPT': {
+      return {
+        ...state,
+        edit: false
+      };
+    }
+
+    default:
+      state;
+  }
+};
+
 const SceneMachine = () => {
   const [buttons, setButtons] = useState(initialButtonState);
   const { button1, button2, button3, button4, button5 } = buttons;
@@ -220,19 +234,12 @@ const SceneMachine = () => {
 
   const [background, setBackground] = useState('rgb(218, 214, 208)');
 
-  /* NOTES:
-  -tracking code: 
-  -title
-  -descriptioin
-  -image
+  const [state, dispatch] = useReducer(reducer, {edit: false});
+  console.log(state)
 
-  -frame rate
-  epidsodic or not
-  -aspect ratio
+  /* NOTES:
 
   -permistions page (groups and peoples names)
-
-    step through edit with arrow keys
 
     Main top bar
     breadcrumb
@@ -1861,13 +1868,21 @@ const SceneMachine = () => {
                           >
                             Revisions
                           </button>
-                          <button
+                          {state.edit ? <button
                             className={`btn-small ${
                               detail === 'none' ? 'active' : ''
                             }`}
+                            onClick={() => dispatch({type: 'SAVE_SCRIPT'})}
+                          >
+                            Save
+                          </button>:<button
+                            className={`btn-small ${
+                              detail === 'none' ? 'active' : ''
+                            }`}
+                            onClick={() => dispatch({type: 'EDIT_SCRIPT'})}
                           >
                             Edit
-                          </button>
+                          </button>}
                         </>
                       )}
                     </div>
@@ -1968,18 +1983,34 @@ const SceneMachine = () => {
                           </div>
                         )}
                         {/* <hr /> */}
-                        {detail === 'script' && ( 
+                        {detail === 'script' && (
                           // TODO: add undo function to changes in text area. Maybe store viewer.script.script in a backup field when you hit edit button.
                           <div className="transport-script">
                             Revision: {viewer.script.rev}
-                            <div
-                              dangerouslySetInnerHTML={{
-                                __html: viewer.script.script,
-                              }}
-                            ></div>
-                            <textarea cols='60' rows='40' type="text" value ={viewer.script.script} onChange={(e) => setViewer({
-                              ...viewer, script: {script: e.target.value}
-                            })}/>
+                            {!state.edit ? (
+                              <>
+                                <div
+                                  dangerouslySetInnerHTML={{
+                                    __html: viewer.script.script,
+                                  }}
+                                ></div>
+                              </>
+                            ) : (
+                              <>
+                                <textarea
+                                  cols="60"
+                                  rows="40"
+                                  type="text"
+                                  value={viewer.script.script}
+                                  onChange={(e) =>
+                                    setViewer({
+                                      ...viewer,
+                                      script: { script: e.target.value },
+                                    })
+                                  }
+                                />
+                              </>
+                            )}
                           </div>
                         )}
                         {detail === 'breakdown' && (
@@ -2019,7 +2050,10 @@ const SceneMachine = () => {
                                 )}
                               </div>
                             ))}
-                            <div className='add' onClick={() => setAddBreakdown()}>
+                            <div
+                              className="add"
+                              onClick={() => setAddBreakdown()}
+                            >
                               <i class="fas fa-plus fa-2x"></i>
                             </div>
 
@@ -2037,39 +2071,45 @@ const SceneMachine = () => {
                             {console.log(background)}
                             {/* <h2>Scene Panels: </h2> */}
                             <div className="bread-crumb">
-
-                            Boards &gt; {activeShot.shot ? 'Shot number: ' +activeShot.shot : 'All'} 
+                              Boards &gt;{' '}
+                              {activeShot.shot
+                                ? 'Shot number: ' + activeShot.shot
+                                : 'All'}
                             </div>
                             <div className="transport-panels">
                               {viewer.storyBoards.map(
                                 (board, i) =>
                                   (activeShot.shot === board.shotNumber && (
                                     <>
-                                    <div
-                                      onClick={() =>
-                                        setPreview({
-                                          image: board.board,
-                                          sceneName: viewer.sceneName,
-                                          panel: i + 1,
-                                          shotNumber: board.shotNumber,
-                                        })
-                                      }
-                                      className="transport-panel"
-                                      >
-                                      <div className="transport-label">{board.panel}</div>
-                                      <div className="panel-index">{i + 1}</div>
-                                      <div className="panel-shot">
-                                        {board.shotNumber}
-                                      </div>
-                                      <img
-                                        className={
-                                          i + 1 === preview.panel && 'active'
+                                      <div
+                                        onClick={() =>
+                                          setPreview({
+                                            image: board.board,
+                                            sceneName: viewer.sceneName,
+                                            panel: i + 1,
+                                            shotNumber: board.shotNumber,
+                                          })
                                         }
-                                        src={board.board}
-                                        alt=""
-                                        />
-                                      {/* <p>shot: {board.shotNumber}</p> */}
+                                        className="transport-panel"
+                                      >
+                                        <div className="transport-label">
+                                          {board.panel}
                                         </div>
+                                        <div className="panel-index">
+                                          {i + 1}
+                                        </div>
+                                        <div className="panel-shot">
+                                          {board.shotNumber}
+                                        </div>
+                                        <img
+                                          className={
+                                            i + 1 === preview.panel && 'active'
+                                          }
+                                          src={board.board}
+                                          alt=""
+                                        />
+                                        {/* <p>shot: {board.shotNumber}</p> */}
+                                      </div>
                                     </>
                                   )) ||
                                   (activeShot === '' && (
@@ -2084,7 +2124,9 @@ const SceneMachine = () => {
                                       }
                                       className="transport-panel"
                                     >
-                                      <div className="transport-label">{board.panel}</div>
+                                      <div className="transport-label">
+                                        {board.panel}
+                                      </div>
                                       <div className="panel-index">{i + 1}</div>
                                       <div className="panel-shot">
                                         {board.shotNumber}
@@ -2617,6 +2659,11 @@ const Style = ({ background }) => (
       flex-direction: column;
       align-items: center;
     }
+    .transport-script > textarea {
+      font-family: 'Courier New', Courier, monospace;
+      outline: none;
+      border: none;
+    }
     .transport-script {
       font-family: 'Courier New', Courier, monospace;
       padding: 10px 20px;
@@ -2643,7 +2690,7 @@ const Style = ({ background }) => (
       padding: 10px 10px;
     }
     .bread-crumb {
-      font-size: .8rem;
+      font-size: 0.8rem;
       color: #e4e4e4;
       padding: 5px 10px;
       box-shadow: 0 0px 1px;
