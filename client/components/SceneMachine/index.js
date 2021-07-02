@@ -1,5 +1,7 @@
-import { useState, useReducer } from 'react';
+import { useState, useReducer, useContext } from 'react';
+import { Context } from '../../context';
 
+// initial states
 const initialButtonState = {
   machine: 'scene',
   display: 'Reels',
@@ -9,8 +11,7 @@ const initialButtonState = {
   button4: { active: false },
   button5: { active: false },
 };
-
-// scene prototype / template
+// scene template
 const initialViewerState = {
   id: 210501,
   sceneName: 'Vipers',
@@ -200,27 +201,1098 @@ const initPreviewState = {
   id: '',
 };
 
+// fake data
+const scenes = [
+  initialViewerState,
+  {
+    id: 212501,
+    forReel: 'ObjectId - Paul Saves All Movie',
+    launched: false,
+    productionStage: 'boards',
+    sceneName: 'Tip Toe',
+    stripImage: '//unsplash.it/id/16/400/225',
+    setting: 'ext. School - Day ',
+    script: `<br />
+    <p>EXT. SCHOOL - DAY</p>
+    <br>
+    <p>
+      PAUL, running from a gang of teenagers. He huffs and puffs
+      as he looks back in terror. The gang cackles in the chase.
+      Paul, not looking where he's going, slips and falls into a
+      hole. He slides down the mud...
+    </p>
+    <br>
+    <p>Paul </p>
+    <div style={{'text-align': 'center'}}>Ahhhhhh </div>
+    <br>
+    <p>
+      SID and his BUDDIES stop short of the hole. They hear
+      Paul's cavernous cry as he falls. Sid and his buddies look
+      concerned through their cool. Finally:
+    </p>
+    <br>
+    <p>Sid </p>
+    <p>
+      Dummy. Let's go, guys.
+    </p>
+    <br>
+    <p>
+      After a long decent, Paul drops into a DEN OF VIPERS. Paul
+      is petrified.
+    </p>`,
+    description: 'Paul runs from the Vipers.',
+    mainImage: '//unsplash.it/id/1/500/300',
+    beatBoards: [],
+    storyBoards: [
+      {
+        id: 2240,
+        panel: 7, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/23/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+      {
+        id: 2240,
+        panel: 10, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/24/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+      {
+        id: 2240,
+        panel: 3, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/26/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+      {
+        id: 2240,
+        panel: 5, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/27/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+      {
+        id: 2240,
+        panel: 8, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/28/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+      {
+        id: 2240,
+        panel: 11, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/29/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+    ],
+    storyBoards3: [1, 2, 3],
+    video: 's3-videoURL',
+    revision: 1,
+  },
+  {
+    id: 214501,
+    forReel: 'ObjectId - Paul Saves All Movie',
+    launched: false,
+    productionStage: 'boards',
+    sceneName: 'Toodaloo',
+    stripImage: '//unsplash.it/id/21/400/225',
+    setting: 'ext. School - Day ',
+    script: `<br />
+    <p>EXT. SCHOOL - DAY</p>
+    <br>
+    <p>
+      PAUL, running from a gang of teenagers. He huffs and puffs
+      as he looks back in terror. The gang cackles in the chase.
+      Paul, not looking where he's going, slips and falls into a
+      hole. He slides down the mud...
+    </p>
+    <br>
+    <p>Paul </p>
+    <div style={{'text-align': 'center'}}>Ahhhhhh </div>
+    <br>
+    <p>
+      SID and his BUDDIES stop short of the hole. They hear
+      Paul's cavernous cry as he falls. Sid and his buddies look
+      concerned through their cool. Finally:
+    </p>
+    <br>
+    <p>Sid </p>
+    <p>
+      Dummy. Let's go, guys.
+    </p>
+    <br>
+    <p>
+      After a long decent, Paul drops into a DEN OF VIPERS. Paul
+      is petrified.
+    </p>`,
+    description: 'And on we go!',
+    mainImage: '//unsplash.it/id/1/500/300',
+    beatBoards: [],
+    storyBoards: [
+      {
+        id: 2240,
+        panel: 7, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/23/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+      {
+        id: 2240,
+        panel: 10, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/24/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+      {
+        id: 2240,
+        panel: 3, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/26/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+      {
+        id: 2240,
+        panel: 5, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/27/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+      {
+        id: 2240,
+        panel: 8, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/28/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+      {
+        id: 2240,
+        panel: 11, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/29/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+    ],
+    storyBoards3: [1, 2, 3],
+    video: 's3-videoURL',
+    revision: 1,
+  },
+  {
+    id: 215501,
+    forReel: 'ObjectId - Paul Saves All Movie',
+    launched: false,
+    productionStage: 'boards',
+    sceneName: 'Here they come!',
+    stripImage: '//unsplash.it/id/18/400/225',
+    setting: 'ext. School - Day ',
+    script: `<br />
+    <p>EXT. SCHOOL - DAY</p>
+    <br>
+    <p>
+      PAUL, running from a gang of teenagers. He huffs and puffs
+      as he looks back in terror. The gang cackles in the chase.
+      Paul, not looking where he's going, slips and falls into a
+      hole. He slides down the mud...
+    </p>
+    <br>
+    <p>Paul </p>
+    <div style={{'text-align': 'center'}}>Ahhhhhh </div>
+    <br>
+    <p>
+      SID and his BUDDIES stop short of the hole. They hear
+      Paul's cavernous cry as he falls. Sid and his buddies look
+      concerned through their cool. Finally:
+    </p>
+    <br>
+    <p>Sid </p>
+    <p>
+      Dummy. Let's go, guys.
+    </p>
+    <br>
+    <p>
+      After a long decent, Paul drops into a DEN OF VIPERS. Paul
+      is petrified.
+    </p>`,
+    description: 'Paul slides down a hill into a pit of vipers.',
+    mainImage: '//unsplash.it/id/1/500/300',
+    beatBoards: [],
+    storyBoards: [
+      {
+        id: 2240,
+        panel: 7, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/23/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+      {
+        id: 2240,
+        panel: 10, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/24/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+      {
+        id: 2240,
+        panel: 3, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/26/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+      {
+        id: 2240,
+        panel: 5, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/27/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+      {
+        id: 2240,
+        panel: 8, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/28/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+      {
+        id: 2240,
+        panel: 11, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/29/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+    ],
+    storyBoards3: [1, 2, 3],
+    video: 's3-videoURL',
+    revision: 1,
+  },
+  {
+    id: 216501,
+    forReel: 'ObjectId - Paul Saves All Movie',
+    launched: false,
+    productionStage: 'boards',
+    sceneName: 'Uh oh',
+    stripImage: '//unsplash.it/id/231/400/225',
+    setting: 'ext. School - Day ',
+    script: `<br />
+    <p>EXT. SCHOOL - DAY</p>
+    <br>
+    <p>
+      PAUL, running from a gang of teenagers. He huffs and puffs
+      as he looks back in terror. The gang cackles in the chase.
+      Paul, not looking where he's going, slips and falls into a
+      hole. He slides down the mud...
+    </p>
+    <br>
+    <p>Paul </p>
+    <div style={{'text-align': 'center'}}>Ahhhhhh </div>
+    <br>
+    <p>
+      SID and his BUDDIES stop short of the hole. They hear
+      Paul's cavernous cry as he falls. Sid and his buddies look
+      concerned through their cool. Finally:
+    </p>
+    <br>
+    <p>Sid </p>
+    <p>
+      Dummy. Let's go, guys.
+    </p>
+    <br>
+    <p>
+      After a long decent, Paul drops into a DEN OF VIPERS. Paul
+      is petrified.
+    </p>`,
+    description: 'Paul slides down a hill into a pit of vipers.',
+    mainImage: '//unsplash.it/id/1/500/300',
+    beatBoards: [],
+    storyBoards: [
+      {
+        id: 2240,
+        panel: 7, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/23/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+      {
+        id: 2240,
+        panel: 10, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/24/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+      {
+        id: 2240,
+        panel: 3, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/26/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+      {
+        id: 2240,
+        panel: 5, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/27/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+      {
+        id: 2240,
+        panel: 8, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/28/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+      {
+        id: 2240,
+        panel: 11, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/29/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+    ],
+    storyBoards3: [1, 2, 3],
+    video: 's3-videoURL',
+    revision: 1,
+  },
+  {
+    id: 210701,
+    forReel: 'ObjectId - Paul Saves All Movie',
+    launched: false,
+    productionStage: 'boards',
+    sceneName: 'Hurry',
+    stripImage: '//unsplash.it/id/123/400/225',
+    setting: 'ext. School - Day ',
+    script: `<br />
+    <p>EXT. SCHOOL - DAY</p>
+    <br>
+    <p>
+      PAUL, running from a gang of teenagers. He huffs and puffs
+      as he looks back in terror. The gang cackles in the chase.
+      Paul, not looking where he's going, slips and falls into a
+      hole. He slides down the mud...
+    </p>
+    <br>
+    <p>Paul </p>
+    <div style={{'text-align': 'center'}}>Ahhhhhh </div>
+    <br>
+    <p>
+      SID and his BUDDIES stop short of the hole. They hear
+      Paul's cavernous cry as he falls. Sid and his buddies look
+      concerned through their cool. Finally:
+    </p>
+    <br>
+    <p>Sid </p>
+    <p>
+      Dummy. Let's go, guys.
+    </p>
+    <br>
+    <p>
+      After a long decent, Paul drops into a DEN OF VIPERS. Paul
+      is petrified.
+    </p>`,
+    description: 'Paul slides down a hill into a pit of vipers.',
+    mainImage: '//unsplash.it/id/1/500/300',
+    beatBoards: [],
+    storyBoards: [
+      {
+        id: 2240,
+        panel: 7, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/23/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+      {
+        id: 2240,
+        panel: 10, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/24/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+      {
+        id: 2240,
+        panel: 3, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/26/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+      {
+        id: 2240,
+        panel: 5, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/27/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+      {
+        id: 2240,
+        panel: 8, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/28/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+      {
+        id: 2240,
+        panel: 11, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/29/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+    ],
+    storyBoards3: [1, 2, 3],
+    video: 's3-videoURL',
+    revision: 1,
+  },
+  {
+    id: 210801,
+    forReel: 'ObjectId - Paul Saves All Movie',
+    launched: false,
+    productionStage: 'boards',
+    sceneName: 'Already there',
+    stripImage: '//unsplash.it/id/261/400/225',
+    setting: 'ext. School - Day ',
+    script: `<br />
+    <p>EXT. SCHOOL - DAY</p>
+    <br>
+    <p>
+      PAUL, running from a gang of teenagers. He huffs and puffs
+      as he looks back in terror. The gang cackles in the chase.
+      Paul, not looking where he's going, slips and falls into a
+      hole. He slides down the mud...
+    </p>
+    <br>
+    <p>Paul </p>
+    <div style={{'text-align': 'center'}}>Ahhhhhh </div>
+    <br>
+    <p>
+      SID and his BUDDIES stop short of the hole. They hear
+      Paul's cavernous cry as he falls. Sid and his buddies look
+      concerned through their cool. Finally:
+    </p>
+    <br>
+    <p>Sid </p>
+    <p>
+      Dummy. Let's go, guys.
+    </p>
+    <br>
+    <p>
+      After a long decent, Paul drops into a DEN OF VIPERS. Paul
+      is petrified.
+    </p>`,
+    description: 'Paul slides down a hill into a pit of vipers.',
+    mainImage: '//unsplash.it/id/1/500/300',
+    beatBoards: [],
+    storyBoards: [
+      {
+        id: 2240,
+        panel: 7, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/23/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+      {
+        id: 2240,
+        panel: 10, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/24/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+      {
+        id: 2240,
+        panel: 3, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/26/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+      {
+        id: 2240,
+        panel: 5, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/27/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+      {
+        id: 2240,
+        panel: 8, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/28/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+      {
+        id: 2240,
+        panel: 11, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/29/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+    ],
+    storyBoards3: [1, 2, 3],
+    video: 's3-videoURL',
+    revision: 1,
+  },
+  {
+    id: 210591,
+    forReel: 'ObjectId - Paul Saves All Movie',
+    launched: false,
+    productionStage: 'boards',
+    sceneName: 'My my',
+    stripImage: '//unsplash.it/id/219/400/225',
+    setting: 'ext. School - Day ',
+    script: `<br />
+    <p>EXT. SCHOOL - DAY</p>
+    <br>
+    <p>
+      PAUL, running from a gang of teenagers. He huffs and puffs
+      as he looks back in terror. The gang cackles in the chase.
+      Paul, not looking where he's going, slips and falls into a
+      hole. He slides down the mud...
+    </p>
+    <br>
+    <p>Paul </p>
+    <div style={{'text-align': 'center'}}>Ahhhhhh </div>
+    <br>
+    <p>
+      SID and his BUDDIES stop short of the hole. They hear
+      Paul's cavernous cry as he falls. Sid and his buddies look
+      concerned through their cool. Finally:
+    </p>
+    <br>
+    <p>Sid </p>
+    <p>
+      Dummy. Let's go, guys.
+    </p>
+    <br>
+    <p>
+      After a long decent, Paul drops into a DEN OF VIPERS. Paul
+      is petrified.
+    </p>`,
+    description: 'Paul slides down a hill into a pit of vipers.',
+    mainImage: '//unsplash.it/id/1/500/300',
+    beatBoards: [],
+    storyBoards: [
+      {
+        id: 2240,
+        panel: 7, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/23/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+      {
+        id: 2240,
+        panel: 10, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/24/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+      {
+        id: 2240,
+        panel: 3, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/26/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+      {
+        id: 2240,
+        panel: 5, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/27/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+      {
+        id: 2240,
+        panel: 8, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/28/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+      {
+        id: 2240,
+        panel: 11, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/29/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+    ],
+    storyBoards3: [1, 2, 3],
+    video: 's3-videoURL',
+    revision: 1,
+  },
+  {
+    id: 200501,
+    forReel: 'ObjectId - Paul Saves All Movie',
+    launched: false,
+    productionStage: 'boards',
+    sceneName: 'Stu did it',
+    stripImage: '//unsplash.it/id/29/400/225',
+    setting: 'ext. School - Day ',
+    script: `<br />
+    <p>EXT. SCHOOL - DAY</p>
+    <br>
+    <p>
+      PAUL, running from a gang of teenagers. He huffs and puffs
+      as he looks back in terror. The gang cackles in the chase.
+      Paul, not looking where he's going, slips and falls into a
+      hole. He slides down the mud...
+    </p>
+    <br>
+    <p>Paul </p>
+    <div style={{'text-align': 'center'}}>Ahhhhhh </div>
+    <br>
+    <p>
+      SID and his BUDDIES stop short of the hole. They hear
+      Paul's cavernous cry as he falls. Sid and his buddies look
+      concerned through their cool. Finally:
+    </p>
+    <br>
+    <p>Sid </p>
+    <p>
+      Dummy. Let's go, guys.
+    </p>
+    <br>
+    <p>
+      After a long decent, Paul drops into a DEN OF VIPERS. Paul
+      is petrified.
+    </p>`,
+    description: 'Paul slides down a hill into a pit of vipers.',
+    mainImage: '//unsplash.it/id/1/500/300',
+    beatBoards: [],
+    storyBoards: [
+      {
+        id: 2240,
+        panel: 7, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/23/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+      {
+        id: 2240,
+        panel: 10, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/24/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+      {
+        id: 2240,
+        panel: 3, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/26/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+      {
+        id: 2240,
+        panel: 5, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/27/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+      {
+        id: 2240,
+        panel: 8, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/28/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+      {
+        id: 2240,
+        panel: 11, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/29/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+    ],
+    storyBoards3: [1, 2, 3],
+    video: 's3-videoURL',
+    revision: 1,
+  },
+  {
+    id: 230501,
+    forReel: 'ObjectId - Paul Saves All Movie',
+    launched: false,
+    productionStage: 'boards',
+    sceneName: 'Help!',
+    stripImage: '//unsplash.it/id/149/400/225',
+    setting: 'ext. School - Day ',
+    script: `<br />
+    <p>EXT. SCHOOL - DAY</p>
+    <br>
+    <p>
+      PAUL, running from a gang of teenagers. He huffs and puffs
+      as he looks back in terror. The gang cackles in the chase.
+      Paul, not looking where he's going, slips and falls into a
+      hole. He slides down the mud...
+    </p>
+    <br>
+    <p>Paul </p>
+    <div style={{'text-align': 'center'}}>Ahhhhhh </div>
+    <br>
+    <p>
+      SID and his BUDDIES stop short of the hole. They hear
+      Paul's cavernous cry as he falls. Sid and his buddies look
+      concerned through their cool. Finally:
+    </p>
+    <br>
+    <p>Sid </p>
+    <p>
+      Dummy. Let's go, guys.
+    </p>
+    <br>
+    <p>
+      After a long decent, Paul drops into a DEN OF VIPERS. Paul
+      is petrified.
+    </p>`,
+    description: 'Paul slides down a hill into a pit of vipers.',
+    mainImage: '//unsplash.it/id/1/500/300',
+    beatBoards: [],
+    storyBoards: [
+      {
+        id: 2240,
+        panel: 7, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/23/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+      {
+        id: 2240,
+        panel: 10, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/24/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+      {
+        id: 2240,
+        panel: 3, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/26/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+      {
+        id: 2240,
+        panel: 5, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/27/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+      {
+        id: 2240,
+        panel: 8, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/28/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+      {
+        id: 2240,
+        panel: 11, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/29/500/300',
+        action: '',
+        dialogue: '',
+        artist: 'objectId',
+        createdAt: 'date',
+        revision: 1,
+      },
+    ],
+    storyBoards3: [1, 2, 3],
+    video: 's3-videoURL',
+    revision: 1,
+  },
+];
+const field = {
+  _id: 1234, // from db creation
+  fieldName: 'Paul_Saves_All',
+  slug: 'paul-saves-all',
+  projects: [
+    {
+      id: 1234,
+      projectName: 'Paul_Saves_All_Movie',
+      slug: '/projects/paul-saves-all-movie',
+      script: { Location: 's3 bucket', revision: 1 },
+      conceptArt: [],
+      funding: { funded: false, amount: 0 }, // information about the projects financial status
+      reels: [
+        {
+          id: 111,
+          reelName: 'movie',
+          production: false,
+          timeLine: {
+            timeLine: [
+              {
+                scene001: scenes.scene001,
+              },
+            ], // potentially this can move in and out of editorial. Passed in and out of an editor. OR this will just be a place where the scenes live while it's being put in and out of editorial for them to pull from.
+            revision: 1,
+            frameRate: 24,
+            aspectRatio: '16:9',
+          },
+          scenes,
+          director: '',
+          contributors: [], // push to this list when someone makes an edit
+        },
+        {
+          reelName: 'teaser',
+          timeLine: {
+            timeLine: [],
+            revision: 1,
+          },
+          scenes,
+          director: '',
+          contributors: [], // push to this list when someone makes an edit
+        },
+      ],
+    },
+  ],
+};
+
+// reducers
 const reducer = (state, action) => {
   switch (action.type) {
     case 'EDIT_SCRIPT': {
       return {
         ...state,
-        edit: true
+        edit: true,
       };
     }
     case 'SAVE_SCRIPT': {
       return {
         ...state,
-        edit: false
+        edit: false,
       };
     }
-
+    case 'CHECKOUT': {
+      return {
+        ...state,
+        checkedOut: {
+          shot: action.payload.shot,
+          user: action.payload.user,
+        },
+      };
+    }
+    case 'CONFIRM': {
+      return {
+        ...state,
+        confirm: action.payload,
+      };
+    }
+    // case 'CONFIRM_DONE': {
+    //   return {
+    //     ...state,
+    //     confirm: '',
+    //   };
+    // }
     default:
       state;
   }
 };
 
 const SceneMachine = () => {
+  const [answer, setAnswer] = useState(false);
   const [buttons, setButtons] = useState(initialButtonState);
   const { button1, button2, button3, button4, button5 } = buttons;
   const [detail, setDetail] = useState('overview');
@@ -234,15 +1306,13 @@ const SceneMachine = () => {
 
   const [background, setBackground] = useState('rgb(218, 214, 208)');
 
-  const [state, dispatch] = useReducer(reducer, {edit: false});
-  console.log(state)
+  const [state, dispatch] = useReducer(reducer, { edit: false });
+
+  const userContext = useContext(Context);
 
   /* NOTES:
 
   -permistions page (groups and peoples names)
-
-    Main top bar
-    breadcrumb
 
     breakdowns:
     acts
@@ -289,7 +1359,6 @@ const SceneMachine = () => {
     * story reel by definition is the full timed out movie with audio with all of the boards. I'm guessing before animatics. Productions do about 6 of these so they can refine the movie before production. They look for double beats, move things around from different acts, cut ideas etc.
 
 
-
     then story boarding scenes
 
     everything is timed out maybe with audio
@@ -323,1121 +1392,67 @@ const SceneMachine = () => {
     __V: 0
      */
 
-  const scenes = [
-    {
-      id: 210501,
-      forReel: 'ObjectId - Paul Saves All Movie',
-      launched: false,
-      productionStage: 'boards',
-      sceneName: 'Vipers',
-      stripImage: '//unsplash.it/id/12/400/225',
-      setting: 'ext. School - Day ',
-      script: `<br />
-      <p>EXT. SCHOOL - DAY</p>
-      <br>
-      <p>
-        PAUL, running from a gang of teenagers. He huffs and puffs
-        as he looks back in terror. The gang cackles in the chase.
-        Paul, not looking where he's going, slips and falls into a
-        hole. He slides down the mud...
-      </p>
-      <br>
-      <p>Paul </p>
-      <div style={{'text-align': 'center'}}>Ahhhhhh </div>
-      <br>
-      <p>
-        SID and his BUDDIES stop short of the hole. They hear
-        Paul's cavernous cry as he falls. Sid and his buddies look
-        concerned through their cool. Finally:
-      </p>
-      <br>
-      <p>Sid </p>
-      <p>
-        Dummy. Let's go, guys.
-      </p>
-      <br>
-      <p>
-        After a long decent, Paul drops into a DEN OF VIPERS. Paul
-        is petrified.
-      </p>`,
-      description: 'Paul slides down a hill into a pit of vipers.',
-      mainImage: '//unsplash.it/id/15/500/300',
-      beatBoards: [],
-      storyBoards: [
-        {
-          id: 2240,
-          panel: 1, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/23/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-      ],
-
-      video: 's3-videoURL',
-      revision: 1,
-    },
-    {
-      id: 212501,
-      forReel: 'ObjectId - Paul Saves All Movie',
-      launched: false,
-      productionStage: 'boards',
-      sceneName: 'Tip Toe',
-      stripImage: '//unsplash.it/id/16/400/225',
-      setting: 'ext. School - Day ',
-      script: `<br />
-      <p>EXT. SCHOOL - DAY</p>
-      <br>
-      <p>
-        PAUL, running from a gang of teenagers. He huffs and puffs
-        as he looks back in terror. The gang cackles in the chase.
-        Paul, not looking where he's going, slips and falls into a
-        hole. He slides down the mud...
-      </p>
-      <br>
-      <p>Paul </p>
-      <div style={{'text-align': 'center'}}>Ahhhhhh </div>
-      <br>
-      <p>
-        SID and his BUDDIES stop short of the hole. They hear
-        Paul's cavernous cry as he falls. Sid and his buddies look
-        concerned through their cool. Finally:
-      </p>
-      <br>
-      <p>Sid </p>
-      <p>
-        Dummy. Let's go, guys.
-      </p>
-      <br>
-      <p>
-        After a long decent, Paul drops into a DEN OF VIPERS. Paul
-        is petrified.
-      </p>`,
-      description: 'Paul runs from the Vipers.',
-      mainImage: '//unsplash.it/id/1/500/300',
-      beatBoards: [],
-      storyBoards: [
-        {
-          id: 2240,
-          panel: 7, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/23/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-        {
-          id: 2240,
-          panel: 10, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/24/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-        {
-          id: 2240,
-          panel: 3, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/26/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-        {
-          id: 2240,
-          panel: 5, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/27/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-        {
-          id: 2240,
-          panel: 8, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/28/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-        {
-          id: 2240,
-          panel: 11, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/29/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-      ],
-      storyBoards3: [1, 2, 3],
-      video: 's3-videoURL',
-      revision: 1,
-    },
-    {
-      id: 214501,
-      forReel: 'ObjectId - Paul Saves All Movie',
-      launched: false,
-      productionStage: 'boards',
-      sceneName: 'Toodaloo',
-      stripImage: '//unsplash.it/id/21/400/225',
-      setting: 'ext. School - Day ',
-      script: `<br />
-      <p>EXT. SCHOOL - DAY</p>
-      <br>
-      <p>
-        PAUL, running from a gang of teenagers. He huffs and puffs
-        as he looks back in terror. The gang cackles in the chase.
-        Paul, not looking where he's going, slips and falls into a
-        hole. He slides down the mud...
-      </p>
-      <br>
-      <p>Paul </p>
-      <div style={{'text-align': 'center'}}>Ahhhhhh </div>
-      <br>
-      <p>
-        SID and his BUDDIES stop short of the hole. They hear
-        Paul's cavernous cry as he falls. Sid and his buddies look
-        concerned through their cool. Finally:
-      </p>
-      <br>
-      <p>Sid </p>
-      <p>
-        Dummy. Let's go, guys.
-      </p>
-      <br>
-      <p>
-        After a long decent, Paul drops into a DEN OF VIPERS. Paul
-        is petrified.
-      </p>`,
-      description: 'And on we go!',
-      mainImage: '//unsplash.it/id/1/500/300',
-      beatBoards: [],
-      storyBoards: [
-        {
-          id: 2240,
-          panel: 7, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/23/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-        {
-          id: 2240,
-          panel: 10, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/24/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-        {
-          id: 2240,
-          panel: 3, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/26/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-        {
-          id: 2240,
-          panel: 5, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/27/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-        {
-          id: 2240,
-          panel: 8, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/28/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-        {
-          id: 2240,
-          panel: 11, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/29/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-      ],
-      storyBoards3: [1, 2, 3],
-      video: 's3-videoURL',
-      revision: 1,
-    },
-    {
-      id: 215501,
-      forReel: 'ObjectId - Paul Saves All Movie',
-      launched: false,
-      productionStage: 'boards',
-      sceneName: 'Here they come!',
-      stripImage: '//unsplash.it/id/18/400/225',
-      setting: 'ext. School - Day ',
-      script: `<br />
-      <p>EXT. SCHOOL - DAY</p>
-      <br>
-      <p>
-        PAUL, running from a gang of teenagers. He huffs and puffs
-        as he looks back in terror. The gang cackles in the chase.
-        Paul, not looking where he's going, slips and falls into a
-        hole. He slides down the mud...
-      </p>
-      <br>
-      <p>Paul </p>
-      <div style={{'text-align': 'center'}}>Ahhhhhh </div>
-      <br>
-      <p>
-        SID and his BUDDIES stop short of the hole. They hear
-        Paul's cavernous cry as he falls. Sid and his buddies look
-        concerned through their cool. Finally:
-      </p>
-      <br>
-      <p>Sid </p>
-      <p>
-        Dummy. Let's go, guys.
-      </p>
-      <br>
-      <p>
-        After a long decent, Paul drops into a DEN OF VIPERS. Paul
-        is petrified.
-      </p>`,
-      description: 'Paul slides down a hill into a pit of vipers.',
-      mainImage: '//unsplash.it/id/1/500/300',
-      beatBoards: [],
-      storyBoards: [
-        {
-          id: 2240,
-          panel: 7, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/23/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-        {
-          id: 2240,
-          panel: 10, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/24/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-        {
-          id: 2240,
-          panel: 3, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/26/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-        {
-          id: 2240,
-          panel: 5, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/27/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-        {
-          id: 2240,
-          panel: 8, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/28/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-        {
-          id: 2240,
-          panel: 11, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/29/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-      ],
-      storyBoards3: [1, 2, 3],
-      video: 's3-videoURL',
-      revision: 1,
-    },
-    {
-      id: 216501,
-      forReel: 'ObjectId - Paul Saves All Movie',
-      launched: false,
-      productionStage: 'boards',
-      sceneName: 'Uh oh',
-      stripImage: '//unsplash.it/id/231/400/225',
-      setting: 'ext. School - Day ',
-      script: `<br />
-      <p>EXT. SCHOOL - DAY</p>
-      <br>
-      <p>
-        PAUL, running from a gang of teenagers. He huffs and puffs
-        as he looks back in terror. The gang cackles in the chase.
-        Paul, not looking where he's going, slips and falls into a
-        hole. He slides down the mud...
-      </p>
-      <br>
-      <p>Paul </p>
-      <div style={{'text-align': 'center'}}>Ahhhhhh </div>
-      <br>
-      <p>
-        SID and his BUDDIES stop short of the hole. They hear
-        Paul's cavernous cry as he falls. Sid and his buddies look
-        concerned through their cool. Finally:
-      </p>
-      <br>
-      <p>Sid </p>
-      <p>
-        Dummy. Let's go, guys.
-      </p>
-      <br>
-      <p>
-        After a long decent, Paul drops into a DEN OF VIPERS. Paul
-        is petrified.
-      </p>`,
-      description: 'Paul slides down a hill into a pit of vipers.',
-      mainImage: '//unsplash.it/id/1/500/300',
-      beatBoards: [],
-      storyBoards: [
-        {
-          id: 2240,
-          panel: 7, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/23/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-        {
-          id: 2240,
-          panel: 10, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/24/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-        {
-          id: 2240,
-          panel: 3, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/26/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-        {
-          id: 2240,
-          panel: 5, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/27/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-        {
-          id: 2240,
-          panel: 8, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/28/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-        {
-          id: 2240,
-          panel: 11, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/29/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-      ],
-      storyBoards3: [1, 2, 3],
-      video: 's3-videoURL',
-      revision: 1,
-    },
-    {
-      id: 210701,
-      forReel: 'ObjectId - Paul Saves All Movie',
-      launched: false,
-      productionStage: 'boards',
-      sceneName: 'Hurry',
-      stripImage: '//unsplash.it/id/123/400/225',
-      setting: 'ext. School - Day ',
-      script: `<br />
-      <p>EXT. SCHOOL - DAY</p>
-      <br>
-      <p>
-        PAUL, running from a gang of teenagers. He huffs and puffs
-        as he looks back in terror. The gang cackles in the chase.
-        Paul, not looking where he's going, slips and falls into a
-        hole. He slides down the mud...
-      </p>
-      <br>
-      <p>Paul </p>
-      <div style={{'text-align': 'center'}}>Ahhhhhh </div>
-      <br>
-      <p>
-        SID and his BUDDIES stop short of the hole. They hear
-        Paul's cavernous cry as he falls. Sid and his buddies look
-        concerned through their cool. Finally:
-      </p>
-      <br>
-      <p>Sid </p>
-      <p>
-        Dummy. Let's go, guys.
-      </p>
-      <br>
-      <p>
-        After a long decent, Paul drops into a DEN OF VIPERS. Paul
-        is petrified.
-      </p>`,
-      description: 'Paul slides down a hill into a pit of vipers.',
-      mainImage: '//unsplash.it/id/1/500/300',
-      beatBoards: [],
-      storyBoards: [
-        {
-          id: 2240,
-          panel: 7, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/23/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-        {
-          id: 2240,
-          panel: 10, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/24/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-        {
-          id: 2240,
-          panel: 3, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/26/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-        {
-          id: 2240,
-          panel: 5, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/27/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-        {
-          id: 2240,
-          panel: 8, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/28/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-        {
-          id: 2240,
-          panel: 11, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/29/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-      ],
-      storyBoards3: [1, 2, 3],
-      video: 's3-videoURL',
-      revision: 1,
-    },
-    {
-      id: 210801,
-      forReel: 'ObjectId - Paul Saves All Movie',
-      launched: false,
-      productionStage: 'boards',
-      sceneName: 'Already there',
-      stripImage: '//unsplash.it/id/261/400/225',
-      setting: 'ext. School - Day ',
-      script: `<br />
-      <p>EXT. SCHOOL - DAY</p>
-      <br>
-      <p>
-        PAUL, running from a gang of teenagers. He huffs and puffs
-        as he looks back in terror. The gang cackles in the chase.
-        Paul, not looking where he's going, slips and falls into a
-        hole. He slides down the mud...
-      </p>
-      <br>
-      <p>Paul </p>
-      <div style={{'text-align': 'center'}}>Ahhhhhh </div>
-      <br>
-      <p>
-        SID and his BUDDIES stop short of the hole. They hear
-        Paul's cavernous cry as he falls. Sid and his buddies look
-        concerned through their cool. Finally:
-      </p>
-      <br>
-      <p>Sid </p>
-      <p>
-        Dummy. Let's go, guys.
-      </p>
-      <br>
-      <p>
-        After a long decent, Paul drops into a DEN OF VIPERS. Paul
-        is petrified.
-      </p>`,
-      description: 'Paul slides down a hill into a pit of vipers.',
-      mainImage: '//unsplash.it/id/1/500/300',
-      beatBoards: [],
-      storyBoards: [
-        {
-          id: 2240,
-          panel: 7, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/23/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-        {
-          id: 2240,
-          panel: 10, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/24/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-        {
-          id: 2240,
-          panel: 3, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/26/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-        {
-          id: 2240,
-          panel: 5, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/27/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-        {
-          id: 2240,
-          panel: 8, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/28/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-        {
-          id: 2240,
-          panel: 11, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/29/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-      ],
-      storyBoards3: [1, 2, 3],
-      video: 's3-videoURL',
-      revision: 1,
-    },
-    {
-      id: 210591,
-      forReel: 'ObjectId - Paul Saves All Movie',
-      launched: false,
-      productionStage: 'boards',
-      sceneName: 'My my',
-      stripImage: '//unsplash.it/id/219/400/225',
-      setting: 'ext. School - Day ',
-      script: `<br />
-      <p>EXT. SCHOOL - DAY</p>
-      <br>
-      <p>
-        PAUL, running from a gang of teenagers. He huffs and puffs
-        as he looks back in terror. The gang cackles in the chase.
-        Paul, not looking where he's going, slips and falls into a
-        hole. He slides down the mud...
-      </p>
-      <br>
-      <p>Paul </p>
-      <div style={{'text-align': 'center'}}>Ahhhhhh </div>
-      <br>
-      <p>
-        SID and his BUDDIES stop short of the hole. They hear
-        Paul's cavernous cry as he falls. Sid and his buddies look
-        concerned through their cool. Finally:
-      </p>
-      <br>
-      <p>Sid </p>
-      <p>
-        Dummy. Let's go, guys.
-      </p>
-      <br>
-      <p>
-        After a long decent, Paul drops into a DEN OF VIPERS. Paul
-        is petrified.
-      </p>`,
-      description: 'Paul slides down a hill into a pit of vipers.',
-      mainImage: '//unsplash.it/id/1/500/300',
-      beatBoards: [],
-      storyBoards: [
-        {
-          id: 2240,
-          panel: 7, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/23/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-        {
-          id: 2240,
-          panel: 10, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/24/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-        {
-          id: 2240,
-          panel: 3, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/26/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-        {
-          id: 2240,
-          panel: 5, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/27/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-        {
-          id: 2240,
-          panel: 8, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/28/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-        {
-          id: 2240,
-          panel: 11, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/29/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-      ],
-      storyBoards3: [1, 2, 3],
-      video: 's3-videoURL',
-      revision: 1,
-    },
-    {
-      id: 200501,
-      forReel: 'ObjectId - Paul Saves All Movie',
-      launched: false,
-      productionStage: 'boards',
-      sceneName: 'Stu did it',
-      stripImage: '//unsplash.it/id/29/400/225',
-      setting: 'ext. School - Day ',
-      script: `<br />
-      <p>EXT. SCHOOL - DAY</p>
-      <br>
-      <p>
-        PAUL, running from a gang of teenagers. He huffs and puffs
-        as he looks back in terror. The gang cackles in the chase.
-        Paul, not looking where he's going, slips and falls into a
-        hole. He slides down the mud...
-      </p>
-      <br>
-      <p>Paul </p>
-      <div style={{'text-align': 'center'}}>Ahhhhhh </div>
-      <br>
-      <p>
-        SID and his BUDDIES stop short of the hole. They hear
-        Paul's cavernous cry as he falls. Sid and his buddies look
-        concerned through their cool. Finally:
-      </p>
-      <br>
-      <p>Sid </p>
-      <p>
-        Dummy. Let's go, guys.
-      </p>
-      <br>
-      <p>
-        After a long decent, Paul drops into a DEN OF VIPERS. Paul
-        is petrified.
-      </p>`,
-      description: 'Paul slides down a hill into a pit of vipers.',
-      mainImage: '//unsplash.it/id/1/500/300',
-      beatBoards: [],
-      storyBoards: [
-        {
-          id: 2240,
-          panel: 7, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/23/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-        {
-          id: 2240,
-          panel: 10, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/24/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-        {
-          id: 2240,
-          panel: 3, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/26/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-        {
-          id: 2240,
-          panel: 5, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/27/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-        {
-          id: 2240,
-          panel: 8, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/28/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-        {
-          id: 2240,
-          panel: 11, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/29/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-      ],
-      storyBoards3: [1, 2, 3],
-      video: 's3-videoURL',
-      revision: 1,
-    },
-    {
-      id: 230501,
-      forReel: 'ObjectId - Paul Saves All Movie',
-      launched: false,
-      productionStage: 'boards',
-      sceneName: 'Help!',
-      stripImage: '//unsplash.it/id/149/400/225',
-      setting: 'ext. School - Day ',
-      script: `<br />
-      <p>EXT. SCHOOL - DAY</p>
-      <br>
-      <p>
-        PAUL, running from a gang of teenagers. He huffs and puffs
-        as he looks back in terror. The gang cackles in the chase.
-        Paul, not looking where he's going, slips and falls into a
-        hole. He slides down the mud...
-      </p>
-      <br>
-      <p>Paul </p>
-      <div style={{'text-align': 'center'}}>Ahhhhhh </div>
-      <br>
-      <p>
-        SID and his BUDDIES stop short of the hole. They hear
-        Paul's cavernous cry as he falls. Sid and his buddies look
-        concerned through their cool. Finally:
-      </p>
-      <br>
-      <p>Sid </p>
-      <p>
-        Dummy. Let's go, guys.
-      </p>
-      <br>
-      <p>
-        After a long decent, Paul drops into a DEN OF VIPERS. Paul
-        is petrified.
-      </p>`,
-      description: 'Paul slides down a hill into a pit of vipers.',
-      mainImage: '//unsplash.it/id/1/500/300',
-      beatBoards: [],
-      storyBoards: [
-        {
-          id: 2240,
-          panel: 7, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/23/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-        {
-          id: 2240,
-          panel: 10, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/24/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-        {
-          id: 2240,
-          panel: 3, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/26/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-        {
-          id: 2240,
-          panel: 5, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/27/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-        {
-          id: 2240,
-          panel: 8, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/28/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-        {
-          id: 2240,
-          panel: 11, // this needs to be unique
-          artist: 'objectId',
-          board: '//unsplash.it/id/29/500/300',
-          action: '',
-          dialogue: '',
-          artist: 'objectId',
-          createdAt: 'date',
-          revision: 1,
-        },
-      ],
-      storyBoards3: [1, 2, 3],
-      video: 's3-videoURL',
-      revision: 1,
-    },
-  ];
-
   /* 
+
   Steps to creating
   1. Create a field. 
     This is where we set up what the whole thing is about. It can start with a blurb but it will build into concept art, story ideas and bios and eventually projects in the scene machine. 
+
   2. Create a project.
     This will be like a movie or a series or a commercial. We can designate if it's funded or not. If artists will be paid for work basically or if it's a community project. We have to figure out a liscencing agreement for that. It financially would belong partially at least to the contributers. We will put concept art, script and beatboards here.
   3. Create a Reel
     This will be made up of scenes in a timeline. Assets and backgrounds will live here. 
    */
 
-  const field = {
-    _id: 1234, // from db creation
-    fieldName: 'Paul_Saves_All',
-    slug: 'paul-saves-all',
-    projects: [
-      {
-        id: 1234,
-        projectName: 'Paul_Saves_All_Movie',
-        slug: '/projects/paul-saves-all-movie',
-        script: { Location: 's3 bucket', revision: 1 },
-        conceptArt: [],
-        funding: { funded: false, amount: 0 }, // information about the projects financial status
-        reels: [
-          {
-            id: 111,
-            reelName: 'movie',
-            production: false,
-            timeLine: {
-              timeLine: [
-                {
-                  scene001: scenes.scene001,
-                },
-              ], // potentially this can move in and out of editorial. Passed in and out of an editor. OR this will just be a place where the scenes live while it's being put in and out of editorial for them to pull from.
-              revision: 1,
-              frameRate: 24,
-              aspectRatio: '16:9',
-            },
-            scenes,
-            director: '',
-            contributors: [], // push to this list when someone makes an edit
-          },
-          {
-            reelName: 'teaser',
-            timeLine: {
-              timeLine: [],
-              revision: 1,
-            },
-            scenes,
-            director: '',
-            contributors: [], // push to this list when someone makes an edit
-          },
-        ],
-      },
-    ],
+  // make a form where they initalize or 'Launch' the scene. A 'Scene Launcher'.
+  console.log('answer', answer);
+  console.log('state', state);
+  const handleCheckout = async () => {
+    const answer1 = await getAnswer();
+    if (answer1) {
+      dispatch({ type: 'CONFIRM', payload: '' });
+      dispatch({
+        type: 'CHECKOUT',
+        payload: { shot: activeShot, user: userContext.state.user },
+      });
+    }
   };
 
-  // make a form where they initalize or 'Launch' the scene. A 'Scene Launcher'.
+  const getAnswer = () => {
+    dispatch({ type: 'CONFIRM', payload: 'Confirm' });
+    new Promise((res) => {
+      const giveAnswer = (answer) => res(answer);
+      return <>
+      <div className="btn-mini" onClick={() => giveAnswer(false)}>
+        <i class="fas fa-times"></i>
+      </div>
+      <div className="btn-mini" onClick={() => giveAnswer(true)}>
+        <i class="fas fa-check"></i>
+      </div>
+      <div>{state.confirm}?</div>
+    </>;
+      // return <Confirm giveAnswer={giveAnswer} />;
+    });
+  };
+
+  // const Confirm = ({ giveAnswer }) => {
+  //   return (
+  //     <>
+  //       <div className="btn-mini" onClick={() => giveAnswer(false)}>
+  //         <i class="fas fa-times"></i>
+  //       </div>
+  //       <div className="btn-mini" onClick={() => giveAnswer(true)}>
+  //         <i class="fas fa-check"></i>
+  //       </div>
+  //       <div>{state.confirm}?</div>
+  //     </>
+  //   );
+  // };
+
+  // const confirmAnswer = async () => {
+  //   dispatch({ type: 'CONFIRM', payload: 'Confirm' });
+  //   await setAnswer(true)
+  // }
 
   const handleViewer = (e, scene) => {
     e.preventDefault();
@@ -1507,9 +1522,7 @@ const SceneMachine = () => {
               <div className="btn-mini">
                 <i class="fas fa-power-off"></i>
               </div>
-              <div className="btn-mini">
-                <i class="far fa-save"></i>
-              </div>
+
               <div className="btn-mini">
                 <i class="far fa-share-square"></i>
               </div>
@@ -1625,33 +1638,46 @@ const SceneMachine = () => {
               </div>
             </div>
             <div className="control-panel-other">
-              <div className="btn-mini">
-                <i class="fas fa-redo-alt"></i>
-              </div>
-              <div className="btn-mini">
-                <i class="fas fa-undo-alt"></i>
-              </div>
-              <div className="btn-mini">
-                <i class="fas fa-times"></i>
-              </div>
-              <div className="btn-mini">
-                <i class="fas fa-check"></i>
-              </div>
-              <div className="btn-mini">
+              {state.confirm && <GetAnswer />}
+              {/* {state.confirm && (
+                <>
+                  <div className="btn-mini" onClick={() => setAnswer(false)}>
+                    <i class="fas fa-times"></i>
+                  </div>
+                  <div className="btn-mini" onClick={() => setAnswer(true)}>
+                    <i class="fas fa-check"></i>
+                  </div>
+                  <div>{state.confirm}?</div>
+                </>
+              )} */}
+              {/* <div className="btn-mini">
                 <i class="fas fa-pager"></i>
-              </div>
-              <div className="btn-mini">
-                <i class="fas fa-photo-video"></i>
-              </div>
-              <div className="btn-mini">
-                <i class="fas fa-file-export"></i>
-              </div>
-              <div className="btn-mini">
-                <i class="fas fa-info-circle"></i>
-              </div>
-              <div className="btn-mini">
+              </div> */}
+              {!state.confirm && (
+                <>
+                  <div className="btn-mini">
+                    <i class="fas fa-redo-alt"></i>
+                  </div>
+                  <div className="btn-mini">
+                    <i class="fas fa-undo-alt"></i>
+                  </div>
+                  <div className="btn-mini">
+                    <i class="fas fa-photo-video"></i>
+                  </div>
+                  <div className="btn-mini">
+                    <i class="fas fa-file-export"></i>
+                  </div>
+                  <div className="btn-mini">
+                    <i class="fas fa-info-circle"></i>
+                  </div>
+                  <div className="btn-mini">
+                    <i class="far fa-save"></i>
+                  </div>
+                </>
+              )}
+              {/* <div className="btn-mini">
                 <i class="fas fa-expand"></i>
-              </div>
+              </div> */}
             </div>
           </div>
           <div className="scene-overview">
@@ -1829,6 +1855,7 @@ const SceneMachine = () => {
                             className={`btn-small ${
                               detail === 'none' ? 'active' : ''
                             }`}
+                            onClick={handleCheckout}
                           >
                             Checkout
                           </button>
@@ -1868,21 +1895,25 @@ const SceneMachine = () => {
                           >
                             Revisions
                           </button>
-                          {state.edit ? <button
-                            className={`btn-small ${
-                              detail === 'none' ? 'active' : ''
-                            }`}
-                            onClick={() => dispatch({type: 'SAVE_SCRIPT'})}
-                          >
-                            Save
-                          </button>:<button
-                            className={`btn-small ${
-                              detail === 'none' ? 'active' : ''
-                            }`}
-                            onClick={() => dispatch({type: 'EDIT_SCRIPT'})}
-                          >
-                            Edit
-                          </button>}
+                          {state.edit ? (
+                            <button
+                              className={`btn-small ${
+                                detail === 'none' ? 'active' : ''
+                              }`}
+                              onClick={() => dispatch({ type: 'SAVE_SCRIPT' })}
+                            >
+                              Save
+                            </button>
+                          ) : (
+                            <button
+                              className={`btn-small ${
+                                detail === 'none' ? 'active' : ''
+                              }`}
+                              onClick={() => dispatch({ type: 'EDIT_SCRIPT' })}
+                            >
+                              Edit
+                            </button>
+                          )}
                         </>
                       )}
                     </div>
@@ -2068,7 +2099,6 @@ const SceneMachine = () => {
 
                         {detail === 'boards' && (
                           <div className="transport-panels-section">
-                            {console.log(background)}
                             {/* <h2>Scene Panels: </h2> */}
                             <div className="bread-crumb">
                               Boards &gt;{' '}
