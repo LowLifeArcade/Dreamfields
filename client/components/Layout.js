@@ -14,7 +14,12 @@ const Layout = (props) => {
       {<NavBar sideBarSize={sideBarSize} onLogoClick={setSideBarSize} />}
       <div className="layoutContainer">
         <div className="flex-layout">
-          {props.showSideBar && user && <SideBar size={sideBarSize} />}
+          {props.showSideBar && user && 
+            <div className='sidebar'>
+
+            <SideBar size={sideBarSize} />
+            </div>
+          }
           <div className="content">{props.children}</div>
         </div>
       </div>
@@ -23,18 +28,23 @@ const Layout = (props) => {
         .layoutContainer {
           width: 100%;
         }
+
+        .sidebar {
+          width: 65px;
+          height: 100%;
+        }
         .flex-layout {
           //top: 49px;
 
          position: fixed; // this did it
           display: flex;
-          height: 94vh;
+          height: 94%;
           width: inherit;
 
         }
         .content {
           width: 100%
-          height: 100vh;
+          height: 94vh;
           overflow-y: scroll;
           flex: 0 1 100%;
         }

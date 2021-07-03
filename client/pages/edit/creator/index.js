@@ -8,9 +8,9 @@ const CreatorEdit = () => {
         .body {
           display: flex;
           justify-content: center;
-          align-items: flex-end;
+          // align-items: flex-end;
           background: linear-gradient(rgb(52, 75, 97), rgb(180, 216, 147));
-          height: 100%;
+          height: 94vh;
         }
         `}</style>
     </div>

@@ -73,32 +73,37 @@ const initialViewerState = {
 
   script: {
     script: `<br />
-  <p>EXT. SCHOOL - DAY</p>
-  <br>
-  <p>
-    PAUL, running from a gang of teenagers. He huffs and puffs
-    as he looks back in terror. The gang cackles in the chase.
-    Paul, not looking where he's going, slips and falls into a
-    hole. He slides down the mud...
-  </p>
-  <br>
-  <p>Paul </p>
-  <div style={{'text-align': 'center'}}>Ahhhhhh </div>
-  <br>
-  <p>
-    SID and his BUDDIES stop short of the hole. They hear
-    Paul's cavernous cry as he falls. Sid and his buddies look
-    concerned through their cool. Finally:
-  </p>
-  <br>
-  <p>Sid </p>
-  <p>
-    Dummy. Let's go, guys.
-  </p>
-  <br>
-  <p>
-    After a long descent, Paul lands into a DEN OF VIPERS. Paul's teeth clater.
-  </p>`,
+    <p>EXT. SCHOOL - DAY</p>
+    <br>
+    <p>
+      PAUL, runs from a gang of teenagers. Huffing and puffing, dread written on his face.
+      The gang cackle as they chase.
+      Paul, not looking where he's going, slips and falls into a
+      hole. He slides down the mud...
+    </p>
+    <br>
+  <div style="text-align:center;">
+    <p>Paul </p>
+    <div>Ahhhhhh </div>
+  </div>
+    <br>
+    <p>
+      SID and his BUDDIES stop short of the hole. They hear
+      Paul's cavernous cry as he falls. Sid and his buddies look
+      concerned through their cool. Finally:
+    </p>
+    <br>
+  <div style="text-align:center;">
+    <p>Sid </p>
+  
+    <p>
+      Dummy. Let's go, guys.
+    </p>
+  </div>
+    <br>
+    <p>
+      After a long descent, Paul lands into a DEN OF VIPERS. Paul's teeth clater.
+    </p>`,
     rev: 1,
   },
 
@@ -2075,451 +2080,430 @@ const SceneMachine = () => {
                   </div>
 
                   <div className="transport-overview">
-                    {
-                      // this is unneccesary
-                      <>
-                        {detail === 'overview' && (
-                          <div
-                            id="scene-card"
-                            className="transport-description"
-                          >
-                            {/* <h2>Scene Card: </h2> */}
-                            <h3>Scene: "{viewer.sceneName}"</h3>
-                            <div className="transport-description-detail">
-                              {viewer.description}
-                            </div>
-                            <table className="details-table">
-                              {/* <caption>Details Table</caption> */}
-                              <thead>
-                                <tr>
-                                  <th>Item</th>
-                                  <th>Detail</th>
-                                </tr>
-                              </thead>
+                    {detail === 'overview' && (
+                      <div id="scene-card" className="transport-description">
+                        {/* <h2>Scene Card: </h2> */}
+                        <h3>Scene: "{viewer.sceneName}"</h3>
+                        <div className="transport-description-detail">
+                          {viewer.description}
+                        </div>
+                        <table className="details-table">
+                          {/* <caption>Details Table</caption> */}
+                          <thead>
+                            <tr>
+                              <th>Item</th>
+                              <th>Detail</th>
+                            </tr>
+                          </thead>
 
-                              <tbody>
-                                <tr>
-                                  <td>Setting: </td>
-                                  <td>{viewer.details.setting}</td>
-                                </tr>
+                          <tbody>
+                            <tr>
+                              <td>Setting: </td>
+                              <td>{viewer.details.setting}</td>
+                            </tr>
 
-                                <tr>
-                                  <td>Character Count: </td>
-                                  <td>{viewer.details.characters.length}</td>
-                                </tr>
-                                <tr>
-                                  <td> Shot Count: </td>
-                                  <td>{viewer.details.shotList.length}</td>
-                                </tr>
-                                <tr>
-                                  <td> Backgrounds: </td>
-                                  <td>{viewer.details.backgrounds.length}</td>
-                                </tr>
-                                <tr>
-                                  <td> Asset Count: </td>
-                                  <td>{viewer.details.assets.length}</td>
-                                </tr>
-                                <tr>
-                                  <td> FX: </td>
-                                  <td>{viewer.details.FX.length}</td>
-                                </tr>
-                                <tr>
-                                  <td>Frame Rate: </td>
-                                  <td>{viewer.details.frameRate}</td>
-                                </tr>
-                                <tr>
-                                  <td>Aspect Ratio: </td>
-                                  <td>{viewer.details.aspectRatio}</td>
-                                </tr>
-                                <tr>
-                                  <td>Launched: </td>
-                                  <td>{viewer.launched ? 'true' : 'false'}</td>
-                                </tr>
-                                <tr>
-                                  <td>Production Stage: </td>
-                                  <td>{viewer.productionStage}</td>
-                                </tr>
-                              </tbody>
-                            </table>
-                            Contributers and their hard work are how this
-                            project gets made
-                            <table className="details-table">
-                              <thead>
-                                <tr>
-                                  <th>Contributers</th>
-                                  <th>Job</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {/* obviously do a map here from viewer */}
-                                <tr>
-                                  <td>Keith</td>
-                                  <td>Key Frames</td>
-                                </tr>
-                                <tr>
-                                  <td>Sonny</td>
-                                  <td>Inbetweens</td>
-                                </tr>
-                                <tr>
-                                  <td>Loralai</td>
-                                  <td>Inbetweens</td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
+                            <tr>
+                              <td>Character Count: </td>
+                              <td>{viewer.details.characters.length}</td>
+                            </tr>
+                            <tr>
+                              <td> Shot Count: </td>
+                              <td>{viewer.details.shotList.length}</td>
+                            </tr>
+                            <tr>
+                              <td> Backgrounds: </td>
+                              <td>{viewer.details.backgrounds.length}</td>
+                            </tr>
+                            <tr>
+                              <td> Asset Count: </td>
+                              <td>{viewer.details.assets.length}</td>
+                            </tr>
+                            <tr>
+                              <td> FX: </td>
+                              <td>{viewer.details.FX.length}</td>
+                            </tr>
+                            <tr>
+                              <td>Frame Rate: </td>
+                              <td>{viewer.details.frameRate}</td>
+                            </tr>
+                            <tr>
+                              <td>Aspect Ratio: </td>
+                              <td>{viewer.details.aspectRatio}</td>
+                            </tr>
+                            <tr>
+                              <td>Launched: </td>
+                              <td>{viewer.launched ? 'true' : 'false'}</td>
+                            </tr>
+                            <tr>
+                              <td>Production Stage: </td>
+                              <td>{viewer.productionStage}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        Contributers and their hard work are how this project
+                        gets made
+                        <table className="details-table">
+                          <thead>
+                            <tr>
+                              <th>Contributers</th>
+                              <th>Job</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {/* obviously do a map here from viewer */}
+                            <tr>
+                              <td>Keith</td>
+                              <td>Key Frames</td>
+                            </tr>
+                            <tr>
+                              <td>Sonny</td>
+                              <td>Inbetweens</td>
+                            </tr>
+                            <tr>
+                              <td>Loralai</td>
+                              <td>Inbetweens</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    )}
+                    {/* <hr /> */}
+                    {detail === 'script' && (
+                      // TODO: add undo function to changes in text area. Maybe store viewer.script.script in a backup field when you hit edit button.
+                      <div className="transport-script">
+                        Revision: {viewer.script.rev}
+                        {!state.edit ? (
+                          <>
+                            <div
+                              dangerouslySetInnerHTML={{
+                                __html: viewer.script.script,
+                              }}
+                            ></div>
+                          </>
+                        ) : (
+                          <>
+                            <textarea
+                              cols="70"
+                              rows="50"
+                              type="text"
+                              value={viewer.script.script}
+                              onChange={(e) =>
+                                setViewer({
+                                  ...viewer,
+                                  script: {
+                                    ...viewer.script,
+                                    script: e.target.value,
+                                  },
+                                })
+                              }
+                            />
+                          </>
                         )}
-                        {/* <hr /> */}
-                        {detail === 'script' && (
-                          // TODO: add undo function to changes in text area. Maybe store viewer.script.script in a backup field when you hit edit button.
-                          <div className="transport-script">
-                            Revision: {viewer.script.rev}
-                            {!state.edit ? (
-                              <>
-                                <div
-                                  dangerouslySetInnerHTML={{
-                                    __html: viewer.script.script,
-                                  }}
-                                ></div>
-                              </>
+                      </div>
+                    )}
+
+                    {detail === 'breakdown' && (
+                      <div className="transport-breakdown">
+                        {viewer.details.shotList.map((shot, i) => (
+                          <div
+                            className={`transport-breakdown-shot ${
+                              state.checkedOut &&
+                              state.checkedOut.shot.id === shot.id &&
+                              'checked-out'
+                            } ${activeShot.id === shot.id && 'active'} ${
+                              state.checkedOut &&
+                              state.checkedOut.user.name !=
+                                userContext.state.user.name &&
+                              'not-user'
+                            }`}
+                            onClick={() => setActiveShot(shot)}
+                          >
+                            <h3>Shot Number {i + 1}</h3>
+                            <div>
+                              <strong>Complexity: </strong>
+                              {shot.complexity}
+                            </div>
+                            <div>{shot.breakdown}</div>
+                            <div>
+                              <strong>Characters: </strong>
+                              {shot.characters}
+                              <br />
+                              <strong>Assets: </strong>
+                              {shot.assets}
+                              <br />
+                              <strong>Backgrounds: </strong>
+                              {shot.backgrounds}
+                            </div>
+                            {state.checkedOut &&
+                            state.checkedOut.shot.id === shot.id ? (
+                              <div>
+                                <strong>
+                                  Checked out by{' '}
+                                  {state.checkedOut &&
+                                    state.checkedOut.user.name}
+                                </strong>
+                              </div>
                             ) : (
-                              <>
-                                <textarea
-                                  cols="70"
-                                  rows="50"
-                                  type="text"
-                                  value={viewer.script.script}
-                                  onChange={(e) =>
-                                    setViewer({
-                                      ...viewer,
-                                      script: { script: e.target.value },
-                                    })
-                                  }
-                                />
-                              </>
+                              <div>
+                                <strong>Open for checkout</strong>
+                              </div>
                             )}
                           </div>
-                        )}
+                        ))}
+                        <div className="add" onClick={() => setAddBreakdown()}>
+                          <i class="fas fa-plus fa-2x"></i>
+                        </div>
 
-                        {detail === 'breakdown' && (
-                          <div className="transport-breakdown">
-                            {viewer.details.shotList.map((shot, i) => (
-                              <div
-                                className={`transport-breakdown-shot ${
-                                  state.checkedOut &&
-                                  state.checkedOut.shot.id === shot.id &&
-                                  'checked-out'
-                                } ${activeShot.id === shot.id && 'active'} ${
-                                  state.checkedOut &&
-                                  state.checkedOut.user.name !=
-                                    userContext.state.user.name &&
-                                  'not-user'
-                                }`}
-                                onClick={() => setActiveShot(shot)}
-                              >
-                                <h3>Shot Number {i + 1}</h3>
-                                <div>
-                                  <strong>Complexity: </strong>
-                                  {shot.complexity}
-                                </div>
-                                <div>{shot.breakdown}</div>
-                                <div>
-                                  <strong>Characters: </strong>
-                                  {shot.characters}
-                                  <br />
-                                  <strong>Assets: </strong>
-                                  {shot.assets}
-                                  <br />
-                                  <strong>Backgrounds: </strong>
-                                  {shot.backgrounds}
-                                </div>
-                                {state.checkedOut &&
-                                state.checkedOut.shot.id === shot.id ? (
-                                  <div>
-                                    <strong>
-                                      Checked out by{' '}
-                                      {state.checkedOut &&
-                                        state.checkedOut.user.name}
-                                    </strong>
-                                  </div>
-                                ) : (
-                                  <div>
-                                    <strong>Open for checkout</strong>
-                                  </div>
-                                )}
-                              </div>
-                            ))}
-                            <div
-                              className="add"
-                              onClick={() => setAddBreakdown()}
-                            >
-                              <i class="fas fa-plus fa-2x"></i>
-                            </div>
-
-                            {/* <div
+                        {/* <div
                               dangerouslySetInnerHTML={{
                                 __html: viewer.details.shotList.breakdown,
                               }}
                             ></div> */}
+                      </div>
+                    )}
+                    {/* <hr /> */}
+
+                    {detail === 'boards' && (
+                      <div className="transport-panels-section">
+                        {/* <h2>Scene Panels: </h2> */}
+                        <div className="bread-crumb">
+                          <div>
+                            Boards &gt;{' '}
+                            {activeShot.shot
+                              ? 'Shot number: ' + activeShot.shot
+                              : 'All'}
                           </div>
-                        )}
-                        {/* <hr /> */}
+                          {/* <div></div> */}
+                          <div>Layouts | Beat Boards | Scene Boards</div>
+                        </div>
 
-                        {detail === 'boards' && (
-                          <div className="transport-panels-section">
-                            {/* <h2>Scene Panels: </h2> */}
-                            <div className="bread-crumb">
-                              <div>Boards &gt;{' '}
-                              {activeShot.shot
-                                ? 'Shot number: ' + activeShot.shot
-                                : 'All'}</div>
-                                {/* <div></div> */}
-                                <div>Layouts | Beat Boards | Scene Boards</div>
-                            </div>
-
-                            <div className="board-titles">Layouts</div>
-                            <div className="transport-panels">
-                              {viewer.layoutBoards.map(
-                                (board, i) =>
-                                  (activeShot.shot === board.shotNumber && (
-                                    <>
-                                      <div
-                                        onClick={() =>
-                                          setPreview({
-                                            image: board.board,
-                                            sceneName: viewer.sceneName,
-                                            panel: i + 1,
-                                            shotNumber: board.shotNumber,
-                                            id: board.id
-                                          })
-                                        }
-                                        className="transport-panel"
-                                      >
-                                        <div className="transport-label">
-                                          {board.panel}
-                                        </div>
-                                        <div className="panel-index">
-                                          {i + 1}
-                                        </div>
-                                        <div className="panel-shot">
-                                          {board.shotNumber}
-                                        </div>
-                                        <img
-                                          className={
-                                            board.id === preview.id && 'active'
-                                          }
-                                          src={board.board}
-                                          alt=""
-                                        />
-                                        {/* <p>shot: {board.shotNumber}</p> */}
-                                      </div>
-                                    </>
-                                  )) ||
-                                  (activeShot === '' && (
-                                    <div
-                                      onClick={() =>
-                                        setPreview({
-                                          image: board.board,
-                                          sceneName: viewer.sceneName,
-                                          panel: i + 1,
-                                          shotNumber: board.shotNumber,
-                                          id: board.id
-                                        })
-                                      }
-                                      className="transport-panel"
-                                    >
-                                      <div className="transport-label">
-                                        {board.panel}
-                                      </div>
-                                      <div className="panel-index">{i + 1}</div>
-                                      <div className="panel-shot">
-                                        {board.shotNumber}
-                                      </div>
-                                      <img
-                                        className={
-                                          board.id === preview.id && 'active'
-                                        }
-                                        src={board.board}
-                                        alt=""
-                                      />
-                                      {/* <p>shot: {board.shotNumber}</p> */}
+                        <div className="board-titles">Layouts</div>
+                        <div className="transport-panels">
+                          {viewer.layoutBoards.map(
+                            (board, i) =>
+                              (activeShot.shot === board.shotNumber && (
+                                <>
+                                  <div
+                                    onClick={() =>
+                                      setPreview({
+                                        image: board.board,
+                                        sceneName: viewer.sceneName,
+                                        panel: i + 1,
+                                        shotNumber: board.shotNumber,
+                                        id: board.id,
+                                      })
+                                    }
+                                    className="transport-panel"
+                                  >
+                                    <div className="transport-label">
+                                      {board.panel}
                                     </div>
-                                  ))
-                              )}
-                              
-                              <section className="transport-panel-add">
-                                <div
-                                  onClick={() => setPreview(initPreviewState)}
-                                >
-                                  <i class="fas fa-plus "></i>
-                                </div>
-                              </section>
-                            </div>
-
-
-                            <div className="board-titles">Beat Boards</div>
-                            <div className="transport-panels">
-                              {viewer.beatBoards.map(
-                                (board, i) =>
-                                  (activeShot.shot === board.shotNumber && (
-                                    <>
-                                      <div
-                                        onClick={() =>
-                                          setPreview({
-                                            image: board.board,
-                                            sceneName: viewer.sceneName,
-                                            panel: i + 1,
-                                            shotNumber: board.shotNumber,
-                                            id: board.id
-                                          })
-                                        }
-                                        className="transport-panel"
-                                      >
-                                        <div className="transport-label">
-                                          {board.panel}
-                                        </div>
-                                        <div className="panel-index">
-                                          {i + 1}
-                                        </div>
-                                        <div className="panel-shot">
-                                          {board.shotNumber}
-                                        </div>
-                                        <img
-                                          className={
-                                            board.id === preview.id && 'active'
-                                          }
-                                          src={board.board}
-                                          alt=""
-                                        />
-                                        {/* <p>shot: {board.shotNumber}</p> */}
-                                      </div>
-                                    </>
-                                  )) ||
-                                  (activeShot === '' && (
-                                    <div
-                                      onClick={() =>
-                                        setPreview({
-                                          image: board.board,
-                                          sceneName: viewer.sceneName,
-                                          panel: i + 1,
-                                          shotNumber: board.shotNumber,
-                                          id: board.id
-                                        })
-                                      }
-                                      className="transport-panel"
-                                    >
-                                      <div className="transport-label">
-                                        {board.panel}
-                                      </div>
-                                      <div className="panel-index">{i + 1}</div>
-                                      <div className="panel-shot">
-                                        {board.shotNumber}
-                                      </div>
-                                      <img
-                                        className={
-                                          board.id === preview.id && 'active'
-                                        }
-                                        src={board.board}
-                                        alt=""
-                                      />
-                                      {/* <p>shot: {board.shotNumber}</p> */}
+                                    <div className="panel-index">{i + 1}</div>
+                                    <div className="panel-shot">
+                                      {board.shotNumber}
                                     </div>
-                                  ))
-                              )}
-                              
-                              <section className="transport-panel-add">
-                                <div
-                                  onClick={() => setPreview(initPreviewState)}
-                                >
-                                  <i class="fas fa-plus "></i>
-                                </div>
-                              </section>
-                            </div>
-
-                            <div className="board-titles">Scene Boards</div>
-                            <div className="transport-panels">
-                              {viewer.storyBoards.map(
-                                (board, i) =>
-                                  (activeShot.shot === board.shotNumber && (
-                                    <>
-                                      <div
-                                        onClick={() =>
-                                          setPreview({
-                                            image: board.board,
-                                            sceneName: viewer.sceneName,
-                                            panel: i + 1,
-                                            shotNumber: board.shotNumber,
-                                            id: board.id
-                                          })
-                                        }
-                                        className="transport-panel"
-                                      >
-                                        <div className="transport-label">
-                                          {board.panel}
-                                        </div>
-                                        <div className="panel-index">
-                                          {i + 1}
-                                        </div>
-                                        <div className="panel-shot">
-                                          {board.shotNumber}
-                                        </div>
-                                        <img
-                                          className={
-                                            board.id === preview.id && 'active'
-                                          }
-                                          src={board.board}
-                                          alt=""
-                                        />
-                                        {/* <p>shot: {board.shotNumber}</p> */}
-                                      </div>
-                                    </>
-                                  )) ||
-                                  (activeShot === '' && (
-                                    <div
-                                      onClick={() =>
-                                        setPreview({
-                                          image: board.board,
-                                          sceneName: viewer.sceneName,
-                                          panel: i + 1,
-                                          shotNumber: board.shotNumber,
-                                          id: board.id
-                                        })
+                                    <img
+                                      className={
+                                        board.id === preview.id && 'active'
                                       }
-                                      className="transport-panel"
-                                    >
-                                      <div className="transport-label">
-                                        {board.panel}
-                                      </div>
-                                      <div className="panel-index">{i + 1}</div>
-                                      <div className="panel-shot">
-                                        {board.shotNumber}
-                                      </div>
-                                      <img
-                                        className={
-                                          board.id === preview.id && 'active'
-                                        }
-                                        src={board.board}
-                                        alt=""
-                                      />
-                                      {/* <p>shot: {board.shotNumber}</p> */}
-                                    </div>
-                                  ))
-                              )}
-                              
-                              <section className="transport-panel-add">
+                                      src={board.board}
+                                      alt=""
+                                    />
+                                    {/* <p>shot: {board.shotNumber}</p> */}
+                                  </div>
+                                </>
+                              )) ||
+                              (activeShot === '' && (
                                 <div
-                                  onClick={() => setPreview(initPreviewState)}
+                                  onClick={() =>
+                                    setPreview({
+                                      image: board.board,
+                                      sceneName: viewer.sceneName,
+                                      panel: i + 1,
+                                      shotNumber: board.shotNumber,
+                                      id: board.id,
+                                    })
+                                  }
+                                  className="transport-panel"
                                 >
-                                  <i class="fas fa-plus "></i>
+                                  <div className="transport-label">
+                                    {board.panel}
+                                  </div>
+                                  <div className="panel-index">{i + 1}</div>
+                                  <div className="panel-shot">
+                                    {board.shotNumber}
+                                  </div>
+                                  <img
+                                    className={
+                                      board.id === preview.id && 'active'
+                                    }
+                                    src={board.board}
+                                    alt=""
+                                  />
+                                  {/* <p>shot: {board.shotNumber}</p> */}
                                 </div>
-                              </section>
+                              ))
+                          )}
+
+                          <section className="transport-panel-add">
+                            <div onClick={() => setPreview(initPreviewState)}>
+                              <i class="fas fa-plus "></i>
                             </div>
+                          </section>
+                        </div>
 
+                        <div className="board-titles">Beat Boards</div>
+                        <div className="transport-panels">
+                          {viewer.beatBoards.map(
+                            (board, i) =>
+                              (activeShot.shot === board.shotNumber && (
+                                <>
+                                  <div
+                                    onClick={() =>
+                                      setPreview({
+                                        image: board.board,
+                                        sceneName: viewer.sceneName,
+                                        panel: i + 1,
+                                        shotNumber: board.shotNumber,
+                                        id: board.id,
+                                      })
+                                    }
+                                    className="transport-panel"
+                                  >
+                                    <div className="transport-label">
+                                      {board.panel}
+                                    </div>
+                                    <div className="panel-index">{i + 1}</div>
+                                    <div className="panel-shot">
+                                      {board.shotNumber}
+                                    </div>
+                                    <img
+                                      className={
+                                        board.id === preview.id && 'active'
+                                      }
+                                      src={board.board}
+                                      alt=""
+                                    />
+                                    {/* <p>shot: {board.shotNumber}</p> */}
+                                  </div>
+                                </>
+                              )) ||
+                              (activeShot === '' && (
+                                <div
+                                  onClick={() =>
+                                    setPreview({
+                                      image: board.board,
+                                      sceneName: viewer.sceneName,
+                                      panel: i + 1,
+                                      shotNumber: board.shotNumber,
+                                      id: board.id,
+                                    })
+                                  }
+                                  className="transport-panel"
+                                >
+                                  <div className="transport-label">
+                                    {board.panel}
+                                  </div>
+                                  <div className="panel-index">{i + 1}</div>
+                                  <div className="panel-shot">
+                                    {board.shotNumber}
+                                  </div>
+                                  <img
+                                    className={
+                                      board.id === preview.id && 'active'
+                                    }
+                                    src={board.board}
+                                    alt=""
+                                  />
+                                  {/* <p>shot: {board.shotNumber}</p> */}
+                                </div>
+                              ))
+                          )}
 
-                          </div>
-                        )}
-                        {detail === 'panel details' && <div>panel details</div>}
-                      </>
-                    }
+                          <section className="transport-panel-add">
+                            <div onClick={() => setPreview(initPreviewState)}>
+                              <i class="fas fa-plus "></i>
+                            </div>
+                          </section>
+                        </div>
+
+                        <div className="board-titles">Scene Boards</div>
+                        <div className="transport-panels">
+                          {viewer.storyBoards.map(
+                            (board, i) =>
+                              (activeShot.shot === board.shotNumber && (
+                                <>
+                                  <div
+                                    onClick={() =>
+                                      setPreview({
+                                        image: board.board,
+                                        sceneName: viewer.sceneName,
+                                        panel: i + 1,
+                                        shotNumber: board.shotNumber,
+                                        id: board.id,
+                                      })
+                                    }
+                                    className="transport-panel"
+                                  >
+                                    <div className="transport-label">
+                                      {board.panel}
+                                    </div>
+                                    <div className="panel-index">{i + 1}</div>
+                                    <div className="panel-shot">
+                                      {board.shotNumber}
+                                    </div>
+                                    <img
+                                      className={
+                                        board.id === preview.id && 'active'
+                                      }
+                                      src={board.board}
+                                      alt=""
+                                    />
+                                    {/* <p>shot: {board.shotNumber}</p> */}
+                                  </div>
+                                </>
+                              )) ||
+                              (activeShot === '' && (
+                                <div
+                                  onClick={() =>
+                                    setPreview({
+                                      image: board.board,
+                                      sceneName: viewer.sceneName,
+                                      panel: i + 1,
+                                      shotNumber: board.shotNumber,
+                                      id: board.id,
+                                    })
+                                  }
+                                  className="transport-panel"
+                                >
+                                  <div className="transport-label">
+                                    {board.panel}
+                                  </div>
+                                  <div className="panel-index">{i + 1}</div>
+                                  <div className="panel-shot">
+                                    {board.shotNumber}
+                                  </div>
+                                  <img
+                                    className={
+                                      board.id === preview.id && 'active'
+                                    }
+                                    src={board.board}
+                                    alt=""
+                                  />
+                                  {/* <p>shot: {board.shotNumber}</p> */}
+                                </div>
+                              ))
+                          )}
+
+                          <section className="transport-panel-add">
+                            <div onClick={() => setPreview(initPreviewState)}>
+                              <i class="fas fa-plus "></i>
+                            </div>
+                          </section>
+                        </div>
+                      </div>
+                    )}
+                    {detail === 'panel details' && <div>panel details</div>}
                   </div>
                 </div>
               </div>
@@ -2577,14 +2561,14 @@ const Style = ({ background }) => (
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 300px;
+      // width: 300px;
       color: rgb(107, 105, 105);
       // color: rgb(104, 70, 70);
       box-shadow: inset 0 0 15px rgb(14, 13, 12), inset 0 0 15px rgb(39, 38, 31),
         inset 0 0 30px rgb(55, 55, 75), inset 0 0 20px rgb(55, 55, 75);
       background: rgb(247, 229, 229);
       font-size: 1.2rem;
-      padding: 6px 40px;
+      padding: 6px 30px;
       border-radius: 10px;
       // border: solid 1px rgb(43, 38, 38);
       box-shadow: 0 0px 10px rgba(95, 98, 104, 0.4),
@@ -2600,20 +2584,21 @@ const Style = ({ background }) => (
     #scene-machine > div {
       height: 100%;
       // background: rgba(203, 208, 211, .5);
-      background: rgba(89, 119, 131, 0.6);
+      background: rgba(89, 119, 131, 0.7);
       // background: rgba(65, 78, 83, 0.6);
       // background: rgb(68, 48, 48);
       padding: 10px 40px;
       padding-bottom: 30px;
+      // width: 94vw;
       width: 100%;
-      max-width: 1200px;
+      // max-width: 1200px;
       // border: solid 3px rgb(43, 38, 38);
-      border-top-left-radius: 20px;
-      border-top-right-radius: 20px;
+      border-top-left-radius: 14px;
+      border-top-right-radius: 14px;
       border-bottom-left-radius: 8px;
       border-bottom-right-radius: 8px;
       box-shadow: inset 0 0px 10px, inset 0 0 15px, inset 0 0 5px,
-        0 20px 500px 800px rgba(180, 171, 155, 0.4), 0 0 10px rgb(39, 44, 29);
+        0 20px 500px 800px rgba(180, 171, 155, 0.4), 0 0 20px rgb(39, 44, 29);
       // 0 10px 50px rgba(87, 72, 32, 0.897), 0 10px 100px rgba(222, 248, 158, 0.3);
     }
     .section-strip-container {
@@ -2826,11 +2811,12 @@ const Style = ({ background }) => (
     }
 
     .scene-overview {
-      background: rgb(46, 35, 35);
+      background: rgba(46, 35, 35, 0.6);
       // padding: 20px;
-      // height: 440px; I need to put this back so it doesn't get wacky
+
       height: 100%;
       width: 100%;
+      overflow: auto;
       display: flex;
       border: solid 1px rgb(22, 19, 19);
       border-radius: 10px;
@@ -2841,10 +2827,11 @@ const Style = ({ background }) => (
       padding: 10px;
       width: 40%;
       height: 100%;
+      overflow: auto;
     }
 
     .viewer {
-      max-width: 500px;
+      // max-width: 500px;
       // height: 370px;
       border-radius: 5px;
       // height: 100%;
@@ -2856,10 +2843,12 @@ const Style = ({ background }) => (
       padding: 8px;
       // height: 100%;
       width: 100%;
-      max-height: 270px;
+      // max-height: 270px;
     }
     .right-panel {
       width: 60%;
+      height: 100%;
+      overflow: auto;
     }
 
     .scene-overview-about {
@@ -2944,9 +2933,8 @@ const Style = ({ background }) => (
     }
 
     .transport-viewer-controls {
-      height: 100%;
+      // height: 100%;
       display: flex;
-      align-items: center;
       justify-content: center;
     }
 
@@ -2956,8 +2944,9 @@ const Style = ({ background }) => (
       width: auto;
       // border: solid 1px rgb(65, 11, 11);
       margin: 10px;
-      height: 385px;
-      // height: 100%;
+      height: 100%;
+      overflow: auto;
+      // height: 60vh;
       // max-height: 530px;
       border-radius: 10px;
       box-shadow: inset 0 0 10px, inset 0 0 3px;
