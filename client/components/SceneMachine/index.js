@@ -1,4 +1,4 @@
-import { useState, useReducer, useContext } from 'react';
+import { useState, useEffect, useReducer, useContext } from 'react';
 import { Context } from '../../context';
 
 // initial states
@@ -1405,35 +1405,54 @@ const SceneMachine = () => {
    */
 
   // make a form where they initalize or 'Launch' the scene. A 'Scene Launcher'.
-  console.log('answer', answer);
-  console.log('state', state);
-  const handleCheckout = async () => {
-    const answer1 = await getAnswer();
-    if (answer1) {
+  useEffect(() => {
+    if (answer) {
       dispatch({ type: 'CONFIRM', payload: '' });
       dispatch({
         type: 'CHECKOUT',
         payload: { shot: activeShot, user: userContext.state.user },
       });
+    } else if (!answer) {
+      dispatch({ type: 'CONFIRM', payload: '' });
     }
-  };
+  }, [answer]);
 
-  const getAnswer = () => {
-    dispatch({ type: 'CONFIRM', payload: 'Confirm' });
-    new Promise((res) => {
-      const giveAnswer = (answer) => res(answer);
-      return <>
-      <div className="btn-mini" onClick={() => giveAnswer(false)}>
-        <i class="fas fa-times"></i>
-      </div>
-      <div className="btn-mini" onClick={() => giveAnswer(true)}>
-        <i class="fas fa-check"></i>
-      </div>
-      <div>{state.confirm}?</div>
-    </>;
-      // return <Confirm giveAnswer={giveAnswer} />;
-    });
-  };
+  console.log('answer', answer);
+  console.log('state', state);
+
+  // const handleCheckout = async (answer) => {
+  //   dispatch({ type: 'CONFIRM', payload: 'Checkout scene' });
+  //   const answer1 = await getAnswer(answer);
+  //   if (answer1) {
+  //     dispatch({ type: 'CONFIRM', payload: '' });
+  //     dispatch({
+  //       type: 'CHECKOUT',
+  //       payload: { shot: activeShot, user: userContext.state.user },
+  //     });
+  //   }
+  // };
+
+  // const getAnswer = (answer) => {
+  //   // dispatch({ type: 'CONFIRM', payload: 'Confirm' });
+
+  //   new Promise((res) => {
+  //     const giveAnswer = (answer) => res(answer);
+  //     setAnswer('');
+
+  //     return (
+  //       <>
+  //         <div className="btn-mini" onClick={() => giveAnswer(false)}>
+  //           <i class="fas fa-times"></i>
+  //         </div>
+  //         <div className="btn-mini" onClick={() => giveAnswer(true)}>
+  //           <i class="fas fa-check"></i>
+  //         </div>
+  //         <div>{state.confirm}?</div>
+  //       </>
+  //     );
+  //     // return <Confirm giveAnswer={giveAnswer} />;
+  //   });
+  // };
 
   // const Confirm = ({ giveAnswer }) => {
   //   return (
@@ -1638,18 +1657,43 @@ const SceneMachine = () => {
               </div>
             </div>
             <div className="control-panel-other">
-              {state.confirm && <GetAnswer />}
-              {/* {state.confirm && (
+              {/* {state.confirm && <GetAnswer />} */}
+              {state.confirm && (
                 <>
-                  <div className="btn-mini" onClick={() => setAnswer(false)}>
+                  <div
+                    className="btn-mini"
+                    onClick={() => {
+                      setAnswer(false),
+                        dispatch({
+                          type: 'CONFIRM',
+                          payload: '',
+                        });
+                    }}
+                  >
                     <i class="fas fa-times"></i>
                   </div>
-                  <div className="btn-mini" onClick={() => setAnswer(true)}>
+                  <div
+                    className="btn-mini"
+                    onClick={() => {
+                      setAnswer(true),
+                        dispatch({
+                          type: 'CHECKOUT',
+                          payload: {
+                            shot: activeShot,
+                            user: userContext.state.user,
+                          },
+                        }),
+                        dispatch({
+                          type: 'CONFIRM',
+                          payload: '',
+                        });
+                    }}
+                  >
                     <i class="fas fa-check"></i>
                   </div>
                   <div>{state.confirm}?</div>
                 </>
-              )} */}
+              )}
               {/* <div className="btn-mini">
                 <i class="fas fa-pager"></i>
               </div> */}
@@ -1855,7 +1899,14 @@ const SceneMachine = () => {
                             className={`btn-small ${
                               detail === 'none' ? 'active' : ''
                             }`}
-                            onClick={handleCheckout}
+                            onClick={
+                              // () => handleCheckout(answer)
+                              () =>
+                                dispatch({
+                                  type: 'CONFIRM',
+                                  payload: 'Checkout scene',
+                                })
+                            }
                           >
                             Checkout
                           </button>
