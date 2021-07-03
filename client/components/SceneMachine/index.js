@@ -102,14 +102,52 @@ const initialViewerState = {
     rev: 1,
   },
 
+  layoutBoards: [
+    {
+      id: 240,
+      name: '',
+      shotNumber: 1,
+      panel: 1, // this needs to be unique
+      artist: 'objectId',
+      board: '//unsplash.it/id/58/500/300',
+      action: '',
+      dialogue: '',
+      createdAt: 'date',
+      revision: 1,
+    },
+    {
+      id: 2900,
+      name: '',
+      shotNumber: 1,
+      panel: 2, // this needs to be unique
+      artist: 'objectId',
+      board: '//unsplash.it/id/48/500/300',
+      action: '',
+      dialogue: '',
+      createdAt: 'date',
+      revision: 1,
+    },
+  ],
   beatBoards: [
     {
-      id: 2140,
+      id: 9140,
       name: '',
       shotNumber: 1,
       panel: 1, // this needs to be unique
       artist: 'objectId',
       board: '//unsplash.it/id/29/500/300',
+      action: '',
+      dialogue: '',
+      createdAt: 'date',
+      revision: 1,
+    },
+    {
+      id: 1140,
+      name: '',
+      shotNumber: 1,
+      panel: 12, // this needs to be unique
+      artist: 'objectId',
+      board: '//unsplash.it/id/229/500/300',
       action: '',
       dialogue: '',
       createdAt: 'date',
@@ -1274,6 +1312,16 @@ const reducer = (state, action) => {
         },
       };
     }
+    case 'CHECKIN': {
+      return {
+        ...state,
+        checkedOut: { shot: '', user: '' },
+        checkedIn: {
+          shot: action.payload.shot,
+          user: action.payload.user,
+        },
+      };
+    }
     case 'CONFIRM': {
       return {
         ...state,
@@ -1596,7 +1644,7 @@ const SceneMachine = () => {
                   onClick={() =>
                     setButtons({
                       ...buttons,
-                      display: 'Timeline',
+                      display: 'Acts',
                       button1: { active: false },
                       button2: { active: true },
                       button3: { active: false },
@@ -1612,7 +1660,7 @@ const SceneMachine = () => {
                   onClick={() =>
                     setButtons({
                       ...buttons,
-                      display: 'Acts',
+                      display: 'Sequences',
                       button1: { active: false },
                       button2: { active: false },
                       button3: { active: true },
@@ -1658,7 +1706,7 @@ const SceneMachine = () => {
             </div>
             <div className="control-panel-other">
               {/* {state.confirm && <GetAnswer />} */}
-              {state.confirm && (
+              {state.confirm === 'Checkout scene' && (
                 <>
                   <div
                     className="btn-mini"
@@ -1678,6 +1726,42 @@ const SceneMachine = () => {
                       setAnswer(true),
                         dispatch({
                           type: 'CHECKOUT',
+                          payload: {
+                            shot: activeShot,
+                            user: userContext.state.user,
+                          },
+                        }),
+                        dispatch({
+                          type: 'CONFIRM',
+                          payload: '',
+                        });
+                    }}
+                  >
+                    <i class="fas fa-check"></i>
+                  </div>
+                  <div>{state.confirm}?</div>
+                </>
+              )}
+              {state.confirm === 'Checkin scene' && (
+                <>
+                  <div
+                    className="btn-mini"
+                    onClick={() => {
+                      setAnswer(false),
+                        dispatch({
+                          type: 'CONFIRM',
+                          payload: '',
+                        });
+                    }}
+                  >
+                    <i class="fas fa-times"></i>
+                  </div>
+                  <div
+                    className="btn-mini"
+                    onClick={() => {
+                      setAnswer(true),
+                        dispatch({
+                          type: 'CHECKIN',
                           payload: {
                             shot: activeShot,
                             user: userContext.state.user,
@@ -1790,7 +1874,7 @@ const SceneMachine = () => {
                           setBackground('rgb(218, 214, 208)');
                         }}
                       >
-                        Breakdown
+                        Breakdowns
                       </button>
                       <button
                         className={`btn-small ${
@@ -1895,21 +1979,41 @@ const SceneMachine = () => {
                           >
                             Update
                           </button>
-                          <button
-                            className={`btn-small ${
-                              detail === 'none' ? 'active' : ''
-                            }`}
-                            onClick={
-                              // () => handleCheckout(answer)
-                              () =>
-                                dispatch({
-                                  type: 'CONFIRM',
-                                  payload: 'Checkout scene',
-                                })
-                            }
-                          >
-                            Checkout
-                          </button>
+
+                          {state.checkedOut &&
+                          activeShot.id === state.checkedOut.shot.id ? (
+                            <button
+                              className={`btn-small ${
+                                detail === 'none' ? 'active' : ''
+                              }`}
+                              onClick={
+                                // () => handleCheckout(answer)
+                                () =>
+                                  dispatch({
+                                    type: 'CONFIRM',
+                                    payload: 'Checkin scene',
+                                  })
+                              }
+                            >
+                              Checkin
+                            </button>
+                          ) : (
+                            <button
+                              className={`btn-small ${
+                                detail === 'none' ? 'active' : ''
+                              }`}
+                              onClick={
+                                // () => handleCheckout(answer)
+                                () =>
+                                  dispatch({
+                                    type: 'CONFIRM',
+                                    payload: 'Checkout scene',
+                                  })
+                              }
+                            >
+                              Checkout
+                            </button>
+                          )}
                         </>
                       )}
                       {detail === 'overview' && (
@@ -2080,8 +2184,8 @@ const SceneMachine = () => {
                             ) : (
                               <>
                                 <textarea
-                                  cols="60"
-                                  rows="40"
+                                  cols="70"
+                                  rows="50"
                                   type="text"
                                   value={viewer.script.script}
                                   onChange={(e) =>
@@ -2095,13 +2199,20 @@ const SceneMachine = () => {
                             )}
                           </div>
                         )}
+
                         {detail === 'breakdown' && (
                           <div className="transport-breakdown">
-                            {/* <h2>Scene Breakdown:</h2> */}
                             {viewer.details.shotList.map((shot, i) => (
                               <div
                                 className={`transport-breakdown-shot ${
-                                  activeShot.id === shot.id && 'active'
+                                  state.checkedOut &&
+                                  state.checkedOut.shot.id === shot.id &&
+                                  'checked-out'
+                                } ${activeShot.id === shot.id && 'active'} ${
+                                  state.checkedOut &&
+                                  state.checkedOut.user.name !=
+                                    userContext.state.user.name &&
+                                  'not-user'
                                 }`}
                                 onClick={() => setActiveShot(shot)}
                               >
@@ -2121,9 +2232,14 @@ const SceneMachine = () => {
                                   <strong>Backgrounds: </strong>
                                   {shot.backgrounds}
                                 </div>
-                                {false ? (
+                                {state.checkedOut &&
+                                state.checkedOut.shot.id === shot.id ? (
                                   <div>
-                                    <strong>Checked out by Sonny</strong>
+                                    <strong>
+                                      Checked out by{' '}
+                                      {state.checkedOut &&
+                                        state.checkedOut.user.name}
+                                    </strong>
                                   </div>
                                 ) : (
                                   <div>
@@ -2152,13 +2268,17 @@ const SceneMachine = () => {
                           <div className="transport-panels-section">
                             {/* <h2>Scene Panels: </h2> */}
                             <div className="bread-crumb">
-                              Boards &gt;{' '}
+                              <div>Boards &gt;{' '}
                               {activeShot.shot
                                 ? 'Shot number: ' + activeShot.shot
-                                : 'All'}
+                                : 'All'}</div>
+                                {/* <div></div> */}
+                                <div>Layouts | Beat Boards | Scene Boards</div>
                             </div>
+
+                            <div className="board-titles">Layouts</div>
                             <div className="transport-panels">
-                              {viewer.storyBoards.map(
+                              {viewer.layoutBoards.map(
                                 (board, i) =>
                                   (activeShot.shot === board.shotNumber && (
                                     <>
@@ -2169,6 +2289,7 @@ const SceneMachine = () => {
                                             sceneName: viewer.sceneName,
                                             panel: i + 1,
                                             shotNumber: board.shotNumber,
+                                            id: board.id
                                           })
                                         }
                                         className="transport-panel"
@@ -2184,7 +2305,7 @@ const SceneMachine = () => {
                                         </div>
                                         <img
                                           className={
-                                            i + 1 === preview.panel && 'active'
+                                            board.id === preview.id && 'active'
                                           }
                                           src={board.board}
                                           alt=""
@@ -2201,6 +2322,7 @@ const SceneMachine = () => {
                                           sceneName: viewer.sceneName,
                                           panel: i + 1,
                                           shotNumber: board.shotNumber,
+                                          id: board.id
                                         })
                                       }
                                       className="transport-panel"
@@ -2214,7 +2336,7 @@ const SceneMachine = () => {
                                       </div>
                                       <img
                                         className={
-                                          i + 1 === preview.panel && 'active'
+                                          board.id === preview.id && 'active'
                                         }
                                         src={board.board}
                                         alt=""
@@ -2223,14 +2345,176 @@ const SceneMachine = () => {
                                     </div>
                                   ))
                               )}
+                              
                               <section className="transport-panel-add">
                                 <div
                                   onClick={() => setPreview(initPreviewState)}
                                 >
-                                  <i class="fas fa-plus fa-2x"></i>
+                                  <i class="fas fa-plus "></i>
                                 </div>
                               </section>
                             </div>
+
+
+                            <div className="board-titles">Beat Boards</div>
+                            <div className="transport-panels">
+                              {viewer.beatBoards.map(
+                                (board, i) =>
+                                  (activeShot.shot === board.shotNumber && (
+                                    <>
+                                      <div
+                                        onClick={() =>
+                                          setPreview({
+                                            image: board.board,
+                                            sceneName: viewer.sceneName,
+                                            panel: i + 1,
+                                            shotNumber: board.shotNumber,
+                                            id: board.id
+                                          })
+                                        }
+                                        className="transport-panel"
+                                      >
+                                        <div className="transport-label">
+                                          {board.panel}
+                                        </div>
+                                        <div className="panel-index">
+                                          {i + 1}
+                                        </div>
+                                        <div className="panel-shot">
+                                          {board.shotNumber}
+                                        </div>
+                                        <img
+                                          className={
+                                            board.id === preview.id && 'active'
+                                          }
+                                          src={board.board}
+                                          alt=""
+                                        />
+                                        {/* <p>shot: {board.shotNumber}</p> */}
+                                      </div>
+                                    </>
+                                  )) ||
+                                  (activeShot === '' && (
+                                    <div
+                                      onClick={() =>
+                                        setPreview({
+                                          image: board.board,
+                                          sceneName: viewer.sceneName,
+                                          panel: i + 1,
+                                          shotNumber: board.shotNumber,
+                                          id: board.id
+                                        })
+                                      }
+                                      className="transport-panel"
+                                    >
+                                      <div className="transport-label">
+                                        {board.panel}
+                                      </div>
+                                      <div className="panel-index">{i + 1}</div>
+                                      <div className="panel-shot">
+                                        {board.shotNumber}
+                                      </div>
+                                      <img
+                                        className={
+                                          board.id === preview.id && 'active'
+                                        }
+                                        src={board.board}
+                                        alt=""
+                                      />
+                                      {/* <p>shot: {board.shotNumber}</p> */}
+                                    </div>
+                                  ))
+                              )}
+                              
+                              <section className="transport-panel-add">
+                                <div
+                                  onClick={() => setPreview(initPreviewState)}
+                                >
+                                  <i class="fas fa-plus "></i>
+                                </div>
+                              </section>
+                            </div>
+
+                            <div className="board-titles">Scene Boards</div>
+                            <div className="transport-panels">
+                              {viewer.storyBoards.map(
+                                (board, i) =>
+                                  (activeShot.shot === board.shotNumber && (
+                                    <>
+                                      <div
+                                        onClick={() =>
+                                          setPreview({
+                                            image: board.board,
+                                            sceneName: viewer.sceneName,
+                                            panel: i + 1,
+                                            shotNumber: board.shotNumber,
+                                            id: board.id
+                                          })
+                                        }
+                                        className="transport-panel"
+                                      >
+                                        <div className="transport-label">
+                                          {board.panel}
+                                        </div>
+                                        <div className="panel-index">
+                                          {i + 1}
+                                        </div>
+                                        <div className="panel-shot">
+                                          {board.shotNumber}
+                                        </div>
+                                        <img
+                                          className={
+                                            board.id === preview.id && 'active'
+                                          }
+                                          src={board.board}
+                                          alt=""
+                                        />
+                                        {/* <p>shot: {board.shotNumber}</p> */}
+                                      </div>
+                                    </>
+                                  )) ||
+                                  (activeShot === '' && (
+                                    <div
+                                      onClick={() =>
+                                        setPreview({
+                                          image: board.board,
+                                          sceneName: viewer.sceneName,
+                                          panel: i + 1,
+                                          shotNumber: board.shotNumber,
+                                          id: board.id
+                                        })
+                                      }
+                                      className="transport-panel"
+                                    >
+                                      <div className="transport-label">
+                                        {board.panel}
+                                      </div>
+                                      <div className="panel-index">{i + 1}</div>
+                                      <div className="panel-shot">
+                                        {board.shotNumber}
+                                      </div>
+                                      <img
+                                        className={
+                                          board.id === preview.id && 'active'
+                                        }
+                                        src={board.board}
+                                        alt=""
+                                      />
+                                      {/* <p>shot: {board.shotNumber}</p> */}
+                                    </div>
+                                  ))
+                              )}
+                              
+                              <section className="transport-panel-add">
+                                <div
+                                  onClick={() => setPreview(initPreviewState)}
+                                >
+                                  <i class="fas fa-plus "></i>
+                                </div>
+                              </section>
+                            </div>
+
+
                           </div>
                         )}
                         {detail === 'panel details' && <div>panel details</div>}
@@ -2314,7 +2598,7 @@ const Style = ({ background }) => (
       padding: 0 10px;
     }
     #scene-machine > div {
-      // height: 93.3vh;
+      height: 100%;
       // background: rgba(203, 208, 211, .5);
       background: rgba(89, 119, 131, 0.6);
       // background: rgba(65, 78, 83, 0.6);
@@ -2329,7 +2613,7 @@ const Style = ({ background }) => (
       border-bottom-left-radius: 8px;
       border-bottom-right-radius: 8px;
       box-shadow: inset 0 0px 10px, inset 0 0 15px, inset 0 0 5px,
-        0 0 80px rgb(20, 22, 15), 0 0 10px rgb(39, 44, 29);
+        0 20px 500px 800px rgba(180, 171, 155, 0.4), 0 0 10px rgb(39, 44, 29);
       // 0 10px 50px rgba(87, 72, 32, 0.897), 0 10px 100px rgba(222, 248, 158, 0.3);
     }
     .section-strip-container {
@@ -2362,7 +2646,7 @@ const Style = ({ background }) => (
       // border-top: dashed 6px rgb(201, 196, 196);
       // border-bottom: dashed 6px rgb(201, 196, 196);
       // border-bottom: dashed 8px rgb(7, 7, 5);;
-      padding: 6px 15px;
+      padding: 6px 20px;
       margin: 0 3px;
       // border-right: solid 2px rgb(15, 11, 11);
       cursor: pointer;
@@ -2374,7 +2658,7 @@ const Style = ({ background }) => (
     }
 
     .scene-strip > img {
-      height: 60px;
+      height: 50px;
       // position: relative;
       // transform: rotate(-90deg);
       opacity: 0.6;
@@ -2389,11 +2673,11 @@ const Style = ({ background }) => (
       // margin: 1px;
     }
     .scene-strip > p {
-      padding: 2px;
+      padding: 1px;
       background: rgba(0, 0, 0, 0.5);
       bottom: 12px;
       position: absolute;
-      font-size: 0.7rem;
+      font-size: 0.6rem;
       color: rgb(179, 174, 174);
     }
 
@@ -2520,7 +2804,7 @@ const Style = ({ background }) => (
       // background: rgb(210, 248, 42);
 
       box-shadow: 0 0 5px rgba(209, 209, 209, 0.8), 0 0 3px rgb(214, 214, 214),
-        inset 0 0 4px rgba(228, 228, 228, 0.9), 0px -1.5px 2px rgba(0, 0, 0, 1);
+        inset 0 0 4px rgba(228, 228, 228, 0.9), 0px 0px 2px rgba(0, 0, 0, 1);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -2667,7 +2951,9 @@ const Style = ({ background }) => (
     }
 
     .transport-overview {
+      // z-index: 1;
       background-color: ${background};
+      width: auto;
       // border: solid 1px rgb(65, 11, 11);
       margin: 10px;
       height: 385px;
@@ -2675,10 +2961,11 @@ const Style = ({ background }) => (
       // max-height: 530px;
       border-radius: 10px;
       box-shadow: inset 0 0 10px, inset 0 0 3px;
-      padding: 5px;
+      padding: 0 2px;
       overflow-y: scroll;
       display: flex;
       flex-direction: column;
+      z-index: 2;
     }
 
     .details-table {
@@ -2750,6 +3037,7 @@ const Style = ({ background }) => (
       padding: 10px 20px;
     }
     .transport-breakdown {
+      // background: #2f3c41;
       padding: 20px 10px;
     }
     .transport-breakdown-shot {
@@ -2759,6 +3047,17 @@ const Style = ({ background }) => (
     .transport-breakdown-shot.active {
       border: solid;
     }
+    .transport-breakdown-shot.checked-out {
+      color: #2f3c41;
+      background: #acb7bb;
+    }
+    .transport-breakdown-shot.checked-out.not-user {
+      color: #2f3c41;
+      background: #acb7bb;
+      pointer-events: none;
+      cursor: default;
+    }
+
     .transport-breakdown > div {
       background-color: white;
       padding: 20px;
@@ -2767,14 +3066,39 @@ const Style = ({ background }) => (
     .transport-breakdown > div > div {
       margin: 20px;
     }
+
+    .checked-out {
+      background: #747373;
+    }
     .transport-panels-section {
-      padding: 10px 10px;
+      width: 100%;
+      // padding: 10px 10px;
     }
     .bread-crumb {
-      font-size: 0.8rem;
-      color: #e4e4e4;
+      overflow: hidden;
+      // width: 100%;
+      // background: #2f3c41;
+      font-size: 0.7rem;
+      color: #c5c3c3;
       padding: 5px 10px;
-      box-shadow: 0 0px 1px;
+      padding-top: 10px;
+      border-bottom: solid 1px grey;
+      // position: fixed;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .bread-crumb > div {
+      width: 400px;
+      display: flex;
+      // justify-content: flex-end;
+    }
+
+    .bread-crumb > div:last-child {
+      width: 400px;
+      display: flex;
+      justify-content: flex-end;
     }
     .transport-panel-add {
       display: flex;
@@ -2789,10 +3113,10 @@ const Style = ({ background }) => (
       display: flex;
       align-items: center;
       justify-content: center;
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(228, 227, 227, 0.9);
       border-radius: 50%;
-      width: 50px;
-      height: 50px;
+      width: 33px;
+      height: 33px;
       padding: 10px 0;
       border: none;
     }
@@ -2810,10 +3134,22 @@ const Style = ({ background }) => (
       padding: 10px 0;
       border: none;
     }
+
+    .board-titles {
+      padding-top: 10px;
+      padding-bottom: 10px;
+      font-size: 1.4rem;
+      color: #aaaaaa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
     .transport-panels {
-      padding: 10px 0;
+      padding: 0px 20px;
       display: flex;
       flex-wrap: wrap;
+      // border-bottom: solid 1px grey;
+      padding-bottom: 20px;
     }
     .transport-panel.active {
       // border: solid;
