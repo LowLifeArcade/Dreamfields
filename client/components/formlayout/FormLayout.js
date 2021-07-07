@@ -10,7 +10,7 @@ const FormLayout = ({
     <div>
       {/* <h1 className="mini-jumboTron">{title}</h1> */}
       <div className="layout-container">
-        <FormSidebar items={items} />{' '}
+        {/* <FormSidebar items={items} />{' '} */}
         <div className="page-container">
           <div className="main-content">{children}</div>
         </div>
@@ -48,10 +48,13 @@ const style = (
       justify-content: space-between;
     }
     .page-container {
+      // display: flex;
+      // align-items: center;
       background: rgb(209, 209, 209);
-      width: 800px;
+      // width: 800px;
+      width: 100%;
       height: 100vh;
-      flex: 0 0 800px;
+      // flex: 0 0 800px;
     }
     .main-content {
       //background: rgb(255, 255, 255);
@@ -59,6 +62,7 @@ const style = (
       display: flex;
       flex-direction: column;
       align-items: center;
+      width: 100%;
       // justify-content: flex-start;
       //width: 60vw;
       /* border-left: solid 1px rgb(173, 173, 173); */

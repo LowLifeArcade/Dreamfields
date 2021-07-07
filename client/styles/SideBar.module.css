@@ -1,8 +1,10 @@
 .sideBar {
-  padding: 10px 7px;
-  flex: 0 1 360px;
+  padding: 10px 2px;
+  /* flex: 0 1 360px; */
   position: sticky;
+  height: 100%;
   top: 0;
+  width: 250px;
   /* height: 100vh; */
   /* transition: .3s ease-in-out; */
   background: rgb(240, 237, 230);
@@ -10,12 +12,12 @@
 }
 
 .sideBarSmall {
-  /* height: 100vh; */
+  height: 100%;
   padding: 10px 2px;
   flex: 0 1 55px;
   position: sticky;
   top: 0;
-  transition: .2s ease-in-out;
+  /* transition: .2s ease-in-out; */
   background: rgb(240, 237, 230);
   border-right: 1px solid rgb(197, 194, 173)
 }

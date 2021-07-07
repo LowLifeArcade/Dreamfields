@@ -1549,8 +1549,8 @@ const SceneMachine = () => {
         />
       </head>
       <Style background={background} />
-      <div id="scene-machine" className="">
-        <div id="scene-machine-location" className="">
+      <div id="scene-machine-container" className="">
+        <div id="scene-machine-location" className="scene-machine">
           <div className="scene-machine-title">
             <div className="title-buttons-left">
               <div
@@ -1574,7 +1574,7 @@ const SceneMachine = () => {
                 ></div>
               </div>
             </div>
-            <h1>{buttons.machine === 'scene' ? 'Scene' : 'Asset'} Machine</h1>
+            {/* <h1>{buttons.machine === 'scene' ? 'Scene' : 'Asset'} Machine</h1> */}
             <div className="title-buttons-right">
               {/* <div className="btn">
                 <div className="btn-inside">X</div>
@@ -1843,8 +1843,8 @@ const SceneMachine = () => {
               </div>
             </div>
             <div className="right-panel">
-              <div className="scene-overview-about">
-                <div>
+              <div className="scene-overview-right-container">
+                <div className="transport-frame">
                   <div className="transport">
                     {/* this should download all coresponding data like concept art. Maybe */}
                     <div className="transport-left-controls">
@@ -2519,7 +2519,9 @@ export default SceneMachine;
 
 const Style = ({ background }) => (
   <style jsx>{`
-    #scene-machine {
+    #scene-machine-container {
+      height: 100%;
+      width: 100%;
       // background: #fff;
       // padding: 0 30px;
       // background: rgb(43, 38, 38);
@@ -2529,6 +2531,28 @@ const Style = ({ background }) => (
       // box-shadow: inset 0 10px 10px rgba(0, 0, 0, 0.808),
       //   inset 0 10px 30px rgba(0, 0, 0, 0.808),
       //   inset 0 20px 100px rgba(0, 0, 0, 0.808);
+    }
+
+    .scene-machine {
+      height: 100%;
+      // max-height: 100%;
+      // background: rgba(203, 208, 211, .5);
+      background: rgba(89, 119, 131, 0.7);
+      // background: rgba(65, 78, 83, 0.6);
+      // background: rgb(68, 48, 48);
+      padding: 10px 40px;
+      padding-bottom: 30px;
+      // width: 94vw;
+      width: 100%;
+      // max-width: 1200px;
+      // border: solid 3px rgb(43, 38, 38);
+      border-top-left-radius: 14px;
+      border-top-right-radius: 14px;
+      border-bottom-left-radius: 8px;
+      border-bottom-right-radius: 8px;
+      box-shadow: inset 0 0px 10px, inset 0 0 15px, inset 0 0 5px,
+        0 20px 500px 800px rgba(180, 171, 155, 0.4), 0 0 20px rgb(39, 44, 29);
+      // 0 10px 50px rgba(87, 72, 32, 0.897), 0 10px 100px rgba(222, 248, 158, 0.3);
     }
 
     .scene-machine-title {
@@ -2557,7 +2581,7 @@ const Style = ({ background }) => (
       flex-direction: row-reverse;
     }
 
-    #scene-machine > div > div > h1 {
+    .scene-machine  > div > h1 {
       display: flex;
       align-items: center;
       justify-content: center;
@@ -2581,26 +2605,7 @@ const Style = ({ background }) => (
     #scene-machine > div > div {
       padding: 0 10px;
     }
-    #scene-machine > div {
-      height: 100%;
-      // background: rgba(203, 208, 211, .5);
-      background: rgba(89, 119, 131, 0.7);
-      // background: rgba(65, 78, 83, 0.6);
-      // background: rgb(68, 48, 48);
-      padding: 10px 40px;
-      padding-bottom: 30px;
-      // width: 94vw;
-      width: 100%;
-      // max-width: 1200px;
-      // border: solid 3px rgb(43, 38, 38);
-      border-top-left-radius: 14px;
-      border-top-right-radius: 14px;
-      border-bottom-left-radius: 8px;
-      border-bottom-right-radius: 8px;
-      box-shadow: inset 0 0px 10px, inset 0 0 15px, inset 0 0 5px,
-        0 20px 500px 800px rgba(180, 171, 155, 0.4), 0 0 20px rgb(39, 44, 29);
-      // 0 10px 50px rgba(87, 72, 32, 0.897), 0 10px 100px rgba(222, 248, 158, 0.3);
-    }
+    
     .section-strip-container {
       background: rgb(218, 210, 210);
       // padding-top: 20px;
@@ -2812,11 +2817,10 @@ const Style = ({ background }) => (
 
     .scene-overview {
       background: rgba(46, 35, 35, 0.6);
-      // padding: 20px;
-
-      height: 100%;
+      height: 60vh;
+      // max-height: 100%;
       width: 100%;
-      overflow: auto;
+      // overflow: auto;
       display: flex;
       border: solid 1px rgb(22, 19, 19);
       border-radius: 10px;
@@ -2826,7 +2830,7 @@ const Style = ({ background }) => (
     .left-panel {
       padding: 10px;
       width: 40%;
-      height: 100%;
+      max-height: 100%;
       overflow: auto;
     }
 
@@ -2847,17 +2851,18 @@ const Style = ({ background }) => (
     }
     .right-panel {
       width: 60%;
-      height: 100%;
+      max-height: 100%;
       overflow: auto;
     }
 
-    .scene-overview-about {
+    .scene-overview-right-container {
       // background: #fff;
       padding: 10px;
       height: 100%;
+      max-height: 100%;
     }
 
-    .scene-overview-about > div {
+    .transport-frame {
       box-shadow: inset 0 0 20px, inset 0 0 4px, inset 0 0 10px;
       height: 100%;
       border-radius: 5px;
@@ -2944,10 +2949,10 @@ const Style = ({ background }) => (
       width: auto;
       // border: solid 1px rgb(65, 11, 11);
       margin: 10px;
+
+      // overflow: auto;
       height: 100%;
-      overflow: auto;
-      // height: 60vh;
-      // max-height: 530px;
+      // max-height: 100%;
       border-radius: 10px;
       box-shadow: inset 0 0 10px, inset 0 0 3px;
       padding: 0 2px;
@@ -3203,7 +3208,7 @@ const Style = ({ background }) => (
       .right-panel {
         width: 100%;
       }
-      .scene-overview-about > div {
+      .scene-overview-right-container > div {
         max-height: 300px;
       }
     }

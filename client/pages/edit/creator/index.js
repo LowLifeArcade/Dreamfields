@@ -10,7 +10,8 @@ const CreatorEdit = () => {
           justify-content: center;
           // align-items: flex-end;
           background: linear-gradient(rgb(52, 75, 97), rgb(180, 216, 147));
-          height: 94vh;
+          height: 100%;
+          width: 100%;
         }
         `}</style>
     </div>

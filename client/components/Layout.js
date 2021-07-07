@@ -2,49 +2,49 @@ import { useState, useContext } from 'react';
 import { Context } from '../context';
 import NavBar from './NavBar';
 import SideBar from './SideBar';
+import DashboardSideBar from './dashboard/DashboardSidebar';
 
 const Layout = (props) => {
-  const [sideBarSize, setSideBarSize] = useState();
+  const [showSideMenu, setShowSideMenu] = useState(); // lifted and shared state for sidebar and navbar
 
   const {
     state: { user },
   } = useContext(Context);
   return (
     <>
-      {<NavBar sideBarSize={sideBarSize} onLogoClick={setSideBarSize} />}
-      <div className="layoutContainer">
+      {<NavBar showSideMenu={showSideMenu} onLogoClick={setShowSideMenu} />}
+      <div className="layout-container">
         <div className="flex-layout">
-          {props.showSideBar && user && 
-            <div className='sidebar'>
+          {props.showSideBar && user && (
+            <>
 
-            <SideBar size={sideBarSize} />
+            <div className="sidebar">
+              <SideBar />
             </div>
-          }
+              <DashboardSideBar showSideMenu={showSideMenu} items1={props.sideMenuItems} />
+            </>
+          )}
           <div className="content">{props.children}</div>
         </div>
       </div>
 
       <style jsx>{`
-        .layoutContainer {
+        .layout-container {
           width: 100%;
         }
 
         .sidebar {
-          width: 65px;
           height: 100%;
         }
         .flex-layout {
-          //top: 49px;
-
-         position: fixed; // this did it
+          position: fixed; // this did it
           display: flex;
           height: 94%;
           width: inherit;
-
         }
         .content {
-          width: 100%
-          height: 94vh;
+          // width: 80vw;
+          height: 100%;
           overflow-y: scroll;
           flex: 0 1 100%;
         }

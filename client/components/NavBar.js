@@ -1,6 +1,4 @@
 import { useState, useEffect, useContext } from 'react';
-
-import styles from '../styles/NavBar.module.css';
 import NavMainSection from './NavMainSection/index.js';
 import { Context } from '../context';
 import axios from 'axios';
@@ -10,7 +8,7 @@ import NavRightItems from './NavRightItems';
 
 // TODO: added current page location to set highlight to current nav link corresponding to page. I need to set the glowing class up.
 
-const NavBar = (props) => {
+const NavBar = ({ onLogoClick, showSideMenu }) => {
   const [current, setCurrent] = useState('');
   const { state, dispatch } = useContext(Context);
   const { user } = state;
@@ -32,18 +30,81 @@ const NavBar = (props) => {
         <meta http-equiv="content-language" content="en" />
         <meta name="google" content="notranslate" />
       </head>
-      <div className={styles.navbar}>
-        <div className={styles.leftNavItems}>
-          <h1 onClick={() => props.onLogoClick(!props.sideBarSize)}>DF </h1>
-          <div className={styles.input}>
-            <i class="fab fa-searchengin"></i> &nbsp;{' '}
+      <div className="navbar">
+        <div className="leftNavItems">
+          <h1 onClick={() => onLogoClick(!showSideMenu)}>DF </h1>
+          <div className="input">
+            <i className="fas fa-search"></i> &nbsp;{' '}
             <input type="search" placeholder="Search" />
           </div>
         </div>
 
-        <NavMainSection loggedIn={user} current={current} setCurrent={setCurrent} />
-        <NavRightItems loggedIn={user} logOut={logout} setCurrent={setCurrent} />
+        <NavMainSection
+          loggedIn={user}
+          current={current}
+          setCurrent={setCurrent}
+        />
+        <NavRightItems
+          loggedIn={user}
+          logOut={logout}
+          setCurrent={setCurrent}
+        />
       </div>
+      <style jsx>{`
+        .navbar {
+          display: flex;
+          padding: 0.55rem 0.75rem;
+          height: 50px;
+          justify-content: space-between;
+          width: 100%;
+          position: sticky;
+          background: rgb(252, 248, 237);
+          box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.2);
+          z-index: 1;
+          top: 0;
+          overflow-x: hidden;
+        }
+
+        .leftNavItems > h1 {
+          margin-right: 10px;
+          font-size: 1.4rem;
+          border: solid 1px;
+          padding: 3px 8px;
+          cursor: pointer;
+        }
+
+        .leftNavItems {
+          flex-grow: 1;
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+        }
+
+        .input {
+          display: flex;
+          align-items: center;
+          background: #eff2f5;
+          padding: 0.5rem;
+          margin-left: 0.6rem;
+          border-radius: 2rem;
+          box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .input > i {
+          color: rgb(150, 150, 150);
+        }
+        .input > input {
+          border: none;
+          outline-width: 0;
+          background-color: transparent;
+        }
+
+        @media (max-width: 860px) {
+          .input {
+            display: none;
+          }
+        }
+      `}</style>
     </>
   );
 };

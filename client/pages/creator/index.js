@@ -7,7 +7,7 @@ import router from 'next/router';
 import DashboardLayout from '../../components/dashboard/DashboardLayout';
 import axios from 'axios';
 
-// TODO: save in Context the location to the project I click on in the router so that whenver I click the briefcase or edit page later I'm brought back to the project I'm currently working on. 
+// TODO: save in Context the location to the project I click on in the router so that whenver I click the briefcase or edit page later I'm brought back to the project I'm currently working on.
 
 const CreatorIndex = () => {
   const {
@@ -17,7 +17,7 @@ const CreatorIndex = () => {
   const [fields, setFields] = useState([]);
 
   useEffect(() => {
-    loadFields()
+    loadFields();
   }, []);
   const [projects, setProjects] = useState([
     {
@@ -192,30 +192,38 @@ const CreatorIndex = () => {
   ]);
 
   const loadFields = async () => {
-      const {data} = await axios.get('/api/creator-fields')
-      setFields(data)
-  }
+    const { data } = await axios.get('/api/creator-fields');
+    setFields(data);
+  };
 
   return (
     <CreatorRoute>
-      <DashboardLayout items={projects} title="Creator Dashboard">
+      {/* <DashboardLayout items={projects} title="Creator Dashboard"> */}
+      <div className="page">
         <h1>Welcome back {user && user.name}</h1>
         <Button
           color="#276a72"
           onClick={() => router.push('/creator/field/create')}
           buttonName="New Field"
         />
-        {fields.map(field =>
+        {fields.map((field) => (
           <div>
-            <button onClick={()=> router.push(`/creator/field/view/${field.slug}`)} >
-
-            {field.name}
+            <button
+              onClick={() => router.push(`/creator/field/view/${field.slug}`)}
+            >
+              {field.name}
             </button>
           </div>
-        )}
+        ))}
         <pre>{JSON.stringify(fields, null, 4)}</pre>
-        
-      </DashboardLayout>
+        <style jsx>{`
+        .page {
+          padding: 20px;
+        }
+        `}</style>
+      </div>
+
+      {/* </DashboardLayout> */}
     </CreatorRoute>
   );
 };

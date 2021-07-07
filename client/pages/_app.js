@@ -4,6 +4,15 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Provider } from '../context';
 
+// TODO: create a context and reducer for the sideMenuItems prop
+
+const fakeMenuItems = [
+  { slug: '/', icon: <i class="fas fa-home"></i>, name: 'Home' },
+  { slug: '/edit/creator', icon: <i class="far fa-edit"></i>, name: 'Do stuff' },
+  { slug: '/creator', icon: <i class="fas fa-cog"></i>, name: 'Settings' },
+  { slug: '/creator/field/create', icon: <i class="far fa-plus-square"></i>, name: 'Create New' },
+];
+
 function MyApp({ Component, pageProps }) {
   return (
     <Provider>
@@ -35,7 +44,8 @@ function MyApp({ Component, pageProps }) {
         draggable
         pauseOnHover
       />
-      <Layout showSideBar={true}>
+
+      <Layout sideMenuItems={fakeMenuItems} showSideBar={true}>
         <Component {...pageProps} />
       </Layout>
     </Provider>
