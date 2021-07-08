@@ -1,10 +1,11 @@
 import DashboardSidebar from './DashboardSidebar';
-const DashboardLayout = ({ title, children, items, ...restProps }) => {
+const DashboardLayout = ({ title, children, ...restProps }) => {
+  // TODO: fix scrolling issue 
   return (
     <div>
       {/* <h1 className="mini-jumboTron">{title}</h1> */}
       <div className="layout-container">
-        <DashboardSidebar  items={items} />{' '}
+        {/* <DashboardSidebar  items={items} />{' '} */}
         <div className="page-container">
           <div className="main-content">{children}</div>
         </div>
@@ -13,26 +14,33 @@ const DashboardLayout = ({ title, children, items, ...restProps }) => {
       <style jsx>{`
         .layout-container {
           display: flex;
-          //position: fixed;
+          position: fixed;
           background: rgb(209, 209, 209);
           justify-content: space-between;
         }
         .page-container {
+          position: sticky;
+          overflow: scroll;
           background: rgb(204, 204, 204);
           //display: flex;
-          width: 800px;
-          height: 100vh;
-          flex: 0 0 800px;
+          //width: 800px;
+          width: 100%;
+          height: 94vh;
+          //flex: 0 0 800px;
         }
         .main-content {
-          background: rgb(255, 255, 255);
+          //background: rgb(255, 255, 255);
           overflow-y: scroll;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          width: 100%;
           // justify-content: flex-start;
           //width: 60vw;
           /* border-left: solid 1px rgb(173, 173, 173); */
           /*border-right: solid 1px rgb(173, 173, 173); */
           height: 100%;
-          padding: 10px 20px;
+          // padding: 10px 20px;
         }
 
         /* hides scroll bar */
@@ -50,7 +58,21 @@ const DashboardLayout = ({ title, children, items, ...restProps }) => {
           width: 20vw;
           border-left: solid 1px rgb(173, 173, 173);
           display: flex;
+          aflex-direction: column;
+          justify-content: flex-start;
           align-items: center;
+        }
+        .right-box {
+          padding: 30px;
+          width: 260px;
+          background: #fff;
+          margin: 20px;
+          height: 500px;
+          border-radius: 3px;
+          box-shadow: 0 5px 4px rgba(0, 0, 0, 0.2);
+        }
+        .right-side-item {
+          padding: 15px 0;
         }
         @media (max-width: 1250px) {
           .layout-container {

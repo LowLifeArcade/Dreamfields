@@ -240,12 +240,14 @@ const initialViewerState = {
 
 const initPreviewState = {
   image: '//unsplash.it/id/1/400/225',
+  sceneName: 'Scene Preview',
   panel: '',
   id: '',
 };
 
+
 // fake data
-const scenes = [
+const initialScenes = [
   initialViewerState,
   {
     id: 212501,
@@ -1267,14 +1269,14 @@ const field = {
           timeLine: {
             timeLine: [
               {
-                scene001: scenes.scene001,
+                scene001: initialScenes.scene001,
               },
-            ], // potentially this can move in and out of editorial. Passed in and out of an editor. OR this will just be a place where the scenes live while it's being put in and out of editorial for them to pull from.
+            ], // potentially this can move in and out of editorial. Passed in and out of an editor. OR this will just be a place where the initialScenes live while it's being put in and out of editorial for them to pull from.
             revision: 1,
             frameRate: 24,
             aspectRatio: '16:9',
           },
-          scenes,
+          initialScenes,
           director: '',
           contributors: [], // push to this list when someone makes an edit
         },
@@ -1284,7 +1286,7 @@ const field = {
             timeLine: [],
             revision: 1,
           },
-          scenes,
+          initialScenes,
           director: '',
           contributors: [], // push to this list when someone makes an edit
         },
@@ -1364,8 +1366,9 @@ const SceneMachineTitle = ({ setButtons, buttons }) => {
           align-items: center;
           justify-content: center;
           color: rgb(107, 105, 105);
-          box-shadow: inset 0 0 15px rgb(14, 13, 12), inset 0 0 15px rgb(39, 38, 31),
-            inset 0 0 30px rgb(55, 55, 75), inset 0 0 20px rgb(55, 55, 75);
+          box-shadow: inset 0 0 15px rgb(14, 13, 12),
+            inset 0 0 15px rgb(39, 38, 31), inset 0 0 30px rgb(55, 55, 75),
+            inset 0 0 20px rgb(55, 55, 75);
           background: rgb(247, 229, 229);
           font-size: 1.2rem;
           padding: 6px 30px;
@@ -1497,8 +1500,18 @@ const SceneMachineTitle = ({ setButtons, buttons }) => {
   );
 };
 
-const SceneMachineStripArea = ({ scenes, viewer, handleViewer }) => {
-  const Style = () => {
+const SceneMachineStripArea = ({
+  detail,
+  setDetail,
+  scenes,
+  setScenes,
+  setPreview,
+  viewer,
+  setViewer,
+  handleViewer,
+  setBackground,
+}) => {
+  const SceneMachineStripStyle = () => {
     return (
       <style jsx>{`
         .section-strip-container {
@@ -1542,9 +1555,20 @@ const SceneMachineStripArea = ({ scenes, viewer, handleViewer }) => {
 
         .scene-strip > img {
           height: 50px;
+          background: #e0e0e0;
+          border-radius: 3px;
           // position: relative;
           // transform: rotate(-90deg);
           opacity: 0.6;
+        }
+        .empty-strip {
+          height: 50px;
+          // width: 88.89px;
+          background: #3f3f3f;
+          // position: relative;
+          // transform: rotate(-90deg);
+          // opacity: 0.6;
+          border-radius: 3px;
         }
         .scene-strip > img.active {
           // border: solid 2px green;
@@ -1563,13 +1587,64 @@ const SceneMachineStripArea = ({ scenes, viewer, handleViewer }) => {
           font-size: 0.6rem;
           color: rgb(179, 174, 174);
         }
+        .add {
+          cursor: pointer;
+          color: #2f3c41;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: rgba(255, 255, 255, 0.9);
+          border-radius: 50%;
+          width: 50px;
+          height: 50px;
+          padding: 10px 0;
+          border: none;
+        }
+        .scene-strip-add {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 89px;
+        }
+        .scene-strip-add > div {
+          top: 15px;
+          // left: 48px;
+          cursor: pointer;
+          color: #2f3c41;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: rgba(228, 227, 227, 0.9);
+          border-radius: 50%;
+          width: 33px;
+          height: 33px;
+          // padding: 10px 0;
+          position: absolute;
+          border: none;
+        }
       `}</style>
     );
   };
+  console.log(detail);
 
+  const handleNewScene = (e) => {
+    e.preventDefault();
+    // TODO: find way to set scroll to top of scene overview display
+    setPreview({
+      image: '/cork.jpeg',
+      // image: scene.storyBoards[0].board,
+      sceneName: 'New Scene',
+      panel: 0,
+      id: 0,
+      // id: scene.storyBoards[0].panel,
+    });
+    // setViewer(scene);
+    setDetail('new scene');
+    setBackground('rgb(218, 214, 208)');
+  };
   return (
     <>
-      <Style />
+      <SceneMachineStripStyle />
       <div className="section-strip-container">
         <div id="act1" className="scenes-section-strip">
           {scenes.map((scene) => (
@@ -1588,6 +1663,18 @@ const SceneMachineStripArea = ({ scenes, viewer, handleViewer }) => {
               </div>
             </>
           ))}
+          <div className="scene-strip">
+            <div className="empty-strip"></div>
+            <div className="scene-strip-add">
+              <div onClick={handleNewScene}>
+                <i class="fas fa-plus "></i>
+              </div>
+            </div>
+          </div>
+          {/* <div className="scene-strip">
+
+            <div className="empty-strip"></div>
+          </div> */}
         </div>
       </div>
     </>
@@ -1866,6 +1953,42 @@ const SceneMachineControlPanel = ({
               <div>{state.confirm}?</div>
             </>
           )}
+          {state.confirm === 'Add New Scene?' && ( // CONFIRM with payload of '' closes everything
+            <> 
+              <div
+                className="btn-mini"
+                onClick={() => {
+                  setAnswer(false),
+                    dispatch({
+                      type: 'CONFIRM',
+                      payload: '',
+                    });
+                }}
+              >
+                <i class="fas fa-times"></i>
+              </div>
+              <div
+                className="btn-mini"
+                onClick={() => {
+                  setAnswer(true),
+                    dispatch({
+                      type: 'CHECKIN',
+                      payload: {
+                        shot: activeShot,
+                        user: userContext.state.user,
+                      },
+                    }),
+                    dispatch({
+                      type: 'CONFIRM',
+                      payload: '',
+                    });
+                }}
+              >
+                <i class="fas fa-check"></i>
+              </div>
+              <div>{state.confirm}?</div>
+            </>
+          )}
           {/* <div className="btn-mini">
                 <i class="fas fa-pager"></i>
               </div> */}
@@ -2003,6 +2126,8 @@ const SceneMachineLeftPanel = ({ preview }) => {
 };
 
 const SceneMachineRightPanel = ({
+  scenes,
+  setScenes,
   detail,
   viewer,
   setDetail,
@@ -2311,7 +2436,7 @@ const SceneMachineRightPanel = ({
           justify-content: center;
           width: 110px;
         }
-    
+
         .transport-panel-add > div {
           cursor: pointer;
           color: #2f3c41;
@@ -2328,64 +2453,86 @@ const SceneMachineRightPanel = ({
       `}</style>
     );
   };
+
+  const handleCancel = () => {
+    setPreview({
+      image: '//unsplash.it/id/1/400/225',
+      sceneName: scenes[0].sceneName,
+      panel: '',
+      id: '',
+    })
+    setViewer(scenes[0])
+    setDetail('overview')
+  }
+
   return (
     <>
-      <Style background={background}/>
+      <Style background={background} />
       <div className="right-panel">
         <div className="scene-overview-right-container">
           <div className="transport-frame">
             <div className="transport">
               {/* this should download all coresponding data like concept art. Maybe */}
               <div className="transport-left-controls">
-                <button
-                  className={`btn-small ${
-                    detail === 'overview' ? 'active' : ''
-                  }`}
-                  onClick={() => {
-                    setDetail('overview');
-                    setBackground('rgb(218, 214, 208)');
-                  }}
-                >
-                  Overview
-                </button>
-                <button
-                  className={`btn-small ${detail === 'script' ? 'active' : ''}`}
-                  onClick={() => {
-                    setDetail('script');
-                    setBackground('white');
-                  }}
-                >
-                  Script
-                </button>
-                <button
-                  className={`btn-small ${
-                    detail === 'breakdown' ? 'active' : ''
-                  }`}
-                  onClick={() => {
-                    setDetail('breakdown');
-                    setBackground('rgb(218, 214, 208)');
-                  }}
-                >
-                  Breakdowns
-                </button>
-                <button
-                  className={`btn-small ${detail === 'boards' ? 'active' : ''}`}
-                  onClick={() => {
-                    setDetail('boards');
-                    setBackground('rgb(59, 63, 63)');
-                  }}
-                >
-                  Boards
-                </button>
-                <button
-                  className={`btn-small ${detail === 'video' ? 'active' : ''}`}
-                  onClick={() => {
-                    setDetail('video');
-                    setBackground('rgb(59, 63, 63)');
-                  }}
-                >
-                  Video
-                </button>
+                {detail != 'new scene' && (
+                  <>
+                    <button
+                      className={`btn-small ${
+                        detail === 'overview' ? 'active' : ''
+                      }`}
+                      onClick={() => {
+                        setDetail('overview');
+                        setBackground('rgb(218, 214, 208)');
+                      }}
+                    >
+                      Overview
+                    </button>
+                    <button
+                      className={`btn-small ${
+                        detail === 'script' ? 'active' : ''
+                      }`}
+                      onClick={() => {
+                        setDetail('script');
+                        setBackground('white');
+                      }}
+                    >
+                      Script
+                    </button>
+                    <button
+                      className={`btn-small ${
+                        detail === 'breakdown' ? 'active' : ''
+                      }`}
+                      onClick={() => {
+                        setDetail('breakdown');
+                        setBackground('rgb(218, 214, 208)');
+                      }}
+                    >
+                      Breakdowns
+                    </button>
+                    <button
+                      className={`btn-small ${
+                        detail === 'boards' ? 'active' : ''
+                      }`}
+                      onClick={() => {
+                        setDetail('boards');
+                        setBackground('rgb(59, 63, 63)');
+                      }}
+                    >
+                      Boards
+                    </button>
+                    <button
+                      className={`btn-small ${
+                        detail === 'video' ? 'active' : ''
+                      }`}
+                      onClick={() => {
+                        setDetail('video');
+                        setBackground('rgb(59, 63, 63)');
+                      }}
+                    >
+                      Video
+                    </button>
+                  </>
+                )}
               </div>
               <div className="transport-center-controls">
                 {/* <button>&lArr;</button> */}
@@ -2407,6 +2554,25 @@ const SceneMachineRightPanel = ({
                 {/* <button>&rArr;</button> */}
               </div>
               <div className="transport-right-controls">
+                {detail === 'new scene' && (
+                  <>
+                    <button
+                    onClick={handleCancel}
+                      className={`btn-small ${
+                        detail === 'none' ? 'active' : ''
+                      }`}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      className={`btn-small ${
+                        detail === 'none' ? 'active' : ''
+                      }`}
+                    >
+                      AddScene
+                    </button>
+                  </>
+                )}
                 {detail === 'boards' && preview.panel && (
                   <>
                     <button
@@ -2576,44 +2742,54 @@ const SceneMachineRightPanel = ({
                     <tbody>
                       <tr>
                         <td>Setting: </td>
-                        <td>{viewer.details.setting}</td>
+                        <td>{viewer.details && viewer.details.setting}</td>
                       </tr>
 
                       <tr>
                         <td>Character Count: </td>
-                        <td>{viewer.details.characters.length}</td>
+                        <td>
+                          {viewer.details && viewer.details.characters.length}
+                        </td>
                       </tr>
                       <tr>
                         <td> Shot Count: </td>
-                        <td>{viewer.details.shotList.length}</td>
+                        <td>
+                          {viewer.details && viewer.details.shotList.length}
+                        </td>
                       </tr>
                       <tr>
                         <td> Backgrounds: </td>
-                        <td>{viewer.details.backgrounds.length}</td>
+                        <td>
+                          {viewer.details && viewer.details.backgrounds.length}
+                        </td>
                       </tr>
                       <tr>
                         <td> Asset Count: </td>
-                        <td>{viewer.details.assets.length}</td>
+                        <td>
+                          {viewer.details && viewer.details.assets.length}
+                        </td>
                       </tr>
                       <tr>
                         <td> FX: </td>
-                        <td>{viewer.details.FX.length}</td>
+                        <td>{viewer.details && viewer.details.FX.length}</td>
                       </tr>
                       <tr>
                         <td>Frame Rate: </td>
-                        <td>{viewer.details.frameRate}</td>
+                        <td>{viewer.details && viewer.details.frameRate}</td>
                       </tr>
                       <tr>
                         <td>Aspect Ratio: </td>
-                        <td>{viewer.details.aspectRatio}</td>
+                        <td>{viewer.details && viewer.details.aspectRatio}</td>
                       </tr>
                       <tr>
                         <td>Launched: </td>
-                        <td>{viewer.launched ? 'true' : 'false'}</td>
+                        <td>
+                          {viewer.details && viewer.launched ? 'true' : 'false'}
+                        </td>
                       </tr>
                       <tr>
                         <td>Production Stage: </td>
-                        <td>{viewer.productionStage}</td>
+                        <td>{viewer.details && viewer.productionStage}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -2956,6 +3132,11 @@ const SceneMachineRightPanel = ({
                 </div>
               )}
               {detail === 'panel details' && <div>panel details</div>}
+              {detail === 'new scene' && (
+                <>
+                  <div className="new-scene-form">New Scene</div>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -2965,6 +3146,7 @@ const SceneMachineRightPanel = ({
 };
 
 const SceneMachine = () => {
+  const [scenes, setScenes] = useState(initialScenes);
   const [answer, setAnswer] = useState(false);
   const [buttons, setButtons] = useState(initialButtonState);
   const [detail, setDetail] = useState('overview');
@@ -3152,6 +3334,8 @@ const SceneMachine = () => {
       id: 0,
       // id: scene.storyBoards[0].panel,
     });
+    setDetail('overview');
+    setBackground('rgb(218, 214, 208)');
     setViewer(scene);
   };
 
@@ -3169,8 +3353,14 @@ const SceneMachine = () => {
           <SceneMachineTitle buttons={buttons} setButtons={setButtons} />
           <SceneMachineStripArea
             viewer={viewer}
+            setViewer={setViewer}
             scenes={scenes}
+            setScenes={setScenes}
+            detail={detail}
+            setDetail={setDetail}
             handleViewer={handleViewer}
+            setPreview={setPreview}
+            setBackground={setBackground}
           />
           <SceneMachineControlPanel
             buttons={buttons}
@@ -3184,6 +3374,8 @@ const SceneMachine = () => {
           <div className="scene-overview">
             <SceneMachineLeftPanel preview={preview} />
             <SceneMachineRightPanel
+            scenes={scenes}
+            setScenes={setScenes}
               detail={detail}
               setDetail={setDetail}
               viewer={viewer}
@@ -3243,15 +3435,23 @@ const Style = ({ background }) => (
       box-shadow: inset 0 0px 10px, 0 0 4px;
     }
 
-    
+    .add {
+      cursor: pointer;
+      color: #2f3c41;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      padding: 10px 0;
+      border: none;
+    }
 
     // #scene-machine > div > div {
     //   padding: 0 10px;
     // }
-
-    
-
-  
 
     // #scene {
     //   padding: 0px 30px;

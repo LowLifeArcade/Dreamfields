@@ -14,9 +14,10 @@ const addFlicker = () => {
 };
 const FieldView = () => {
   const [field, setField] = useState({});
+  const [corkImage, setCorkImage] = useState();
   const router = useRouter();
   const { slug } = router.query;
-  console.log(field);
+  // console.log(router);
 
   useEffect(() => {
     loadCourse();
@@ -37,17 +38,24 @@ const FieldView = () => {
               <div className="fo-container">
                 <div className="fo-main">
                   <div className="banner">
-                    <h1>{field.name}</h1>
+                    
                     <div className="banner-items">
-                      <img
+                      
+                      {/* <img
                         className="banner-img"
                         src="https://cdnb.artstation.com/p/assets/images/images/020/562/285/large/sonny-sortzen-illustration136.jpg?1568253414"
+                        alt=""
+                      /> */}
+                      <img
+                        className="banner-img"
+                        src={field.image.Location}
                         alt=""
                       />
                     </div>
                   </div>
 
                   <div className="fo-content">
+                  <h1 className='fo-title' >{field.name}</h1>
                     <div
                       id="corkboard-container"
                       className="fo-section-container"
@@ -74,7 +82,15 @@ const FieldView = () => {
                           alt=""
                         />
                         <img
+                          src="https://cdnb.artstation.com/p/assets/images/images/020/562/163/large/sonny-sortzen-illustration752.jpg?1568253027"
+                          alt=""
+                        />
+                        <img
                           src="https://cdnb.artstation.com/p/assets/images/images/020/557/967/large/james-brown-illustration134.jpg?1568234268"
+                          alt=""
+                        />
+                        <img
+                          src="https://cdna.artstation.com/p/assets/images/images/020/557/966/large/james-brown-greg6.jpg?1568234265"
                           alt=""
                         />
                       </div>
@@ -85,7 +101,7 @@ const FieldView = () => {
                         <div className="fo-section-about">
                           <ReactMarkdown children={field.description} />
                           {/* <ReactMarkdown>{field.description}</ReactMarkdown> */}
-                          Paul Saves All Lorem ipsum dolor sit amet consectetur
+                          {/* Paul Saves All Lorem ipsum dolor sit amet consectetur
                           adipisicing elit. Est unde perspiciatis suscipit,
                           laborum explicabo dolorum error magnam omnis quisquam
                           culpa, cum ducimus sequi natus a aperiam dolor.
@@ -104,7 +120,7 @@ const FieldView = () => {
                           ducimus libero soluta saepe nobis rem recusandae sequi
                           labore minima quia velit odio voluptatum natus quidem
                           mollitia, <br /> inventore voluptatibus, sit quam ipsa
-                          corporis magnam,
+                          corporis magnam, */}
                         </div>
                       </div>
                     </div>
@@ -113,7 +129,8 @@ const FieldView = () => {
                     </div>
                   </div>
                 </div>
-                {/* <div className="fo-sidebar">
+                {/* set a button up to show and hide this menu OR add it to side menu on left. That's probably a better idea */}
+                {false && <div className="fo-sidebar">
                   <div className="fo-title-card">
                     <div className="fo-sidebar-item">Title: {field.name}</div>
                     <div className="fo-sidebar-item">
@@ -140,20 +157,20 @@ const FieldView = () => {
                   />
                   <OVSidebarItems slug="#assets" name="Assets" />
                   <OVSidebarItems slug="#contributors" name="Contributors" />
-                </div> */}
+                </div>}
               </div>
             </div>
           </>
         )}
       </div>
-      {style}
+      <Style />
     </CreatorRoute>
   );
 };
 
 export default FieldView;
 
-const style = (
+const Style = () => (
   <style jsx>{`
     .fo-window {
       width: 100%;
@@ -172,7 +189,19 @@ const style = (
       width: 100vw;
       overflow-y: scroll;
       height: 94vh;
-      padding-top: 94vh;
+      padding-top: 64vh;
+    }
+
+    .fo-title {
+      padding-top: 50px;
+      color: rgb(70, 70, 70);
+      opacity: .6;
+      font-family: 'Roboto', sans-serif;
+      font-size: 5rem;
+      text-align: center;
+      // top: 260px;
+      // left: 120px;
+      // position: fixed;
     }
     
     .fo-content {
@@ -223,6 +252,7 @@ const style = (
       
     }
     .fo-section-cork {
+      position: relative;
       background: url('/cork.jpeg') center/cover;
       border: solid 10px rgb(221, 213, 200);
       width: 100%;
@@ -268,9 +298,15 @@ const style = (
       transition: .2s ease-in-out;
     }
     .fo-section-cork > img:active {
+      position: absolute;
       max-height: 800px;
-      padding: 30px;
-      transform: rotate(0deg);
+      z-index: 1;
+      // padding: 30px;
+      // top: 50%;
+      transform: translate(-50%);
+      left: 50%;
+      transition: .2s ease-in-out;
+      // transform: rotate(0deg);
     }
     .fo-section-cork > img:nth-of-type(+1) {
       max-height: 400px;
@@ -293,8 +329,17 @@ const style = (
       padding: 30px;
       transform: rotate(5deg);
     }
+    .fo-section-cork > img:nth-of-type(+8) {
+      max-height: 400px;
+      padding: 30px;
+      transform: rotate(-2deg);
+    }
     .banner {
+      background: rgb(179, 175, 169);
+      width: 100%;
       top: -40px;
+      left: 50%;
+      transform: translateX(-50%);
       display: flex;
       justify-content: center;
       position: fixed;
@@ -306,20 +351,12 @@ const style = (
 
       z-index: -1;
     }
-    .banner > h1 {
-      color: rgb(37, 37, 37);
-      opacity: .6;
-      font-family: 'Roboto', sans-serif;
-      font-size: 5rem;
-      top: 260px;
-      left: 120px;
-      position: fixed;
-    }
+    
     .banner-img {
       // top: 50px;
 
-      width: 80vw;
-      // height: 740px;
+      // width: 80vw;
+      height: 740px;
       object-fit: contain;
     }
 

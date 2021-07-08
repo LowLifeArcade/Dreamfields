@@ -73,9 +73,9 @@ export const currentCreator = async (req, res) => {
 export const creatorFields = async (req, res) => {
   try {
     const fields = await Field.find({ creator: req.user._id })
-    .sort({ createdAt: -1 })
-    .exec();
-    res.json(fields)
+      .sort({ createdAt: -1 })
+      .exec();
+    res.json(fields);
   } catch (err) {
     console.log(err);
   }
