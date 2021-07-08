@@ -2007,6 +2007,7 @@ const SceneMachineRightPanel = ({
   viewer,
   setDetail,
   setBackground,
+  background,
   state,
   activeShot,
   setActiveShot,
@@ -2329,7 +2330,7 @@ const SceneMachineRightPanel = ({
   };
   return (
     <>
-      <Style />
+      <Style background={background}/>
       <div className="right-panel">
         <div className="scene-overview-right-container">
           <div className="transport-frame">
@@ -3186,6 +3187,7 @@ const SceneMachine = () => {
               detail={detail}
               setDetail={setDetail}
               viewer={viewer}
+              background={background}
               setBackground={setBackground}
               state={state}
               activeShot={activeShot}
@@ -3232,7 +3234,7 @@ const Style = ({ background }) => (
       height: 100%;
       overflow: scroll;
       background: rgba(46, 35, 35, 0.6);
-
+      margin-bottom: 10px;
       width: 100%;
 
       display: flex;

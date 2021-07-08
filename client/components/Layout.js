@@ -29,7 +29,7 @@ const Style = () => {
 }
 
 const Layout = (props) => {
-  const [showSideMenu, setShowSideMenu] = useState(); // lifted and shared state for sidebar and navbar
+  const [showSideMenu, setShowSideMenu] = useState(true); // lifted and shared state for sidebar and navbar
 
   const {
     state: { user },
