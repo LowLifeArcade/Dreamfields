@@ -1344,23 +1344,1634 @@ const reducer = (state, action) => {
   }
 };
 
+// components
+
+const SceneMachineTitle = ({ setButtons, buttons }) => {
+  const Style = () => {
+    return (
+      <style jsx>{`
+        .scene-machine-title {
+          // box-shadow: 0 10px 10px rgba(256 256, 256, 256, 0.8);
+          position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 6px;
+          margin-top: 5px;
+        }
+        .scene-machine > div > h1 {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: rgb(107, 105, 105);
+          box-shadow: inset 0 0 15px rgb(14, 13, 12), inset 0 0 15px rgb(39, 38, 31),
+            inset 0 0 30px rgb(55, 55, 75), inset 0 0 20px rgb(55, 55, 75);
+          background: rgb(247, 229, 229);
+          font-size: 1.2rem;
+          padding: 6px 30px;
+          border-radius: 10px;
+          box-shadow: 0 0px 10px rgba(95, 98, 104, 0.4),
+            0 0px 10px rgba(200, 200, 256, 0.1), 0 0 10px rgba(200, 180, 0, 0.2),
+            inset 0 0 10px, inset 0 0 3px, inset 0 0 1px, inset 0 0 2px;
+        }
+        .title-buttons-left {
+          display: flex;
+          align-items: flex-start;
+          justify-content: flex-start;
+          width: 300px;
+        }
+        .title-buttons-left > div {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .btn-ctrl {
+          width: 40px;
+          height: 40px;
+          border: solid 1px rgb(54, 58, 61);
+          margin: 5px 3px;
+          // border-right: none;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+        }
+        .btn-ctrl-inside {
+          width: 25px;
+          height: 25px;
+          border-radius: 1px;
+          background: rgb(227, 228, 222);
+          // background: rgb(240, 248, 204);
+          border: solid 1px rgb(17, 5, 1);
+          box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.8),
+            inset 0 0 3px rgba(0, 0, 0, 1), 0 0 1px rgba(0, 0, 0, 0.8);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .btn-ctrl-inside.active {
+          width: 24.3px;
+          height: 24.3px;
+          border-radius: 3px;
+          border: solid 1px rgb(165, 150, 86);
+          background: rgb(255, 230, 8);
+          // background: rgb(248, 227, 42);
+          // background: rgb(210, 248, 42);
+
+          box-shadow: 0 0 5px rgba(209, 209, 209, 0.8),
+            0 0 3px rgb(214, 214, 214), inset 0 0 4px rgba(228, 228, 228, 0.9),
+            0px 0px 2px rgba(0, 0, 0, 1);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .title-buttons-right {
+          display: flex;
+          width: 300px;
+          flex-direction: row-reverse;
+        }
+        .btn-mini {
+          cursor: pointer;
+          color: #152125;
+          padding: 2px 8px;
+        }
+      `}</style>
+    );
+  };
+
+  return (
+    <>
+      <Style />
+      <div className="scene-machine-title">
+        <div className="title-buttons-left">
+          <div
+            onClick={() => setButtons({ ...buttons, machine: 'scene' })}
+            className="btn-ctrl"
+          >
+            <div
+              className={`btn-ctrl-inside ${
+                buttons.machine === 'scene' && 'active'
+              }`}
+            ></div>
+          </div>
+          <div
+            onClick={() => setButtons({ ...buttons, machine: 'asset' })}
+            className="btn-ctrl"
+          >
+            <div
+              className={`btn-ctrl-inside ${
+                buttons.machine === 'asset' && 'active'
+              }`}
+            ></div>
+          </div>
+        </div>
+        {/* <h1>{buttons.machine === 'scene' ? 'Scene' : 'Asset'} Machine</h1> */}
+        <div className="title-buttons-right">
+          {/* <div className="btn">
+      <div className="btn-inside">X</div>
+    </div>
+    <div className="btn">
+      <div className="btn-inside">V</div>
+    </div> */}
+          <div className="btn-mini">
+            <i className="fas fa-trash-alt"></i>
+          </div>
+          <div className="btn-mini">
+            <i className="fas fa-cut"></i>
+          </div>
+          <div className="btn-mini">
+            <i class="far fa-clone"></i>
+          </div>
+          <div className="btn-mini">
+            <i class="fas fa-power-off"></i>
+          </div>
+          <div className="btn-mini">
+            <i class="far fa-share-square"></i>
+          </div>
+          <div className="btn-mini">
+            <i class="fas fa-film"></i>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+const SceneMachineStripArea = ({ scenes, viewer, handleViewer }) => {
+  const Style = () => {
+    return (
+      <style jsx>{`
+        .section-strip-container {
+          background: rgb(218, 210, 210);
+          // padding-top: 20px;
+          width: 100%;
+
+          border: solid 1px rgb(22, 19, 19);
+          border-radius: 2px;
+          box-shadow: inset 0 0px 10px, inset 0 0 4px, inset 0 0 4px, 0 0 5px,
+            0 0 7px;
+        }
+        .scenes-section-strip {
+          // background: rgb(226, 222, 205);
+          background: rgb(29, 24, 24);
+          display: flex;
+          padding: 3px;
+          overflow-x: scroll;
+          margin: 5px 0;
+          box-shadow: 0 0 3px;
+          // border-radius: 7px;
+          // margin-left: 30px;
+          // margin-right: 30px;
+        }
+        .scene-strip {
+          border-top: dashed 5.5px rgb(87, 85, 85);
+          border-bottom: dashed 5.5px rgb(107, 104, 104);
+          // border-top: dashed 6px rgb(201, 196, 196);
+          // border-bottom: dashed 6px rgb(201, 196, 196);
+          // border-bottom: dashed 8px rgb(7, 7, 5);;
+          padding: 6px 20px;
+          margin: 0 3px;
+          // border-right: solid 2px rgb(15, 11, 11);
+          cursor: pointer;
+          position: relative;
+        }
+
+        .scenes-section-strip::-webkit-scrollbar {
+          display: none;
+        }
+
+        .scene-strip > img {
+          height: 50px;
+          // position: relative;
+          // transform: rotate(-90deg);
+          opacity: 0.6;
+        }
+        .scene-strip > img.active {
+          // border: solid 2px green;
+          // position: absolute;
+          opacity: 1;
+          background: rgba(3, 150, 3);
+          box-shadow: 0 0 2px rgba(231, 230, 230, 0.2),
+            0 0 6px rgba(231, 230, 230, 0.4), 0 0 1px white;
+          // margin: 1px;
+        }
+        .scene-strip > p {
+          padding: 1px;
+          background: rgba(0, 0, 0, 0.5);
+          bottom: 12px;
+          position: absolute;
+          font-size: 0.6rem;
+          color: rgb(179, 174, 174);
+        }
+      `}</style>
+    );
+  };
+
+  return (
+    <>
+      <Style />
+      <div className="section-strip-container">
+        <div id="act1" className="scenes-section-strip">
+          {scenes.map((scene) => (
+            <>
+              <div
+                key={scene.id}
+                onClick={(e) => handleViewer(e, scene)}
+                className="scene-strip"
+              >
+                <img
+                  className={scene.id === viewer.id && 'active'}
+                  src={scene.stripImage}
+                  alt=""
+                />
+                <p>{scene.sceneName}</p>
+              </div>
+            </>
+          ))}
+        </div>
+      </div>
+    </>
+  );
+};
+
+const SceneMachineControlPanel = ({
+  setButtons,
+  buttons,
+  setAnswer,
+  dispatch,
+  state,
+  activeShot,
+  userContext,
+}) => {
+  const { button1, button2, button3, button4, button5 } = buttons;
+  const Style = () => {
+    return (
+      <style jsx>{`
+        .control-panel {
+          height: 60px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        .control-panel-buttons {
+          height: 60px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin: 5px;
+          cursor: pointer;
+          // width: 30px;
+        }
+
+        .control-panel-display {
+          font-size: 1rem;
+          color: rgb(10, 59, 6);
+          height: 30px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin: 5px;
+          width: 200px;
+          border-radius: 4px;
+          background: rgb(180, 224, 154);
+          // box-shadow: inset 0 0 10px, inset 0 0 3px, inset 0 0 10px;
+          box-shadow: inset 0 0px 5px rgba(0, 0, 0, 0.8),
+            inset 0 0px 3px rgba(0, 0, 0, 0.8);
+          // box-shadow: 0 0px 10px rgba(256, 256, 256, 0.8), 0 0px 5px rgba(256, 256, 256, 0.8);
+        }
+        .control-panel-other {
+          height: 60px;
+          display: flex;
+          align-items: center;
+          margin: 5px;
+          width: 200px;
+          flex-direction: row-reverse;
+        }
+
+        .btn {
+          width: 45px;
+          height: 43px;
+          // border: solid 1px rgb(10, 1, 1);
+          border: solid 1px rgb(54, 58, 61);
+          border-right: none;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+        }
+
+        .btn:last-child {
+          border-right: solid 1px rgb(54, 58, 61);
+          // border-right: solid 1px rgb(10, 1, 1);
+        }
+
+        .btn-inside {
+          width: 25px;
+          height: 25px;
+          border-radius: 2px;
+          background: rgb(240, 248, 204);
+          border: solid 1px rgb(17, 5, 1);
+
+          box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8),
+            inset 0 0 3px rgba(0, 0, 0, 1), 0 0 1px rgba(0, 0, 0, 0.8);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .btn-inside.active {
+          width: 25px;
+          height: 25px;
+          border-radius: 3px;
+          border: solid 1px rgb(165, 150, 86);
+          background: rgb(248, 227, 42);
+          // background: rgb(248, 227, 42);
+          // background: rgb(210, 248, 42);
+
+          box-shadow: 0 0 5px rgba(209, 209, 209, 0.8),
+            0 0 3px rgb(214, 214, 214), inset 0 0 1px rgba(228, 228, 228, 0.8);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .btn-mini {
+          cursor: pointer;
+          color: #152125;
+          padding: 2px 8px;
+        }
+      `}</style>
+    );
+  };
+  return (
+    <>
+      <Style />
+      <div className="control-panel">
+        <code className="control-panel-display">
+          <strong>**{buttons.display}**</strong>
+        </code>
+        <div className="control-panel-buttons">
+          <div className="btn">
+            <div
+              onClick={() =>
+                setButtons({
+                  ...buttons,
+                  display: 'Reels',
+                  button1: { active: true },
+                  button2: { active: false },
+                  button3: { active: false },
+                  button4: { active: false },
+                  button5: { active: false },
+                })
+              }
+              className={`btn-inside ${button1.active && 'active'}`}
+            ></div>
+          </div>
+          <div className="btn">
+            <div
+              onClick={() =>
+                setButtons({
+                  ...buttons,
+                  display: 'Acts',
+                  button1: { active: false },
+                  button2: { active: true },
+                  button3: { active: false },
+                  button4: { active: false },
+                  button5: { active: false },
+                })
+              }
+              className={`btn-inside ${button2.active && 'active'}`}
+            ></div>
+          </div>
+          <div className="btn">
+            <div
+              onClick={() =>
+                setButtons({
+                  ...buttons,
+                  display: 'Sequences',
+                  button1: { active: false },
+                  button2: { active: false },
+                  button3: { active: true },
+                  button4: { active: false },
+                  button5: { active: false },
+                })
+              }
+              className={`btn-inside ${button3.active && 'active'}`}
+            ></div>
+          </div>
+          <div className="btn">
+            <div
+              onClick={() =>
+                setButtons({
+                  ...buttons,
+                  display: 'Scenes',
+                  button1: { active: false },
+                  button2: { active: false },
+                  button3: { active: false },
+                  button4: { active: true },
+                  button5: { active: false },
+                })
+              }
+              className={`btn-inside ${button4.active && 'active'}`}
+            ></div>
+          </div>
+          <div className="btn">
+            <div
+              onClick={() =>
+                setButtons({
+                  ...buttons,
+                  display: 'Panels',
+                  button1: { active: false },
+                  button2: { active: false },
+                  button3: { active: false },
+                  button4: { active: false },
+                  button5: { active: true },
+                })
+              }
+              className={`btn-inside ${button5.active && 'active'}`}
+            ></div>
+          </div>
+        </div>
+        <div className="control-panel-other">
+          {/* {state.confirm && <GetAnswer />} */}
+          {state.confirm === 'Checkout scene' && (
+            <>
+              <div
+                className="btn-mini"
+                onClick={() => {
+                  setAnswer(false),
+                    dispatch({
+                      type: 'CONFIRM',
+                      payload: '',
+                    });
+                }}
+              >
+                <i class="fas fa-times"></i>
+              </div>
+              <div
+                className="btn-mini"
+                onClick={() => {
+                  setAnswer(true),
+                    dispatch({
+                      type: 'CHECKOUT',
+                      payload: {
+                        shot: activeShot,
+                        user: userContext.state.user,
+                      },
+                    }),
+                    dispatch({
+                      type: 'CONFIRM',
+                      payload: '',
+                    });
+                }}
+              >
+                <i class="fas fa-check"></i>
+              </div>
+              <div>{state.confirm}?</div>
+            </>
+          )}
+          {state.confirm === 'Checkin scene' && (
+            <>
+              <div
+                className="btn-mini"
+                onClick={() => {
+                  setAnswer(false),
+                    dispatch({
+                      type: 'CONFIRM',
+                      payload: '',
+                    });
+                }}
+              >
+                <i class="fas fa-times"></i>
+              </div>
+              <div
+                className="btn-mini"
+                onClick={() => {
+                  setAnswer(true),
+                    dispatch({
+                      type: 'CHECKIN',
+                      payload: {
+                        shot: activeShot,
+                        user: userContext.state.user,
+                      },
+                    }),
+                    dispatch({
+                      type: 'CONFIRM',
+                      payload: '',
+                    });
+                }}
+              >
+                <i class="fas fa-check"></i>
+              </div>
+              <div>{state.confirm}?</div>
+            </>
+          )}
+          {/* <div className="btn-mini">
+                <i class="fas fa-pager"></i>
+              </div> */}
+          {!state.confirm && (
+            <>
+              <div className="btn-mini">
+                <i class="fas fa-redo-alt"></i>
+              </div>
+              <div className="btn-mini">
+                <i class="fas fa-undo-alt"></i>
+              </div>
+              <div className="btn-mini">
+                <i class="fas fa-photo-video"></i>
+              </div>
+              <div className="btn-mini">
+                <i class="fas fa-file-export"></i>
+              </div>
+              <div className="btn-mini">
+                <i class="fas fa-info-circle"></i>
+              </div>
+              <div className="btn-mini">
+                <i class="far fa-save"></i>
+              </div>
+            </>
+          )}
+          {/* <div className="btn-mini">
+                <i class="fas fa-expand"></i>
+              </div> */}
+        </div>
+      </div>
+    </>
+  );
+};
+
+const SceneMachineLeftPanel = ({ preview }) => {
+  const Style = () => {
+    return (
+      <style jsx>{`
+        .left-panel {
+          padding: 10px;
+          width: 40%;
+          max-height: 100%;
+          overflow: auto;
+        }
+
+        .viewer {
+          // max-width: 500px;
+          // height: 370px;
+          border-radius: 5px;
+          // height: 100%;
+          // border: solid 15px rgb(24, 4, 4);
+          box-shadow: inset 0 0px 10px rgba(0, 0, 0, 1);
+        }
+        .viewer > img {
+          // max-height: 90%;
+          padding: 8px;
+          // height: 100%;
+          width: 100%;
+          // max-height: 270px;
+        }
+
+        .transport-title {
+          border-bottom: solid 1px;
+          background: rgb(206, 230, 169);
+          // border: solid 1px rgb(65, 11, 11);
+          border-radius: 3px;
+          margin: 10px 0;
+          box-shadow: inset 0 0 10px, inset 0 0 5px, inset 0 0 3px;
+          padding: 10px 5px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+        .transport-title > div {
+          width: 100%;
+          height: 30px;
+          display: flex;
+          flex-wrap: nowrap;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+        }
+        .transport-viewer-controls {
+          // height: 100%;
+          display: flex;
+          justify-content: center;
+        }
+        .transport-viewer-controls > button {
+          // margin-top: 10px;
+          padding: 13px 10px;
+          margin: 1px;
+          box-shadow: inset 0 4px 0px,
+            inset -2px -2px 2px 0px rgba(102, 91, 91, 0.774),
+            inset 2px -2px 2px 0px rgba(102, 91, 91, 0.774);
+          color: rgb(141, 29, 29);
+          cursor: pointer;
+        }
+      `}</style>
+    );
+  };
+
+  return (
+    <>
+      <Style />
+      <div className="left-panel">
+        <div className="viewer">
+          <img src={preview.image} alt="" />
+          {/* change to state */}
+        </div>
+        <div className="transport-title">
+          <div>
+            <p>Scene:</p> {preview.sceneName || '0'}
+          </div>
+          <div>
+            <p>Panel:</p> {preview.panel || '0'}
+          </div>
+          <div>
+            <p>Shot:</p> {preview.shotNumber || '0'}
+          </div>
+        </div>
+        <div className="transport-viewer-controls">
+          <button>
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <button>Stop</button>
+          <button>Play</button>
+          <button>Pause</button>
+          <button>
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+    </>
+  );
+};
+
+const SceneMachineRightPanel = ({
+  detail,
+  viewer,
+  setDetail,
+  setBackground,
+  state,
+  activeShot,
+  setActiveShot,
+  dispatch,
+  userContext,
+  preview,
+  setPreview,
+  setViewer,
+}) => {
+  const Style = ({ background }) => {
+    return (
+      <style jsx>{`
+        .right-panel {
+          width: 60%;
+          max-height: 100%;
+          overflow: auto;
+        }
+        .scene-overview-right-container {
+          // background: #fff;
+          padding: 10px;
+          height: 100%;
+          max-height: 100%;
+        }
+        .transport-frame {
+          box-shadow: inset 0 0 20px, inset 0 0 4px, inset 0 0 10px;
+          height: 100%;
+          border-radius: 5px;
+          display: flex;
+          flex-direction: column;
+          // align-items: flex-start;
+        }
+        .transport > div > button {
+          font-size: 0.6rem;
+          cursor: pointer;
+          color: #fff;
+          background: rgb(57, 92, 97);
+          // border: solid 1px rgb(54, 23, 23);
+          border-style: double;
+          padding: 2px 4px;
+          box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.5);
+        }
+        .transport {
+          // box-shadow: inset 0 0 10px;
+          border: solid 1px;
+          // border-radius: 5px;
+          padding: 10px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+
+        .transport-left-controls {
+          width: 30px;
+          display: flex;
+        }
+        .transport-center-controls {
+          width: 30px;
+          display: flex;
+          justify-content: center;
+        }
+        .transport-right-controls {
+          width: 30px;
+          display: flex;
+          flex-direction: row-reverse;
+        }
+        .btn-small {
+          // color: rgb(7, 245, 233);
+        }
+
+        .btn-small.active {
+          color: rgb(7, 245, 233);
+          box-shadow: 0 0 1px rgba(167, 175, 175, 0.3);
+        }
+        .transport-overview {
+          // z-index: 1;
+          background-color: ${background};
+          width: auto;
+          // border: solid 1px rgb(65, 11, 11);
+          margin: 10px;
+
+          // overflow: auto;
+          height: 100%;
+          // max-height: 100%;
+          border-radius: 10px;
+          box-shadow: inset 0 0 10px, inset 0 0 3px;
+          padding: 0 2px;
+          overflow-y: scroll;
+          display: flex;
+          flex-direction: column;
+          z-index: 2;
+        }
+        .transport-description {
+          padding: 20px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+        .transport-description > h3 {
+          margin-bottom: 20px;
+          background: #fff;
+          padding: 10px 30px;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+        }
+
+        .transport-description-detail {
+          background: #fff;
+          line-height: 1.8rem;
+          text-indent: 2rem;
+          padding: 20px;
+          border: solid 1px;
+        }
+        .details-table {
+          padding: 20px;
+          width: 100%;
+          border-collapse: collapse;
+          margin: 25px 0;
+          font-size: 0.9em;
+          font-family: sans-serif;
+          min-width: 200px;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+          border-radius: 5px;
+        }
+
+        .details-table thead tr {
+          // background-color: #009879;
+          color: #ffffff;
+          text-align: left;
+        }
+
+        .details-table th,
+        .details-table td {
+          padding: 12px 15px;
+        }
+
+        .details-table tbody tr {
+          border-bottom: 1px solid #aaaaaa;
+        }
+
+        .details-table tbody tr:nth-of-type(odd) {
+          background-color: #f3f3f3;
+        }
+
+        // .details-table tbody tr:last-of-type {
+        //   border-bottom: 2px solid #009879;
+        // }
+
+        //   .details-table tbody tr.active-row {
+        //     font-weight: bold;
+        //     color: #009879;
+        // }
+        .transport-script {
+          font-family: 'Courier New', Courier, monospace;
+          padding: 10px 20px;
+        }
+        .transport-script > textarea {
+          font-family: 'Courier New', Courier, monospace;
+          outline: none;
+          border: none;
+        }
+
+        .transport-breakdown {
+          // background: #2f3c41;
+          padding: 20px 10px;
+        }
+        .transport-breakdown-shot {
+          cursor: pointer;
+          border: solid rgba(0, 0, 0, 0.15);
+        }
+        .transport-breakdown-shot.active {
+          border: solid;
+        }
+        .transport-breakdown-shot.checked-out {
+          color: #2f3c41;
+          background: #acb7bb;
+        }
+        .transport-breakdown-shot.checked-out.not-user {
+          color: #2f3c41;
+          background: #acb7bb;
+          pointer-events: none;
+          cursor: default;
+        }
+
+        .transport-breakdown > div {
+          background-color: white;
+          padding: 20px;
+          margin-bottom: 10px;
+        }
+        .transport-breakdown > div > div {
+          margin: 20px;
+        }
+        .checked-out {
+          background: #747373;
+        }
+        .add {
+          cursor: pointer;
+          color: #2f3c41;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: rgba(255, 255, 255, 0.9);
+          border-radius: 50%;
+          width: 50px;
+          height: 50px;
+          padding: 10px 0;
+          border: none;
+        }
+        .transport-panels-section {
+          width: 100%;
+          // padding: 10px 10px;
+        }
+        .bread-crumb {
+          overflow: hidden;
+          // width: 100%;
+          // background: #2f3c41;
+          font-size: 0.7rem;
+          color: #c5c3c3;
+          padding: 5px 10px;
+          padding-top: 10px;
+          border-bottom: solid 1px grey;
+          // position: fixed;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+
+        .bread-crumb > div {
+          width: 400px;
+          display: flex;
+          // justify-content: flex-end;
+        }
+
+        .bread-crumb > div:last-child {
+          width: 400px;
+          display: flex;
+          justify-content: flex-end;
+        }
+        .board-titles {
+          padding-top: 10px;
+          padding-bottom: 10px;
+          font-size: 1.4rem;
+          color: #aaaaaa;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .transport-panels {
+          padding: 0px 20px;
+          display: flex;
+          flex-wrap: wrap;
+          // border-bottom: solid 1px grey;
+          padding-bottom: 20px;
+        }
+        .transport-panel.active {
+          // border: solid;
+        }
+        .transport-panel {
+          cursor: pointer;
+          position: relative;
+          max-width: 100px;
+          padding: 10px 0;
+          margin: 5px;
+        }
+        .transport-panel > img.active {
+          border: solid 2px rgb(28, 226, 183);
+        }
+        .transport-panel > img {
+          border: solid 2px rgba(0, 0, 0, 0.3);
+          width: 100%;
+        }
+        .transport-label {
+          background: rgba(0, 0, 0, 0.3);
+          // border-radius: 2px;
+          color: #fff;
+          position: absolute;
+          padding: 1px 5px;
+          font-size: 0.5em;
+          top: 12px;
+          right: 2px;
+          cursor: pointer;
+        }
+
+        .panel-index {
+          top: 12px;
+          left: 2px;
+          position: absolute;
+          background: rgba(256, 256, 256, 0.8);
+          font-size: 0.6rem;
+          padding: 1px 4px;
+        }
+        .panel-shot {
+          position: absolute;
+          top: 12px;
+          right: 42px;
+          background: rgba(256, 256, 256, 0.4);
+          font-size: 0.6rem;
+          padding: 1px 4px;
+        }
+        .transport-panel-add {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 110px;
+        }
+    
+        .transport-panel-add > div {
+          cursor: pointer;
+          color: #2f3c41;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: rgba(228, 227, 227, 0.9);
+          border-radius: 50%;
+          width: 33px;
+          height: 33px;
+          padding: 10px 0;
+          border: none;
+        }
+      `}</style>
+    );
+  };
+  return (
+    <>
+      <Style />
+      <div className="right-panel">
+        <div className="scene-overview-right-container">
+          <div className="transport-frame">
+            <div className="transport">
+              {/* this should download all coresponding data like concept art. Maybe */}
+              <div className="transport-left-controls">
+                <button
+                  className={`btn-small ${
+                    detail === 'overview' ? 'active' : ''
+                  }`}
+                  onClick={() => {
+                    setDetail('overview');
+                    setBackground('rgb(218, 214, 208)');
+                  }}
+                >
+                  Overview
+                </button>
+                <button
+                  className={`btn-small ${detail === 'script' ? 'active' : ''}`}
+                  onClick={() => {
+                    setDetail('script');
+                    setBackground('white');
+                  }}
+                >
+                  Script
+                </button>
+                <button
+                  className={`btn-small ${
+                    detail === 'breakdown' ? 'active' : ''
+                  }`}
+                  onClick={() => {
+                    setDetail('breakdown');
+                    setBackground('rgb(218, 214, 208)');
+                  }}
+                >
+                  Breakdowns
+                </button>
+                <button
+                  className={`btn-small ${detail === 'boards' ? 'active' : ''}`}
+                  onClick={() => {
+                    setDetail('boards');
+                    setBackground('rgb(59, 63, 63)');
+                  }}
+                >
+                  Boards
+                </button>
+                <button
+                  className={`btn-small ${detail === 'video' ? 'active' : ''}`}
+                  onClick={() => {
+                    setDetail('video');
+                    setBackground('rgb(59, 63, 63)');
+                  }}
+                >
+                  Video
+                </button>
+              </div>
+              <div className="transport-center-controls">
+                {/* <button>&lArr;</button> */}
+                <button
+                  className={`btn-small ${detail === 'none' ? 'active' : ''}`}
+                >
+                  &larr;
+                </button>
+                <button
+                  className={`btn-small ${detail === 'main' ? 'active' : ''}`}
+                >
+                  Main
+                </button>
+                <button
+                  className={`btn-small ${detail === 'none' ? 'active' : ''}`}
+                >
+                  &rarr;
+                </button>
+                {/* <button>&rArr;</button> */}
+              </div>
+              <div className="transport-right-controls">
+                {detail === 'boards' && preview.panel && (
+                  <>
+                    <button
+                      className={`btn-small ${
+                        detail === 'none' ? 'active' : ''
+                      }`}
+                    >
+                      Upload
+                    </button>
+                    <button
+                      className={`btn-small ${
+                        detail === 'none' ? 'active' : ''
+                      }`}
+                    >
+                      Download
+                    </button>
+                    <button
+                      onClick={() => setDetail('panel details')}
+                      className={`btn-small ${
+                        detail === 'none' ? 'active' : ''
+                      }`}
+                    >
+                      Details
+                    </button>
+                  </>
+                )}
+                {detail === 'boards' && (
+                  <>
+                    <button
+                      onClick={() => setActiveShot('')}
+                      className={`btn-small ${
+                        detail === 'none' ? 'active' : ''
+                      }`}
+                    >
+                      SeeAll
+                    </button>
+                  </>
+                )}
+                {detail === 'breakdown' && activeShot != '' && (
+                  <>
+                    <button
+                      className={`btn-small ${
+                        detail === 'none' ? 'active' : ''
+                      }`}
+                    >
+                      Notes
+                    </button>
+                    <button
+                      className={`btn-small ${
+                        detail === 'none' ? 'active' : ''
+                      }`}
+                    >
+                      Update
+                    </button>
+
+                    {state.checkedOut &&
+                    activeShot.id === state.checkedOut.shot.id ? (
+                      <button
+                        className={`btn-small ${
+                          detail === 'none' ? 'active' : ''
+                        }`}
+                        onClick={
+                          // () => handleCheckout(answer)
+                          () =>
+                            dispatch({
+                              type: 'CONFIRM',
+                              payload: 'Checkin scene',
+                            })
+                        }
+                      >
+                        Checkin
+                      </button>
+                    ) : (
+                      <button
+                        className={`btn-small ${
+                          detail === 'none' ? 'active' : ''
+                        }`}
+                        onClick={
+                          // () => handleCheckout(answer)
+                          () =>
+                            dispatch({
+                              type: 'CONFIRM',
+                              payload: 'Checkout scene',
+                            })
+                        }
+                      >
+                        Checkout
+                      </button>
+                    )}
+                  </>
+                )}
+                {detail === 'overview' && (
+                  <>
+                    <button
+                      className={`btn-small ${
+                        detail === 'none' ? 'active' : ''
+                      }`}
+                    >
+                      Backgrounds
+                    </button>
+                    <button
+                      className={`btn-small ${
+                        detail === 'none' ? 'active' : ''
+                      }`}
+                    >
+                      Assets
+                    </button>
+                    <button
+                      className={`btn-small ${
+                        detail === 'none' ? 'active' : ''
+                      }`}
+                    >
+                      ModelSheets
+                    </button>
+                  </>
+                )}
+                {detail === 'script' && (
+                  <>
+                    <button
+                      className={`btn-small ${
+                        detail === 'none' ? 'active' : ''
+                      }`}
+                    >
+                      Revisions
+                    </button>
+                    {state.edit ? (
+                      <button
+                        className={`btn-small ${
+                          detail === 'none' ? 'active' : ''
+                        }`}
+                        onClick={() => dispatch({ type: 'SAVE_SCRIPT' })}
+                      >
+                        Save
+                      </button>
+                    ) : (
+                      <button
+                        className={`btn-small ${
+                          detail === 'none' ? 'active' : ''
+                        }`}
+                        onClick={() => dispatch({ type: 'EDIT_SCRIPT' })}
+                      >
+                        Edit
+                      </button>
+                    )}
+                  </>
+                )}
+              </div>
+            </div>
+
+            <div className="transport-overview">
+              {detail === 'overview' && (
+                <div id="scene-card" className="transport-description">
+                  {/* <h2>Scene Card: </h2> */}
+                  <h3>Scene: "{viewer.sceneName}"</h3>
+                  <div className="transport-description-detail">
+                    {viewer.description}
+                  </div>
+                  <table className="details-table">
+                    {/* <caption>Details Table</caption> */}
+                    <thead>
+                      <tr>
+                        <th>Item</th>
+                        <th>Detail</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      <tr>
+                        <td>Setting: </td>
+                        <td>{viewer.details.setting}</td>
+                      </tr>
+
+                      <tr>
+                        <td>Character Count: </td>
+                        <td>{viewer.details.characters.length}</td>
+                      </tr>
+                      <tr>
+                        <td> Shot Count: </td>
+                        <td>{viewer.details.shotList.length}</td>
+                      </tr>
+                      <tr>
+                        <td> Backgrounds: </td>
+                        <td>{viewer.details.backgrounds.length}</td>
+                      </tr>
+                      <tr>
+                        <td> Asset Count: </td>
+                        <td>{viewer.details.assets.length}</td>
+                      </tr>
+                      <tr>
+                        <td> FX: </td>
+                        <td>{viewer.details.FX.length}</td>
+                      </tr>
+                      <tr>
+                        <td>Frame Rate: </td>
+                        <td>{viewer.details.frameRate}</td>
+                      </tr>
+                      <tr>
+                        <td>Aspect Ratio: </td>
+                        <td>{viewer.details.aspectRatio}</td>
+                      </tr>
+                      <tr>
+                        <td>Launched: </td>
+                        <td>{viewer.launched ? 'true' : 'false'}</td>
+                      </tr>
+                      <tr>
+                        <td>Production Stage: </td>
+                        <td>{viewer.productionStage}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  Contributers and their hard work are how this project gets
+                  made
+                  <table className="details-table">
+                    <thead>
+                      <tr>
+                        <th>Contributers</th>
+                        <th>Job</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {/* obviously do a map here from viewer */}
+                      <tr>
+                        <td>Keith</td>
+                        <td>Key Frames</td>
+                      </tr>
+                      <tr>
+                        <td>Sonny</td>
+                        <td>Inbetweens</td>
+                      </tr>
+                      <tr>
+                        <td>Loralai</td>
+                        <td>Inbetweens</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              )}
+              {/* <hr /> */}
+              {detail === 'script' && (
+                // TODO: add undo function to changes in text area. Maybe store viewer.script.script in a backup field when you hit edit button.
+                <div className="transport-script">
+                  Revision: {viewer.script.rev}
+                  {!state.edit ? (
+                    <>
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: viewer.script.script,
+                        }}
+                      ></div>
+                    </>
+                  ) : (
+                    <>
+                      <textarea
+                        cols="70"
+                        rows="50"
+                        type="text"
+                        value={viewer.script.script}
+                        onChange={(e) =>
+                          setViewer({
+                            ...viewer,
+                            script: {
+                              ...viewer.script,
+                              script: e.target.value,
+                            },
+                          })
+                        }
+                      />
+                    </>
+                  )}
+                </div>
+              )}
+
+              {detail === 'breakdown' && (
+                <div className="transport-breakdown">
+                  {viewer.details.shotList.map((shot, i) => (
+                    <div
+                      className={`transport-breakdown-shot ${
+                        state.checkedOut &&
+                        state.checkedOut.shot.id === shot.id &&
+                        'checked-out'
+                      } ${activeShot.id === shot.id && 'active'} ${
+                        state.checkedOut &&
+                        state.checkedOut.user.name !=
+                          userContext.state.user.name &&
+                        'not-user'
+                      }`}
+                      onClick={() => setActiveShot(shot)}
+                    >
+                      <h3>Shot Number {i + 1}</h3>
+                      <div>
+                        <strong>Complexity: </strong>
+                        {shot.complexity}
+                      </div>
+                      <div>{shot.breakdown}</div>
+                      <div>
+                        <strong>Characters: </strong>
+                        {shot.characters}
+                        <br />
+                        <strong>Assets: </strong>
+                        {shot.assets}
+                        <br />
+                        <strong>Backgrounds: </strong>
+                        {shot.backgrounds}
+                      </div>
+                      {state.checkedOut &&
+                      state.checkedOut.shot.id === shot.id ? (
+                        <div>
+                          <strong>
+                            Checked out by{' '}
+                            {state.checkedOut && state.checkedOut.user.name}
+                          </strong>
+                        </div>
+                      ) : (
+                        <div>
+                          <strong>Open for checkout</strong>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                  <div className="add" onClick={() => setAddBreakdown()}>
+                    <i class="fas fa-plus fa-2x"></i>
+                  </div>
+
+                  {/* <div
+                              dangerouslySetInnerHTML={{
+                                __html: viewer.details.shotList.breakdown,
+                              }}
+                            ></div> */}
+                </div>
+              )}
+              {/* <hr /> */}
+
+              {detail === 'boards' && (
+                <div className="transport-panels-section">
+                  {/* <h2>Scene Panels: </h2> */}
+                  <div className="bread-crumb">
+                    <div>
+                      Boards &gt;{' '}
+                      {activeShot.shot
+                        ? 'Shot number: ' + activeShot.shot
+                        : 'All'}
+                    </div>
+                    {/* <div></div> */}
+                    <div>Layouts | Beat Boards | Scene Boards</div>
+                  </div>
+
+                  <div className="board-titles">Layouts</div>
+                  <div className="transport-panels">
+                    {viewer.layoutBoards.map(
+                      (board, i) =>
+                        (activeShot.shot === board.shotNumber && (
+                          <>
+                            <div
+                              onClick={() =>
+                                setPreview({
+                                  image: board.board,
+                                  sceneName: viewer.sceneName,
+                                  panel: i + 1,
+                                  shotNumber: board.shotNumber,
+                                  id: board.id,
+                                })
+                              }
+                              className="transport-panel"
+                            >
+                              <div className="transport-label">
+                                {board.panel}
+                              </div>
+                              <div className="panel-index">{i + 1}</div>
+                              <div className="panel-shot">
+                                {board.shotNumber}
+                              </div>
+                              <img
+                                className={board.id === preview.id && 'active'}
+                                src={board.board}
+                                alt=""
+                              />
+                              {/* <p>shot: {board.shotNumber}</p> */}
+                            </div>
+                          </>
+                        )) ||
+                        (activeShot === '' && (
+                          <div
+                            onClick={() =>
+                              setPreview({
+                                image: board.board,
+                                sceneName: viewer.sceneName,
+                                panel: i + 1,
+                                shotNumber: board.shotNumber,
+                                id: board.id,
+                              })
+                            }
+                            className="transport-panel"
+                          >
+                            <div className="transport-label">{board.panel}</div>
+                            <div className="panel-index">{i + 1}</div>
+                            <div className="panel-shot">{board.shotNumber}</div>
+                            <img
+                              className={board.id === preview.id && 'active'}
+                              src={board.board}
+                              alt=""
+                            />
+                            {/* <p>shot: {board.shotNumber}</p> */}
+                          </div>
+                        ))
+                    )}
+
+                    <section className="transport-panel-add">
+                      <div onClick={() => setPreview(initPreviewState)}>
+                        <i class="fas fa-plus "></i>
+                      </div>
+                    </section>
+                  </div>
+
+                  <div className="board-titles">Beat Boards</div>
+                  <div className="transport-panels">
+                    {viewer.beatBoards.map(
+                      (board, i) =>
+                        (activeShot.shot === board.shotNumber && (
+                          <>
+                            <div
+                              onClick={() =>
+                                setPreview({
+                                  image: board.board,
+                                  sceneName: viewer.sceneName,
+                                  panel: i + 1,
+                                  shotNumber: board.shotNumber,
+                                  id: board.id,
+                                })
+                              }
+                              className="transport-panel"
+                            >
+                              <div className="transport-label">
+                                {board.panel}
+                              </div>
+                              <div className="panel-index">{i + 1}</div>
+                              <div className="panel-shot">
+                                {board.shotNumber}
+                              </div>
+                              <img
+                                className={board.id === preview.id && 'active'}
+                                src={board.board}
+                                alt=""
+                              />
+                              {/* <p>shot: {board.shotNumber}</p> */}
+                            </div>
+                          </>
+                        )) ||
+                        (activeShot === '' && (
+                          <div
+                            onClick={() =>
+                              setPreview({
+                                image: board.board,
+                                sceneName: viewer.sceneName,
+                                panel: i + 1,
+                                shotNumber: board.shotNumber,
+                                id: board.id,
+                              })
+                            }
+                            className="transport-panel"
+                          >
+                            <div className="transport-label">{board.panel}</div>
+                            <div className="panel-index">{i + 1}</div>
+                            <div className="panel-shot">{board.shotNumber}</div>
+                            <img
+                              className={board.id === preview.id && 'active'}
+                              src={board.board}
+                              alt=""
+                            />
+                            {/* <p>shot: {board.shotNumber}</p> */}
+                          </div>
+                        ))
+                    )}
+
+                    <section className="transport-panel-add">
+                      <div onClick={() => setPreview(initPreviewState)}>
+                        <i class="fas fa-plus "></i>
+                      </div>
+                    </section>
+                  </div>
+
+                  <div className="board-titles">Scene Boards</div>
+                  <div className="transport-panels">
+                    {viewer.storyBoards.map(
+                      (board, i) =>
+                        (activeShot.shot === board.shotNumber && (
+                          <>
+                            <div
+                              onClick={() =>
+                                setPreview({
+                                  image: board.board,
+                                  sceneName: viewer.sceneName,
+                                  panel: i + 1,
+                                  shotNumber: board.shotNumber,
+                                  id: board.id,
+                                })
+                              }
+                              className="transport-panel"
+                            >
+                              <div className="transport-label">
+                                {board.panel}
+                              </div>
+                              <div className="panel-index">{i + 1}</div>
+                              <div className="panel-shot">
+                                {board.shotNumber}
+                              </div>
+                              <img
+                                className={board.id === preview.id && 'active'}
+                                src={board.board}
+                                alt=""
+                              />
+                              {/* <p>shot: {board.shotNumber}</p> */}
+                            </div>
+                          </>
+                        )) ||
+                        (activeShot === '' && (
+                          <div
+                            onClick={() =>
+                              setPreview({
+                                image: board.board,
+                                sceneName: viewer.sceneName,
+                                panel: i + 1,
+                                shotNumber: board.shotNumber,
+                                id: board.id,
+                              })
+                            }
+                            className="transport-panel"
+                          >
+                            <div className="transport-label">{board.panel}</div>
+                            <div className="panel-index">{i + 1}</div>
+                            <div className="panel-shot">{board.shotNumber}</div>
+                            <img
+                              className={board.id === preview.id && 'active'}
+                              src={board.board}
+                              alt=""
+                            />
+                            {/* <p>shot: {board.shotNumber}</p> */}
+                          </div>
+                        ))
+                    )}
+
+                    <section className="transport-panel-add">
+                      <div onClick={() => setPreview(initPreviewState)}>
+                        <i class="fas fa-plus "></i>
+                      </div>
+                    </section>
+                  </div>
+                </div>
+              )}
+              {detail === 'panel details' && <div>panel details</div>}
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
 const SceneMachine = () => {
   const [answer, setAnswer] = useState(false);
   const [buttons, setButtons] = useState(initialButtonState);
-  const { button1, button2, button3, button4, button5 } = buttons;
   const [detail, setDetail] = useState('overview');
-  const [checkout, setCheckout] = useState();
   const [activeShot, setActiveShot] = useState('');
-  const [navigation, setNavigation] = useState();
-
   const [viewer, setViewer] = useState(initialViewerState);
-
   const [preview, setPreview] = useState(initPreviewState);
-
   const [background, setBackground] = useState('rgb(218, 214, 208)');
-
   const [state, dispatch] = useReducer(reducer, { edit: false });
-
   const userContext = useContext(Context);
 
   /* NOTES:
@@ -1470,8 +3081,11 @@ const SceneMachine = () => {
     }
   }, [answer]);
 
-  console.log('answer', answer);
-  console.log('state', state);
+  // console logs
+  useEffect(() => {
+    console.log('answer', answer);
+    console.log('state', state);
+  });
 
   // const handleCheckout = async (answer) => {
   //   dispatch({ type: 'CONFIRM', payload: 'Checkout scene' });
@@ -1551,963 +3165,37 @@ const SceneMachine = () => {
       <Style background={background} />
       <div id="scene-machine-container" className="">
         <div id="scene-machine-location" className="scene-machine">
-          <div className="scene-machine-title">
-            <div className="title-buttons-left">
-              <div
-                onClick={() => setButtons({ ...buttons, machine: 'scene' })}
-                className="btn-ctrl"
-              >
-                <div
-                  className={`btn-ctrl-inside ${
-                    buttons.machine === 'scene' && 'active'
-                  }`}
-                ></div>
-              </div>
-              <div
-                onClick={() => setButtons({ ...buttons, machine: 'asset' })}
-                className="btn-ctrl"
-              >
-                <div
-                  className={`btn-ctrl-inside ${
-                    buttons.machine === 'asset' && 'active'
-                  }`}
-                ></div>
-              </div>
-            </div>
-            {/* <h1>{buttons.machine === 'scene' ? 'Scene' : 'Asset'} Machine</h1> */}
-            <div className="title-buttons-right">
-              {/* <div className="btn">
-                <div className="btn-inside">X</div>
-              </div>
-              <div className="btn">
-                <div className="btn-inside">V</div>
-              </div> */}
-              <div className="btn-mini">
-                <i className="fas fa-trash-alt"></i>
-              </div>
-              <div className="btn-mini">
-                <i className="fas fa-cut"></i>
-              </div>
-              <div className="btn-mini">
-                <i class="far fa-clone"></i>
-              </div>
-              <div className="btn-mini">
-                <i class="fas fa-power-off"></i>
-              </div>
-
-              <div className="btn-mini">
-                <i class="far fa-share-square"></i>
-              </div>
-              <div className="btn-mini">
-                <i class="fas fa-film"></i>
-              </div>
-            </div>
-          </div>
-          <div className="section-strip-container">
-            <div id="act1" className="scenes-section-strip">
-              {scenes.map((scene, i) => (
-                <>
-                  <div
-                    key={scene.id}
-                    onClick={(e) => handleViewer(e, scene)}
-                    className="scene-strip"
-                  >
-                    <img
-                      className={scene.id === viewer.id && 'active'}
-                      src={scene.stripImage}
-                      alt=""
-                    />
-                    <p>{scene.sceneName}</p>
-                  </div>
-                </>
-              ))}
-            </div>
-          </div>
-          <div className="control-panel">
-            <code className="control-panel-display">
-              <strong>**{buttons.display}**</strong>
-            </code>
-            <div className="control-panel-buttons">
-              <div className="btn">
-                <div
-                  onClick={() =>
-                    setButtons({
-                      ...buttons,
-                      display: 'Reels',
-                      button1: { active: true },
-                      button2: { active: false },
-                      button3: { active: false },
-                      button4: { active: false },
-                      button5: { active: false },
-                    })
-                  }
-                  className={`btn-inside ${button1.active && 'active'}`}
-                ></div>
-              </div>
-              <div className="btn">
-                <div
-                  onClick={() =>
-                    setButtons({
-                      ...buttons,
-                      display: 'Acts',
-                      button1: { active: false },
-                      button2: { active: true },
-                      button3: { active: false },
-                      button4: { active: false },
-                      button5: { active: false },
-                    })
-                  }
-                  className={`btn-inside ${button2.active && 'active'}`}
-                ></div>
-              </div>
-              <div className="btn">
-                <div
-                  onClick={() =>
-                    setButtons({
-                      ...buttons,
-                      display: 'Sequences',
-                      button1: { active: false },
-                      button2: { active: false },
-                      button3: { active: true },
-                      button4: { active: false },
-                      button5: { active: false },
-                    })
-                  }
-                  className={`btn-inside ${button3.active && 'active'}`}
-                ></div>
-              </div>
-              <div className="btn">
-                <div
-                  onClick={() =>
-                    setButtons({
-                      ...buttons,
-                      display: 'Scenes',
-                      button1: { active: false },
-                      button2: { active: false },
-                      button3: { active: false },
-                      button4: { active: true },
-                      button5: { active: false },
-                    })
-                  }
-                  className={`btn-inside ${button4.active && 'active'}`}
-                ></div>
-              </div>
-              <div className="btn">
-                <div
-                  onClick={() =>
-                    setButtons({
-                      ...buttons,
-                      display: 'Panels',
-                      button1: { active: false },
-                      button2: { active: false },
-                      button3: { active: false },
-                      button4: { active: false },
-                      button5: { active: true },
-                    })
-                  }
-                  className={`btn-inside ${button5.active && 'active'}`}
-                ></div>
-              </div>
-            </div>
-            <div className="control-panel-other">
-              {/* {state.confirm && <GetAnswer />} */}
-              {state.confirm === 'Checkout scene' && (
-                <>
-                  <div
-                    className="btn-mini"
-                    onClick={() => {
-                      setAnswer(false),
-                        dispatch({
-                          type: 'CONFIRM',
-                          payload: '',
-                        });
-                    }}
-                  >
-                    <i class="fas fa-times"></i>
-                  </div>
-                  <div
-                    className="btn-mini"
-                    onClick={() => {
-                      setAnswer(true),
-                        dispatch({
-                          type: 'CHECKOUT',
-                          payload: {
-                            shot: activeShot,
-                            user: userContext.state.user,
-                          },
-                        }),
-                        dispatch({
-                          type: 'CONFIRM',
-                          payload: '',
-                        });
-                    }}
-                  >
-                    <i class="fas fa-check"></i>
-                  </div>
-                  <div>{state.confirm}?</div>
-                </>
-              )}
-              {state.confirm === 'Checkin scene' && (
-                <>
-                  <div
-                    className="btn-mini"
-                    onClick={() => {
-                      setAnswer(false),
-                        dispatch({
-                          type: 'CONFIRM',
-                          payload: '',
-                        });
-                    }}
-                  >
-                    <i class="fas fa-times"></i>
-                  </div>
-                  <div
-                    className="btn-mini"
-                    onClick={() => {
-                      setAnswer(true),
-                        dispatch({
-                          type: 'CHECKIN',
-                          payload: {
-                            shot: activeShot,
-                            user: userContext.state.user,
-                          },
-                        }),
-                        dispatch({
-                          type: 'CONFIRM',
-                          payload: '',
-                        });
-                    }}
-                  >
-                    <i class="fas fa-check"></i>
-                  </div>
-                  <div>{state.confirm}?</div>
-                </>
-              )}
-              {/* <div className="btn-mini">
-                <i class="fas fa-pager"></i>
-              </div> */}
-              {!state.confirm && (
-                <>
-                  <div className="btn-mini">
-                    <i class="fas fa-redo-alt"></i>
-                  </div>
-                  <div className="btn-mini">
-                    <i class="fas fa-undo-alt"></i>
-                  </div>
-                  <div className="btn-mini">
-                    <i class="fas fa-photo-video"></i>
-                  </div>
-                  <div className="btn-mini">
-                    <i class="fas fa-file-export"></i>
-                  </div>
-                  <div className="btn-mini">
-                    <i class="fas fa-info-circle"></i>
-                  </div>
-                  <div className="btn-mini">
-                    <i class="far fa-save"></i>
-                  </div>
-                </>
-              )}
-              {/* <div className="btn-mini">
-                <i class="fas fa-expand"></i>
-              </div> */}
-            </div>
-          </div>
+          <SceneMachineTitle buttons={buttons} setButtons={setButtons} />
+          <SceneMachineStripArea
+            viewer={viewer}
+            scenes={scenes}
+            handleViewer={handleViewer}
+          />
+          <SceneMachineControlPanel
+            buttons={buttons}
+            setButtons={setButtons}
+            setAnswer={setAnswer}
+            dispatch={dispatch}
+            state={state}
+            activeShot={activeShot}
+            userContext={userContext}
+          />
           <div className="scene-overview">
-            <div className="left-panel">
-              <div className="viewer">
-                <img src={preview.image} alt="" />
-                {/* change to state */}
-              </div>
-              <div className="transport-title">
-                <div>
-                  <p>Scene:</p> {preview.sceneName || '0'}
-                </div>
-                <div>
-                  <p>Panel:</p> {preview.panel || '0'}
-                </div>
-                <div>
-                  <p>Shot:</p> {preview.shotNumber || '0'}
-                </div>
-              </div>
-              <div className="transport-viewer-controls">
-                <button>
-                  <i class="fas fa-chevron-left"></i>
-                </button>
-                <button>Stop</button>
-                <button>Play</button>
-                <button>Pause</button>
-                <button>
-                  <i class="fas fa-chevron-right"></i>
-                </button>
-              </div>
-            </div>
-            <div className="right-panel">
-              <div className="scene-overview-right-container">
-                <div className="transport-frame">
-                  <div className="transport">
-                    {/* this should download all coresponding data like concept art. Maybe */}
-                    <div className="transport-left-controls">
-                      <button
-                        className={`btn-small ${
-                          detail === 'overview' ? 'active' : ''
-                        }`}
-                        onClick={() => {
-                          setDetail('overview');
-                          setBackground('rgb(218, 214, 208)');
-                        }}
-                      >
-                        Overview
-                      </button>
-                      <button
-                        className={`btn-small ${
-                          detail === 'script' ? 'active' : ''
-                        }`}
-                        onClick={() => {
-                          setDetail('script');
-                          setBackground('white');
-                        }}
-                      >
-                        Script
-                      </button>
-                      <button
-                        className={`btn-small ${
-                          detail === 'breakdown' ? 'active' : ''
-                        }`}
-                        onClick={() => {
-                          setDetail('breakdown');
-                          setBackground('rgb(218, 214, 208)');
-                        }}
-                      >
-                        Breakdowns
-                      </button>
-                      <button
-                        className={`btn-small ${
-                          detail === 'boards' ? 'active' : ''
-                        }`}
-                        onClick={() => {
-                          setDetail('boards');
-                          setBackground('rgb(59, 63, 63)');
-                        }}
-                      >
-                        Boards
-                      </button>
-                      <button
-                        className={`btn-small ${
-                          detail === 'video' ? 'active' : ''
-                        }`}
-                        onClick={() => {
-                          setDetail('video');
-                          setBackground('rgb(59, 63, 63)');
-                        }}
-                      >
-                        Video
-                      </button>
-                    </div>
-                    <div className="transport-center-controls">
-                      {/* <button>&lArr;</button> */}
-                      <button
-                        className={`btn-small ${
-                          detail === 'none' ? 'active' : ''
-                        }`}
-                      >
-                        &larr;
-                      </button>
-                      <button
-                        className={`btn-small ${
-                          detail === 'main' ? 'active' : ''
-                        }`}
-                      >
-                        Main
-                      </button>
-                      <button
-                        className={`btn-small ${
-                          detail === 'none' ? 'active' : ''
-                        }`}
-                      >
-                        &rarr;
-                      </button>
-                      {/* <button>&rArr;</button> */}
-                    </div>
-                    <div className="transport-right-controls">
-                      {detail === 'boards' && preview.panel && (
-                        <>
-                          <button
-                            className={`btn-small ${
-                              detail === 'none' ? 'active' : ''
-                            }`}
-                          >
-                            Upload
-                          </button>
-                          <button
-                            className={`btn-small ${
-                              detail === 'none' ? 'active' : ''
-                            }`}
-                          >
-                            Download
-                          </button>
-                          <button
-                            onClick={() => setDetail('panel details')}
-                            className={`btn-small ${
-                              detail === 'none' ? 'active' : ''
-                            }`}
-                          >
-                            Details
-                          </button>
-                        </>
-                      )}
-                      {detail === 'boards' && (
-                        <>
-                          <button
-                            onClick={() => setActiveShot('')}
-                            className={`btn-small ${
-                              detail === 'none' ? 'active' : ''
-                            }`}
-                          >
-                            SeeAll
-                          </button>
-                        </>
-                      )}
-                      {detail === 'breakdown' && activeShot != '' && (
-                        <>
-                          <button
-                            className={`btn-small ${
-                              detail === 'none' ? 'active' : ''
-                            }`}
-                          >
-                            Notes
-                          </button>
-                          <button
-                            className={`btn-small ${
-                              detail === 'none' ? 'active' : ''
-                            }`}
-                          >
-                            Update
-                          </button>
-
-                          {state.checkedOut &&
-                          activeShot.id === state.checkedOut.shot.id ? (
-                            <button
-                              className={`btn-small ${
-                                detail === 'none' ? 'active' : ''
-                              }`}
-                              onClick={
-                                // () => handleCheckout(answer)
-                                () =>
-                                  dispatch({
-                                    type: 'CONFIRM',
-                                    payload: 'Checkin scene',
-                                  })
-                              }
-                            >
-                              Checkin
-                            </button>
-                          ) : (
-                            <button
-                              className={`btn-small ${
-                                detail === 'none' ? 'active' : ''
-                              }`}
-                              onClick={
-                                // () => handleCheckout(answer)
-                                () =>
-                                  dispatch({
-                                    type: 'CONFIRM',
-                                    payload: 'Checkout scene',
-                                  })
-                              }
-                            >
-                              Checkout
-                            </button>
-                          )}
-                        </>
-                      )}
-                      {detail === 'overview' && (
-                        <>
-                          <button
-                            className={`btn-small ${
-                              detail === 'none' ? 'active' : ''
-                            }`}
-                          >
-                            Backgrounds
-                          </button>
-                          <button
-                            className={`btn-small ${
-                              detail === 'none' ? 'active' : ''
-                            }`}
-                          >
-                            Assets
-                          </button>
-                          <button
-                            className={`btn-small ${
-                              detail === 'none' ? 'active' : ''
-                            }`}
-                          >
-                            ModelSheets
-                          </button>
-                        </>
-                      )}
-                      {detail === 'script' && (
-                        <>
-                          <button
-                            className={`btn-small ${
-                              detail === 'none' ? 'active' : ''
-                            }`}
-                          >
-                            Revisions
-                          </button>
-                          {state.edit ? (
-                            <button
-                              className={`btn-small ${
-                                detail === 'none' ? 'active' : ''
-                              }`}
-                              onClick={() => dispatch({ type: 'SAVE_SCRIPT' })}
-                            >
-                              Save
-                            </button>
-                          ) : (
-                            <button
-                              className={`btn-small ${
-                                detail === 'none' ? 'active' : ''
-                              }`}
-                              onClick={() => dispatch({ type: 'EDIT_SCRIPT' })}
-                            >
-                              Edit
-                            </button>
-                          )}
-                        </>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="transport-overview">
-                    {detail === 'overview' && (
-                      <div id="scene-card" className="transport-description">
-                        {/* <h2>Scene Card: </h2> */}
-                        <h3>Scene: "{viewer.sceneName}"</h3>
-                        <div className="transport-description-detail">
-                          {viewer.description}
-                        </div>
-                        <table className="details-table">
-                          {/* <caption>Details Table</caption> */}
-                          <thead>
-                            <tr>
-                              <th>Item</th>
-                              <th>Detail</th>
-                            </tr>
-                          </thead>
-
-                          <tbody>
-                            <tr>
-                              <td>Setting: </td>
-                              <td>{viewer.details.setting}</td>
-                            </tr>
-
-                            <tr>
-                              <td>Character Count: </td>
-                              <td>{viewer.details.characters.length}</td>
-                            </tr>
-                            <tr>
-                              <td> Shot Count: </td>
-                              <td>{viewer.details.shotList.length}</td>
-                            </tr>
-                            <tr>
-                              <td> Backgrounds: </td>
-                              <td>{viewer.details.backgrounds.length}</td>
-                            </tr>
-                            <tr>
-                              <td> Asset Count: </td>
-                              <td>{viewer.details.assets.length}</td>
-                            </tr>
-                            <tr>
-                              <td> FX: </td>
-                              <td>{viewer.details.FX.length}</td>
-                            </tr>
-                            <tr>
-                              <td>Frame Rate: </td>
-                              <td>{viewer.details.frameRate}</td>
-                            </tr>
-                            <tr>
-                              <td>Aspect Ratio: </td>
-                              <td>{viewer.details.aspectRatio}</td>
-                            </tr>
-                            <tr>
-                              <td>Launched: </td>
-                              <td>{viewer.launched ? 'true' : 'false'}</td>
-                            </tr>
-                            <tr>
-                              <td>Production Stage: </td>
-                              <td>{viewer.productionStage}</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                        Contributers and their hard work are how this project
-                        gets made
-                        <table className="details-table">
-                          <thead>
-                            <tr>
-                              <th>Contributers</th>
-                              <th>Job</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {/* obviously do a map here from viewer */}
-                            <tr>
-                              <td>Keith</td>
-                              <td>Key Frames</td>
-                            </tr>
-                            <tr>
-                              <td>Sonny</td>
-                              <td>Inbetweens</td>
-                            </tr>
-                            <tr>
-                              <td>Loralai</td>
-                              <td>Inbetweens</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    )}
-                    {/* <hr /> */}
-                    {detail === 'script' && (
-                      // TODO: add undo function to changes in text area. Maybe store viewer.script.script in a backup field when you hit edit button.
-                      <div className="transport-script">
-                        Revision: {viewer.script.rev}
-                        {!state.edit ? (
-                          <>
-                            <div
-                              dangerouslySetInnerHTML={{
-                                __html: viewer.script.script,
-                              }}
-                            ></div>
-                          </>
-                        ) : (
-                          <>
-                            <textarea
-                              cols="70"
-                              rows="50"
-                              type="text"
-                              value={viewer.script.script}
-                              onChange={(e) =>
-                                setViewer({
-                                  ...viewer,
-                                  script: {
-                                    ...viewer.script,
-                                    script: e.target.value,
-                                  },
-                                })
-                              }
-                            />
-                          </>
-                        )}
-                      </div>
-                    )}
-
-                    {detail === 'breakdown' && (
-                      <div className="transport-breakdown">
-                        {viewer.details.shotList.map((shot, i) => (
-                          <div
-                            className={`transport-breakdown-shot ${
-                              state.checkedOut &&
-                              state.checkedOut.shot.id === shot.id &&
-                              'checked-out'
-                            } ${activeShot.id === shot.id && 'active'} ${
-                              state.checkedOut &&
-                              state.checkedOut.user.name !=
-                                userContext.state.user.name &&
-                              'not-user'
-                            }`}
-                            onClick={() => setActiveShot(shot)}
-                          >
-                            <h3>Shot Number {i + 1}</h3>
-                            <div>
-                              <strong>Complexity: </strong>
-                              {shot.complexity}
-                            </div>
-                            <div>{shot.breakdown}</div>
-                            <div>
-                              <strong>Characters: </strong>
-                              {shot.characters}
-                              <br />
-                              <strong>Assets: </strong>
-                              {shot.assets}
-                              <br />
-                              <strong>Backgrounds: </strong>
-                              {shot.backgrounds}
-                            </div>
-                            {state.checkedOut &&
-                            state.checkedOut.shot.id === shot.id ? (
-                              <div>
-                                <strong>
-                                  Checked out by{' '}
-                                  {state.checkedOut &&
-                                    state.checkedOut.user.name}
-                                </strong>
-                              </div>
-                            ) : (
-                              <div>
-                                <strong>Open for checkout</strong>
-                              </div>
-                            )}
-                          </div>
-                        ))}
-                        <div className="add" onClick={() => setAddBreakdown()}>
-                          <i class="fas fa-plus fa-2x"></i>
-                        </div>
-
-                        {/* <div
-                              dangerouslySetInnerHTML={{
-                                __html: viewer.details.shotList.breakdown,
-                              }}
-                            ></div> */}
-                      </div>
-                    )}
-                    {/* <hr /> */}
-
-                    {detail === 'boards' && (
-                      <div className="transport-panels-section">
-                        {/* <h2>Scene Panels: </h2> */}
-                        <div className="bread-crumb">
-                          <div>
-                            Boards &gt;{' '}
-                            {activeShot.shot
-                              ? 'Shot number: ' + activeShot.shot
-                              : 'All'}
-                          </div>
-                          {/* <div></div> */}
-                          <div>Layouts | Beat Boards | Scene Boards</div>
-                        </div>
-
-                        <div className="board-titles">Layouts</div>
-                        <div className="transport-panels">
-                          {viewer.layoutBoards.map(
-                            (board, i) =>
-                              (activeShot.shot === board.shotNumber && (
-                                <>
-                                  <div
-                                    onClick={() =>
-                                      setPreview({
-                                        image: board.board,
-                                        sceneName: viewer.sceneName,
-                                        panel: i + 1,
-                                        shotNumber: board.shotNumber,
-                                        id: board.id,
-                                      })
-                                    }
-                                    className="transport-panel"
-                                  >
-                                    <div className="transport-label">
-                                      {board.panel}
-                                    </div>
-                                    <div className="panel-index">{i + 1}</div>
-                                    <div className="panel-shot">
-                                      {board.shotNumber}
-                                    </div>
-                                    <img
-                                      className={
-                                        board.id === preview.id && 'active'
-                                      }
-                                      src={board.board}
-                                      alt=""
-                                    />
-                                    {/* <p>shot: {board.shotNumber}</p> */}
-                                  </div>
-                                </>
-                              )) ||
-                              (activeShot === '' && (
-                                <div
-                                  onClick={() =>
-                                    setPreview({
-                                      image: board.board,
-                                      sceneName: viewer.sceneName,
-                                      panel: i + 1,
-                                      shotNumber: board.shotNumber,
-                                      id: board.id,
-                                    })
-                                  }
-                                  className="transport-panel"
-                                >
-                                  <div className="transport-label">
-                                    {board.panel}
-                                  </div>
-                                  <div className="panel-index">{i + 1}</div>
-                                  <div className="panel-shot">
-                                    {board.shotNumber}
-                                  </div>
-                                  <img
-                                    className={
-                                      board.id === preview.id && 'active'
-                                    }
-                                    src={board.board}
-                                    alt=""
-                                  />
-                                  {/* <p>shot: {board.shotNumber}</p> */}
-                                </div>
-                              ))
-                          )}
-
-                          <section className="transport-panel-add">
-                            <div onClick={() => setPreview(initPreviewState)}>
-                              <i class="fas fa-plus "></i>
-                            </div>
-                          </section>
-                        </div>
-
-                        <div className="board-titles">Beat Boards</div>
-                        <div className="transport-panels">
-                          {viewer.beatBoards.map(
-                            (board, i) =>
-                              (activeShot.shot === board.shotNumber && (
-                                <>
-                                  <div
-                                    onClick={() =>
-                                      setPreview({
-                                        image: board.board,
-                                        sceneName: viewer.sceneName,
-                                        panel: i + 1,
-                                        shotNumber: board.shotNumber,
-                                        id: board.id,
-                                      })
-                                    }
-                                    className="transport-panel"
-                                  >
-                                    <div className="transport-label">
-                                      {board.panel}
-                                    </div>
-                                    <div className="panel-index">{i + 1}</div>
-                                    <div className="panel-shot">
-                                      {board.shotNumber}
-                                    </div>
-                                    <img
-                                      className={
-                                        board.id === preview.id && 'active'
-                                      }
-                                      src={board.board}
-                                      alt=""
-                                    />
-                                    {/* <p>shot: {board.shotNumber}</p> */}
-                                  </div>
-                                </>
-                              )) ||
-                              (activeShot === '' && (
-                                <div
-                                  onClick={() =>
-                                    setPreview({
-                                      image: board.board,
-                                      sceneName: viewer.sceneName,
-                                      panel: i + 1,
-                                      shotNumber: board.shotNumber,
-                                      id: board.id,
-                                    })
-                                  }
-                                  className="transport-panel"
-                                >
-                                  <div className="transport-label">
-                                    {board.panel}
-                                  </div>
-                                  <div className="panel-index">{i + 1}</div>
-                                  <div className="panel-shot">
-                                    {board.shotNumber}
-                                  </div>
-                                  <img
-                                    className={
-                                      board.id === preview.id && 'active'
-                                    }
-                                    src={board.board}
-                                    alt=""
-                                  />
-                                  {/* <p>shot: {board.shotNumber}</p> */}
-                                </div>
-                              ))
-                          )}
-
-                          <section className="transport-panel-add">
-                            <div onClick={() => setPreview(initPreviewState)}>
-                              <i class="fas fa-plus "></i>
-                            </div>
-                          </section>
-                        </div>
-
-                        <div className="board-titles">Scene Boards</div>
-                        <div className="transport-panels">
-                          {viewer.storyBoards.map(
-                            (board, i) =>
-                              (activeShot.shot === board.shotNumber && (
-                                <>
-                                  <div
-                                    onClick={() =>
-                                      setPreview({
-                                        image: board.board,
-                                        sceneName: viewer.sceneName,
-                                        panel: i + 1,
-                                        shotNumber: board.shotNumber,
-                                        id: board.id,
-                                      })
-                                    }
-                                    className="transport-panel"
-                                  >
-                                    <div className="transport-label">
-                                      {board.panel}
-                                    </div>
-                                    <div className="panel-index">{i + 1}</div>
-                                    <div className="panel-shot">
-                                      {board.shotNumber}
-                                    </div>
-                                    <img
-                                      className={
-                                        board.id === preview.id && 'active'
-                                      }
-                                      src={board.board}
-                                      alt=""
-                                    />
-                                    {/* <p>shot: {board.shotNumber}</p> */}
-                                  </div>
-                                </>
-                              )) ||
-                              (activeShot === '' && (
-                                <div
-                                  onClick={() =>
-                                    setPreview({
-                                      image: board.board,
-                                      sceneName: viewer.sceneName,
-                                      panel: i + 1,
-                                      shotNumber: board.shotNumber,
-                                      id: board.id,
-                                    })
-                                  }
-                                  className="transport-panel"
-                                >
-                                  <div className="transport-label">
-                                    {board.panel}
-                                  </div>
-                                  <div className="panel-index">{i + 1}</div>
-                                  <div className="panel-shot">
-                                    {board.shotNumber}
-                                  </div>
-                                  <img
-                                    className={
-                                      board.id === preview.id && 'active'
-                                    }
-                                    src={board.board}
-                                    alt=""
-                                  />
-                                  {/* <p>shot: {board.shotNumber}</p> */}
-                                </div>
-                              ))
-                          )}
-
-                          <section className="transport-panel-add">
-                            <div onClick={() => setPreview(initPreviewState)}>
-                              <i class="fas fa-plus "></i>
-                            </div>
-                          </section>
-                        </div>
-                      </div>
-                    )}
-                    {detail === 'panel details' && <div>panel details</div>}
-                  </div>
-                </div>
-              </div>
-            </div>
+            <SceneMachineLeftPanel preview={preview} />
+            <SceneMachineRightPanel
+              detail={detail}
+              setDetail={setDetail}
+              viewer={viewer}
+              setBackground={setBackground}
+              state={state}
+              activeShot={activeShot}
+              setActiveShot={setActiveShot}
+              dispatch={dispatch}
+              userContext={userContext}
+              preview={preview}
+              setPreview={setPreview}
+              setViewer={setViewer}
+            />
           </div>
         </div>
       </div>
@@ -2522,684 +3210,56 @@ const Style = ({ background }) => (
     #scene-machine-container {
       height: 100%;
       width: 100%;
-      // background: #fff;
-      // padding: 0 30px;
-      // background: rgb(43, 38, 38);
-      // padding-top: 100px;
-
-      // border-top: solid 10px rgb(194, 187, 167);
-      // box-shadow: inset 0 10px 10px rgba(0, 0, 0, 0.808),
-      //   inset 0 10px 30px rgba(0, 0, 0, 0.808),
-      //   inset 0 20px 100px rgba(0, 0, 0, 0.808);
     }
 
     .scene-machine {
+      display: flex;
+      flex-direction: column;
       height: 100%;
-      // max-height: 100%;
-      // background: rgba(203, 208, 211, .5);
       background: rgba(89, 119, 131, 0.7);
-      // background: rgba(65, 78, 83, 0.6);
-      // background: rgb(68, 48, 48);
       padding: 10px 40px;
       padding-bottom: 30px;
-      // width: 94vw;
       width: 100%;
-      // max-width: 1200px;
-      // border: solid 3px rgb(43, 38, 38);
       border-top-left-radius: 14px;
       border-top-right-radius: 14px;
       border-bottom-left-radius: 8px;
       border-bottom-right-radius: 8px;
       box-shadow: inset 0 0px 10px, inset 0 0 15px, inset 0 0 5px,
         0 20px 500px 800px rgba(180, 171, 155, 0.4), 0 0 20px rgb(39, 44, 29);
-      // 0 10px 50px rgba(87, 72, 32, 0.897), 0 10px 100px rgba(222, 248, 158, 0.3);
-    }
-
-    .scene-machine-title {
-      // box-shadow: 0 10px 10px rgba(256 256, 256, 256, 0.8);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 6px;
-      margin-top: 5px;
-    }
-
-    .title-buttons-left > div {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .title-buttons-left {
-      display: flex;
-      align-items: flex-start;
-      justify-content: flex-start;
-      width: 300px;
-    }
-    .title-buttons-right {
-      display: flex;
-      width: 300px;
-      flex-direction: row-reverse;
-    }
-
-    .scene-machine  > div > h1 {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      // width: 300px;
-      color: rgb(107, 105, 105);
-      // color: rgb(104, 70, 70);
-      box-shadow: inset 0 0 15px rgb(14, 13, 12), inset 0 0 15px rgb(39, 38, 31),
-        inset 0 0 30px rgb(55, 55, 75), inset 0 0 20px rgb(55, 55, 75);
-      background: rgb(247, 229, 229);
-      font-size: 1.2rem;
-      padding: 6px 30px;
-      border-radius: 10px;
-      // border: solid 1px rgb(43, 38, 38);
-      box-shadow: 0 0px 10px rgba(95, 98, 104, 0.4),
-        0 0px 10px rgba(200, 200, 256, 0.1), 0 0 10px rgba(200, 180, 0, 0.2),
-        inset 0 0 10px, inset 0 0 3px, inset 0 0 1px, inset 0 0 2px;
-      // margin-bottom: 10px;
-      // box-shadow: 0 0px 10px rgba(200, 256, 256, 0.8), 0 0px 5px rgba(200, 256, 256, 0.8), 0 0px 50px rgba(200, 256, 256, 0.8), inset 0 0 50px rgba(0, 0, 0, 0.1);
-    }
-
-    #scene-machine > div > div {
-      padding: 0 10px;
-    }
-    
-    .section-strip-container {
-      background: rgb(218, 210, 210);
-      // padding-top: 20px;
-      width: 100%;
-
-      border: solid 1px rgb(22, 19, 19);
-      border-radius: 2px;
-      box-shadow: inset 0 0px 10px, inset 0 0 4px, inset 0 0 4px, 0 0 5px,
-        0 0 7px;
-    }
-
-    .scenes-section-strip {
-      // background: rgb(226, 222, 205);
-      background: rgb(29, 24, 24);
-      display: flex;
-      padding: 3px;
-      overflow-x: scroll;
-      margin: 5px 0;
-      box-shadow: 0 0 3px;
-      // border-radius: 7px;
-      // margin-left: 30px;
-      // margin-right: 30px;
-    }
-
-    .scene-strip {
-      border-top: dashed 5.5px rgb(87, 85, 85);
-      border-bottom: dashed 5.5px rgb(107, 104, 104);
-      // border-top: dashed 6px rgb(201, 196, 196);
-      // border-bottom: dashed 6px rgb(201, 196, 196);
-      // border-bottom: dashed 8px rgb(7, 7, 5);;
-      padding: 6px 20px;
-      margin: 0 3px;
-      // border-right: solid 2px rgb(15, 11, 11);
-      cursor: pointer;
-      position: relative;
-    }
-
-    .scenes-section-strip::-webkit-scrollbar {
-      display: none;
-    }
-
-    .scene-strip > img {
-      height: 50px;
-      // position: relative;
-      // transform: rotate(-90deg);
-      opacity: 0.6;
-    }
-    .scene-strip > img.active {
-      // border: solid 2px green;
-      // position: absolute;
-      opacity: 1;
-      background: rgba(3, 150, 3);
-      box-shadow: 0 0 2px rgba(231, 230, 230, 0.2),
-        0 0 6px rgba(231, 230, 230, 0.4), 0 0 1px white;
-      // margin: 1px;
-    }
-    .scene-strip > p {
-      padding: 1px;
-      background: rgba(0, 0, 0, 0.5);
-      bottom: 12px;
-      position: absolute;
-      font-size: 0.6rem;
-      color: rgb(179, 174, 174);
-    }
-
-    .control-panel {
-      height: 60px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .control-panel-buttons {
-      height: 60px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin: 5px;
-      cursor: pointer;
-      // width: 30px;
-    }
-
-    .control-panel-display {
-      font-size: 1rem;
-      color: rgb(10, 59, 6);
-      height: 30px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 5px;
-      width: 200px;
-      border-radius: 4px;
-      background: rgb(180, 224, 154);
-      // box-shadow: inset 0 0 10px, inset 0 0 3px, inset 0 0 10px;
-      box-shadow: inset 0 0px 5px rgba(0, 0, 0, 0.8),
-        inset 0 0px 3px rgba(0, 0, 0, 0.8);
-      // box-shadow: 0 0px 10px rgba(256, 256, 256, 0.8), 0 0px 5px rgba(256, 256, 256, 0.8);
-    }
-    .control-panel-other {
-      height: 60px;
-      display: flex;
-      align-items: center;
-      margin: 5px;
-      width: 200px;
-      flex-direction: row-reverse;
-    }
-
-    .btn {
-      width: 45px;
-      height: 43px;
-      // border: solid 1px rgb(10, 1, 1);
-      border: solid 1px rgb(54, 58, 61);
-      border-right: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-    }
-
-    .btn:last-child {
-      border-right: solid 1px rgb(54, 58, 61);
-      // border-right: solid 1px rgb(10, 1, 1);
-    }
-
-    .btn-inside {
-      width: 25px;
-      height: 25px;
-      border-radius: 2px;
-      background: rgb(240, 248, 204);
-      border: solid 1px rgb(17, 5, 1);
-
-      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8),
-        inset 0 0 3px rgba(0, 0, 0, 1), 0 0 1px rgba(0, 0, 0, 0.8);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .btn-inside.active {
-      width: 25px;
-      height: 25px;
-      border-radius: 3px;
-      border: solid 1px rgb(165, 150, 86);
-      background: rgb(248, 227, 42);
-      // background: rgb(248, 227, 42);
-      // background: rgb(210, 248, 42);
-
-      box-shadow: 0 0 5px rgba(209, 209, 209, 0.8), 0 0 3px rgb(214, 214, 214),
-        inset 0 0 1px rgba(228, 228, 228, 0.8);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .btn-ctrl {
-      width: 40px;
-      height: 40px;
-      border: solid 1px rgb(54, 58, 61);
-      margin: 5px 3px;
-      // border-right: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-    }
-
-    .btn-ctrl-inside {
-      width: 25px;
-      height: 25px;
-      border-radius: 1px;
-      background: rgb(227, 228, 222);
-      // background: rgb(240, 248, 204);
-      border: solid 1px rgb(17, 5, 1);
-      box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.8),
-        inset 0 0 3px rgba(0, 0, 0, 1), 0 0 1px rgba(0, 0, 0, 0.8);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .btn-ctrl-inside.active {
-      width: 24.3px;
-      height: 24.3px;
-      border-radius: 3px;
-      border: solid 1px rgb(165, 150, 86);
-      background: rgb(255, 230, 8);
-      // background: rgb(248, 227, 42);
-      // background: rgb(210, 248, 42);
-
-      box-shadow: 0 0 5px rgba(209, 209, 209, 0.8), 0 0 3px rgb(214, 214, 214),
-        inset 0 0 4px rgba(228, 228, 228, 0.9), 0px 0px 2px rgba(0, 0, 0, 1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .btn-mini {
-      cursor: pointer;
-      color: #152125;
-      padding: 2px 8px;
-    }
-
-    .btn-small {
-      // color: rgb(7, 245, 233);
-    }
-
-    .btn-small.active {
-      color: rgb(7, 245, 233);
-      box-shadow: 0 0 1px rgba(167, 175, 175, 0.3);
     }
 
     .scene-overview {
+      height: 100%;
+      overflow: scroll;
       background: rgba(46, 35, 35, 0.6);
-      height: 60vh;
-      // max-height: 100%;
+
       width: 100%;
-      // overflow: auto;
+
       display: flex;
       border: solid 1px rgb(22, 19, 19);
       border-radius: 10px;
       box-shadow: inset 0 0px 10px, 0 0 4px;
     }
 
-    .left-panel {
-      padding: 10px;
-      width: 40%;
-      max-height: 100%;
-      overflow: auto;
-    }
+    
 
-    .viewer {
-      // max-width: 500px;
-      // height: 370px;
-      border-radius: 5px;
-      // height: 100%;
-      // border: solid 15px rgb(24, 4, 4);
-      box-shadow: inset 0 0px 10px rgba(0, 0, 0, 1);
-    }
-    .viewer > img {
-      // max-height: 90%;
-      padding: 8px;
-      // height: 100%;
-      width: 100%;
-      // max-height: 270px;
-    }
-    .right-panel {
-      width: 60%;
-      max-height: 100%;
-      overflow: auto;
-    }
-
-    .scene-overview-right-container {
-      // background: #fff;
-      padding: 10px;
-      height: 100%;
-      max-height: 100%;
-    }
-
-    .transport-frame {
-      box-shadow: inset 0 0 20px, inset 0 0 4px, inset 0 0 10px;
-      height: 100%;
-      border-radius: 5px;
-      display: flex;
-      flex-direction: column;
-      // align-items: flex-start;
-    }
-
-    .transport > div > button {
-      font-size: 0.6rem;
-      cursor: pointer;
-      color: #fff;
-      background: rgb(57, 92, 97);
-      // border: solid 1px rgb(54, 23, 23);
-      border-style: double;
-      padding: 2px 4px;
-      box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.5);
-    }
-    .transport {
-      // box-shadow: inset 0 0 10px;
-      border: solid 1px;
-      // border-radius: 5px;
-      padding: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .transport-left-controls {
-      width: 30px;
-      display: flex;
-    }
-    .transport-center-controls {
-      width: 30px;
-      display: flex;
-      justify-content: center;
-    }
-    .transport-right-controls {
-      width: 30px;
-      display: flex;
-      flex-direction: row-reverse;
-    }
-    .transport-title > div {
-      width: 100%;
-      height: 30px;
-      display: flex;
-      flex-wrap: nowrap;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-    .transport-title {
-      border-bottom: solid 1px;
-      background: rgb(206, 230, 169);
-      // border: solid 1px rgb(65, 11, 11);
-      border-radius: 3px;
-      margin: 10px 0;
-      box-shadow: inset 0 0 10px, inset 0 0 5px, inset 0 0 3px;
-      padding: 10px 5px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .transport-viewer-controls > button {
-      // margin-top: 10px;
-      padding: 13px 10px;
-      margin: 1px;
-      box-shadow: inset 0 4px 0px,
-        inset -2px -2px 2px 0px rgba(102, 91, 91, 0.774),
-        inset 2px -2px 2px 0px rgba(102, 91, 91, 0.774);
-      color: rgb(141, 29, 29);
-      cursor: pointer;
-    }
-
-    .transport-viewer-controls {
-      // height: 100%;
-      display: flex;
-      justify-content: center;
-    }
-
-    .transport-overview {
-      // z-index: 1;
-      background-color: ${background};
-      width: auto;
-      // border: solid 1px rgb(65, 11, 11);
-      margin: 10px;
-
-      // overflow: auto;
-      height: 100%;
-      // max-height: 100%;
-      border-radius: 10px;
-      box-shadow: inset 0 0 10px, inset 0 0 3px;
-      padding: 0 2px;
-      overflow-y: scroll;
-      display: flex;
-      flex-direction: column;
-      z-index: 2;
-    }
-
-    .details-table {
-      padding: 20px;
-      width: 100%;
-      border-collapse: collapse;
-      margin: 25px 0;
-      font-size: 0.9em;
-      font-family: sans-serif;
-      min-width: 200px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
-      border-radius: 5px;
-    }
-
-    .details-table thead tr {
-      // background-color: #009879;
-      color: #ffffff;
-      text-align: left;
-    }
-
-    .details-table th,
-    .details-table td {
-      padding: 12px 15px;
-    }
-
-    .details-table tbody tr {
-      border-bottom: 1px solid #aaaaaa;
-    }
-
-    .details-table tbody tr:nth-of-type(odd) {
-      background-color: #f3f3f3;
-    }
-
-    // .details-table tbody tr:last-of-type {
-    //   border-bottom: 2px solid #009879;
+    // #scene-machine > div > div {
+    //   padding: 0 10px;
     // }
 
-    //   .details-table tbody tr.active-row {
-    //     font-weight: bold;
-    //     color: #009879;
+    
+
+  
+
+    // #scene {
+    //   padding: 0px 30px;
+    //   border-right: solid 1px;
     // }
-    .transport-description > h3 {
-      margin-bottom: 20px;
-      background: #fff;
-      padding: 10px 30px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
-    }
-
-    .transport-description-detail {
-      background: #fff;
-      line-height: 1.8rem;
-      text-indent: 2rem;
-      padding: 20px;
-      border: solid 1px;
-    }
-    .transport-description {
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .transport-script > textarea {
-      font-family: 'Courier New', Courier, monospace;
-      outline: none;
-      border: none;
-    }
-    .transport-script {
-      font-family: 'Courier New', Courier, monospace;
-      padding: 10px 20px;
-    }
-    .transport-breakdown {
-      // background: #2f3c41;
-      padding: 20px 10px;
-    }
-    .transport-breakdown-shot {
-      cursor: pointer;
-      border: solid rgba(0, 0, 0, 0.15);
-    }
-    .transport-breakdown-shot.active {
-      border: solid;
-    }
-    .transport-breakdown-shot.checked-out {
-      color: #2f3c41;
-      background: #acb7bb;
-    }
-    .transport-breakdown-shot.checked-out.not-user {
-      color: #2f3c41;
-      background: #acb7bb;
-      pointer-events: none;
-      cursor: default;
-    }
-
-    .transport-breakdown > div {
-      background-color: white;
-      padding: 20px;
-      margin-bottom: 10px;
-    }
-    .transport-breakdown > div > div {
-      margin: 20px;
-    }
-
-    .checked-out {
-      background: #747373;
-    }
-    .transport-panels-section {
-      width: 100%;
-      // padding: 10px 10px;
-    }
-    .bread-crumb {
-      overflow: hidden;
-      // width: 100%;
-      // background: #2f3c41;
-      font-size: 0.7rem;
-      color: #c5c3c3;
-      padding: 5px 10px;
-      padding-top: 10px;
-      border-bottom: solid 1px grey;
-      // position: fixed;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .bread-crumb > div {
-      width: 400px;
-      display: flex;
-      // justify-content: flex-end;
-    }
-
-    .bread-crumb > div:last-child {
-      width: 400px;
-      display: flex;
-      justify-content: flex-end;
-    }
-    .transport-panel-add {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 110px;
-    }
-
-    .transport-panel-add > div {
-      cursor: pointer;
-      color: #2f3c41;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(228, 227, 227, 0.9);
-      border-radius: 50%;
-      width: 33px;
-      height: 33px;
-      padding: 10px 0;
-      border: none;
-    }
-
-    .add {
-      cursor: pointer;
-      color: #2f3c41;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(255, 255, 255, 0.9);
-      border-radius: 50%;
-      width: 50px;
-      height: 50px;
-      padding: 10px 0;
-      border: none;
-    }
-
-    .board-titles {
-      padding-top: 10px;
-      padding-bottom: 10px;
-      font-size: 1.4rem;
-      color: #aaaaaa;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .transport-panels {
-      padding: 0px 20px;
-      display: flex;
-      flex-wrap: wrap;
-      // border-bottom: solid 1px grey;
-      padding-bottom: 20px;
-    }
-    .transport-panel.active {
-      // border: solid;
-    }
-    .transport-panel {
-      cursor: pointer;
-      position: relative;
-      max-width: 100px;
-      padding: 10px 0;
-      margin: 5px;
-    }
-    .transport-panel > img.active {
-      border: solid 2px rgb(28, 226, 183);
-    }
-    .transport-panel > img {
-      border: solid 2px rgba(0, 0, 0, 0.3);
-      width: 100%;
-    }
-    .transport-label {
-      background: rgba(0, 0, 0, 0.3);
-      // border-radius: 2px;
-      color: #fff;
-      position: absolute;
-      padding: 1px 5px;
-      font-size: 0.5em;
-      top: 12px;
-      right: 2px;
-      cursor: pointer;
-    }
-
-    .panel-index {
-      top: 12px;
-      left: 2px;
-      position: absolute;
-      background: rgba(256, 256, 256, 0.8);
-      font-size: 0.6rem;
-      padding: 1px 4px;
-    }
-    .panel-shot {
-      position: absolute;
-      top: 12px;
-      right: 42px;
-      background: rgba(256, 256, 256, 0.4);
-      font-size: 0.6rem;
-      padding: 1px 4px;
-    }
-
-    #scene {
-      padding: 0px 30px;
-      border-right: solid 1px;
-    }
 
     @media (max-width: 800px) {
       .scene-overview {
         flex-direction: column;
-        height: 100%;
+        // height: 100%;
       }
 
       .left-panel {

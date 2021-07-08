@@ -4,6 +4,30 @@ import NavBar from './NavBar';
 import SideBar from './SideBar';
 import DashboardSideBar from './dashboard/DashboardSidebar';
 
+
+const Style = () => {
+  return <style jsx>{`
+  .layout-container {
+    width: 100%;
+  }
+  .flex-layout {
+    position: fixed; 
+    display: flex;
+    height: 94%;
+    // width: inherit;
+    width: 100%;
+  }
+  .sidebar {
+    height: 100%;
+  }
+
+  .content {
+    overflow-y: scroll;
+    flex: 0 1 100%;
+  }
+`}</style>
+}
+
 const Layout = (props) => {
   const [showSideMenu, setShowSideMenu] = useState(); // lifted and shared state for sidebar and navbar
 
@@ -17,38 +41,21 @@ const Layout = (props) => {
         <div className="flex-layout">
           {props.showSideBar && user && (
             <>
-
-            <div className="sidebar">
-              <SideBar />
-            </div>
-              <DashboardSideBar showSideMenu={showSideMenu} items1={props.sideMenuItems} />
+              <div className="sidebar">
+                <SideBar />
+              </div>
+              <DashboardSideBar
+                showSideMenu={showSideMenu}
+                items1={props.items1}
+                items2={props.items2}
+              />
             </>
           )}
           <div className="content">{props.children}</div>
         </div>
       </div>
 
-      <style jsx>{`
-        .layout-container {
-          width: 100%;
-        }
-
-        .sidebar {
-          height: 100%;
-        }
-        .flex-layout {
-          position: fixed; // this did it
-          display: flex;
-          height: 94%;
-          width: inherit;
-        }
-        .content {
-          // width: 80vw;
-          height: 100%;
-          overflow-y: scroll;
-          flex: 0 1 100%;
-        }
-      `}</style>
+      <Style />
     </>
   );
 };

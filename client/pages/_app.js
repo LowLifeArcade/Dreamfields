@@ -8,9 +8,15 @@ import { Provider } from '../context';
 
 const fakeMenuItems = [
   { slug: '/', icon: <i class="fas fa-home"></i>, name: 'Home' },
-  { slug: '/edit/creator', icon: <i class="far fa-edit"></i>, name: 'Do stuff' },
+  { slug: '/edit/creator', icon: <i class="far fa-edit"></i>, name: 'Scene Machine' },
   { slug: '/creator', icon: <i class="fas fa-cog"></i>, name: 'Settings' },
-  { slug: '/creator/field/create', icon: <i class="far fa-plus-square"></i>, name: 'Create New' },
+  ,
+];
+const fakeMenuItems2 = [
+  { slug: '/projects', icon: <i class="fas fa-photo-video"></i>, name: 'Library' },
+  { slug: '/edit/creator', icon: <i class="fas fa-phone-square-alt"></i>, name: 'Connect' },
+  { slug: '/creator', icon: <i class="fas fa-poll"></i>, name: 'Stats' },
+  { slug: '/creator/field/create', icon: <i class="far fa-plus-square"></i>, name: 'Create New' }
 ];
 
 function MyApp({ Component, pageProps }) {
@@ -45,7 +51,7 @@ function MyApp({ Component, pageProps }) {
         pauseOnHover
       />
 
-      <Layout sideMenuItems={fakeMenuItems} showSideBar={true}>
+      <Layout items1={fakeMenuItems} items2={fakeMenuItems2} showSideBar={true}>
         <Component {...pageProps} />
       </Layout>
     </Provider>
