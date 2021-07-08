@@ -1,4 +1,7 @@
 import { useState, useEffect, useReducer, useContext } from 'react';
+import FormInput from '../formlayout/FormInput';
+import FormSelect from '../formlayout/FormSelect';
+import FormCard from '../formlayout/FormCard';
 import { Context } from '../../context';
 
 // initial states
@@ -244,7 +247,6 @@ const initPreviewState = {
   panel: '',
   id: '',
 };
-
 
 // fake data
 const initialScenes = [
@@ -1335,6 +1337,12 @@ const reducer = (state, action) => {
         confirm: action.payload,
       };
     }
+    case 'ADD_SCENE': {
+      return {
+        ...state,
+        addScene: action.payload.scene,
+      };
+    }
     // case 'CONFIRM_DONE': {
     //   return {
     //     ...state,
@@ -1953,8 +1961,8 @@ const SceneMachineControlPanel = ({
               <div>{state.confirm}?</div>
             </>
           )}
-          {state.confirm === 'Add New Scene?' && ( // CONFIRM with payload of '' closes everything
-            <> 
+          {state.confirm === 'Add New Scene' && ( // CONFIRM with payload of '' closes everything
+            <>
               <div
                 className="btn-mini"
                 onClick={() => {
@@ -1972,10 +1980,9 @@ const SceneMachineControlPanel = ({
                 onClick={() => {
                   setAnswer(true),
                     dispatch({
-                      type: 'CHECKIN',
+                      type: 'ADD_SCENE',
                       payload: {
-                        shot: activeShot,
-                        user: userContext.state.user,
+                        scene: true,
                       },
                     }),
                     dispatch({
@@ -2124,6 +2131,15 @@ const SceneMachineLeftPanel = ({ preview }) => {
     </>
   );
 };
+
+const NewSceneForm = () => {
+  return <>
+  <FormCard>
+    <FormInput />
+    <FormInput />
+  </FormCard>
+  </>
+}
 
 const SceneMachineRightPanel = ({
   scenes,
@@ -2450,20 +2466,25 @@ const SceneMachineRightPanel = ({
           padding: 10px 0;
           border: none;
         }
+        .new-scene-form {
+          display: flex;
+          justify-content: center;
+        }
       `}</style>
     );
   };
 
   const handleCancel = () => {
+    dispatch({ type: 'CONFIRM', payload: 'Cancel New Scene' })
     setPreview({
       image: '//unsplash.it/id/1/400/225',
       sceneName: scenes[0].sceneName,
       panel: '',
       id: '',
-    })
-    setViewer(scenes[0])
-    setDetail('overview')
-  }
+    });
+    setViewer(scenes[0]);
+    setDetail('overview');
+  };
 
   return (
     <>
@@ -2557,7 +2578,7 @@ const SceneMachineRightPanel = ({
                 {detail === 'new scene' && (
                   <>
                     <button
-                    onClick={handleCancel}
+                      onClick={handleCancel}
                       className={`btn-small ${
                         detail === 'none' ? 'active' : ''
                       }`}
@@ -2565,6 +2586,9 @@ const SceneMachineRightPanel = ({
                       Cancel
                     </button>
                     <button
+                      onClick={() =>
+                        dispatch({ type: 'CONFIRM', payload: 'Add New Scene' })
+                      }
                       className={`btn-small ${
                         detail === 'none' ? 'active' : ''
                       }`}
@@ -3134,7 +3158,9 @@ const SceneMachineRightPanel = ({
               {detail === 'panel details' && <div>panel details</div>}
               {detail === 'new scene' && (
                 <>
-                  <div className="new-scene-form">New Scene</div>
+                  <div className="new-scene-form">
+                    <NewSceneForm />
+                  </div>
                 </>
               )}
             </div>
@@ -3156,6 +3182,84 @@ const SceneMachine = () => {
   const [background, setBackground] = useState('rgb(218, 214, 208)');
   const [state, dispatch] = useReducer(reducer, { edit: false });
   const userContext = useContext(Context);
+
+  const Style = ({ background }) => (
+    <style jsx>{`
+      #scene-machine-container {
+        height: 100%;
+        width: 100%;
+      }
+  
+      .scene-machine {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        background: rgba(89, 119, 131, 0.7);
+        padding: 10px 40px;
+        padding-bottom: 30px;
+        width: 100%;
+        border-top-left-radius: 14px;
+        border-top-right-radius: 14px;
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+        box-shadow: inset 0 0px 10px, inset 0 0 15px, inset 0 0 5px,
+          0 20px 500px 800px rgba(180, 171, 155, 0.4), 0 0 20px rgb(39, 44, 29);
+      }
+  
+      .scene-overview {
+        height: 100%;
+        overflow: scroll;
+        background: rgba(46, 35, 35, 0.6);
+        margin-bottom: 10px;
+        width: 100%;
+  
+        display: flex;
+        border: solid 1px rgb(22, 19, 19);
+        border-radius: 10px;
+        box-shadow: inset 0 0px 10px, 0 0 4px;
+      }
+  
+      .add {
+        cursor: pointer;
+        color: #2f3c41;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        padding: 10px 0;
+        border: none;
+      }
+  
+      // #scene-machine > div > div {
+      //   padding: 0 10px;
+      // }
+  
+      // #scene {
+      //   padding: 0px 30px;
+      //   border-right: solid 1px;
+      // }
+  
+      @media (max-width: 800px) {
+        .scene-overview {
+          flex-direction: column;
+          // height: 100%;
+        }
+  
+        .left-panel {
+          width: 100%;
+        }
+        .right-panel {
+          width: 100%;
+        }
+        .scene-overview-right-container > div {
+          max-height: 300px;
+        }
+      }
+    `}</style>
+  );
 
   /* NOTES:
 
@@ -3262,7 +3366,19 @@ const SceneMachine = () => {
     } else if (!answer) {
       dispatch({ type: 'CONFIRM', payload: '' });
     }
-  }, [answer]);
+  }, [answer, state && state.confirm === 'checkout']);
+
+  useEffect(() => {
+    if (answer) {
+      dispatch({ type: 'CONFIRM', payload: '' });
+      dispatch({
+        type: 'CANCEL_NEW_SCENE',
+        payload: true
+      });
+    } else if (!answer) {
+      dispatch({ type: 'CONFIRM', payload: '' });
+    }
+  }, [answer, state && state.confirm === 'Cancel New Scene']);
 
   // console logs
   useEffect(() => {
@@ -3374,8 +3490,8 @@ const SceneMachine = () => {
           <div className="scene-overview">
             <SceneMachineLeftPanel preview={preview} />
             <SceneMachineRightPanel
-            scenes={scenes}
-            setScenes={setScenes}
+              scenes={scenes}
+              setScenes={setScenes}
               detail={detail}
               setDetail={setDetail}
               viewer={viewer}
@@ -3399,80 +3515,4 @@ const SceneMachine = () => {
 
 export default SceneMachine;
 
-const Style = ({ background }) => (
-  <style jsx>{`
-    #scene-machine-container {
-      height: 100%;
-      width: 100%;
-    }
 
-    .scene-machine {
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-      background: rgba(89, 119, 131, 0.7);
-      padding: 10px 40px;
-      padding-bottom: 30px;
-      width: 100%;
-      border-top-left-radius: 14px;
-      border-top-right-radius: 14px;
-      border-bottom-left-radius: 8px;
-      border-bottom-right-radius: 8px;
-      box-shadow: inset 0 0px 10px, inset 0 0 15px, inset 0 0 5px,
-        0 20px 500px 800px rgba(180, 171, 155, 0.4), 0 0 20px rgb(39, 44, 29);
-    }
-
-    .scene-overview {
-      height: 100%;
-      overflow: scroll;
-      background: rgba(46, 35, 35, 0.6);
-      margin-bottom: 10px;
-      width: 100%;
-
-      display: flex;
-      border: solid 1px rgb(22, 19, 19);
-      border-radius: 10px;
-      box-shadow: inset 0 0px 10px, 0 0 4px;
-    }
-
-    .add {
-      cursor: pointer;
-      color: #2f3c41;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(255, 255, 255, 0.9);
-      border-radius: 50%;
-      width: 50px;
-      height: 50px;
-      padding: 10px 0;
-      border: none;
-    }
-
-    // #scene-machine > div > div {
-    //   padding: 0 10px;
-    // }
-
-    // #scene {
-    //   padding: 0px 30px;
-    //   border-right: solid 1px;
-    // }
-
-    @media (max-width: 800px) {
-      .scene-overview {
-        flex-direction: column;
-        // height: 100%;
-      }
-
-      .left-panel {
-        width: 100%;
-      }
-      .right-panel {
-        width: 100%;
-      }
-      .scene-overview-right-container > div {
-        max-height: 300px;
-      }
-    }
-  `}</style>
-);
