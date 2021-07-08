@@ -324,6 +324,7 @@ const style = (
     }
 
     .scene-machine-container {
+      height: 107vh;
       display: flex;
       justify-content: center;
       padding: 0px 5px;
