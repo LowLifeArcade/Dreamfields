@@ -1,7 +1,19 @@
-import { useState, useEffect, useReducer, useContext } from 'react';
-import Button from '../Button';
+import {
+  useState,
+  useEffect,
+  useReducer,
+  useContext,
+  createContext,
+} from 'react';
 import FormCard from '../formlayout/FormCard';
+import {
+  SceneMachineProvider,
+  SceneMachineContext,
+} from '../../contexts/SceneMachineContext';
 import { Context } from '../../context';
+import { toast } from 'react-toastify';
+
+const ButtonContext = createContext();
 
 // initial states
 const initialButtonState = {
@@ -1719,7 +1731,6 @@ const SceneMachineStripArea = ({
       `}</style>
     );
   };
-  console.log(detail);
 
   const handleNewScene = (e) => {
     e.preventDefault();
@@ -1759,8 +1770,8 @@ const SceneMachineStripArea = ({
           ))}
           <div className="scene-strip">
             <div onClick={handleNewScene} className="empty-strip"></div>
-            <div className="scene-strip-add">
-              <div >
+            <div onClick={handleNewScene} className="scene-strip-add">
+              <div>
                 <i class="fas fa-plus "></i>
               </div>
             </div>
@@ -2218,7 +2229,14 @@ const SceneMachineLeftPanel = ({ preview }) => {
   );
 };
 
-const NewSceneForm = ({ state, setState }) => {
+const NewSceneForm = ({
+  state,
+  setState,
+  handleAddScene,
+  loading,
+  setLoading,
+  handleVideo
+}) => {
   console.log('form card state', state);
   // TODO: The new scene form only sets up the basics. We get a scene overview from this with description and scene name and hopefully script. From there the creator will go through and add assets if needed, backgrounds, FX and a shot list with breakdowns and launch the scene.
 
@@ -2316,7 +2334,7 @@ const NewSceneForm = ({ state, setState }) => {
             rows="10"
           />
         </div>
-        
+
         <div id="scene-settings" className="section">
           <label className="label" htmlFor="Scene Setting">
             Scene Setting
@@ -2332,8 +2350,7 @@ const NewSceneForm = ({ state, setState }) => {
             disabled={false}
           />
         </div>
-        
-        
+
         <br />
         <hr />
         <br />
@@ -2488,11 +2505,11 @@ const NewSceneForm = ({ state, setState }) => {
             rows="10"
           />
         </div>
-        
+
         <br />
         <hr />
         <br />
-        
+
         <div id="scene-framerate" className="section">
           <label className="label" htmlFor="framerate">
             Frame Rate
@@ -2567,50 +2584,56 @@ const NewSceneForm = ({ state, setState }) => {
             <option value="Production">Production</option>
           </select>
         </div>
-       
+
         <br />
         <hr />
         <br />
-       
-        
+
         <div id="scene-image" className="section">
           <label className="label" htmlFor="scene-image">
-            Upload Scene Image 
+            Upload Scene Image
           </label>
           <section>
             <button>Upload Image</button>
           </section>
         </div>
 
-        {state.productionStage === 'Production' && <>
-        <div id="scene-animatic" className="section">
-          <label className="label" htmlFor="scene-image">
-            Upload Animatic
-          </label>
-          <section>
-            <button>Upload Animatic</button>
-          </section>
-        </div>
-        <div id="scene-video" className="section">
-          <label className="label" htmlFor="scene-image">
-            Upload Video
-          </label>
-          <section>
-            <button>Upload Video</button>
-          </section>
-        </div>
-        </>}
+        {state.productionStage === 'Production' && (
+          <>
+            <div id="scene-animatic" className="section">
+              <label className="label" htmlFor="scene-image">
+                Upload Animatic
+              </label>
+              <section>
+                <button>Upload Animatic</button>
+              </section>
+            </div>
+            <div id="scene-video" className="section">
+              <label className="label" htmlFor="scene-video">
+                Upload Video
+              </label>
+              <section className="video-btn">
+                <input onChange={handleVideo} type="file" accept="video/*" />
+              </section>
+            </div>
+          </>
+        )}
 
         <div id="scene-submit" className="section">
           <section>
-            <button className="submit-btn">Create Scene</button>
+            <button className="submit-btn" onClick={handleAddScene}>
+              Create Scene
+            </button>
           </section>
         </div>
 
-        
         <style jsx>{`
-
-          .submit-btn:active {background: #225161;}
+          //input[type='file'] {
+          //  display: none;
+          //}
+          .submit-btn:active {
+            background: #225161;
+          }
           .submit-btn {
             border: none;
             border-radius: 4px;
@@ -2623,6 +2646,10 @@ const NewSceneForm = ({ state, setState }) => {
           .section {
             padding: 3px 0px;
             margin-bottom: 3px;
+          }
+
+          .video-btn {
+            margin: 10px 0;
           }
 
           .section button {
@@ -2687,6 +2714,10 @@ const SceneMachineRightPanel = ({
   preview,
   setPreview,
   setViewer,
+  handleAddScene,
+  loading,
+  setLoading,
+  handleVideo
 }) => {
   const Style = ({ background }) => {
     return (
@@ -3401,7 +3432,7 @@ const SceneMachineRightPanel = ({
 
               {detail === 'breakdown' && (
                 <div className="transport-breakdown">
-                  {viewer.details.shotList.map((shot, i) => (
+                  {viewer.shotList.map((shot, i) => (
                     <div
                       className={`transport-breakdown-shot ${
                         state.checkedOut &&
@@ -3452,7 +3483,7 @@ const SceneMachineRightPanel = ({
 
                   {/* <div
                               dangerouslySetInnerHTML={{
-                                __html: viewer.details.shotList.breakdown,
+                                __html: viewer.shotList.breakdown,
                               }}
                             ></div> */}
                 </div>
@@ -3680,8 +3711,12 @@ const SceneMachineRightPanel = ({
                 <>
                   <div className="new-scene-form">
                     <NewSceneForm
+                      handleAddScene={handleAddScene}
                       state={newSceneForm}
                       setState={setNewSceneForm}
+                      loading={loading}
+                      setLoading={setLoading}
+                      handleVideo={handleVideo}
                     />
                   </div>
                 </>
@@ -3706,6 +3741,8 @@ const SceneMachine = () => {
   const [state, dispatch] = useReducer(reducer, { edit: false });
   const userContext = useContext(Context);
   const [newSceneForm, setNewSceneForm] = useState(initialNewSceneForm);
+  const [loading, setLoading] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   const Style = ({ background }) => (
     <style jsx>{`
@@ -3963,6 +4000,35 @@ const SceneMachine = () => {
   //   await setAnswer(true)
   // }
 
+  // backend submission
+  const handleAddScene = async (e) => {
+    e.preventDefault();
+    console.log(newSceneForm);
+  };
+
+  const handleVideo = async (e) => {
+    try {
+      const file = e.target.files[0]
+      // console.log('handle video upload')
+      setLoading(true)
+      const videoData = new FormData()
+      videoData.append('video', file)
+      // save progress bar and send video as formdata to backend
+      const {data} = await axios.post('api/field/video-upload', videoData, {
+        onUploadProgress: e => {
+          setProgress(Math.round((100 * e.loaded) / e.total))
+        }
+      })
+      // once res is resceived 
+      console.log(data)
+      setNewSceneForm({...newSceneForm, video: data}) 
+      setLoading(false)
+    } catch (error) {
+      setLoading(false)
+      toast('Video upload failed')
+    }
+  }
+
   const handleViewer = (e, scene) => {
     e.preventDefault();
     // TODO: find way to set scroll to top of scene overview display
@@ -3987,54 +4053,63 @@ const SceneMachine = () => {
           rel="stylesheet"
         />
       </head>
-      <Style background={background} />
-      <div id="scene-machine-container" className="">
-        <div id="scene-machine-location" className="scene-machine">
-          <SceneMachineTitle buttons={buttons} setButtons={setButtons} />
-          <SceneMachineStripArea
-            viewer={viewer}
-            setViewer={setViewer}
-            scenes={scenes}
-            setScenes={setScenes}
-            detail={detail}
-            setDetail={setDetail}
-            handleViewer={handleViewer}
-            setPreview={setPreview}
-            setBackground={setBackground}
-          />
-          <SceneMachineControlPanel
-            buttons={buttons}
-            setButtons={setButtons}
-            setAnswer={setAnswer}
-            dispatch={dispatch}
-            state={state}
-            activeShot={activeShot}
-            userContext={userContext}
-          />
-          <div className="scene-overview">
-            <SceneMachineLeftPanel preview={preview} />
-            <SceneMachineRightPanel
-              newSceneForm={newSceneForm}
-              setNewSceneForm={setNewSceneForm}
-              scenes={scenes}
-              setScenes={setScenes}
-              detail={detail}
-              setDetail={setDetail}
-              viewer={viewer}
-              background={background}
-              setBackground={setBackground}
-              state={state}
-              activeShot={activeShot}
-              setActiveShot={setActiveShot}
-              dispatch={dispatch}
-              userContext={userContext}
-              preview={preview}
-              setPreview={setPreview}
-              setViewer={setViewer}
-            />
+      <ButtonContext.Provider>
+        <SceneMachineProvider>
+          <Style background={background} />
+
+          <div id="scene-machine-container" className="">
+            <div id="scene-machine-location" className="scene-machine">
+              <SceneMachineTitle buttons={buttons} setButtons={setButtons} />
+              <SceneMachineStripArea
+                viewer={viewer}
+                setViewer={setViewer}
+                scenes={scenes}
+                setScenes={setScenes}
+                detail={detail}
+                setDetail={setDetail}
+                handleViewer={handleViewer}
+                setPreview={setPreview}
+                setBackground={setBackground}
+              />
+              <SceneMachineControlPanel
+                buttons={buttons}
+                setButtons={setButtons}
+                setAnswer={setAnswer}
+                dispatch={dispatch}
+                state={state}
+                activeShot={activeShot}
+                userContext={userContext}
+              />
+              <div className="scene-overview">
+                <SceneMachineLeftPanel preview={preview} />
+                <SceneMachineRightPanel
+                  newSceneForm={newSceneForm}
+                  setNewSceneForm={setNewSceneForm}
+                  scenes={scenes}
+                  setScenes={setScenes}
+                  detail={detail}
+                  setDetail={setDetail}
+                  viewer={viewer}
+                  background={background}
+                  setBackground={setBackground}
+                  state={state}
+                  activeShot={activeShot}
+                  setActiveShot={setActiveShot}
+                  dispatch={dispatch}
+                  userContext={userContext}
+                  preview={preview}
+                  setPreview={setPreview}
+                  setViewer={setViewer}
+                  handleAddScene={handleAddScene}
+                  loading={loading}
+                  setLoading={setLoading}
+                  handleVideo={handleVideo}
+                />
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        </SceneMachineProvider>
+      </ButtonContext.Provider>
     </>
   );
 };
