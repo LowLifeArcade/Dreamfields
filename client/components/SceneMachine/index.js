@@ -1,5 +1,5 @@
 import { useState, useEffect, useReducer, useContext } from 'react';
-import FormInput from '../formlayout/FormInput';
+import NewSceneFormInput from '../formlayout/NewSceneFormInput';
 import FormSelect from '../formlayout/FormSelect';
 import FormCard from '../formlayout/FormCard';
 import { Context } from '../../context';
@@ -238,6 +238,90 @@ const initialViewerState = {
   ],
   animatic: 's3-videoURL',
   video: 's3-videoURL',
+  revision: 1,
+};
+// scene template blank
+const initialNewSceneForm = {
+  id: '',
+  sceneName: '',
+  mainImage: '',
+  stripImage: '',
+  forProject: '', // use ObjectId
+  forReel: '', // use ObjectId
+  launched: false,
+  productionStage: 'pre production', // ['pre', 'beat boards', 'story boards', 'production']
+  description: '',
+  details: {
+    setting: '',
+    frameRate: '',
+    aspectRatio: '',
+    assets: [{ id: '', name: '', location: '' }],
+    FX: [{ id: '', name: '', location: '' }],
+    shotList: [
+      {
+        id: '',
+        shot: '',
+        complexity: '',
+        assets: '',
+        FX: '',
+        characters: [],
+        backgrounds: '',
+        description: '',
+        breakdown: '',
+        preProdBoard: '',
+      },
+    ], // maybe every time you add to this array it makes an index card
+    characters: [],
+    backgrounds: [{ id: '', name: '', location: '' }],
+  },
+  script: {
+    script: ``,
+    rev: 1,
+  },
+  layoutBoards: [
+    {
+      id: '',
+      name: '',
+      shotNumber: '',
+      panel: '', // this needs to be unique
+      artist: '',
+      board: '',
+      action: '',
+      dialogue: '',
+      createdAt: '',
+      revision: '',
+    },
+  ],
+  beatBoards: [
+    {
+      id: '',
+      name: '',
+      shotNumber: '',
+      panel: '', // this needs to be unique
+      artist: '',
+      board: '',
+      action: '',
+      dialogue: '',
+      createdAt: '',
+      revision: '',
+    },
+  ],
+  storyBoards: [
+    {
+      id: '',
+      name: '',
+      shotNumber: '',
+      panel: '', // this needs to be unique
+      artist: '',
+      board: '',
+      action: '',
+      dialogue: '',
+      createdAt: '',
+      revision: '',
+    },
+  ],
+  animatic: '',
+  video: '',
   revision: 1,
 };
 
@@ -1354,8 +1438,9 @@ const reducer = (state, action) => {
   }
 };
 
-// components
-
+/*
+ *components
+ **/
 const SceneMachineTitle = ({ setButtons, buttons }) => {
   const Style = () => {
     return (
@@ -2132,16 +2217,65 @@ const SceneMachineLeftPanel = ({ preview }) => {
   );
 };
 
-const NewSceneForm = () => {
-  return <>
-  <FormCard>
-    <FormInput />
-    <FormInput />
-  </FormCard>
-  </>
-}
+const NewSceneForm = ({ state, setState }) => {
+  console.log('form card state', state);
+  return (
+    <>
+      <FormCard title={state.sceneName || 'New Scene'}>
+        {/* <NewSceneFormInput
+          state={state}
+          value={state.sceneName}
+          onChange={setState}
+          htmlFor="Scene Name"
+          name="sceneName"
+        /> */}
+        <div className="section">
+          <label className="label" htmlFor='Scene Name'>
+            Scene Name
+          </label>
+          <input
+            value={state.sceneName}
+            onChange={(e) =>
+              setState({ ...state, sceneName: e.target.value })
+            }
+            className="input"
+            type={'text'}
+            name={''} // use this field to handle state with [e.target.name]: [e.target.value] in the object
+            autoComplete={'text' && true}
+            placeholder={'Enter Scene Name'}
+            disabled={false}
+          />
+        </div>
+
+        <style jsx>{`
+          .section {
+            padding: 3px 0px;
+            margin-bottom: 3px;
+          }
+
+          .label {
+            color: #333;
+            font-size: small;
+            color: rgb(105, 100, 85);
+          }
+
+          .input {
+            margin: 5px 0;
+            margin-top: 9px;
+            padding: 8px;
+            width: 100%;
+            border: solid 1px rgb(196, 188, 163);
+            border-radius: 3px;
+          }
+        `}</style>
+      </FormCard>
+    </>
+  );
+};
 
 const SceneMachineRightPanel = ({
+  newSceneForm,
+  setNewSceneForm,
   scenes,
   setScenes,
   detail,
@@ -2475,7 +2609,7 @@ const SceneMachineRightPanel = ({
   };
 
   const handleCancel = () => {
-    dispatch({ type: 'CONFIRM', payload: 'Cancel New Scene' })
+    dispatch({ type: 'CONFIRM', payload: 'Cancel New Scene' });
     setPreview({
       image: '//unsplash.it/id/1/400/225',
       sceneName: scenes[0].sceneName,
@@ -3159,7 +3293,10 @@ const SceneMachineRightPanel = ({
               {detail === 'new scene' && (
                 <>
                   <div className="new-scene-form">
-                    <NewSceneForm />
+                    <NewSceneForm
+                      state={newSceneForm}
+                      setState={setNewSceneForm}
+                    />
                   </div>
                 </>
               )}
@@ -3182,6 +3319,7 @@ const SceneMachine = () => {
   const [background, setBackground] = useState('rgb(218, 214, 208)');
   const [state, dispatch] = useReducer(reducer, { edit: false });
   const userContext = useContext(Context);
+  const [newSceneForm, setNewSceneForm] = useState(initialNewSceneForm);
 
   const Style = ({ background }) => (
     <style jsx>{`
@@ -3189,7 +3327,7 @@ const SceneMachine = () => {
         height: 100%;
         width: 100%;
       }
-  
+
       .scene-machine {
         display: flex;
         flex-direction: column;
@@ -3205,20 +3343,20 @@ const SceneMachine = () => {
         box-shadow: inset 0 0px 10px, inset 0 0 15px, inset 0 0 5px,
           0 20px 500px 800px rgba(180, 171, 155, 0.4), 0 0 20px rgb(39, 44, 29);
       }
-  
+
       .scene-overview {
         height: 100%;
         overflow: scroll;
         background: rgba(46, 35, 35, 0.6);
         margin-bottom: 10px;
         width: 100%;
-  
+
         display: flex;
         border: solid 1px rgb(22, 19, 19);
         border-radius: 10px;
         box-shadow: inset 0 0px 10px, 0 0 4px;
       }
-  
+
       .add {
         cursor: pointer;
         color: #2f3c41;
@@ -3232,22 +3370,22 @@ const SceneMachine = () => {
         padding: 10px 0;
         border: none;
       }
-  
+
       // #scene-machine > div > div {
       //   padding: 0 10px;
       // }
-  
+
       // #scene {
       //   padding: 0px 30px;
       //   border-right: solid 1px;
       // }
-  
+
       @media (max-width: 800px) {
         .scene-overview {
           flex-direction: column;
           // height: 100%;
         }
-  
+
         .left-panel {
           width: 100%;
         }
@@ -3373,7 +3511,7 @@ const SceneMachine = () => {
       dispatch({ type: 'CONFIRM', payload: '' });
       dispatch({
         type: 'CANCEL_NEW_SCENE',
-        payload: true
+        payload: true,
       });
     } else if (!answer) {
       dispatch({ type: 'CONFIRM', payload: '' });
@@ -3490,6 +3628,8 @@ const SceneMachine = () => {
           <div className="scene-overview">
             <SceneMachineLeftPanel preview={preview} />
             <SceneMachineRightPanel
+              newSceneForm={newSceneForm}
+              setNewSceneForm={setNewSceneForm}
               scenes={scenes}
               setScenes={setScenes}
               detail={detail}
@@ -3514,5 +3654,3 @@ const SceneMachine = () => {
 };
 
 export default SceneMachine;
-
-
