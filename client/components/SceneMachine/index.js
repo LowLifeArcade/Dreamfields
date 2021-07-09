@@ -1,6 +1,5 @@
 import { useState, useEffect, useReducer, useContext } from 'react';
-import NewSceneFormInput from '../formlayout/NewSceneFormInput';
-import FormSelect from '../formlayout/FormSelect';
+import Button from '../Button';
 import FormCard from '../formlayout/FormCard';
 import { Context } from '../../context';
 
@@ -26,53 +25,51 @@ const initialViewerState = {
   productionStage: 'pre production', // ['pre', 'beat boards', 'story boards', 'production']
   description:
     'The final bell has rung and school is out. We see Paul huffing it from a gang of bullies he seems to have ticked off. They chase him off of school grounds and into a field where he falls into a pit of vipers.',
-  details: {
-    setting: 'ext. School - Day ',
-    frameRate: '24',
-    aspectRatio: '16:9',
-    assets: [
-      { id: 11, name: 'Sword', location: 's3-bucket' },
-      { id: 12, name: 'Mud Slide', location: 's3-bucket' },
-      { id: 14, name: 'Book', location: 's3-bucket' },
-    ],
-    FX: [
-      { id: 3, name: '3d pit of vipers', location: 's3' },
-      { id: 6, name: 'green glow', location: 's3' },
-    ],
-    shotList: [
-      {
-        id: 1,
-        shot: 1,
-        complexity: 'high',
-        assets: 'Sword',
-        FX: '',
-        characters: 'Paul, Sid, Ugly friend 1, Ugly friend 2',
-        backgrounds: 'School',
-        description:
-          'Paul runs full sprint in center frame, huffing and pumping his arms.',
-        breakdown:
-          'Close up of Paul bobbing up and down, sweat running down his face. We pull out to see him full sprint running from a gang behind him.',
-        preProdBoard: '',
-      },
-      {
-        id: 2,
-        shot: 2,
-        complexity: 'medium',
-        assets: 'snakes',
-        FX: 'green glow',
-        characters: 'Sid, Ugly friend 1, Ugly friend 2',
-        backgrounds: 'Pit',
-        description: 'Sid and gang cacalking as they chase.',
-        breakdown: `This should be a table or something structure wise where it's easy to look at the breakdown `,
-        preProdBoard: '',
-      },
-    ], // maybe every time you add to this array it makes an index card
-    characters: ['Paul', 'Sid', 'Joey', 'Ugly friend 1', 'Ugly friend 2'],
-    backgrounds: [
-      { id: 253, name: 'School', location: 's3' },
-      { id: 233, name: 'Pit', location: 's3' },
-    ],
-  },
+  setting: 'ext. School - Day ',
+  frameRate: '24',
+  aspectRatio: '16:9',
+  assets: [
+    { id: 11, name: 'Sword', location: 's3-bucket' },
+    { id: 12, name: 'Mud Slide', location: 's3-bucket' },
+    { id: 14, name: 'Book', location: 's3-bucket' },
+  ],
+  FX: [
+    { id: 3, name: '3d pit of vipers', location: 's3' },
+    { id: 6, name: 'green glow', location: 's3' },
+  ],
+  shotList: [
+    {
+      id: 1,
+      shot: 1,
+      complexity: 'high',
+      assets: 'Sword',
+      FX: '',
+      characters: 'Paul, Sid, Ugly friend 1, Ugly friend 2',
+      backgrounds: 'School',
+      description:
+        'Paul runs full sprint in center frame, huffing and pumping his arms.',
+      breakdown:
+        'Close up of Paul bobbing up and down, sweat running down his face. We pull out to see him full sprint running from a gang behind him.',
+      preProdBoard: '',
+    },
+    {
+      id: 2,
+      shot: 2,
+      complexity: 'medium',
+      assets: 'snakes',
+      FX: 'green glow',
+      characters: 'Sid, Ugly friend 1, Ugly friend 2',
+      backgrounds: 'Pit',
+      description: 'Sid and gang cacalking as they chase.',
+      breakdown: `This should be a table or something structure wise where it's easy to look at the breakdown `,
+      preProdBoard: '',
+    },
+  ], // maybe every time you add to this array it makes an index card
+  characters: ['Paul', 'Sid', 'Joey', 'Ugly friend 1', 'Ugly friend 2'],
+  backgrounds: [
+    { id: 253, name: 'School', location: 's3' },
+    { id: 233, name: 'Pit', location: 's3' },
+  ],
 
   script: {
     script: `<br />
@@ -242,42 +239,44 @@ const initialViewerState = {
 };
 // scene template blank
 const initialNewSceneForm = {
-  id: '',
-  sceneName: '',
-  mainImage: '',
-  stripImage: '',
-  forProject: '', // use ObjectId
-  forReel: '', // use ObjectId
-  launched: false,
-  productionStage: 'pre production', // ['pre', 'beat boards', 'story boards', 'production']
-  description: '',
-  details: {
-    setting: '',
-    frameRate: '',
-    aspectRatio: '',
-    assets: [{ id: '', name: '', location: '' }],
-    FX: [{ id: '', name: '', location: '' }],
-    shotList: [
-      {
-        id: '',
-        shot: '',
-        complexity: '',
-        assets: '',
-        FX: '',
-        characters: [],
-        backgrounds: '',
-        description: '',
-        breakdown: '',
-        preProdBoard: '',
-      },
-    ], // maybe every time you add to this array it makes an index card
-    characters: [],
-    backgrounds: [{ id: '', name: '', location: '' }],
-  },
+  // id: '',
+  sceneName: '', // done
+  description: '', // done
+  characters: [''], // done
+  setting: '', // done
   script: {
     script: ``,
     rev: 1,
   },
+  mainImage: '',
+  stripImage: '',
+  forProject: '', // use ObjectId
+  forReel: '', // use ObjectId
+
+  launched: false,
+  productionStage: 'pre production', // ['pre', 'beat boards', 'story boards', 'production']
+  frameRate: '24', // done
+  aspectRatio: '16:9', // done
+
+  assets: [{ id: '', name: '', location: '' }], // add button in details
+  FX: [{ id: '', name: '', location: '' }], // add button in details
+  backgrounds: [{ id: '', name: '', location: '' }], // add button in details
+
+  shotList: [
+    // in breakdown section
+    {
+      id: '',
+      shot: '',
+      complexity: '',
+      assets: '',
+      FX: '',
+      characters: [],
+      backgrounds: '',
+      description: '',
+      breakdown: '',
+      preProdBoard: '',
+    },
+  ], // maybe every time you add to this array it makes an index card
   layoutBoards: [
     {
       id: '',
@@ -2219,6 +2218,52 @@ const SceneMachineLeftPanel = ({ preview }) => {
 
 const NewSceneForm = ({ state, setState }) => {
   console.log('form card state', state);
+  // TODO: The new scene form only sets up the basics. We get a scene overview from this with description and scene name and hopefully script. From there the creator will go through and add assets if needed, backgrounds, FX and a shot list with breakdowns and launch the scene.
+
+  // a scene card will show up if there is no image uploaded
+
+  const addCharacter = (e, name) => {
+    e.preventDefault();
+    setState({
+      ...state,
+      [name]: [...state[name], ''],
+    });
+  };
+
+  const removeCharacter = (e, name) => {
+    const i = e.target.getAttribute('data-index');
+    e.preventDefault();
+    const list = [...state[name]];
+    list.splice(i, 1);
+    setState({ ...state, [name]: list });
+  };
+
+  const handleCharacterInput = (e) => {
+    e.preventDefault();
+    const i = e.target.getAttribute('data-index');
+    let characters = [...state.characters];
+    let oneCharacter = characters[i];
+    oneCharacter = e.target.value;
+    characters[i] = oneCharacter;
+
+    setState({
+      ...state,
+      characters: [...characters],
+    });
+  };
+  const handleArrayInput = (e, name, item) => {
+    e.preventDefault();
+    const i = e.target.getAttribute('data-index');
+    let array = [...state[name]];
+    let arrayItem = { ...array[i] };
+    arrayItem[item] = e.target.value;
+    array[i] = arrayItem;
+
+    setState({
+      ...state,
+      [name]: [...array],
+    });
+  };
   return (
     <>
       <FormCard title={state.sceneName || 'New Scene'}>
@@ -2230,14 +2275,12 @@ const NewSceneForm = ({ state, setState }) => {
           name="sceneName"
         /> */}
         <div className="section">
-          <label className="label" htmlFor='Scene Name'>
+          <label className="label" htmlFor="Scene Name">
             Scene Name
           </label>
           <input
             value={state.sceneName}
-            onChange={(e) =>
-              setState({ ...state, sceneName: e.target.value })
-            }
+            onChange={(e) => setState({ ...state, sceneName: e.target.value })}
             className="input"
             type={'text'}
             name={''} // use this field to handle state with [e.target.name]: [e.target.value] in the object
@@ -2246,13 +2289,246 @@ const NewSceneForm = ({ state, setState }) => {
             disabled={false}
           />
         </div>
-
+        <div className="section">
+          <label className="label" htmlFor="Scene Description">
+            Scene Description
+          </label>
+          <textarea
+            value={state.description}
+            onChange={(e) =>
+              setState({ ...state, description: e.target.value })
+            }
+            className="input"
+            type={'text'}
+            name={''} // use this field to handle state with [e.target.name]: [e.target.value] in the object
+            autoComplete={'text' && true}
+            placeholder={'Describe the scene...'}
+            disabled={false}
+            rows="10"
+          />
+        </div>
+        <div className="section">
+          <label className="label" htmlFor="characters">
+            Characters {state.characters.length}
+          </label>
+          {state.characters.map((character, i) => (
+            <div className="inline">
+              <input
+                value={character}
+                data-index={i}
+                onChange={(e) => handleCharacterInput(e)}
+                className="input"
+                type={'text'}
+                name={''} // use this field to handle state with [e.target.name]: [e.target.value] in the object
+                autoComplete={'text' && true}
+                placeholder={'Enter Character Name'}
+                disabled={false}
+              />
+              <button
+                data-index={i}
+                onClick={(e) => removeCharacter(e, 'characters')}
+              >
+                Delete
+              </button>
+            </div>
+          ))}
+          <button onClick={(e) => addCharacter(e, 'characters')}>
+            Add Character
+          </button>
+        </div>
+        <div className="section">
+          <label className="label" htmlFor="Scene Setting">
+            Scene Setting
+          </label>
+          <input
+            value={state.setting}
+            onChange={(e) => setState({ ...state, setting: e.target.value })}
+            className="input"
+            type={'text'}
+            name={''} // use this field to handle state with [e.target.name]: [e.target.value] in the object
+            autoComplete={'text' && true}
+            placeholder={'Where is this scene taking place?'}
+            disabled={false}
+          />
+        </div>
+        <br />
+        <hr />
+        <br />
+        <div className="section">
+          <label className="label" htmlFor="framerate">
+            Frame Rate
+          </label>
+          <select
+            value={state.frameRate}
+            onChange={(e) => setState({ ...state, frameRate: e.target.value })}
+            className="input"
+            type={'text'}
+            name={''} // use this field to handle state with [e.target.name]: [e.target.value] in the object
+            autoComplete={'text' && true}
+            placeholder={'Enter Scene Name'}
+            disabled={false}
+          >
+            <option disabled value="">
+              select framerate
+            </option>
+            <option value="12">12fps</option>
+            <option value="23.96">23.96fps</option>
+            <option value="24">24fps</option>
+            <option value="30">30fps</option>
+            <option value="60">60fps</option>
+          </select>
+        </div>
+        <div className="section">
+          <label className="label" htmlFor="aspect-ratio">
+            Aspect Ratio
+          </label>
+          <select
+            value={state.aspectRatio}
+            onChange={(e) =>
+              setState({ ...state, aspectRatio: e.target.value })
+            }
+            className="input"
+            type={'text'}
+            name={''} // use this field to handle state with [e.target.name]: [e.target.value] in the object
+            autoComplete={'text' && true}
+            placeholder={'Enter Scene Name'}
+            disabled={false}
+          >
+            <option disabled value="">
+              select aspect ratio
+            </option>
+            <option value="3:4">3:4</option>
+            <option value="16:9">16:9</option>
+            <option value="2">2</option>
+            <option value="2.35">2.35</option>
+            <option value="2.4">2.4</option>
+          </select>
+        </div>
+        <div className="section">
+          <label className="label" htmlFor="">
+            Production Stage
+          </label>
+          <select
+            value={state.productionStage}
+            onChange={(e) =>
+              setState({ ...state, productionStage: e.target.value })
+            }
+            className="input"
+            type={'text'}
+            name={''} // use this field to handle state with [e.target.name]: [e.target.value] in the object
+            autoComplete={'text' && true}
+            placeholder={'Select Production Stage'}
+            disabled={false}
+          >
+            <option selected disabled value="">
+              Select Production Stage
+            </option>
+            <option value="Pre Production">Pre Production</option>
+            <option value="Boards">Boards</option>
+            <option value="Production">Production</option>
+          </select>
+        </div>
+        <div className="section">
+          <label className="label" htmlFor="Script">
+            Script
+          </label>
+          <textarea
+            value={state.script.script}
+            onChange={(e) =>
+              setState({
+                ...state,
+                script: { ...state.script, script: e.target.value },
+              })
+            }
+            className="input"
+            type={'text'}
+            name={''} // use this field to handle state with [e.target.name]: [e.target.value] in the object
+            autoComplete={'text' && true}
+            placeholder={'Describe the scene...'}
+            disabled={false}
+            rows="10"
+          />
+        </div>
+        <div className="section">
+          <label className="label" htmlFor="scene-image">
+            Scene Image Upload
+          </label>
+          <section>
+            <button>Upload Image</button>
+          </section>
+        </div>
+        <div className="section">
+          <label className="label" htmlFor="assets">
+            Assets {state.assets.length}
+          </label>
+          {state.assets.map((asset, i) => (
+            <div className="inline">
+              <input
+                value={asset.name}
+                data-index={i}
+                onChange={(e) => handleArrayInput(e, 'assets', 'name')}
+                className="input"
+                type={'text'}
+                name={''} // use this field to handle state with [e.target.name]: [e.target.value] in the object
+                autoComplete={'text' && true}
+                placeholder={'Enter Assets'}
+                disabled={false}
+              />
+              <button
+                data-index={i}
+                onClick={(e) => removeCharacter(e, 'assets')}
+              >
+                Delete
+              </button>
+            </div>
+          ))}
+          <button onClick={(e) => addCharacter(e, 'assets')}>Add Asset</button>
+        </div>
+        <div className="section">
+          <label className="label" htmlFor="fx">
+            FX {state.FX.length}
+          </label>
+          {state.FX.map((asset, i) => (
+            <div className="inline">
+              <input
+                value={asset.name}
+                data-index={i}
+                onChange={(e) => handleArrayInput(e, 'FX', 'name')}
+                className="input"
+                type={'text'}
+                name={''} // use this field to handle state with [e.target.name]: [e.target.value] in the object
+                autoComplete={'text' && true}
+                placeholder={'Enter FX'}
+                disabled={false}
+              />
+              <button
+                data-index={i}
+                onClick={(e) => removeCharacter(e, 'FX')}
+              >
+                Delete
+              </button>
+            </div>
+          ))}
+          <button onClick={(e) => addCharacter(e, 'FX')}>Add Asset</button>
+        </div>
+        backgrounds // same as assets
+        <br />
+        // if production //
+        <br />
+        animatic
+        <br />
+        video
         <style jsx>{`
           .section {
             padding: 3px 0px;
             margin-bottom: 3px;
           }
 
+          .inline {
+            display: flex;
+            align-items: center;
+            // padding: 10px;
+          }
           .label {
             color: #333;
             font-size: small;
@@ -2900,54 +3176,44 @@ const SceneMachineRightPanel = ({
                     <tbody>
                       <tr>
                         <td>Setting: </td>
-                        <td>{viewer.details && viewer.details.setting}</td>
+                        <td>{viewer && viewer.setting}</td>
                       </tr>
 
                       <tr>
                         <td>Character Count: </td>
-                        <td>
-                          {viewer.details && viewer.details.characters.length}
-                        </td>
+                        <td>{viewer && viewer.characters.length}</td>
                       </tr>
                       <tr>
                         <td> Shot Count: </td>
-                        <td>
-                          {viewer.details && viewer.details.shotList.length}
-                        </td>
+                        <td>{viewer && viewer.shotList.length}</td>
                       </tr>
                       <tr>
                         <td> Backgrounds: </td>
-                        <td>
-                          {viewer.details && viewer.details.backgrounds.length}
-                        </td>
+                        <td>{viewer && viewer.backgrounds.length}</td>
                       </tr>
                       <tr>
                         <td> Asset Count: </td>
-                        <td>
-                          {viewer.details && viewer.details.assets.length}
-                        </td>
+                        <td>{viewer && viewer.assets.length}</td>
                       </tr>
                       <tr>
                         <td> FX: </td>
-                        <td>{viewer.details && viewer.details.FX.length}</td>
+                        <td>{viewer && viewer.FX.length}</td>
                       </tr>
                       <tr>
                         <td>Frame Rate: </td>
-                        <td>{viewer.details && viewer.details.frameRate}</td>
+                        <td>{viewer && viewer.frameRate}</td>
                       </tr>
                       <tr>
                         <td>Aspect Ratio: </td>
-                        <td>{viewer.details && viewer.details.aspectRatio}</td>
+                        <td>{viewer && viewer.aspectRatio}</td>
                       </tr>
                       <tr>
                         <td>Launched: </td>
-                        <td>
-                          {viewer.details && viewer.launched ? 'true' : 'false'}
-                        </td>
+                        <td>{viewer && viewer.launched ? 'true' : 'false'}</td>
                       </tr>
                       <tr>
                         <td>Production Stage: </td>
-                        <td>{viewer.details && viewer.productionStage}</td>
+                        <td>{viewer && viewer.productionStage}</td>
                       </tr>
                     </tbody>
                   </table>
