@@ -14,11 +14,12 @@ import { Context } from '../../context';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 
+// Contexts
 const TitleButtonContext = createContext();
 
 const TitleButtonProvider = ({ children }) => {
   const [machine, setMachine] = useState({
-    machine: 'scene',
+    machine: 'Scene',
   });
 
   return (
@@ -26,6 +27,47 @@ const TitleButtonProvider = ({ children }) => {
       <TitleButtonContext.Provider value={{ machine, setMachine }}>
         {children}
       </TitleButtonContext.Provider>
+    </>
+  );
+};
+
+const ControlPanelButtonsContext = createContext();
+
+const ControlPanelButtonsProvider = ({ children }) => {
+  const [buttons, setButtons] = useState(initialButtonState);
+
+  return (
+    <>
+      <ControlPanelButtonsContext.Provider value={{ buttons, setButtons }}>
+        {children}
+      </ControlPanelButtonsContext.Provider>
+    </>
+  );
+};
+
+const PreviewContext = createContext();
+
+const PreviewProvider = ({ children }) => {
+  const [preview, setPreview] = useState(initPreviewState);
+
+  return (
+    <>
+      <PreviewContext.Provider value={{ preview, setPreview }}>
+        {children}
+      </PreviewContext.Provider>
+    </>
+  );
+};
+const ViewerContext = createContext();
+
+const ViewerProvider = ({ children }) => {
+  const [viewer, setViewer] = useState(initialViewerState);
+
+  return (
+    <>
+      <ViewerContext.Provider value={{ viewer, setViewer }}>
+        {children}
+      </ViewerContext.Provider>
     </>
   );
 };
@@ -362,1001 +404,225 @@ const initPreviewState = {
 const initialScenes = [
   initialViewerState,
   {
-    id: 212501,
+    id: 220501,
+    sceneName: 'Some',
+    mainImage: '//unsplash.it/id/122/500/300',
+    stripImage: '//unsplash.it/id/122/400/225',
+    forProject: 'ObjectId',
     forReel: 'ObjectId - Paul Saves All Movie',
     launched: false,
-    productionStage: 'boards',
-    sceneName: 'Tip Toe',
-    stripImage: '//unsplash.it/id/16/400/225',
+    productionStage: 'pre production', // ['pre', 'beat boards', 'story boards', 'production']
+    description:
+      'The final bell has rung and school is out. We see Paul huffing it from a gang of bullies he seems to have ticked off. They chase him off of school grounds and into a field where he falls into a pit of vipers.',
     setting: 'ext. School - Day ',
-    script: `<br />
-    <p>EXT. SCHOOL - DAY</p>
-    <br>
-    <p>
-      PAUL, running from a gang of teenagers. He huffs and puffs
-      as he looks back in terror. The gang cackles in the chase.
-      Paul, not looking where he's going, slips and falls into a
-      hole. He slides down the mud...
-    </p>
-    <br>
-    <p>Paul </p>
-    <div style={{'text-align': 'center'}}>Ahhhhhh </div>
-    <br>
-    <p>
-      SID and his BUDDIES stop short of the hole. They hear
-      Paul's cavernous cry as he falls. Sid and his buddies look
-      concerned through their cool. Finally:
-    </p>
-    <br>
-    <p>Sid </p>
-    <p>
-      Dummy. Let's go, guys.
-    </p>
-    <br>
-    <p>
-      After a long decent, Paul drops into a DEN OF VIPERS. Paul
-      is petrified.
-    </p>`,
-    description: 'Paul runs from the Vipers.',
-    mainImage: '//unsplash.it/id/1/500/300',
-    beatBoards: [],
+    frameRate: '24',
+    aspectRatio: '16:9',
+    assets: [
+      { id: 11, name: 'Sword', location: 's3-bucket' },
+      { id: 12, name: 'Mud Slide', location: 's3-bucket' },
+      { id: 14, name: 'Book', location: 's3-bucket' },
+    ],
+    FX: [
+      { id: 3, name: '3d pit of vipers', location: 's3' },
+      { id: 6, name: 'green glow', location: 's3' },
+    ],
+    shotList: [
+      {
+        id: 1,
+        shot: 1,
+        complexity: 'high',
+        assets: 'Sword',
+        FX: '',
+        characters: 'Paul, Sid, Ugly friend 1, Ugly friend 2',
+        backgrounds: 'School',
+        description:
+          'Paul runs full sprint in center frame, huffing and pumping his arms.',
+        breakdown:
+          'Close up of Paul bobbing up and down, sweat running down his face. We pull out to see him full sprint running from a gang behind him.',
+        preProdBoard: '',
+      },
+      {
+        id: 2,
+        shot: 2,
+        complexity: 'medium',
+        assets: 'snakes',
+        FX: 'green glow',
+        characters: 'Sid, Ugly friend 1, Ugly friend 2',
+        backgrounds: 'Pit',
+        description: 'Sid and gang cacalking as they chase.',
+        breakdown: `This should be a table or something structure wise where it's easy to look at the breakdown `,
+        preProdBoard: '',
+      },
+    ], // maybe every time you add to this array it makes an index card
+    characters: ['Paul', 'Sid', 'Joey', 'Ugly friend 1', 'Ugly friend 2'],
+    backgrounds: [
+      { id: 253, name: 'School', location: 's3' },
+      { id: 233, name: 'Pit', location: 's3' },
+    ],
+  
+    script: {
+      script: `<br />
+      <p>EXT. SCHOOL - DAY</p>
+      <br>
+      <p>
+        PAUL, runs from a gang of teenagers. Huffing and puffing, dread written on his face.
+        The gang cackle as they chase.
+        Paul, not looking where he's going, slips and falls into a
+        hole. He slides down the mud...
+      </p>
+      <br>
+    <div style="text-align:center;">
+      <p>Paul </p>
+      <div>Ahhhhhh </div>
+    </div>
+      <br>
+      <p>
+        SID and his BUDDIES stop short of the hole. They hear
+        Paul's cavernous cry as he falls. Sid and his buddies look
+        concerned through their cool. Finally:
+      </p>
+      <br>
+    <div style="text-align:center;">
+      <p>Sid </p>
+    
+      <p>
+        Dummy. Let's go, guys.
+      </p>
+    </div>
+      <br>
+      <p>
+        After a long descent, Paul lands into a DEN OF VIPERS. Paul's teeth clater.
+      </p>`,
+      rev: 1,
+    },
+  
+    layoutBoards: [
+      {
+        id: 240,
+        name: '',
+        shotNumber: 1,
+        panel: 1, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/58/500/300',
+        action: '',
+        dialogue: '',
+        createdAt: 'date',
+        revision: 1,
+      },
+      {
+        id: 2900,
+        name: '',
+        shotNumber: 1,
+        panel: 2, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/48/500/300',
+        action: '',
+        dialogue: '',
+        createdAt: 'date',
+        revision: 1,
+      },
+    ],
+    beatBoards: [
+      {
+        id: 9140,
+        name: '',
+        shotNumber: 1,
+        panel: 1, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/29/500/300',
+        action: '',
+        dialogue: '',
+        createdAt: 'date',
+        revision: 1,
+      },
+      {
+        id: 1140,
+        name: '',
+        shotNumber: 1,
+        panel: 12, // this needs to be unique
+        artist: 'objectId',
+        board: '//unsplash.it/id/229/500/300',
+        action: '',
+        dialogue: '',
+        createdAt: 'date',
+        revision: 1,
+      },
+    ],
     storyBoards: [
       {
-        id: 2240,
+        id: 2340,
+        name: '',
+        shotNumber: 1,
         panel: 7, // this needs to be unique
         artist: 'objectId',
         board: '//unsplash.it/id/23/500/300',
         action: '',
         dialogue: '',
-        artist: 'objectId',
         createdAt: 'date',
         revision: 1,
       },
       {
-        id: 2240,
+        id: 2540,
+        name: '',
+        shotNumber: 1,
         panel: 10, // this needs to be unique
         artist: 'objectId',
         board: '//unsplash.it/id/24/500/300',
         action: '',
         dialogue: '',
-        artist: 'objectId',
         createdAt: 'date',
         revision: 1,
       },
       {
-        id: 2240,
+        id: 2740,
+        name: '',
+        shotNumber: 1,
         panel: 3, // this needs to be unique
         artist: 'objectId',
         board: '//unsplash.it/id/26/500/300',
         action: '',
         dialogue: '',
-        artist: 'objectId',
         createdAt: 'date',
         revision: 1,
       },
       {
-        id: 2240,
+        id: 2840,
+        name: '',
+        shotNumber: 2,
         panel: 5, // this needs to be unique
         artist: 'objectId',
         board: '//unsplash.it/id/27/500/300',
         action: '',
         dialogue: '',
-        artist: 'objectId',
         createdAt: 'date',
         revision: 1,
       },
       {
-        id: 2240,
+        id: 2270,
+        name: '',
+        shotNumber: 2,
         panel: 8, // this needs to be unique
         artist: 'objectId',
         board: '//unsplash.it/id/28/500/300',
         action: '',
         dialogue: '',
-        artist: 'objectId',
         createdAt: 'date',
         revision: 1,
       },
       {
-        id: 2240,
+        id: 2243,
+        name: '',
+        shotNumber: 2,
         panel: 11, // this needs to be unique
         artist: 'objectId',
         board: '//unsplash.it/id/29/500/300',
         action: '',
         dialogue: '',
-        artist: 'objectId',
         createdAt: 'date',
         revision: 1,
       },
     ],
-    storyBoards3: [1, 2, 3],
-    video: 's3-videoURL',
-    revision: 1,
-  },
-  {
-    id: 214501,
-    forReel: 'ObjectId - Paul Saves All Movie',
-    launched: false,
-    productionStage: 'boards',
-    sceneName: 'Toodaloo',
-    stripImage: '//unsplash.it/id/21/400/225',
-    setting: 'ext. School - Day ',
-    script: `<br />
-    <p>EXT. SCHOOL - DAY</p>
-    <br>
-    <p>
-      PAUL, running from a gang of teenagers. He huffs and puffs
-      as he looks back in terror. The gang cackles in the chase.
-      Paul, not looking where he's going, slips and falls into a
-      hole. He slides down the mud...
-    </p>
-    <br>
-    <p>Paul </p>
-    <div style={{'text-align': 'center'}}>Ahhhhhh </div>
-    <br>
-    <p>
-      SID and his BUDDIES stop short of the hole. They hear
-      Paul's cavernous cry as he falls. Sid and his buddies look
-      concerned through their cool. Finally:
-    </p>
-    <br>
-    <p>Sid </p>
-    <p>
-      Dummy. Let's go, guys.
-    </p>
-    <br>
-    <p>
-      After a long decent, Paul drops into a DEN OF VIPERS. Paul
-      is petrified.
-    </p>`,
-    description: 'And on we go!',
-    mainImage: '//unsplash.it/id/1/500/300',
-    beatBoards: [],
-    storyBoards: [
-      {
-        id: 2240,
-        panel: 7, // this needs to be unique
-        artist: 'objectId',
-        board: '//unsplash.it/id/23/500/300',
-        action: '',
-        dialogue: '',
-        artist: 'objectId',
-        createdAt: 'date',
-        revision: 1,
-      },
-      {
-        id: 2240,
-        panel: 10, // this needs to be unique
-        artist: 'objectId',
-        board: '//unsplash.it/id/24/500/300',
-        action: '',
-        dialogue: '',
-        artist: 'objectId',
-        createdAt: 'date',
-        revision: 1,
-      },
-      {
-        id: 2240,
-        panel: 3, // this needs to be unique
-        artist: 'objectId',
-        board: '//unsplash.it/id/26/500/300',
-        action: '',
-        dialogue: '',
-        artist: 'objectId',
-        createdAt: 'date',
-        revision: 1,
-      },
-      {
-        id: 2240,
-        panel: 5, // this needs to be unique
-        artist: 'objectId',
-        board: '//unsplash.it/id/27/500/300',
-        action: '',
-        dialogue: '',
-        artist: 'objectId',
-        createdAt: 'date',
-        revision: 1,
-      },
-      {
-        id: 2240,
-        panel: 8, // this needs to be unique
-        artist: 'objectId',
-        board: '//unsplash.it/id/28/500/300',
-        action: '',
-        dialogue: '',
-        artist: 'objectId',
-        createdAt: 'date',
-        revision: 1,
-      },
-      {
-        id: 2240,
-        panel: 11, // this needs to be unique
-        artist: 'objectId',
-        board: '//unsplash.it/id/29/500/300',
-        action: '',
-        dialogue: '',
-        artist: 'objectId',
-        createdAt: 'date',
-        revision: 1,
-      },
-    ],
-    storyBoards3: [1, 2, 3],
-    video: 's3-videoURL',
-    revision: 1,
-  },
-  {
-    id: 215501,
-    forReel: 'ObjectId - Paul Saves All Movie',
-    launched: false,
-    productionStage: 'boards',
-    sceneName: 'Here they come!',
-    stripImage: '//unsplash.it/id/18/400/225',
-    setting: 'ext. School - Day ',
-    script: `<br />
-    <p>EXT. SCHOOL - DAY</p>
-    <br>
-    <p>
-      PAUL, running from a gang of teenagers. He huffs and puffs
-      as he looks back in terror. The gang cackles in the chase.
-      Paul, not looking where he's going, slips and falls into a
-      hole. He slides down the mud...
-    </p>
-    <br>
-    <p>Paul </p>
-    <div style={{'text-align': 'center'}}>Ahhhhhh </div>
-    <br>
-    <p>
-      SID and his BUDDIES stop short of the hole. They hear
-      Paul's cavernous cry as he falls. Sid and his buddies look
-      concerned through their cool. Finally:
-    </p>
-    <br>
-    <p>Sid </p>
-    <p>
-      Dummy. Let's go, guys.
-    </p>
-    <br>
-    <p>
-      After a long decent, Paul drops into a DEN OF VIPERS. Paul
-      is petrified.
-    </p>`,
-    description: 'Paul slides down a hill into a pit of vipers.',
-    mainImage: '//unsplash.it/id/1/500/300',
-    beatBoards: [],
-    storyBoards: [
-      {
-        id: 2240,
-        panel: 7, // this needs to be unique
-        artist: 'objectId',
-        board: '//unsplash.it/id/23/500/300',
-        action: '',
-        dialogue: '',
-        artist: 'objectId',
-        createdAt: 'date',
-        revision: 1,
-      },
-      {
-        id: 2240,
-        panel: 10, // this needs to be unique
-        artist: 'objectId',
-        board: '//unsplash.it/id/24/500/300',
-        action: '',
-        dialogue: '',
-        artist: 'objectId',
-        createdAt: 'date',
-        revision: 1,
-      },
-      {
-        id: 2240,
-        panel: 3, // this needs to be unique
-        artist: 'objectId',
-        board: '//unsplash.it/id/26/500/300',
-        action: '',
-        dialogue: '',
-        artist: 'objectId',
-        createdAt: 'date',
-        revision: 1,
-      },
-      {
-        id: 2240,
-        panel: 5, // this needs to be unique
-        artist: 'objectId',
-        board: '//unsplash.it/id/27/500/300',
-        action: '',
-        dialogue: '',
-        artist: 'objectId',
-        createdAt: 'date',
-        revision: 1,
-      },
-      {
-        id: 2240,
-        panel: 8, // this needs to be unique
-        artist: 'objectId',
-        board: '//unsplash.it/id/28/500/300',
-        action: '',
-        dialogue: '',
-        artist: 'objectId',
-        createdAt: 'date',
-        revision: 1,
-      },
-      {
-        id: 2240,
-        panel: 11, // this needs to be unique
-        artist: 'objectId',
-        board: '//unsplash.it/id/29/500/300',
-        action: '',
-        dialogue: '',
-        artist: 'objectId',
-        createdAt: 'date',
-        revision: 1,
-      },
-    ],
-    storyBoards3: [1, 2, 3],
-    video: 's3-videoURL',
-    revision: 1,
-  },
-  {
-    id: 216501,
-    forReel: 'ObjectId - Paul Saves All Movie',
-    launched: false,
-    productionStage: 'boards',
-    sceneName: 'Uh oh',
-    stripImage: '//unsplash.it/id/231/400/225',
-    setting: 'ext. School - Day ',
-    script: `<br />
-    <p>EXT. SCHOOL - DAY</p>
-    <br>
-    <p>
-      PAUL, running from a gang of teenagers. He huffs and puffs
-      as he looks back in terror. The gang cackles in the chase.
-      Paul, not looking where he's going, slips and falls into a
-      hole. He slides down the mud...
-    </p>
-    <br>
-    <p>Paul </p>
-    <div style={{'text-align': 'center'}}>Ahhhhhh </div>
-    <br>
-    <p>
-      SID and his BUDDIES stop short of the hole. They hear
-      Paul's cavernous cry as he falls. Sid and his buddies look
-      concerned through their cool. Finally:
-    </p>
-    <br>
-    <p>Sid </p>
-    <p>
-      Dummy. Let's go, guys.
-    </p>
-    <br>
-    <p>
-      After a long decent, Paul drops into a DEN OF VIPERS. Paul
-      is petrified.
-    </p>`,
-    description: 'Paul slides down a hill into a pit of vipers.',
-    mainImage: '//unsplash.it/id/1/500/300',
-    beatBoards: [],
-    storyBoards: [
-      {
-        id: 2240,
-        panel: 7, // this needs to be unique
-        artist: 'objectId',
-        board: '//unsplash.it/id/23/500/300',
-        action: '',
-        dialogue: '',
-        artist: 'objectId',
-        createdAt: 'date',
-        revision: 1,
-      },
-      {
-        id: 2240,
-        panel: 10, // this needs to be unique
-        artist: 'objectId',
-        board: '//unsplash.it/id/24/500/300',
-        action: '',
-        dialogue: '',
-        artist: 'objectId',
-        createdAt: 'date',
-        revision: 1,
-      },
-      {
-        id: 2240,
-        panel: 3, // this needs to be unique
-        artist: 'objectId',
-        board: '//unsplash.it/id/26/500/300',
-        action: '',
-        dialogue: '',
-        artist: 'objectId',
-        createdAt: 'date',
-        revision: 1,
-      },
-      {
-        id: 2240,
-        panel: 5, // this needs to be unique
-        artist: 'objectId',
-        board: '//unsplash.it/id/27/500/300',
-        action: '',
-        dialogue: '',
-        artist: 'objectId',
-        createdAt: 'date',
-        revision: 1,
-      },
-      {
-        id: 2240,
-        panel: 8, // this needs to be unique
-        artist: 'objectId',
-        board: '//unsplash.it/id/28/500/300',
-        action: '',
-        dialogue: '',
-        artist: 'objectId',
-        createdAt: 'date',
-        revision: 1,
-      },
-      {
-        id: 2240,
-        panel: 11, // this needs to be unique
-        artist: 'objectId',
-        board: '//unsplash.it/id/29/500/300',
-        action: '',
-        dialogue: '',
-        artist: 'objectId',
-        createdAt: 'date',
-        revision: 1,
-      },
-    ],
-    storyBoards3: [1, 2, 3],
-    video: 's3-videoURL',
-    revision: 1,
-  },
-  {
-    id: 210701,
-    forReel: 'ObjectId - Paul Saves All Movie',
-    launched: false,
-    productionStage: 'boards',
-    sceneName: 'Hurry',
-    stripImage: '//unsplash.it/id/123/400/225',
-    setting: 'ext. School - Day ',
-    script: `<br />
-    <p>EXT. SCHOOL - DAY</p>
-    <br>
-    <p>
-      PAUL, running from a gang of teenagers. He huffs and puffs
-      as he looks back in terror. The gang cackles in the chase.
-      Paul, not looking where he's going, slips and falls into a
-      hole. He slides down the mud...
-    </p>
-    <br>
-    <p>Paul </p>
-    <div style={{'text-align': 'center'}}>Ahhhhhh </div>
-    <br>
-    <p>
-      SID and his BUDDIES stop short of the hole. They hear
-      Paul's cavernous cry as he falls. Sid and his buddies look
-      concerned through their cool. Finally:
-    </p>
-    <br>
-    <p>Sid </p>
-    <p>
-      Dummy. Let's go, guys.
-    </p>
-    <br>
-    <p>
-      After a long decent, Paul drops into a DEN OF VIPERS. Paul
-      is petrified.
-    </p>`,
-    description: 'Paul slides down a hill into a pit of vipers.',
-    mainImage: '//unsplash.it/id/1/500/300',
-    beatBoards: [],
-    storyBoards: [
-      {
-        id: 2240,
-        panel: 7, // this needs to be unique
-        artist: 'objectId',
-        board: '//unsplash.it/id/23/500/300',
-        action: '',
-        dialogue: '',
-        artist: 'objectId',
-        createdAt: 'date',
-        revision: 1,
-      },
-      {
-        id: 2240,
-        panel: 10, // this needs to be unique
-        artist: 'objectId',
-        board: '//unsplash.it/id/24/500/300',
-        action: '',
-        dialogue: '',
-        artist: 'objectId',
-        createdAt: 'date',
-        revision: 1,
-      },
-      {
-        id: 2240,
-        panel: 3, // this needs to be unique
-        artist: 'objectId',
-        board: '//unsplash.it/id/26/500/300',
-        action: '',
-        dialogue: '',
-        artist: 'objectId',
-        createdAt: 'date',
-        revision: 1,
-      },
-      {
-        id: 2240,
-        panel: 5, // this needs to be unique
-        artist: 'objectId',
-        board: '//unsplash.it/id/27/500/300',
-        action: '',
-        dialogue: '',
-        artist: 'objectId',
-        createdAt: 'date',
-        revision: 1,
-      },
-      {
-        id: 2240,
-        panel: 8, // this needs to be unique
-        artist: 'objectId',
-        board: '//unsplash.it/id/28/500/300',
-        action: '',
-        dialogue: '',
-        artist: 'objectId',
-        createdAt: 'date',
-        revision: 1,
-      },
-      {
-        id: 2240,
-        panel: 11, // this needs to be unique
-        artist: 'objectId',
-        board: '//unsplash.it/id/29/500/300',
-        action: '',
-        dialogue: '',
-        artist: 'objectId',
-        createdAt: 'date',
-        revision: 1,
-      },
-    ],
-    storyBoards3: [1, 2, 3],
-    video: 's3-videoURL',
-    revision: 1,
-  },
-  {
-    id: 210801,
-    forReel: 'ObjectId - Paul Saves All Movie',
-    launched: false,
-    productionStage: 'boards',
-    sceneName: 'Already there',
-    stripImage: '//unsplash.it/id/261/400/225',
-    setting: 'ext. School - Day ',
-    script: `<br />
-    <p>EXT. SCHOOL - DAY</p>
-    <br>
-    <p>
-      PAUL, running from a gang of teenagers. He huffs and puffs
-      as he looks back in terror. The gang cackles in the chase.
-      Paul, not looking where he's going, slips and falls into a
-      hole. He slides down the mud...
-    </p>
-    <br>
-    <p>Paul </p>
-    <div style={{'text-align': 'center'}}>Ahhhhhh </div>
-    <br>
-    <p>
-      SID and his BUDDIES stop short of the hole. They hear
-      Paul's cavernous cry as he falls. Sid and his buddies look
-      concerned through their cool. Finally:
-    </p>
-    <br>
-    <p>Sid </p>
-    <p>
-      Dummy. Let's go, guys.
-    </p>
-    <br>
-    <p>
-      After a long decent, Paul drops into a DEN OF VIPERS. Paul
-      is petrified.
-    </p>`,
-    description: 'Paul slides down a hill into a pit of vipers.',
-    mainImage: '//unsplash.it/id/1/500/300',
-    beatBoards: [],
-    storyBoards: [
-      {
-        id: 2240,
-        panel: 7, // this needs to be unique
-        artist: 'objectId',
-        board: '//unsplash.it/id/23/500/300',
-        action: '',
-        dialogue: '',
-        artist: 'objectId',
-        createdAt: 'date',
-        revision: 1,
-      },
-      {
-        id: 2240,
-        panel: 10, // this needs to be unique
-        artist: 'objectId',
-        board: '//unsplash.it/id/24/500/300',
-        action: '',
-        dialogue: '',
-        artist: 'objectId',
-        createdAt: 'date',
-        revision: 1,
-      },
-      {
-        id: 2240,
-        panel: 3, // this needs to be unique
-        artist: 'objectId',
-        board: '//unsplash.it/id/26/500/300',
-        action: '',
-        dialogue: '',
-        artist: 'objectId',
-        createdAt: 'date',
-        revision: 1,
-      },
-      {
-        id: 2240,
-        panel: 5, // this needs to be unique
-        artist: 'objectId',
-        board: '//unsplash.it/id/27/500/300',
-        action: '',
-        dialogue: '',
-        artist: 'objectId',
-        createdAt: 'date',
-        revision: 1,
-      },
-      {
-        id: 2240,
-        panel: 8, // this needs to be unique
-        artist: 'objectId',
-        board: '//unsplash.it/id/28/500/300',
-        action: '',
-        dialogue: '',
-        artist: 'objectId',
-        createdAt: 'date',
-        revision: 1,
-      },
-      {
-        id: 2240,
-        panel: 11, // this needs to be unique
-        artist: 'objectId',
-        board: '//unsplash.it/id/29/500/300',
-        action: '',
-        dialogue: '',
-        artist: 'objectId',
-        createdAt: 'date',
-        revision: 1,
-      },
-    ],
-    storyBoards3: [1, 2, 3],
-    video: 's3-videoURL',
-    revision: 1,
-  },
-  {
-    id: 210591,
-    forReel: 'ObjectId - Paul Saves All Movie',
-    launched: false,
-    productionStage: 'boards',
-    sceneName: 'My my',
-    stripImage: '//unsplash.it/id/219/400/225',
-    setting: 'ext. School - Day ',
-    script: `<br />
-    <p>EXT. SCHOOL - DAY</p>
-    <br>
-    <p>
-      PAUL, running from a gang of teenagers. He huffs and puffs
-      as he looks back in terror. The gang cackles in the chase.
-      Paul, not looking where he's going, slips and falls into a
-      hole. He slides down the mud...
-    </p>
-    <br>
-    <p>Paul </p>
-    <div style={{'text-align': 'center'}}>Ahhhhhh </div>
-    <br>
-    <p>
-      SID and his BUDDIES stop short of the hole. They hear
-      Paul's cavernous cry as he falls. Sid and his buddies look
-      concerned through their cool. Finally:
-    </p>
-    <br>
-    <p>Sid </p>
-    <p>
-      Dummy. Let's go, guys.
-    </p>
-    <br>
-    <p>
-      After a long decent, Paul drops into a DEN OF VIPERS. Paul
-      is petrified.
-    </p>`,
-    description: 'Paul slides down a hill into a pit of vipers.',
-    mainImage: '//unsplash.it/id/1/500/300',
-    beatBoards: [],
-    storyBoards: [
-      {
-        id: 2240,
-        panel: 7, // this needs to be unique
-        artist: 'objectId',
-        board: '//unsplash.it/id/23/500/300',
-        action: '',
-        dialogue: '',
-        artist: 'objectId',
-        createdAt: 'date',
-        revision: 1,
-      },
-      {
-        id: 2240,
-        panel: 10, // this needs to be unique
-        artist: 'objectId',
-        board: '//unsplash.it/id/24/500/300',
-        action: '',
-        dialogue: '',
-        artist: 'objectId',
-        createdAt: 'date',
-        revision: 1,
-      },
-      {
-        id: 2240,
-        panel: 3, // this needs to be unique
-        artist: 'objectId',
-        board: '//unsplash.it/id/26/500/300',
-        action: '',
-        dialogue: '',
-        artist: 'objectId',
-        createdAt: 'date',
-        revision: 1,
-      },
-      {
-        id: 2240,
-        panel: 5, // this needs to be unique
-        artist: 'objectId',
-        board: '//unsplash.it/id/27/500/300',
-        action: '',
-        dialogue: '',
-        artist: 'objectId',
-        createdAt: 'date',
-        revision: 1,
-      },
-      {
-        id: 2240,
-        panel: 8, // this needs to be unique
-        artist: 'objectId',
-        board: '//unsplash.it/id/28/500/300',
-        action: '',
-        dialogue: '',
-        artist: 'objectId',
-        createdAt: 'date',
-        revision: 1,
-      },
-      {
-        id: 2240,
-        panel: 11, // this needs to be unique
-        artist: 'objectId',
-        board: '//unsplash.it/id/29/500/300',
-        action: '',
-        dialogue: '',
-        artist: 'objectId',
-        createdAt: 'date',
-        revision: 1,
-      },
-    ],
-    storyBoards3: [1, 2, 3],
-    video: 's3-videoURL',
-    revision: 1,
-  },
-  {
-    id: 200501,
-    forReel: 'ObjectId - Paul Saves All Movie',
-    launched: false,
-    productionStage: 'boards',
-    sceneName: 'Stu did it',
-    stripImage: '//unsplash.it/id/29/400/225',
-    setting: 'ext. School - Day ',
-    script: `<br />
-    <p>EXT. SCHOOL - DAY</p>
-    <br>
-    <p>
-      PAUL, running from a gang of teenagers. He huffs and puffs
-      as he looks back in terror. The gang cackles in the chase.
-      Paul, not looking where he's going, slips and falls into a
-      hole. He slides down the mud...
-    </p>
-    <br>
-    <p>Paul </p>
-    <div style={{'text-align': 'center'}}>Ahhhhhh </div>
-    <br>
-    <p>
-      SID and his BUDDIES stop short of the hole. They hear
-      Paul's cavernous cry as he falls. Sid and his buddies look
-      concerned through their cool. Finally:
-    </p>
-    <br>
-    <p>Sid </p>
-    <p>
-      Dummy. Let's go, guys.
-    </p>
-    <br>
-    <p>
-      After a long decent, Paul drops into a DEN OF VIPERS. Paul
-      is petrified.
-    </p>`,
-    description: 'Paul slides down a hill into a pit of vipers.',
-    mainImage: '//unsplash.it/id/1/500/300',
-    beatBoards: [],
-    storyBoards: [
-      {
-        id: 2240,
-        panel: 7, // this needs to be unique
-        artist: 'objectId',
-        board: '//unsplash.it/id/23/500/300',
-        action: '',
-        dialogue: '',
-        artist: 'objectId',
-        createdAt: 'date',
-        revision: 1,
-      },
-      {
-        id: 2240,
-        panel: 10, // this needs to be unique
-        artist: 'objectId',
-        board: '//unsplash.it/id/24/500/300',
-        action: '',
-        dialogue: '',
-        artist: 'objectId',
-        createdAt: 'date',
-        revision: 1,
-      },
-      {
-        id: 2240,
-        panel: 3, // this needs to be unique
-        artist: 'objectId',
-        board: '//unsplash.it/id/26/500/300',
-        action: '',
-        dialogue: '',
-        artist: 'objectId',
-        createdAt: 'date',
-        revision: 1,
-      },
-      {
-        id: 2240,
-        panel: 5, // this needs to be unique
-        artist: 'objectId',
-        board: '//unsplash.it/id/27/500/300',
-        action: '',
-        dialogue: '',
-        artist: 'objectId',
-        createdAt: 'date',
-        revision: 1,
-      },
-      {
-        id: 2240,
-        panel: 8, // this needs to be unique
-        artist: 'objectId',
-        board: '//unsplash.it/id/28/500/300',
-        action: '',
-        dialogue: '',
-        artist: 'objectId',
-        createdAt: 'date',
-        revision: 1,
-      },
-      {
-        id: 2240,
-        panel: 11, // this needs to be unique
-        artist: 'objectId',
-        board: '//unsplash.it/id/29/500/300',
-        action: '',
-        dialogue: '',
-        artist: 'objectId',
-        createdAt: 'date',
-        revision: 1,
-      },
-    ],
-    storyBoards3: [1, 2, 3],
-    video: 's3-videoURL',
-    revision: 1,
-  },
-  {
-    id: 230501,
-    forReel: 'ObjectId - Paul Saves All Movie',
-    launched: false,
-    productionStage: 'boards',
-    sceneName: 'Help!',
-    stripImage: '//unsplash.it/id/149/400/225',
-    setting: 'ext. School - Day ',
-    script: `<br />
-    <p>EXT. SCHOOL - DAY</p>
-    <br>
-    <p>
-      PAUL, running from a gang of teenagers. He huffs and puffs
-      as he looks back in terror. The gang cackles in the chase.
-      Paul, not looking where he's going, slips and falls into a
-      hole. He slides down the mud...
-    </p>
-    <br>
-    <p>Paul </p>
-    <div style={{'text-align': 'center'}}>Ahhhhhh </div>
-    <br>
-    <p>
-      SID and his BUDDIES stop short of the hole. They hear
-      Paul's cavernous cry as he falls. Sid and his buddies look
-      concerned through their cool. Finally:
-    </p>
-    <br>
-    <p>Sid </p>
-    <p>
-      Dummy. Let's go, guys.
-    </p>
-    <br>
-    <p>
-      After a long decent, Paul drops into a DEN OF VIPERS. Paul
-      is petrified.
-    </p>`,
-    description: 'Paul slides down a hill into a pit of vipers.',
-    mainImage: '//unsplash.it/id/1/500/300',
-    beatBoards: [],
-    storyBoards: [
-      {
-        id: 2240,
-        panel: 7, // this needs to be unique
-        artist: 'objectId',
-        board: '//unsplash.it/id/23/500/300',
-        action: '',
-        dialogue: '',
-        artist: 'objectId',
-        createdAt: 'date',
-        revision: 1,
-      },
-      {
-        id: 2240,
-        panel: 10, // this needs to be unique
-        artist: 'objectId',
-        board: '//unsplash.it/id/24/500/300',
-        action: '',
-        dialogue: '',
-        artist: 'objectId',
-        createdAt: 'date',
-        revision: 1,
-      },
-      {
-        id: 2240,
-        panel: 3, // this needs to be unique
-        artist: 'objectId',
-        board: '//unsplash.it/id/26/500/300',
-        action: '',
-        dialogue: '',
-        artist: 'objectId',
-        createdAt: 'date',
-        revision: 1,
-      },
-      {
-        id: 2240,
-        panel: 5, // this needs to be unique
-        artist: 'objectId',
-        board: '//unsplash.it/id/27/500/300',
-        action: '',
-        dialogue: '',
-        artist: 'objectId',
-        createdAt: 'date',
-        revision: 1,
-      },
-      {
-        id: 2240,
-        panel: 8, // this needs to be unique
-        artist: 'objectId',
-        board: '//unsplash.it/id/28/500/300',
-        action: '',
-        dialogue: '',
-        artist: 'objectId',
-        createdAt: 'date',
-        revision: 1,
-      },
-      {
-        id: 2240,
-        panel: 11, // this needs to be unique
-        artist: 'objectId',
-        board: '//unsplash.it/id/29/500/300',
-        action: '',
-        dialogue: '',
-        artist: 'objectId',
-        createdAt: 'date',
-        revision: 1,
-      },
-    ],
-    storyBoards3: [1, 2, 3],
+    animatic: 's3-videoURL',
     video: 's3-videoURL',
     revision: 1,
   },
@@ -1405,63 +671,6 @@ const field = {
       ],
     },
   ],
-};
-
-// reducers
-const reducer = (state, action) => {
-  switch (action.type) {
-    case 'EDIT_SCRIPT': {
-      return {
-        ...state,
-        edit: true,
-      };
-    }
-    case 'SAVE_SCRIPT': {
-      return {
-        ...state,
-        edit: false,
-      };
-    }
-    case 'CHECKOUT': {
-      return {
-        ...state,
-        checkedOut: {
-          shot: action.payload.shot,
-          user: action.payload.user,
-        },
-      };
-    }
-    case 'CHECKIN': {
-      return {
-        ...state,
-        checkedOut: { shot: '', user: '' },
-        checkedIn: {
-          shot: action.payload.shot,
-          user: action.payload.user,
-        },
-      };
-    }
-    case 'CONFIRM': {
-      return {
-        ...state,
-        confirm: action.payload,
-      };
-    }
-    case 'ADD_SCENE': {
-      return {
-        ...state,
-        addScene: action.payload.scene,
-      };
-    }
-    // case 'CONFIRM_DONE': {
-    //   return {
-    //     ...state,
-    //     confirm: '',
-    //   };
-    // }
-    default:
-      state;
-  }
 };
 
 /*
@@ -1519,6 +728,7 @@ const SceneMachineTitle = ({}) => {
           cursor: pointer;
         }
         .btn-ctrl-inside {
+          transition: 0.7s ease-in;
           width: 25px;
           height: 25px;
           border-radius: 1px;
@@ -1532,8 +742,9 @@ const SceneMachineTitle = ({}) => {
           justify-content: center;
         }
         .btn-ctrl-inside.active {
-          width: 24.3px;
-          height: 24.3px;
+          transition: 0.4s ease-in;
+          width: 25px;
+          height: 25px;
           border-radius: 3px;
           border: solid 1px rgb(165, 150, 86);
           background: rgb(255, 230, 8);
@@ -1561,11 +772,7 @@ const SceneMachineTitle = ({}) => {
     );
   };
   const TitleButtons = () => {
-    // const [buttons, setButtons] = useState(() => ({
-    //   machine: 'scene',
-    // }));
     const { machine, setMachine } = useContext(TitleButtonContext);
-    console.log('machine', machine);
 
     return (
       <>
@@ -1633,16 +840,10 @@ const SceneMachineTitle = ({}) => {
 };
 
 const SceneMachineStripArea = ({
-  detail,
-  setDetail,
   scenes,
-  setScenes,
-  setPreview,
-  viewer,
-  setViewer,
-  handleViewer,
-  setBackground,
 }) => {
+  const { setPreview } = useContext(PreviewContext);
+  const { viewer, setViewer } = useContext(ViewerContext);
   const SceneMachineStripStyle = () => {
     return (
       <style jsx>{`
@@ -1760,20 +961,27 @@ const SceneMachineStripArea = ({
     );
   };
 
+  const handleViewer = (e, scene) => {
+    e.preventDefault();
+    // TODO: find way to set scroll to top of scene overview display
+    setPreview({
+      image: scene.stripImage,
+      sceneName: scene.sceneName,
+      panel: 'Cover',
+      id: 0,
+    });
+    setViewer(scene);
+  };
+
   const handleNewScene = (e) => {
     e.preventDefault();
     // TODO: find way to set scroll to top of scene overview display
     setPreview({
       image: '/cork.jpeg',
-      // image: scene.storyBoards[0].board,
       sceneName: 'New Scene',
       panel: 0,
       id: 0,
-      // id: scene.storyBoards[0].panel,
     });
-    // setViewer(scene);
-    setDetail('new scene');
-    setBackground('rgb(218, 214, 208)');
   };
   return (
     <>
@@ -1815,128 +1023,18 @@ const SceneMachineStripArea = ({
 };
 
 const SceneMachineControlPanel = ({
-  // setButtons,
-  // buttons,
   setAnswer,
   dispatch,
   state,
   activeShot,
-  userContext,
 }) => {
-  const [buttons, setButtons] = useState(initialButtonState);
-  const { button1, button2, button3, button4, button5 } = buttons;
-  const { machine } = useContext(TitleButtonContext);
+  const userContext = useContext(Context);
+  const ControlPanelButtons = () => {
+    const { buttons, setButtons } = useContext(ControlPanelButtonsContext);
+    const { button1, button2, button3, button4, button5 } = buttons;
 
-  useEffect(() => {
-    setButtons({ ...buttons, display: machine.machine + ' Machine' });
-    console.log('control panel machine state', buttons);
-  }, [machine]);
-  const Style = () => {
     return (
-      <style jsx>{`
-        .control-panel {
-          height: 60px;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        }
-
-        .control-panel-buttons {
-          height: 60px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          margin: 5px;
-          cursor: pointer;
-          // width: 30px;
-        }
-
-        .control-panel-display {
-          font-size: 1rem;
-          color: rgb(10, 59, 6);
-          height: 30px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin: 5px;
-          width: 200px;
-          border-radius: 4px;
-          background: rgb(180, 224, 154);
-          // box-shadow: inset 0 0 10px, inset 0 0 3px, inset 0 0 10px;
-          box-shadow: inset 0 0px 5px rgba(0, 0, 0, 0.8),
-            inset 0 0px 3px rgba(0, 0, 0, 0.8);
-          // box-shadow: 0 0px 10px rgba(256, 256, 256, 0.8), 0 0px 5px rgba(256, 256, 256, 0.8);
-        }
-        .control-panel-other {
-          height: 60px;
-          display: flex;
-          align-items: center;
-          margin: 5px;
-          width: 200px;
-          flex-direction: row-reverse;
-        }
-
-        .btn {
-          width: 45px;
-          height: 43px;
-          // border: solid 1px rgb(10, 1, 1);
-          border: solid 1px rgb(54, 58, 61);
-          border-right: none;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer;
-        }
-
-        .btn:last-child {
-          border-right: solid 1px rgb(54, 58, 61);
-          // border-right: solid 1px rgb(10, 1, 1);
-        }
-
-        .btn-inside {
-          width: 25px;
-          height: 25px;
-          border-radius: 2px;
-          background: rgb(240, 248, 204);
-          border: solid 1px rgb(17, 5, 1);
-
-          box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8),
-            inset 0 0 3px rgba(0, 0, 0, 1), 0 0 1px rgba(0, 0, 0, 0.8);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-        .btn-inside.active {
-          width: 25px;
-          height: 25px;
-          border-radius: 3px;
-          border: solid 1px rgb(165, 150, 86);
-          background: rgb(248, 227, 42);
-          // background: rgb(248, 227, 42);
-          // background: rgb(210, 248, 42);
-
-          box-shadow: 0 0 5px rgba(209, 209, 209, 0.8),
-            0 0 3px rgb(214, 214, 214), inset 0 0 1px rgba(228, 228, 228, 0.8);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .btn-mini {
-          cursor: pointer;
-          color: #152125;
-          padding: 2px 8px;
-        }
-      `}</style>
-    );
-  };
-  return (
-    <>
-      <Style />
-      <div className="control-panel">
-        <code className="control-panel-display">
-          <strong>**{buttons.display}**</strong>
-        </code>
+      <>
         <div className="control-panel-buttons">
           <div className="btn">
             <div
@@ -2019,6 +1117,149 @@ const SceneMachineControlPanel = ({
             ></div>
           </div>
         </div>
+      </>
+    );
+  };
+
+  const ControlPanelDisplay = () => {
+    const { machine } = useContext(TitleButtonContext);
+    const { buttons } = useContext(ControlPanelButtonsContext);
+    const [display, setDisplay] = useState('Scene Machine');
+
+    useEffect(() => {
+      setDisplay(machine.machine + ' Machine');
+    }, [machine]);
+
+    useEffect(() => {
+      setDisplay(buttons.display);
+    }, [buttons]);
+
+    return (
+      <>
+        {/* <ControlPanelButtonsContext.Consumer>
+          {(value) => {setDisplay(value.buttons.display)}}
+        </ControlPanelButtonsContext.Consumer>
+        <TitleButtonContext.Consumer>
+          {(value) => {
+            setDisplay(value.machine.machine + ' Machine');
+          }}
+        </TitleButtonContext.Consumer> */}
+        <code className="control-panel-display">
+          <strong>**{display}**</strong>
+        </code>
+      </>
+    );
+  };
+
+  const Style = () => {
+    return (
+      <style jsx>{`
+        .control-panel {
+          height: 60px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        .control-panel-buttons {
+          height: 60px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin: 5px;
+          cursor: pointer;
+          // width: 30px;
+        }
+
+        .control-panel-display {
+          font-size: 1rem;
+          color: rgb(10, 59, 6);
+          height: 30px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin: 5px;
+          width: 200px;
+          border-radius: 4px;
+          background: rgb(180, 224, 154);
+          // box-shadow: inset 0 0 10px, inset 0 0 3px, inset 0 0 10px;
+          box-shadow: inset 0 0px 5px rgba(0, 0, 0, 0.8),
+            inset 0 0px 3px rgba(0, 0, 0, 0.8);
+          // box-shadow: 0 0px 10px rgba(256, 256, 256, 0.8), 0 0px 5px rgba(256, 256, 256, 0.8);
+        }
+        .control-panel-other {
+          height: 60px;
+          display: flex;
+          align-items: center;
+          margin: 5px;
+          width: 200px;
+          flex-direction: row-reverse;
+        }
+
+        .btn {
+          width: 45px;
+          height: 43px;
+          // border: solid 1px rgb(10, 1, 1);
+          border: solid 1px rgb(54, 58, 61);
+          border-right: none;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+        }
+
+        .btn:last-child {
+          border-right: solid 1px rgb(54, 58, 61);
+          // border-right: solid 1px rgb(10, 1, 1);
+        }
+
+        .btn-inside {
+          width: 25px;
+          height: 25px;
+          border-radius: 2px;
+          background: rgb(240, 248, 204);
+          border: solid 1px rgb(17, 5, 1);
+          transition: 0.2s ease-in;
+
+          box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8),
+            inset 0 0 3px rgba(0, 0, 0, 1), 0 0 1px rgba(0, 0, 0, 0.8);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .btn-inside.active {
+          transition: 0.4s ease-in;
+          width: 25px;
+          height: 25px;
+          border-radius: 3px;
+          border: solid 1px rgb(165, 150, 86);
+          background: rgb(248, 227, 42);
+          // background: rgb(248, 227, 42);
+          // background: rgb(210, 248, 42);
+
+          box-shadow: 0 0 5px rgba(209, 209, 209, 0.8),
+            0 0 3px rgb(214, 214, 214), inset 0 0 1px rgba(228, 228, 228, 0.8);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .btn-mini {
+          cursor: pointer;
+          color: #152125;
+          padding: 2px 8px;
+        }
+      `}</style>
+    );
+  };
+
+  return (
+    <>
+      <Style />
+      <div className="control-panel">
+        <ControlPanelDisplay />
+        <ControlPanelButtons />
+
         <div className="control-panel-other">
           {/* {state.confirm && <GetAnswer />} */}
           {state.confirm === 'Checkout scene' && (
@@ -2162,7 +1403,9 @@ const SceneMachineControlPanel = ({
   );
 };
 
-const SceneMachineLeftPanel = ({ preview }) => {
+// preview
+const SceneMachineLeftPanel = () => {
+  const { preview } = useContext(PreviewContext);
   const Style = () => {
     return (
       <style jsx>{`
@@ -2812,30 +2055,30 @@ const NewSceneForm = () => {
 };
 
 const SceneMachineRightPanel = ({
-  // newSceneForm,
-  // setNewSceneForm,
   scenes,
-  setScenes,
-  detail,
-  viewer,
-  setDetail,
-  setBackground,
-  background,
   state,
   activeShot,
   setActiveShot,
   dispatch,
   userContext,
-  preview,
-  setPreview,
-  setViewer,
-  // handleAddScene,
-  // loading,
-  // setLoading,
-  // handleVideo,
-  // progress,
 }) => {
-  // const [progress, setProgress] = useState(0);
+  const [detail, setDetail] = useState('overview');
+  const [background, setBackground] = useState('rgb(218, 214, 208)');
+  const { viewer, setViewer } = useContext(ViewerContext);
+  const { preview, setPreview } = useContext(PreviewContext);
+
+  useEffect(() => {
+    setDetail('overview')
+  }, [viewer]);
+
+  useEffect(() => {
+    detail === 'overview' && setBackground('rgb(218, 214, 208)'); // is in viewer 
+  }, [detail]);
+
+  useEffect(() => {
+    preview.sceneName === 'New Scene' && setDetail('new scene');
+  }, [preview]);
+
   const Style = ({ background }) => {
     return (
       <style jsx>{`
@@ -3163,6 +2406,22 @@ const SceneMachineRightPanel = ({
     setViewer(scenes[0]);
     setDetail('overview');
   };
+
+  // const handleViewer = (e, scene) => {
+  //   e.preventDefault();
+  //   // TODO: find way to set scroll to top of scene overview display
+  //   setPreview({
+  //     image: scene.stripImage,
+  //     // image: scene.storyBoards[0].board,
+  //     sceneName: scene.sceneName,
+  //     panel: 'Cover',
+  //     id: 0,
+  //     // id: scene.storyBoards[0].panel,
+  //   });
+  //   // setDetail('overview');
+  //   // setBackground('rgb(218, 214, 208)');
+  //   setViewer(scene);
+  // };
 
   return (
     <>
@@ -3847,28 +3106,71 @@ const SceneMachineRightPanel = ({
   );
 };
 
+// reducers
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'EDIT_SCRIPT': {
+      return {
+        ...state,
+        edit: true,
+      };
+    }
+    case 'SAVE_SCRIPT': {
+      return {
+        ...state,
+        edit: false,
+      };
+    }
+    case 'CHECKOUT': {
+      return {
+        ...state,
+        checkedOut: {
+          shot: action.payload.shot,
+          user: action.payload.user,
+        },
+      };
+    }
+    case 'CHECKIN': {
+      return {
+        ...state,
+        checkedOut: { shot: '', user: '' },
+        checkedIn: {
+          shot: action.payload.shot,
+          user: action.payload.user,
+        },
+      };
+    }
+    case 'CONFIRM': {
+      return {
+        ...state,
+        confirm: action.payload,
+      };
+    }
+    case 'ADD_SCENE': {
+      return {
+        ...state,
+        addScene: action.payload.scene,
+      };
+    }
+    // case 'CONFIRM_DONE': {
+    //   return {
+    //     ...state,
+    //     confirm: '',
+    //   };
+    // }
+    default:
+      state;
+  }
+};
 
 const SceneMachine = () => {
-  const [scenes, setScenes] = useState(initialScenes);
-  const [answer, setAnswer] = useState(false);
-  // const [buttons, setButtons] = useState(initialButtonState);
-  const [detail, setDetail] = useState('overview');
-  const [activeShot, setActiveShot] = useState('');
-  const [viewer, setViewer] = useState(initialViewerState);
-  const [preview, setPreview] = useState(initPreviewState);
-  const [background, setBackground] = useState('rgb(218, 214, 208)');
-  const [state, dispatch] = useReducer(reducer, { edit: false });
   const userContext = useContext(Context);
-  // const [machine, setMachine] = useState({
-  //   machine: 'scene',
-  // })
-  // const [newSceneForm, setNewSceneForm] = useState(initialNewSceneForm);
-  // const [loading, setLoading] = useState(false);
-  // const [progress, setProgress] = useState(0);
+  const [state, dispatch] = useReducer(reducer, { edit: false });
+  const [scenes, setScenes] = useState(initialScenes);
+  const [activeShot, setActiveShot] = useState('');
+  const [answer, setAnswer] = useState(false);
 
-  
-
-  const Style = ({ background }) => (
+  const Style = () => (
     <style jsx>{`
       #scene-machine-container {
         height: 100%;
@@ -3945,100 +3247,6 @@ const SceneMachine = () => {
       }
     `}</style>
   );
-
-  /* NOTES:
-
-  -permistions page (groups and peoples names)
-
-    breakdowns:
-    acts
-    sequences
-      -should have a revision history accesible in breadcrumb
-      -ablility to create a new sequence
-        -input the project tracking code (maybe)
-        -title of sequence
-        -which act it is in
-        -comments
-
-    scene strip
-      -flix numbers the panels and has a different number next to that for its position in the edit. This might be a better way to handle the edit for naming convention sake
-      - panel with notes is marked with a pencil and outline 
-      -maybe a highlight tool
-      -filter tool that shows scenes with annotations or highlights
-    main overview window
-      -press play to play current scene. It will play whatever file is in their from anamatic to movie file
-      -annotation tool that can draw directly on the file (ipad app) and make a note
-      -dialogue insert window or something maybe not worthy unless there's a way for that to get into the file
-*/
-
-  /* project > timeline > act > sequence > scene > panel */
-
-  /* 
-  Potential data structure:
-    Project {Embed: timeline, acts, sequences, Maybe Embed: Scenes, Link: scenes from users objects (danger if the user deletes their profile we lose the work)}
-    Users {}
-
-    sequnce of boards for a story reel >
-
-    writing
-    beat sheet
-    rough thumbnails
-    brainstorming research / cork board
-    starts with beat boards 10 -15 boards per scene 
-    scene cards
-    full scripts
-    springboard
-    * ALl of the above should be made available as options in the app
-
-    When someone starts a scene (launches) with the above information a scene or reel should be created. Then as they work and save each board it is uploaded into the timeline.
-
-    * story reel by definition is the full timed out movie with audio with all of the boards. I'm guessing before animatics. Productions do about 6 of these so they can refine the movie before production. They look for double beats, move things around from different acts, cut ideas etc.
-
-
-    then story boarding scenes
-
-    everything is timed out maybe with audio
-
-    IDEAS: 
-    A living timeline. While people work (drawing, editing, etc) the timeline reflects on a live viewable feed or video somewhere on the web. Every update is viable. 
-
-
-   */
-
-  /* 
-    db version of field:
-    _id
-    price
-    published
-    paid
-    slug
-    creator: ObjectId
-    name
-    description
-    category
-    image
-      Etag: ""2a00259f919b74e881e350a7873a7a8d""
-      Location: "https://dreamfields-bucket.s3.us-west-1.amazonaws.com/cx8m0gmsOdO_uJNebFeNV.jpeg"
-      key: "cx8m0gmsOdO_uJNebFeNV.jpeg"
-      key:"cx8m0gmsOdO_uJNebFeNV.jpeg"
-      Bucket: "dreamfields-bucket"
-    scenes: []
-    createdAt:
-    updatedAt:
-    __V: 0
-     */
-
-  /* 
-
-  Steps to creating
-  1. Create a field. 
-    This is where we set up what the whole thing is about. It can start with a blurb but it will build into concept art, story ideas and bios and eventually projects in the scene machine. 
-
-  2. Create a project.
-    This will be like a movie or a series or a commercial. We can designate if it's funded or not. If artists will be paid for work basically or if it's a community project. We have to figure out a liscencing agreement for that. It financially would belong partially at least to the contributers. We will put concept art, script and beatboards here.
-  3. Create a Reel
-    This will be made up of scenes in a timeline. Assets and backgrounds will live here. 
-   */
 
   // make a form where they initalize or 'Launch' the scene. A 'Scene Launcher'.
   useEffect(() => {
@@ -4157,21 +3365,21 @@ const SceneMachine = () => {
   //   }
   // };
 
-  const handleViewer = (e, scene) => {
-    e.preventDefault();
-    // TODO: find way to set scroll to top of scene overview display
-    setPreview({
-      image: scene.stripImage,
-      // image: scene.storyBoards[0].board,
-      sceneName: scene.sceneName,
-      panel: 'Cover',
-      id: 0,
-      // id: scene.storyBoards[0].panel,
-    });
-    setDetail('overview');
-    setBackground('rgb(218, 214, 208)');
-    setViewer(scene);
-  };
+  // const handleViewer = (e, scene) => {
+  //   e.preventDefault();
+  //   // TODO: find way to set scroll to top of scene overview display
+  //   setPreview({
+  //     image: scene.stripImage,
+  //     // image: scene.storyBoards[0].board,
+  //     sceneName: scene.sceneName,
+  //     panel: 'Cover',
+  //     id: 0,
+  //     // id: scene.storyBoards[0].panel,
+  //   });
+  //   setDetail('overview');
+  //   setBackground('rgb(218, 214, 208)');
+  //   setViewer(scene);
+  // };
 
   return (
     <>
@@ -4181,64 +3389,43 @@ const SceneMachine = () => {
           rel="stylesheet"
         />
       </head>
-      <TitleButtonProvider>
-        <SceneMachineProvider>
-          <Style background={background} />
+      <ViewerProvider>
+        <PreviewProvider>
+          <ControlPanelButtonsProvider>
+            <TitleButtonProvider>
+              <SceneMachineProvider>
+                <Style />
 
-          <div id="scene-machine-container" className="">
-            <div id="scene-machine-location" className="scene-machine">
-              <SceneMachineTitle />
-              <SceneMachineStripArea
-                viewer={viewer}
-                setViewer={setViewer}
-                scenes={scenes}
-                setScenes={setScenes}
-                detail={detail}
-                setDetail={setDetail}
-                handleViewer={handleViewer}
-                setPreview={setPreview}
-                setBackground={setBackground}
-              />
-              <SceneMachineControlPanel
-                // buttons={buttons}
-                // setButtons={setButtons}
-                setAnswer={setAnswer}
-                dispatch={dispatch}
-                state={state}
-                activeShot={activeShot}
-                userContext={userContext}
-              />
-              <div className="scene-overview">
-                <SceneMachineLeftPanel preview={preview} />
-                <SceneMachineRightPanel
-                  // newSceneForm={newSceneForm}
-                  // setNewSceneForm={setNewSceneForm}
-                  scenes={scenes}
-                  setScenes={setScenes}
-                  detail={detail}
-                  setDetail={setDetail}
-                  viewer={viewer}
-                  background={background}
-                  setBackground={setBackground}
-                  state={state}
-                  activeShot={activeShot}
-                  setActiveShot={setActiveShot}
-                  dispatch={dispatch}
-                  userContext={userContext}
-                  preview={preview}
-                  setPreview={setPreview}
-                  setViewer={setViewer}
-                  // handleAddScene={handleAddScene}
-                  // loading={loading}
-                  // setLoading={setLoading}
-                  // handleVideo={handleVideo}
-                  // progress={progress}
-                />
-              </div>
-            </div>
-          </div>
-        </SceneMachineProvider>
-      </TitleButtonProvider>
+                <div id="scene-machine-container" className="">
+                  <div id="scene-machine-location" className="scene-machine">
+                    <SceneMachineTitle />
+                    <SceneMachineStripArea
+                      scenes={scenes}
+                    />
+                    <SceneMachineControlPanel
+                      setAnswer={setAnswer}
+                      dispatch={dispatch}
+                      state={state}
+                      activeShot={activeShot}
+                    />
+                    <div className="scene-overview">
+                      <SceneMachineLeftPanel />
+                      <SceneMachineRightPanel
+                        scenes={scenes}
+                        state={state}
+                        activeShot={activeShot}
+                        setActiveShot={setActiveShot}
+                        dispatch={dispatch}
+                        userContext={userContext}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </SceneMachineProvider>
+            </TitleButtonProvider>
+          </ControlPanelButtonsProvider>
+        </PreviewProvider>
+      </ViewerProvider>
     </>
   );
 };
