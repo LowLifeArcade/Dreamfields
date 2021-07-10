@@ -14,7 +14,7 @@ import { Context } from '../../context';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 
-const ButtonContext = createContext();
+const TitleButtonContext = createContext();
 
 // initial states
 const initialButtonState = {
@@ -1453,7 +1453,7 @@ const reducer = (state, action) => {
 /*
  *components
  **/
-const SceneMachineTitle = ({ setButtons, buttons }) => {
+const SceneMachineTitle = ({}) => {
   const Style = () => {
     return (
       <style jsx>{`
@@ -1546,32 +1546,45 @@ const SceneMachineTitle = ({ setButtons, buttons }) => {
       `}</style>
     );
   };
+  const TitleButtons = () => {
+    // const [buttons, setButtons] = useState(() => ({
+    //   machine: 'scene',
+    // }));
+    const {machine, setMachine} = useContext(TitleButtonContext);
+    console.log('machine',machine)
+
+    return (
+      <>
+        <div
+          onClick={() => setMachine({ machine: 'Scene' })}
+          className="btn-ctrl"
+        >
+          <div
+            className={`btn-ctrl-inside ${
+              machine.machine === 'Scene' && 'active'
+            }`}
+          ></div>
+        </div>
+        <div
+          onClick={() => setMachine({ machine: 'Asset' })}
+          className="btn-ctrl"
+        >
+          <div
+            className={`btn-ctrl-inside ${
+              machine.machine === 'Asset' && 'active'
+            }`}
+          ></div>
+        </div>
+      </>
+    );
+  };
 
   return (
     <>
       <Style />
       <div className="scene-machine-title">
         <div className="title-buttons-left">
-          <div
-            onClick={() => setButtons({ ...buttons, machine: 'scene' })}
-            className="btn-ctrl"
-          >
-            <div
-              className={`btn-ctrl-inside ${
-                buttons.machine === 'scene' && 'active'
-              }`}
-            ></div>
-          </div>
-          <div
-            onClick={() => setButtons({ ...buttons, machine: 'asset' })}
-            className="btn-ctrl"
-          >
-            <div
-              className={`btn-ctrl-inside ${
-                buttons.machine === 'asset' && 'active'
-              }`}
-            ></div>
-          </div>
+          <TitleButtons />
         </div>
         {/* <h1>{buttons.machine === 'scene' ? 'Scene' : 'Asset'} Machine</h1> */}
         <div className="title-buttons-right">
@@ -1788,15 +1801,22 @@ const SceneMachineStripArea = ({
 };
 
 const SceneMachineControlPanel = ({
-  setButtons,
-  buttons,
+  // setButtons,
+  // buttons,
   setAnswer,
   dispatch,
   state,
   activeShot,
   userContext,
 }) => {
+  const [buttons, setButtons] = useState(initialButtonState);
   const { button1, button2, button3, button4, button5 } = buttons;
+  const {machine} = useContext(TitleButtonContext);
+  
+  useEffect(() => {
+    setButtons({...buttons, display: machine.machine + ' Machine'})
+    console.log('control panel machine state', buttons)
+  }, [machine]);
   const Style = () => {
     return (
       <style jsx>{`
@@ -2230,19 +2250,42 @@ const SceneMachineLeftPanel = ({ preview }) => {
   );
 };
 
-const NewSceneForm = ({
-  state,
-  setState,
-  handleAddScene,
-  loading,
-  setLoading,
-  handleVideo,
-  progress,
-}) => {
+const NewSceneForm = () => {
+  const [state, setState] = useState(initialNewSceneForm);
+  const [loading, setLoading] = useState(false);
+  const [progress, setProgress] = useState(0);
+  // const [newSceneForm, setNewSceneForm] = useState(initialNewSceneForm);
   console.log('form card state', state);
   // TODO: The new scene form only sets up the basics. We get a scene overview from this with description and scene name and hopefully script. From there the creator will go through and add assets if needed, backgrounds, FX and a shot list with breakdowns and launch the scene.
 
   // a scene card will show up if there is no image uploaded
+
+  const handleVideo = async (e) => {
+    try {
+      const file = e.target.files[0];
+      // console.log('video file', file)
+      setLoading(true);
+      const videoData = new FormData();
+      videoData.append('video', file);
+      console.log('video data', videoData);
+      // save progress bar and send video as formdata to backend
+      const { data } = await axios.post('/api/field/video-upload', videoData, {
+        onUploadProgress: (e) => {
+          setProgress(Math.round((100 * e.loaded) / e.total));
+        },
+      });
+      // once res is resceived
+      console.log('video upload', data);
+      setNewSceneForm({
+        ...newSceneForm,
+        video: { ...newSceneForm.video, s3: { ...data } },
+      });
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      toast('Video upload failed');
+    }
+  };
 
   const loadItem = (e, name) => {
     e.preventDefault();
@@ -2292,6 +2335,11 @@ const NewSceneForm = ({
       ...state,
       [name]: [...array],
     });
+  };
+  // backend submission
+  const handleAddScene = async (e) => {
+    e.preventDefault();
+    console.log(newSceneForm);
   };
   return (
     <>
@@ -2674,9 +2722,7 @@ const NewSceneForm = ({
         </div>
 
         <style jsx>{`
-
           #scene-video-delete {
-
           }
           .upload-btns {
             display: flex;
@@ -2752,8 +2798,8 @@ const NewSceneForm = ({
 };
 
 const SceneMachineRightPanel = ({
-  newSceneForm,
-  setNewSceneForm,
+  // newSceneForm,
+  // setNewSceneForm,
   scenes,
   setScenes,
   detail,
@@ -2769,12 +2815,13 @@ const SceneMachineRightPanel = ({
   preview,
   setPreview,
   setViewer,
-  handleAddScene,
-  loading,
-  setLoading,
-  handleVideo,
-  progress,
+  // handleAddScene,
+  // loading,
+  // setLoading,
+  // handleVideo,
+  // progress,
 }) => {
+  // const [progress, setProgress] = useState(0);
   const Style = ({ background }) => {
     return (
       <style jsx>{`
@@ -3767,13 +3814,13 @@ const SceneMachineRightPanel = ({
                 <>
                   <div className="new-scene-form">
                     <NewSceneForm
-                      handleAddScene={handleAddScene}
-                      state={newSceneForm}
-                      setState={setNewSceneForm}
-                      loading={loading}
-                      setLoading={setLoading}
-                      handleVideo={handleVideo}
-                      progress={progress}
+                    // handleAddScene={handleAddScene}
+                    // state={newSceneForm}
+                    // setState={setNewSceneForm}
+                    // loading={loading}
+                    // setLoading={setLoading}
+                    // handleVideo={handleVideo}
+                    // progress={progress}
                     />
                   </div>
                 </>
@@ -3789,7 +3836,7 @@ const SceneMachineRightPanel = ({
 const SceneMachine = () => {
   const [scenes, setScenes] = useState(initialScenes);
   const [answer, setAnswer] = useState(false);
-  const [buttons, setButtons] = useState(initialButtonState);
+  // const [buttons, setButtons] = useState(initialButtonState);
   const [detail, setDetail] = useState('overview');
   const [activeShot, setActiveShot] = useState('');
   const [viewer, setViewer] = useState(initialViewerState);
@@ -3797,9 +3844,12 @@ const SceneMachine = () => {
   const [background, setBackground] = useState('rgb(218, 214, 208)');
   const [state, dispatch] = useReducer(reducer, { edit: false });
   const userContext = useContext(Context);
-  const [newSceneForm, setNewSceneForm] = useState(initialNewSceneForm);
-  const [loading, setLoading] = useState(false);
-  const [progress, setProgress] = useState(0);
+  const [machine, setMachine] = useState({
+    machine: 'scene',
+  })
+  // const [newSceneForm, setNewSceneForm] = useState(initialNewSceneForm);
+  // const [loading, setLoading] = useState(false);
+  // const [progress, setProgress] = useState(0);
 
   const Style = ({ background }) => (
     <style jsx>{`
@@ -4057,38 +4107,38 @@ const SceneMachine = () => {
   //   await setAnswer(true)
   // }
 
-  // backend submission
-  const handleAddScene = async (e) => {
-    e.preventDefault();
-    console.log(newSceneForm);
-  };
+  // // backend submission
+  // const handleAddScene = async (e) => {
+  //   e.preventDefault();
+  //   console.log(newSceneForm);
+  // };
 
-  const handleVideo = async (e) => {
-    try {
-      const file = e.target.files[0];
-      // console.log('video file', file)
-      setLoading(true);
-      const videoData = new FormData();
-      videoData.append('video', file);
-      console.log('video data', videoData);
-      // save progress bar and send video as formdata to backend
-      const { data } = await axios.post('/api/field/video-upload', videoData, {
-        onUploadProgress: (e) => {
-          setProgress(Math.round((100 * e.loaded) / e.total));
-        },
-      });
-      // once res is resceived
-      console.log('video upload', data);
-      setNewSceneForm({
-        ...newSceneForm,
-        video: { ...newSceneForm.video, s3: { ...data } },
-      });
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      toast('Video upload failed');
-    }
-  };
+  // const handleVideo = async (e) => {
+  //   try {
+  //     const file = e.target.files[0];
+  //     // console.log('video file', file)
+  //     setLoading(true);
+  //     const videoData = new FormData();
+  //     videoData.append('video', file);
+  //     console.log('video data', videoData);
+  //     // save progress bar and send video as formdata to backend
+  //     const { data } = await axios.post('/api/field/video-upload', videoData, {
+  //       onUploadProgress: (e) => {
+  //         setProgress(Math.round((100 * e.loaded) / e.total));
+  //       },
+  //     });
+  //     // once res is resceived
+  //     console.log('video upload', data);
+  //     setNewSceneForm({
+  //       ...newSceneForm,
+  //       video: { ...newSceneForm.video, s3: { ...data } },
+  //     });
+  //     setLoading(false);
+  //   } catch (error) {
+  //     setLoading(false);
+  //     toast('Video upload failed');
+  //   }
+  // };
 
   const handleViewer = (e, scene) => {
     e.preventDefault();
@@ -4114,64 +4164,64 @@ const SceneMachine = () => {
           rel="stylesheet"
         />
       </head>
-      <ButtonContext.Provider>
-        <SceneMachineProvider>
-          <Style background={background} />
+      <TitleButtonContext.Provider value={{machine, setMachine}}>
+      <SceneMachineProvider value={{ state, dispatch }}>
+        <Style background={background} />
 
-          <div id="scene-machine-container" className="">
-            <div id="scene-machine-location" className="scene-machine">
-              <SceneMachineTitle buttons={buttons} setButtons={setButtons} />
-              <SceneMachineStripArea
-                viewer={viewer}
-                setViewer={setViewer}
+        <div id="scene-machine-container" className="">
+          <div id="scene-machine-location" className="scene-machine">
+            <SceneMachineTitle />
+            <SceneMachineStripArea
+              viewer={viewer}
+              setViewer={setViewer}
+              scenes={scenes}
+              setScenes={setScenes}
+              detail={detail}
+              setDetail={setDetail}
+              handleViewer={handleViewer}
+              setPreview={setPreview}
+              setBackground={setBackground}
+            />
+            <SceneMachineControlPanel
+              // buttons={buttons}
+              // setButtons={setButtons}
+              setAnswer={setAnswer}
+              dispatch={dispatch}
+              state={state}
+              activeShot={activeShot}
+              userContext={userContext}
+            />
+            <div className="scene-overview">
+              <SceneMachineLeftPanel preview={preview} />
+              <SceneMachineRightPanel
+                // newSceneForm={newSceneForm}
+                // setNewSceneForm={setNewSceneForm}
                 scenes={scenes}
                 setScenes={setScenes}
                 detail={detail}
                 setDetail={setDetail}
-                handleViewer={handleViewer}
-                setPreview={setPreview}
+                viewer={viewer}
+                background={background}
                 setBackground={setBackground}
-              />
-              <SceneMachineControlPanel
-                buttons={buttons}
-                setButtons={setButtons}
-                setAnswer={setAnswer}
-                dispatch={dispatch}
                 state={state}
                 activeShot={activeShot}
+                setActiveShot={setActiveShot}
+                dispatch={dispatch}
                 userContext={userContext}
+                preview={preview}
+                setPreview={setPreview}
+                setViewer={setViewer}
+                // handleAddScene={handleAddScene}
+                // loading={loading}
+                // setLoading={setLoading}
+                // handleVideo={handleVideo}
+                // progress={progress}
               />
-              <div className="scene-overview">
-                <SceneMachineLeftPanel preview={preview} />
-                <SceneMachineRightPanel
-                  newSceneForm={newSceneForm}
-                  setNewSceneForm={setNewSceneForm}
-                  scenes={scenes}
-                  setScenes={setScenes}
-                  detail={detail}
-                  setDetail={setDetail}
-                  viewer={viewer}
-                  background={background}
-                  setBackground={setBackground}
-                  state={state}
-                  activeShot={activeShot}
-                  setActiveShot={setActiveShot}
-                  dispatch={dispatch}
-                  userContext={userContext}
-                  preview={preview}
-                  setPreview={setPreview}
-                  setViewer={setViewer}
-                  handleAddScene={handleAddScene}
-                  loading={loading}
-                  setLoading={setLoading}
-                  handleVideo={handleVideo}
-                  progress={progress}
-                />
-              </div>
             </div>
           </div>
-        </SceneMachineProvider>
-      </ButtonContext.Provider>
+        </div>
+      </SceneMachineProvider>
+      </TitleButtonContext.Provider>
     </>
   );
 };
