@@ -16,6 +16,20 @@ import axios from 'axios';
 
 const TitleButtonContext = createContext();
 
+const TitleButtonProvider = ({ children }) => {
+  const [machine, setMachine] = useState({
+    machine: 'scene',
+  });
+
+  return (
+    <>
+      <TitleButtonContext.Provider value={{ machine, setMachine }}>
+        {children}
+      </TitleButtonContext.Provider>
+    </>
+  );
+};
+
 // initial states
 const initialButtonState = {
   machine: 'scene',
@@ -1550,8 +1564,8 @@ const SceneMachineTitle = ({}) => {
     // const [buttons, setButtons] = useState(() => ({
     //   machine: 'scene',
     // }));
-    const {machine, setMachine} = useContext(TitleButtonContext);
-    console.log('machine',machine)
+    const { machine, setMachine } = useContext(TitleButtonContext);
+    console.log('machine', machine);
 
     return (
       <>
@@ -1811,11 +1825,11 @@ const SceneMachineControlPanel = ({
 }) => {
   const [buttons, setButtons] = useState(initialButtonState);
   const { button1, button2, button3, button4, button5 } = buttons;
-  const {machine} = useContext(TitleButtonContext);
-  
+  const { machine } = useContext(TitleButtonContext);
+
   useEffect(() => {
-    setButtons({...buttons, display: machine.machine + ' Machine'})
-    console.log('control panel machine state', buttons)
+    setButtons({ ...buttons, display: machine.machine + ' Machine' });
+    console.log('control panel machine state', buttons);
   }, [machine]);
   const Style = () => {
     return (
@@ -3833,6 +3847,7 @@ const SceneMachineRightPanel = ({
   );
 };
 
+
 const SceneMachine = () => {
   const [scenes, setScenes] = useState(initialScenes);
   const [answer, setAnswer] = useState(false);
@@ -3844,12 +3859,14 @@ const SceneMachine = () => {
   const [background, setBackground] = useState('rgb(218, 214, 208)');
   const [state, dispatch] = useReducer(reducer, { edit: false });
   const userContext = useContext(Context);
-  const [machine, setMachine] = useState({
-    machine: 'scene',
-  })
+  // const [machine, setMachine] = useState({
+  //   machine: 'scene',
+  // })
   // const [newSceneForm, setNewSceneForm] = useState(initialNewSceneForm);
   // const [loading, setLoading] = useState(false);
   // const [progress, setProgress] = useState(0);
+
+  
 
   const Style = ({ background }) => (
     <style jsx>{`
@@ -4164,64 +4181,64 @@ const SceneMachine = () => {
           rel="stylesheet"
         />
       </head>
-      <TitleButtonContext.Provider value={{machine, setMachine}}>
-      <SceneMachineProvider value={{ state, dispatch }}>
-        <Style background={background} />
+      <TitleButtonProvider>
+        <SceneMachineProvider>
+          <Style background={background} />
 
-        <div id="scene-machine-container" className="">
-          <div id="scene-machine-location" className="scene-machine">
-            <SceneMachineTitle />
-            <SceneMachineStripArea
-              viewer={viewer}
-              setViewer={setViewer}
-              scenes={scenes}
-              setScenes={setScenes}
-              detail={detail}
-              setDetail={setDetail}
-              handleViewer={handleViewer}
-              setPreview={setPreview}
-              setBackground={setBackground}
-            />
-            <SceneMachineControlPanel
-              // buttons={buttons}
-              // setButtons={setButtons}
-              setAnswer={setAnswer}
-              dispatch={dispatch}
-              state={state}
-              activeShot={activeShot}
-              userContext={userContext}
-            />
-            <div className="scene-overview">
-              <SceneMachineLeftPanel preview={preview} />
-              <SceneMachineRightPanel
-                // newSceneForm={newSceneForm}
-                // setNewSceneForm={setNewSceneForm}
+          <div id="scene-machine-container" className="">
+            <div id="scene-machine-location" className="scene-machine">
+              <SceneMachineTitle />
+              <SceneMachineStripArea
+                viewer={viewer}
+                setViewer={setViewer}
                 scenes={scenes}
                 setScenes={setScenes}
                 detail={detail}
                 setDetail={setDetail}
-                viewer={viewer}
-                background={background}
+                handleViewer={handleViewer}
+                setPreview={setPreview}
                 setBackground={setBackground}
+              />
+              <SceneMachineControlPanel
+                // buttons={buttons}
+                // setButtons={setButtons}
+                setAnswer={setAnswer}
+                dispatch={dispatch}
                 state={state}
                 activeShot={activeShot}
-                setActiveShot={setActiveShot}
-                dispatch={dispatch}
                 userContext={userContext}
-                preview={preview}
-                setPreview={setPreview}
-                setViewer={setViewer}
-                // handleAddScene={handleAddScene}
-                // loading={loading}
-                // setLoading={setLoading}
-                // handleVideo={handleVideo}
-                // progress={progress}
               />
+              <div className="scene-overview">
+                <SceneMachineLeftPanel preview={preview} />
+                <SceneMachineRightPanel
+                  // newSceneForm={newSceneForm}
+                  // setNewSceneForm={setNewSceneForm}
+                  scenes={scenes}
+                  setScenes={setScenes}
+                  detail={detail}
+                  setDetail={setDetail}
+                  viewer={viewer}
+                  background={background}
+                  setBackground={setBackground}
+                  state={state}
+                  activeShot={activeShot}
+                  setActiveShot={setActiveShot}
+                  dispatch={dispatch}
+                  userContext={userContext}
+                  preview={preview}
+                  setPreview={setPreview}
+                  setViewer={setViewer}
+                  // handleAddScene={handleAddScene}
+                  // loading={loading}
+                  // setLoading={setLoading}
+                  // handleVideo={handleVideo}
+                  // progress={progress}
+                />
+              </div>
             </div>
           </div>
-        </div>
-      </SceneMachineProvider>
-      </TitleButtonContext.Provider>
+        </SceneMachineProvider>
+      </TitleButtonProvider>
     </>
   );
 };
