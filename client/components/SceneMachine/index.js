@@ -12,6 +12,7 @@ import {
 } from '../../contexts/SceneMachineContext';
 import { Context } from '../../context';
 import { toast } from 'react-toastify';
+import axios from 'axios';
 
 const ButtonContext = createContext();
 
@@ -332,7 +333,7 @@ const initialNewSceneForm = {
     },
   ],
   animatic: '',
-  video: '',
+  video: { s3: '', videoName: '', revision: 1 },
   revision: 1,
 };
 
@@ -2235,7 +2236,8 @@ const NewSceneForm = ({
   handleAddScene,
   loading,
   setLoading,
-  handleVideo
+  handleVideo,
+  progress,
 }) => {
   console.log('form card state', state);
   // TODO: The new scene form only sets up the basics. We get a scene overview from this with description and scene name and hopefully script. From there the creator will go through and add assets if needed, backgrounds, FX and a shot list with breakdowns and launch the scene.
@@ -2608,26 +2610,79 @@ const NewSceneForm = ({
                 <button>Upload Animatic</button>
               </section>
             </div>
-            <div id="scene-video" className="section">
-              <label className="label" htmlFor="scene-video">
-                Upload Video
-              </label>
-              <section className="video-btn">
-                <input onChange={handleVideo} type="file" accept="video/*" />
-              </section>
+
+            <div className="upload-btns">
+              {state.video.s3 == '' ? (
+                <div id="scene-video" className="section">
+                  <label className="label" htmlFor="scene-video">
+                    Upload Video
+                  </label>
+                  <input
+                    value={state.video.videoName}
+                    onChange={(e) =>
+                      setState({
+                        ...state,
+                        video: { ...state.video, videoName: e.target.value },
+                      })
+                    }
+                    className="input"
+                    type={'text'}
+                    name={''} // use this field to handle state with [e.target.name]: [e.target.value] in the object
+                    autoComplete={'text' && true}
+                    placeholder={'Give a name for this video'}
+                    disabled={false}
+                  />
+                  <section className="video-btn">
+                    <input
+                      disabled={loading}
+                      onChange={handleVideo}
+                      type="file"
+                      accept="video/*"
+                    />
+                  </section>
+                </div>
+              ) : (
+                <div id="scene-video-delete" className="section">
+                  <label className="label" htmlFor="scene-video">
+                    Upload Video
+                  </label>
+                  <section>
+                    <div>{state.video.videoName}</div>
+                  </section>
+                </div>
+              )}
+
+              <div id="scene-video-delete" className="section">
+                <section>
+                  <button>Delete Video</button>
+                </section>
+              </div>
             </div>
           </>
         )}
-
+        {loading && <>Upload: {progress} %</>}
         <div id="scene-submit" className="section">
           <section>
-            <button className="submit-btn" onClick={handleAddScene}>
+            <button
+              disabled={loading}
+              className="submit-btn"
+              onClick={handleAddScene}
+            >
               Create Scene
             </button>
           </section>
         </div>
 
         <style jsx>{`
+
+          #scene-video-delete {
+
+          }
+          .upload-btns {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+          }
           //input[type='file'] {
           //  display: none;
           //}
@@ -2717,7 +2772,8 @@ const SceneMachineRightPanel = ({
   handleAddScene,
   loading,
   setLoading,
-  handleVideo
+  handleVideo,
+  progress,
 }) => {
   const Style = ({ background }) => {
     return (
@@ -3717,6 +3773,7 @@ const SceneMachineRightPanel = ({
                       loading={loading}
                       setLoading={setLoading}
                       handleVideo={handleVideo}
+                      progress={progress}
                     />
                   </div>
                 </>
@@ -4008,26 +4065,30 @@ const SceneMachine = () => {
 
   const handleVideo = async (e) => {
     try {
-      const file = e.target.files[0]
-      // console.log('handle video upload')
-      setLoading(true)
-      const videoData = new FormData()
-      videoData.append('video', file)
+      const file = e.target.files[0];
+      // console.log('video file', file)
+      setLoading(true);
+      const videoData = new FormData();
+      videoData.append('video', file);
+      console.log('video data', videoData);
       // save progress bar and send video as formdata to backend
-      const {data} = await axios.post('api/field/video-upload', videoData, {
-        onUploadProgress: e => {
-          setProgress(Math.round((100 * e.loaded) / e.total))
-        }
-      })
-      // once res is resceived 
-      console.log(data)
-      setNewSceneForm({...newSceneForm, video: data}) 
-      setLoading(false)
+      const { data } = await axios.post('/api/field/video-upload', videoData, {
+        onUploadProgress: (e) => {
+          setProgress(Math.round((100 * e.loaded) / e.total));
+        },
+      });
+      // once res is resceived
+      console.log('video upload', data);
+      setNewSceneForm({
+        ...newSceneForm,
+        video: { ...newSceneForm.video, s3: { ...data } },
+      });
+      setLoading(false);
     } catch (error) {
-      setLoading(false)
-      toast('Video upload failed')
+      setLoading(false);
+      toast('Video upload failed');
     }
-  }
+  };
 
   const handleViewer = (e, scene) => {
     e.preventDefault();
@@ -4104,6 +4165,7 @@ const SceneMachine = () => {
                   loading={loading}
                   setLoading={setLoading}
                   handleVideo={handleVideo}
+                  progress={progress}
                 />
               </div>
             </div>

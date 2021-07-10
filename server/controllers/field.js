@@ -2,6 +2,7 @@ import AWS from 'aws-sdk';
 import { nanoid } from 'nanoid';
 import Field from '../models/field';
 import slugify from 'slugify';
+import {readFileSync} from 'fs' // fs.readFileSync
 
 const awsConfig = {
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -96,6 +97,35 @@ export const read = async (req, res) => {
     const field = await Field.findOne({ slug: req.params.slug })
       .populate('creator', '_id name')
       .exec();
-      res.json(field)
+    res.json(field);
   } catch (err) {}
+};
+
+export const uploadVideo = async (req, res) => {
+  console.log('endpoint reached');
+  try {
+    const { video } = req.files;
+    // console.log(video)
+    !video && res.status(400).send('No video');
+
+    const params = {
+      Bucket: 'dreamfields-bucket',
+      Key: `${nanoid()}.${video.type.split('/')[1]}`, // this code retruns an array by splitting the video file name like file/mov to ['file', 'mov'] then we take the second (which is index 1) and we use it to make the code with a random string from nanoid with mp4
+      Body: readFileSync(video.path),
+      ACL: 'public-read',
+      ContentType: video.type,
+    }
+
+    // upload to s3
+    S3.upload(params, (err, data) => {
+      if(err) {
+        console.log(err)
+        res.sendStatus(400)
+      }
+      console.log(data)
+      res.send(data)
+    })
+  } catch (error) {
+    console.log(error);
+  }
 };
