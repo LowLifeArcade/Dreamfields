@@ -14,64 +14,6 @@ import { Context } from '../../context';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 
-// Contexts
-const TitleButtonContext = createContext();
-
-const TitleButtonProvider = ({ children }) => {
-  const [machine, setMachine] = useState({
-    machine: 'Scene',
-  });
-
-  return (
-    <>
-      <TitleButtonContext.Provider value={{ machine, setMachine }}>
-        {children}
-      </TitleButtonContext.Provider>
-    </>
-  );
-};
-
-const ControlPanelButtonsContext = createContext();
-
-const ControlPanelButtonsProvider = ({ children }) => {
-  const [buttons, setButtons] = useState(initialButtonState);
-
-  return (
-    <>
-      <ControlPanelButtonsContext.Provider value={{ buttons, setButtons }}>
-        {children}
-      </ControlPanelButtonsContext.Provider>
-    </>
-  );
-};
-
-const PreviewContext = createContext();
-
-const PreviewProvider = ({ children }) => {
-  const [preview, setPreview] = useState(initPreviewState);
-
-  return (
-    <>
-      <PreviewContext.Provider value={{ preview, setPreview }}>
-        {children}
-      </PreviewContext.Provider>
-    </>
-  );
-};
-const ViewerContext = createContext();
-
-const ViewerProvider = ({ children }) => {
-  const [viewer, setViewer] = useState(initialViewerState);
-
-  return (
-    <>
-      <ViewerContext.Provider value={{ viewer, setViewer }}>
-        {children}
-      </ViewerContext.Provider>
-    </>
-  );
-};
-
 // initial states
 const initialButtonState = {
   machine: 'scene',
@@ -392,13 +334,15 @@ const initialNewSceneForm = {
   video: { s3: '', videoName: '', revision: 1 },
   revision: 1,
 };
-
+// scene preview
 const initPreviewState = {
   image: '//unsplash.it/id/1/400/225',
   sceneName: 'Scene Preview',
   panel: '',
   id: '',
 };
+
+const initialReducerState = { confirm: false, edit: false, checkedOut: false, checkedIn: true }
 
 // fake data
 const initialScenes = [
@@ -418,7 +362,7 @@ const initialScenes = [
     frameRate: '24',
     aspectRatio: '16:9',
     assets: [
-      { id: 11, name: 'Sword', location: 's3-bucket' },
+      { id: 10, name: 'Bat', location: 's3-bucket' },
       { id: 12, name: 'Mud Slide', location: 's3-bucket' },
       { id: 14, name: 'Book', location: 's3-bucket' },
     ],
@@ -428,8 +372,8 @@ const initialScenes = [
     ],
     shotList: [
       {
-        id: 1,
-        shot: 1,
+        id: 2,
+        shot: 4,
         complexity: 'high',
         assets: 'Sword',
         FX: '',
@@ -454,12 +398,12 @@ const initialScenes = [
         preProdBoard: '',
       },
     ], // maybe every time you add to this array it makes an index card
-    characters: ['Paul', 'Sid', 'Joey', 'Ugly friend 1', 'Ugly friend 2'],
+    characters: ['Paul', 'Joey', 'Ugly friend 1', 'Ugly friend 2'],
     backgrounds: [
       { id: 253, name: 'School', location: 's3' },
       { id: 233, name: 'Pit', location: 's3' },
     ],
-  
+
     script: {
       script: `<br />
       <p>EXT. SCHOOL - DAY</p>
@@ -495,7 +439,7 @@ const initialScenes = [
       </p>`,
       rev: 1,
     },
-  
+
     layoutBoards: [
       {
         id: 240,
@@ -673,10 +617,145 @@ const field = {
   ],
 };
 
+// Contexts
+const AnswerContext = createContext();
+const AnswerProvider = ({ children }) => {
+  const [answer, setAnswer] = useState(false);
+
+  return (
+    <>
+      <AnswerContext.Provider value={{ answer, setAnswer }}>
+        {children}
+      </AnswerContext.Provider>
+    </>
+  );
+};
+const TitleButtonContext = createContext();
+const TitleButtonProvider = ({ children }) => {
+  const [machine, setMachine] = useState({
+    machine: 'Scene',
+  });
+
+  return (
+    <>
+      <TitleButtonContext.Provider value={{ machine, setMachine }}>
+        {children}
+      </TitleButtonContext.Provider>
+    </>
+  );
+};
+const ControlPanelButtonsContext = createContext();
+const ControlPanelButtonsProvider = ({ children }) => {
+  const [buttons, setButtons] = useState(initialButtonState);
+
+  return (
+    <>
+      <ControlPanelButtonsContext.Provider value={{ buttons, setButtons }}>
+        {children}
+      </ControlPanelButtonsContext.Provider>
+    </>
+  );
+};
+const PreviewContext = createContext();
+const PreviewProvider = ({ children }) => {
+  const [preview, setPreview] = useState(initPreviewState);
+
+  return (
+    <>
+      <PreviewContext.Provider value={{ preview, setPreview }}>
+        {children}
+      </PreviewContext.Provider>
+    </>
+  );
+};
+const ViewerContext = createContext();
+const ViewerProvider = ({ children }) => {
+  const [viewer, setViewer] = useState(initialViewerState);
+
+  return (
+    <>
+      <ViewerContext.Provider value={{ viewer, setViewer }}>
+        {children}
+      </ViewerContext.Provider>
+    </>
+  );
+};
+const MachineStateContext = createContext();
+const MachineStateProvider = ({ children }) => {
+
+  const reducer = (state, action) => {
+    switch (action.type) {
+      case 'EDIT_SCRIPT': {
+        return {
+          ...state,
+          edit: true,
+        };
+      }
+      case 'SAVE_SCRIPT': {
+        return {
+          ...state,
+          edit: false,
+        };
+      }
+      case 'CHECKOUT': {
+        return {
+          ...state,
+          checkedOut: {
+            shot: action.payload.shot,
+            user: action.payload.user,
+          },
+        };
+      }
+      case 'CHECKIN': {
+        return {
+          ...state,
+          checkedOut: { shot: '', user: '' },
+          checkedIn: {
+            shot: action.payload.shot,
+            user: action.payload.user,
+          },
+        };
+      }
+      case 'CONFIRM': {
+        return {
+          ...state,
+          confirm: action.payload,
+        };
+      }
+      case 'ADD_SCENE': {
+        return {
+          ...state,
+          addScene: action.payload.scene,
+        };
+      }
+      // case 'CONFIRM_DONE': {
+      //   return {
+      //     ...state,
+      //     confirm: '',
+      //   };
+      // }
+      default:
+        state;
+    }
+  };
+  const [state, dispatch] = useReducer(reducer, initialReducerState);
+
+  return (
+    <>
+
+    <MachineStateContext.Provider value={{state, dispatch}}>
+      {children}
+    </MachineStateContext.Provider>
+    </>
+  );
+};
+
+
+
 /*
  *components
  **/
-const SceneMachineTitle = ({}) => {
+const SceneMachineTitle = () => {
   const Style = () => {
     return (
       <style jsx>{`
@@ -839,11 +918,15 @@ const SceneMachineTitle = ({}) => {
   );
 };
 
-const SceneMachineStripArea = ({
-  scenes,
-}) => {
+const SceneMachineStripArea = () => {
   const { setPreview } = useContext(PreviewContext);
+  const [scenes, setScenes] = useState(['']);
   const { viewer, setViewer } = useContext(ViewerContext);
+
+  useEffect(() => {
+    setScenes(initialScenes);
+  }, []);
+
   const SceneMachineStripStyle = () => {
     return (
       <style jsx>{`
@@ -1022,13 +1105,12 @@ const SceneMachineStripArea = ({
   );
 };
 
-const SceneMachineControlPanel = ({
-  setAnswer,
-  dispatch,
-  state,
-  activeShot,
-}) => {
+const SceneMachineControlPanel = ({ activeShot }) => {
   const userContext = useContext(Context);
+  const {state, dispatch} = useContext(MachineStateContext);
+  const { setAnswer } = useContext(AnswerContext);
+  console.log('state in control panel', state)
+
   const ControlPanelButtons = () => {
     const { buttons, setButtons } = useContext(ControlPanelButtonsContext);
     const { button1, button2, button3, button4, button5 } = buttons;
@@ -1125,6 +1207,7 @@ const SceneMachineControlPanel = ({
     const { machine } = useContext(TitleButtonContext);
     const { buttons } = useContext(ControlPanelButtonsContext);
     const [display, setDisplay] = useState('Scene Machine');
+    
 
     useEffect(() => {
       setDisplay(machine.machine + ' Machine');
@@ -1262,7 +1345,7 @@ const SceneMachineControlPanel = ({
 
         <div className="control-panel-other">
           {/* {state.confirm && <GetAnswer />} */}
-          {state.confirm === 'Checkout scene' && (
+          {state && state.confirm === 'Checkout scene' && (
             <>
               <div
                 className="btn-mini"
@@ -1298,7 +1381,7 @@ const SceneMachineControlPanel = ({
               <div>{state.confirm}?</div>
             </>
           )}
-          {state.confirm === 'Checkin scene' && (
+          {state &&  state.confirm === 'Checkin scene' && (
             <>
               <div
                 className="btn-mini"
@@ -1334,7 +1417,7 @@ const SceneMachineControlPanel = ({
               <div>{state.confirm}?</div>
             </>
           )}
-          {state.confirm === 'Add New Scene' && ( // CONFIRM with payload of '' closes everything
+          {state &&  state.confirm === 'Add New Scene' && ( // CONFIRM with payload of '' closes everything
             <>
               <div
                 className="btn-mini"
@@ -1372,7 +1455,7 @@ const SceneMachineControlPanel = ({
           {/* <div className="btn-mini">
                 <i class="fas fa-pager"></i>
               </div> */}
-          {!state.confirm && (
+          {state &&  !state.confirm && (
             <>
               <div className="btn-mini">
                 <i class="fas fa-redo-alt"></i>
@@ -2055,29 +2138,60 @@ const NewSceneForm = () => {
 };
 
 const SceneMachineRightPanel = ({
-  scenes,
-  state,
   activeShot,
   setActiveShot,
-  dispatch,
   userContext,
 }) => {
   const [detail, setDetail] = useState('overview');
   const [background, setBackground] = useState('rgb(218, 214, 208)');
   const { viewer, setViewer } = useContext(ViewerContext);
   const { preview, setPreview } = useContext(PreviewContext);
+  const { answer } = useContext(AnswerContext);
+  const { state, dispatch } = useContext(MachineStateContext);
+  console.log('state right panel', answer)
 
   useEffect(() => {
-    setDetail('overview')
+    setDetail('overview');
   }, [viewer]);
 
   useEffect(() => {
-    detail === 'overview' && setBackground('rgb(218, 214, 208)'); // is in viewer 
+    detail === 'overview' && setBackground('rgb(218, 214, 208)'); // is in viewer
   }, [detail]);
 
   useEffect(() => {
     preview.sceneName === 'New Scene' && setDetail('new scene');
   }, [preview]);
+
+  // make a form where they initalize or 'Launch' the scene. A 'Scene Launcher'.
+  useEffect(() => {
+    if (answer) {
+      dispatch({ type: 'CONFIRM', payload: '' });
+      dispatch({
+        type: 'CHECKOUT',
+        payload: { shot: activeShot, user: userContext.state.user },
+      });
+    } else if (!answer) {
+      dispatch && dispatch({ type: 'CONFIRM', payload: '' });
+    }
+  }, [answer, state && state.confirm === 'checkout']);
+
+  useEffect(() => {
+    if (answer) {
+      dispatch({ type: 'CONFIRM', payload: '' });
+      dispatch({
+        type: 'CANCEL_NEW_SCENE',
+        payload: true,
+      });
+    } else if (!answer) {
+      dispatch && dispatch({ type: 'CONFIRM', payload: '' });
+    }
+  }, [answer, state && state.confirm === 'Cancel New Scene']);
+
+  // console logs
+  useEffect(() => {
+    console.log('answer', answer);
+    console.log('state', state);
+  });
 
   const Style = ({ background }) => {
     return (
@@ -2399,11 +2513,11 @@ const SceneMachineRightPanel = ({
     dispatch({ type: 'CONFIRM', payload: 'Cancel New Scene' });
     setPreview({
       image: '//unsplash.it/id/1/400/225',
-      sceneName: scenes[0].sceneName,
+      sceneName: 'Open',
       panel: '',
       id: '',
     });
-    setViewer(scenes[0]);
+    setViewer(initialViewerState);
     setDetail('overview');
   };
 
@@ -3106,69 +3220,12 @@ const SceneMachineRightPanel = ({
   );
 };
 
-// reducers
-const reducer = (state, action) => {
-  switch (action.type) {
-    case 'EDIT_SCRIPT': {
-      return {
-        ...state,
-        edit: true,
-      };
-    }
-    case 'SAVE_SCRIPT': {
-      return {
-        ...state,
-        edit: false,
-      };
-    }
-    case 'CHECKOUT': {
-      return {
-        ...state,
-        checkedOut: {
-          shot: action.payload.shot,
-          user: action.payload.user,
-        },
-      };
-    }
-    case 'CHECKIN': {
-      return {
-        ...state,
-        checkedOut: { shot: '', user: '' },
-        checkedIn: {
-          shot: action.payload.shot,
-          user: action.payload.user,
-        },
-      };
-    }
-    case 'CONFIRM': {
-      return {
-        ...state,
-        confirm: action.payload,
-      };
-    }
-    case 'ADD_SCENE': {
-      return {
-        ...state,
-        addScene: action.payload.scene,
-      };
-    }
-    // case 'CONFIRM_DONE': {
-    //   return {
-    //     ...state,
-    //     confirm: '',
-    //   };
-    // }
-    default:
-      state;
-  }
-};
+
 
 const SceneMachine = () => {
   const userContext = useContext(Context);
-  const [state, dispatch] = useReducer(reducer, { edit: false });
-  const [scenes, setScenes] = useState(initialScenes);
+
   const [activeShot, setActiveShot] = useState('');
-  const [answer, setAnswer] = useState(false);
 
   const Style = () => (
     <style jsx>{`
@@ -3247,37 +3304,6 @@ const SceneMachine = () => {
       }
     `}</style>
   );
-
-  // make a form where they initalize or 'Launch' the scene. A 'Scene Launcher'.
-  useEffect(() => {
-    if (answer) {
-      dispatch({ type: 'CONFIRM', payload: '' });
-      dispatch({
-        type: 'CHECKOUT',
-        payload: { shot: activeShot, user: userContext.state.user },
-      });
-    } else if (!answer) {
-      dispatch({ type: 'CONFIRM', payload: '' });
-    }
-  }, [answer, state && state.confirm === 'checkout']);
-
-  useEffect(() => {
-    if (answer) {
-      dispatch({ type: 'CONFIRM', payload: '' });
-      dispatch({
-        type: 'CANCEL_NEW_SCENE',
-        payload: true,
-      });
-    } else if (!answer) {
-      dispatch({ type: 'CONFIRM', payload: '' });
-    }
-  }, [answer, state && state.confirm === 'Cancel New Scene']);
-
-  // console logs
-  useEffect(() => {
-    console.log('answer', answer);
-    console.log('state', state);
-  });
 
   // const handleCheckout = async (answer) => {
   //   dispatch({ type: 'CONFIRM', payload: 'Checkout scene' });
@@ -3389,43 +3415,40 @@ const SceneMachine = () => {
           rel="stylesheet"
         />
       </head>
-      <ViewerProvider>
-        <PreviewProvider>
-          <ControlPanelButtonsProvider>
-            <TitleButtonProvider>
-              <SceneMachineProvider>
-                <Style />
+      <MachineStateProvider>
+        <AnswerProvider>
+          <ViewerProvider>
+            <PreviewProvider>
+              <ControlPanelButtonsProvider>
+                <TitleButtonProvider>
+                  <SceneMachineProvider>
+                    <Style />
 
-                <div id="scene-machine-container" className="">
-                  <div id="scene-machine-location" className="scene-machine">
-                    <SceneMachineTitle />
-                    <SceneMachineStripArea
-                      scenes={scenes}
-                    />
-                    <SceneMachineControlPanel
-                      setAnswer={setAnswer}
-                      dispatch={dispatch}
-                      state={state}
-                      activeShot={activeShot}
-                    />
-                    <div className="scene-overview">
-                      <SceneMachineLeftPanel />
-                      <SceneMachineRightPanel
-                        scenes={scenes}
-                        state={state}
-                        activeShot={activeShot}
-                        setActiveShot={setActiveShot}
-                        dispatch={dispatch}
-                        userContext={userContext}
-                      />
+                    <div id="scene-machine-container" className="">
+                      <div
+                        id="scene-machine-location"
+                        className="scene-machine"
+                      >
+                        <SceneMachineTitle />
+                        <SceneMachineStripArea />
+                        <SceneMachineControlPanel activeShot={activeShot} />
+                        <div className="scene-overview">
+                          <SceneMachineLeftPanel />
+                          <SceneMachineRightPanel
+                            activeShot={activeShot}
+                            setActiveShot={setActiveShot}
+                            userContext={userContext}
+                          />
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              </SceneMachineProvider>
-            </TitleButtonProvider>
-          </ControlPanelButtonsProvider>
-        </PreviewProvider>
-      </ViewerProvider>
+                  </SceneMachineProvider>
+                </TitleButtonProvider>
+              </ControlPanelButtonsProvider>
+            </PreviewProvider>
+          </ViewerProvider>
+        </AnswerProvider>
+      </MachineStateProvider>
     </>
   );
 };
