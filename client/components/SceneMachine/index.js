@@ -656,15 +656,18 @@ const ControlPanelButtonsProvider = ({ children }) => {
     </>
   );
 };
-const PreviewContext = createContext();
-const PreviewProvider = ({ children }) => {
+const PreviewStateContext = createContext();
+const PreviewProviderContext = createContext();
+const PreviewContext = ({ children }) => {
   const [preview, setPreview] = useState(initPreviewState);
 
   return (
     <>
-      <PreviewContext.Provider value={{ preview, setPreview }}>
-        {children}
-      </PreviewContext.Provider>
+      <PreviewStateContext.Provider value={preview}>
+        <PreviewProviderContext.Provider value={setPreview}>
+          {children}
+        </PreviewProviderContext.Provider>
+      </PreviewStateContext.Provider>
     </>
   );
 };
@@ -684,13 +687,35 @@ const MachineStateDispatchContext = createContext();
 const MachineStateStateContext = createContext();
 const MachineStateContext = ({ children }) => {
   const initialMachineStateReducerState = {
+    confirm: false,
     machineState: 'idle', //
-    checkedOutShot: false,
+    checkedOutShot: {
+      id: '',
+      shot: '',
+      complexity: '',
+      assets: '',
+      FX: '',
+      characters: [],
+      backgrounds: '',
+      description: '',
+      breakdown: '',
+      preProdBoard: '',
+      user: { name: '' },
+    },
     checkedInShot: false,
+    confirmObj: {},
   };
 
   const machineStateReducer = (state, action) => {
+    // machineState types [view, edit]
     switch (action.type) {
+      case 'RESET_VIEWER': {
+        return {
+          ...state,
+          machineState: 'view',
+          detailWindow: 'overview',
+        };
+      }
       case 'EDIT_SCRIPT': {
         return {
           ...state,
@@ -700,7 +725,7 @@ const MachineStateContext = ({ children }) => {
       case 'SAVE_SCRIPT': {
         return {
           ...state,
-          machineState: 'idle',
+          machineState: 'view',
         };
       }
       case 'CHECKOUT': {
@@ -725,8 +750,24 @@ const MachineStateContext = ({ children }) => {
       case 'CONFIRM': {
         return {
           ...state,
-          answer: action.payload.answer,
-          confirm: action.payload.confirm,
+          confirm: true,
+          confirmObj: action.payload,
+        };
+      }
+      case 'CONFIRM_YES': {
+        console.log('confirm yes payload', action.payload);
+        return {
+          ...state,
+          confirm: false,
+          confirmObj: {},
+          [action.payload.confirmKey]: action.payload.confirmValue,
+        };
+      }
+      case 'CONFIRM_CANCEL': {
+        return {
+          ...state,
+          confirmObj: {},
+          confirm: false,
         };
       }
       case 'ADD_SCENE': {
@@ -958,7 +999,7 @@ const SceneMachineTitle = () => {
 };
 
 const SceneMachineStripArea = () => {
-  const { setPreview } = useContext(PreviewContext);
+  const setPreview = useContext(PreviewProviderContext);
   const [scenes, setScenes] = useState(['']);
   const { viewer, setViewer } = useContext(ViewerContext);
 
@@ -1144,7 +1185,7 @@ const SceneMachineStripArea = () => {
   );
 };
 
-const SceneMachineControlPanel = ({ activeShot }) => {
+const SceneMachineControlPanel = () => {
   const userContext = useContext(Context);
   const dispatch = useContext(MachineStateDispatchContext);
   const state = useContext(MachineStateStateContext);
@@ -1374,6 +1415,11 @@ const SceneMachineControlPanel = ({ activeShot }) => {
     );
   };
 
+  const handleConfirm = () => {
+    dispatch({ type: 'CONFIRM_YES', payload: state.confirmObj });
+    // dispatch({ type: [action], payload: [payload] });
+  };
+  console.log('confirm value', state && state.confirmObj && state.confirmObj);
   return (
     <>
       <Style />
@@ -1383,12 +1429,31 @@ const SceneMachineControlPanel = ({ activeShot }) => {
 
         <div className="control-panel-other">
           {/* {state.confirm && <GetAnswer />} */}
-          {state && state.confirm === 'Checkout scene' && (
+          {state && state.confirm && (
+            <>
+              <div
+                id="CONFIRM_CANCEL"
+                className="btn-mini"
+                onClick={handleConfirm}
+              >
+                <i className="fas fa-times"></i>
+              </div>
+              <div
+                className="btn-mini"
+                id="CONFIRM_YES"
+                // onClick={() => handleConfirm('CONFIRM_YES', state.confirmObj)}
+                onClick={handleConfirm}
+              >
+                <i className="fas fa-check"></i>
+              </div>
+              <div>{state.confirmObj.confirmName}?</div>
+            </>
+          )}
+          {/* {state && state.confirm === 'Checkout scene' && (
             <>
               <div
                 className="btn-mini"
                 onClick={() => {
-                  setShowModal(false),
                     dispatch({
                       type: 'CONFIRM',
                       payload: '',
@@ -1400,7 +1465,6 @@ const SceneMachineControlPanel = ({ activeShot }) => {
               <div
                 className="btn-mini"
                 onClick={() => {
-                  setShowModal(true),
                     dispatch({
                       type: 'CHECKOUT',
                       payload: {
@@ -1418,8 +1482,8 @@ const SceneMachineControlPanel = ({ activeShot }) => {
               </div>
               <div>{state.confirm}?</div>
             </>
-          )}
-          {state && state.confirm === 'Checkin scene' && (
+          )} */}
+          {/* {state && !state.confirm && (
             <>
               <div
                 className="btn-mini"
@@ -1440,7 +1504,6 @@ const SceneMachineControlPanel = ({ activeShot }) => {
                     dispatch({
                       type: 'CHECKIN',
                       payload: {
-                        shot: activeShot,
                         user: userContext.state.user,
                       },
                     }),
@@ -1454,8 +1517,8 @@ const SceneMachineControlPanel = ({ activeShot }) => {
               </div>
               <div>{state.confirm}?</div>
             </>
-          )}
-          {state &&
+          )} */}
+          {/* {state &&
             state.confirm === 'Add New Scene' && ( // CONFIRM with payload of '' closes everything
               <>
                 <div
@@ -1490,7 +1553,7 @@ const SceneMachineControlPanel = ({ activeShot }) => {
                 </div>
                 <div>{state.confirm}?</div>
               </>
-            )}
+            )} */}
           {/* <div className="btn-mini">
                 <i class="fas fa-pager"></i>
               </div> */}
@@ -1516,9 +1579,6 @@ const SceneMachineControlPanel = ({ activeShot }) => {
               </div>
             </>
           )}
-          {/* <div className="btn-mini">
-                <i class="fas fa-expand"></i>
-              </div> */}
         </div>
       </div>
     </>
@@ -1527,7 +1587,7 @@ const SceneMachineControlPanel = ({ activeShot }) => {
 
 // preview
 const SceneMachineLeftPanel = () => {
-  const { preview } = useContext(PreviewContext);
+  const preview = useContext(PreviewStateContext);
   const Style = () => {
     return (
       <style jsx>{`
@@ -1539,6 +1599,7 @@ const SceneMachineLeftPanel = () => {
         }
 
         .viewer {
+          position: relative;
           // max-width: 500px;
           // height: 370px;
           border-radius: 5px;
@@ -1552,6 +1613,13 @@ const SceneMachineLeftPanel = () => {
           // height: 100%;
           width: 100%;
           // max-height: 270px;
+        }
+
+        .viewer > div {
+          color: rgba(238, 238, 238, 0.699);
+          position: absolute;
+          bottom: 18px;
+          right: 10px;
         }
 
         .transport-title {
@@ -1601,6 +1669,9 @@ const SceneMachineLeftPanel = () => {
         <div className="viewer">
           <img src={preview.image} alt="" />
           {/* change to state */}
+          <div className="btn-mini">
+            <i class="fas fa-expand"></i>
+          </div>
         </div>
         <div className="transport-title">
           <div>
@@ -2176,18 +2247,20 @@ const NewSceneForm = () => {
   );
 };
 
-const SceneMachineRightPanel = ({ activeShot, setActiveShot, userContext }) => {
+const SceneMachineRightPanel = ({ userContext }) => {
+  const [activeShot, setActiveShot] = useState('');
   const [detail, setDetail] = useState('overview');
   const [background, setBackground] = useState('rgb(218, 214, 208)');
-  // const bgRef = useRef('rgb(218, 214, 208)');
   const { viewer, setViewer } = useContext(ViewerContext);
-  const { preview, setPreview } = useContext(PreviewContext);
+  const preview = useContext(PreviewStateContext);
+  const setPreview = useContext(PreviewProviderContext);
   const { showModal, setShowModal } = useContext(ModalContext);
   const dispatch = useContext(MachineStateDispatchContext);
   const state = useContext(MachineStateStateContext);
 
   useEffect(() => {
     setDetail('overview');
+    dispatch({ type: 'RESET_VIEWER' }); // not working yet
   }, [viewer]);
 
   // handles backgrounds
@@ -2195,23 +2268,18 @@ const SceneMachineRightPanel = ({ activeShot, setActiveShot, userContext }) => {
     switch (detail) {
       case 'overview':
         setBackground('rgb(218, 214, 208)');
-        // bgRef.current == 'rgb(218, 214, 208)';
         break;
       case 'script':
         setBackground('white');
-        // bgRef.current == 'white';
         break;
       case 'breakdown':
         setBackground('rgb(218, 214, 208)');
-        // bgRef.current == 'rgb(218, 214, 208)';
         break;
       case 'boards':
         setBackground('rgb(59, 63, 63)');
-        // bgRef.current == 'rgb(59, 63, 63)';
         break;
       case 'video':
         setBackground('rgb(59, 63, 63)');
-        // bgRef.current == 'rgb(59, 63, 63)';
         break;
       default:
         break;
@@ -2225,25 +2293,25 @@ const SceneMachineRightPanel = ({ activeShot, setActiveShot, userContext }) => {
   // make a form where they initalize or 'Launch' the scene. A 'Scene Launcher'.
   useEffect(() => {
     if (showModal) {
-      dispatch({ type: 'CONFIRM', payload: '' });
+      // dispatch({ type: 'CONFIRM', payload: '' });
       dispatch({
         type: 'CHECKOUT',
         payload: { shot: activeShot, user: userContext.state.user },
       });
     } else if (!showModal) {
-      dispatch({ type: 'CONFIRM', payload: '' });
+      // dispatch({ type: 'CONFIRM', payload: '' });
     }
   }, [showModal, state && state.confirm === 'checkout']);
 
   useEffect(() => {
     if (showModal) {
-      dispatch({ type: 'CONFIRM', payload: '' });
+      // dispatch({ type: 'CONFIRM', payload: '' });
       dispatch({
         type: 'CANCEL_NEW_SCENE',
         payload: true,
       });
     } else if (!showModal) {
-      dispatch({ type: 'CONFIRM', payload: '' });
+      // dispatch({ type: 'CONFIRM', payload: '' });
     }
   }, [showModal, state && state.confirm === 'Cancel New Scene']);
 
@@ -2570,8 +2638,45 @@ const SceneMachineRightPanel = ({ activeShot, setActiveShot, userContext }) => {
   };
 
   // TODO: this is buttom up. Change it to be handled with useeffect
+
+  const handleCheckin = () => {
+    setShowModal(true);
+    dispatch({
+      type: 'CONFIRM',
+      payload: {
+        confirmName: 'Checkin Shot',
+        confirmKey: 'checkedInShot',
+        confirmValue: {
+          ...state.checkedOutShot,
+        },
+      },
+    });
+  };
+
+  const handleCheckout = () => {
+    // setShowModal(true);
+    dispatch({
+      type: 'CONFIRM',
+      payload: {
+        confirmName: 'Checkout Shot',
+        confirmKey: 'checkedOutShot',
+        confirmValue: {
+          ...activeShot,
+          user: userContext.state.user,
+        },
+      },
+    });
+  };
+
+  const handleAddScene = () =>
+    dispatch({
+      type: 'CONFIRM',
+      payload: { confirmName: 'Add New Scene', confirmKey: 'scenes' },
+      confirmValue: initialNewSceneForm,
+    });
+
   const handleCancel = () => {
-    dispatch({ type: 'CONFIRM', payload: 'Cancel New Scene' });
+    // dispatch({ type: 'CONFIRM', payload: 'Cancel New Scene' });
     setPreview({
       image: '//unsplash.it/id/1/400/225',
       sceneName: 'Open',
@@ -2668,9 +2773,7 @@ const SceneMachineRightPanel = ({ activeShot, setActiveShot, userContext }) => {
                       Cancel
                     </button>
                     <button
-                      onClick={() =>
-                        dispatch({ type: 'CONFIRM', payload: 'Add New Scene' })
-                      }
+                      onClick={handleAddScene}
                       className={`btn-small ${
                         detail === 'none' ? 'active' : ''
                       }`}
@@ -2734,19 +2837,14 @@ const SceneMachineRightPanel = ({ activeShot, setActiveShot, userContext }) => {
                       Update
                     </button>
 
-                    {state.checkedOut &&
-                    activeShot.id === state.checkedOut.shot.id ? (
+                    {state &&
+                    state.checkedOutShot &&
+                    activeShot.id === state.checkedOutShot.shot.id ? (
                       <button
                         className={`btn-small ${
                           detail === 'none' ? 'active' : ''
                         }`}
-                        onClick={() => {
-                          // setShowModal(true);
-                          dispatch({
-                            type: 'CONFIRM',
-                            payload: { answer: true, confirm: false },
-                          });
-                        }}
+                        onClick={handleCheckin}
                       >
                         Checkin
                       </button>
@@ -2755,16 +2853,7 @@ const SceneMachineRightPanel = ({ activeShot, setActiveShot, userContext }) => {
                         className={`btn-small ${
                           detail === 'none' ? 'active' : ''
                         }`}
-                        onClick={
-                          // () => handleCheckout(answer)
-                          () => {
-                            // setShowModal(true);
-                            dispatch({
-                              type: 'CONFIRM',
-                              payload: { answer: false, confirm: false },
-                            });
-                          }
-                        }
+                        onClick={handleCheckout}
                       >
                         Checkout
                       </button>
@@ -2951,18 +3040,18 @@ const SceneMachineRightPanel = ({ activeShot, setActiveShot, userContext }) => {
                   )}
                 </div>
               )}
-
+              {/* <MachineStateStateContext.Consumer> */}
               {detail === 'breakdown' && (
                 <div className="transport-breakdown">
                   {viewer.shotList.map((shot, i) => (
                     <div
                       className={`transport-breakdown-shot ${
-                        state.checkedOut &&
-                        state.checkedOut.shot.id === shot.id &&
+                        state &&
+                        state.checkedOutShot.shot.id === shot.id &&
                         'checked-out'
                       } ${activeShot.id === shot.id && 'active'} ${
-                        state.checkedOut &&
-                        state.checkedOut.user.name !=
+                        state &&
+                        state.checkedOutShot.user.name !=
                           userContext.state.user.name &&
                         'not-user'
                       }`}
@@ -2984,12 +3073,15 @@ const SceneMachineRightPanel = ({ activeShot, setActiveShot, userContext }) => {
                         <strong>Backgrounds: </strong>
                         {shot.backgrounds}
                       </div>
-                      {state.checkedOut &&
-                      state.checkedOut.shot.id === shot.id ? (
+                      {state &&
+                      state.checkedOutShot &&
+                      state.checkedOutShot.shot.id === shot.id ? (
                         <div>
                           <strong>
                             Checked out by{' '}
-                            {state.checkedOut && state.checkedOut.user.name}
+                            {state &&
+                              state.checkedOutShot &&
+                              state.checkedOutShot.user.name}
                           </strong>
                         </div>
                       ) : (
@@ -3011,6 +3103,7 @@ const SceneMachineRightPanel = ({ activeShot, setActiveShot, userContext }) => {
                 </div>
               )}
               {/* <hr /> */}
+              {/* </MachineStateStateContext.Consumer> */}
 
               {detail === 'boards' && (
                 <div className="transport-panels-section">
@@ -3232,15 +3325,7 @@ const SceneMachineRightPanel = ({ activeShot, setActiveShot, userContext }) => {
               {detail === 'new scene' && (
                 <>
                   <div className="new-scene-form">
-                    <NewSceneForm
-                    // handleAddScene={handleAddScene}
-                    // state={newSceneForm}
-                    // setState={setNewSceneForm}
-                    // loading={loading}
-                    // setLoading={setLoading}
-                    // handleVideo={handleVideo}
-                    // progress={progress}
-                    />
+                    <NewSceneForm />
                   </div>
                 </>
               )}
@@ -3254,7 +3339,6 @@ const SceneMachineRightPanel = ({ activeShot, setActiveShot, userContext }) => {
 
 const SceneMachine = () => {
   const userContext = useContext(Context);
-  const [activeShot, setActiveShot] = useState('');
 
   const SceneMachineStyle = () => (
     <style jsx>{`
@@ -3345,7 +3429,7 @@ const SceneMachine = () => {
       <MachineStateContext>
         <ModalProvider>
           <ViewerProvider>
-            <PreviewProvider>
+            <PreviewContext>
               <ControlPanelButtonsProvider>
                 <TitleButtonProvider>
                   <SceneMachineProvider>
@@ -3358,21 +3442,17 @@ const SceneMachine = () => {
                       >
                         <SceneMachineTitle />
                         <SceneMachineStripArea />
-                        <SceneMachineControlPanel activeShot={activeShot} />
+                        <SceneMachineControlPanel />
                         <div className="scene-overview">
                           <SceneMachineLeftPanel />
-                          <SceneMachineRightPanel
-                            activeShot={activeShot}
-                            setActiveShot={setActiveShot}
-                            userContext={userContext}
-                          />
+                          <SceneMachineRightPanel userContext={userContext} />
                         </div>
                       </div>
                     </div>
                   </SceneMachineProvider>
                 </TitleButtonProvider>
               </ControlPanelButtonsProvider>
-            </PreviewProvider>
+            </PreviewContext>
           </ViewerProvider>
         </ModalProvider>
       </MachineStateContext>
