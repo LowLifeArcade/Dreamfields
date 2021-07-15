@@ -8,6 +8,7 @@ import {
   useRef,
 } from 'react';
 import FormCard from '../formlayout/FormCard';
+import Loader from '../Loader';
 import {
   SceneMachineProvider,
   SceneMachineContext,
@@ -342,6 +343,100 @@ const initPreviewState = {
   sceneName: 'Scene Preview',
   panel: '',
   id: '',
+};
+
+// preview machine reducer
+const previewReducer = (state, action) => {
+  if (state.previewState == 'playing') {
+    if (action == 'STOP') return { ...state, previewState: 'stopped' };
+    if (action == 'PAUSE') return { ...state, previewState: 'paused' };
+  }
+
+  if (state.previewState == 'paused') {
+    switch (action) {
+      case 'PLAY':
+        return { ...state, previewState: 'playing' };
+      case 'PAUSE':
+        return { ...state, previewState: 'playing' };
+      case 'STOP':
+        return { ...state, previewState: 'stopped' };
+      default:
+        break;
+    }
+  }
+
+  if (state.previewState == 'stopped' || state.previewState == 'idle') {
+    if (action == 'PLAY') return { ...state, previewState: 'playing' };
+  }
+
+  return state;
+};
+
+// state machine for preview
+const previewMachine = {
+  id: 'previewer',
+  initial: 'idle',
+  states: {
+    idle: {
+      on: {
+        PLAY: 'playing', // message that corresponds to state playing
+      },
+      entry: () => console.log('now idle'),
+      exit: () => console.log('leaving idle'),
+    },
+    playing: {
+      on: {
+        PAUSE: 'paused',
+        STOP: 'stopped',
+      },
+      entry: () => console.log('now playing'),
+    },
+    paused: {
+      on: {
+        PLAY: 'playing',
+        PAUSE: 'playing',
+        STOP: 'stopped',
+      },
+      entry: () => console.log('now paused'),
+    },
+    stopped: {
+      on: {
+        PLAY: 'playing',
+        EJECT: 'idle',
+      },
+      entry: () => console.log('now stopped'),
+    },
+  },
+};
+
+const useMachine = (machineModel) => {
+  // 1 - contain current state string & nextEvents
+  // 2 - should listn to events and transitions
+  // 3 - invoke entry callbacks
+
+  const initialMachine = {
+    current: machineModel.initial,
+    nextEvents: Object.keys(machineModel.states[machineModel.initial].on),
+  };
+
+  const [machineState, dispatch] = useReducer((state, event) => {
+    const currentStateNode = machineModel.states[state.current];
+    const nextState = currentStateNode?.on[event];
+
+    if (!nextState) return state;
+
+    return {
+      current: nextState,
+      nextEvents: Object.keys(machineModel.states[nextState]?.on),
+    };
+  }, initialMachine);
+
+  useEffect(() => {
+    machineModel.states[machineState.current]?.entry?.();
+    return () => machineModel.states[machineState.current]?.exit?.();
+  }, [machineState]);
+
+  return [machineState, dispatch];
 };
 
 // fake data
@@ -688,7 +783,7 @@ const MachineStateStateContext = createContext();
 const MachineStateContext = ({ children }) => {
   const initialMachineStateReducerState = {
     confirm: false,
-    machineState: 'idle', //
+    machineState: 'view',
     checkedOutShot: {
       id: '',
       shot: '',
@@ -702,8 +797,10 @@ const MachineStateContext = ({ children }) => {
       preProdBoard: '',
       user: { name: '' },
     },
+    shotList: [],
     checkedInShot: false,
     confirmObj: {},
+    scenes: [initialScenes],
   };
 
   const machineStateReducer = (state, action) => {
@@ -1419,7 +1516,7 @@ const SceneMachineControlPanel = () => {
     dispatch({ type: 'CONFIRM_YES', payload: state.confirmObj });
     // dispatch({ type: [action], payload: [payload] });
   };
-  console.log('confirm value', state && state.confirmObj && state.confirmObj);
+  console.log('confirm value', state?.confirmObj);
   return (
     <>
       <Style />
@@ -1429,7 +1526,7 @@ const SceneMachineControlPanel = () => {
 
         <div className="control-panel-other">
           {/* {state.confirm && <GetAnswer />} */}
-          {state && state.confirm && (
+          {state?.confirm && (
             <>
               <div
                 id="CONFIRM_CANCEL"
@@ -1557,7 +1654,7 @@ const SceneMachineControlPanel = () => {
           {/* <div className="btn-mini">
                 <i class="fas fa-pager"></i>
               </div> */}
-          {state && !state.confirm && (
+          {!state?.confirm && (
             <>
               <div className="btn-mini">
                 <i class="fas fa-redo-alt"></i>
@@ -1587,7 +1684,13 @@ const SceneMachineControlPanel = () => {
 
 // preview
 const SceneMachineLeftPanel = () => {
+  // const [machineState, dispatch] = useMachine(previewMachine);
+  const initPrevState = { previewState: 'idle' };
+  const [state, dispatch] = useReducer(previewReducer, initPrevState);
   const preview = useContext(PreviewStateContext);
+  useEffect(() => {
+    console.log('preview machine state', state);
+  })
   const Style = () => {
     return (
       <style jsx>{`
@@ -1688,9 +1791,9 @@ const SceneMachineLeftPanel = () => {
           <button>
             <i class="fas fa-chevron-left"></i>
           </button>
-          <button>Stop</button>
-          <button>Play</button>
-          <button>Pause</button>
+          <button onClick={() => dispatch('STOP')}>Stop</button>
+          <button onClick={() => dispatch('PLAY')}>Play</button>
+          <button onClick={() => dispatch('PAUSE')}>Pause</button>
           <button>
             <i class="fas fa-chevron-right"></i>
           </button>
@@ -2252,9 +2355,9 @@ const SceneMachineRightPanel = ({ userContext }) => {
   const [detail, setDetail] = useState('overview');
   const [background, setBackground] = useState('rgb(218, 214, 208)');
   const { viewer, setViewer } = useContext(ViewerContext);
+  const { showModal, setShowModal } = useContext(ModalContext);
   const preview = useContext(PreviewStateContext);
   const setPreview = useContext(PreviewProviderContext);
-  const { showModal, setShowModal } = useContext(ModalContext);
   const dispatch = useContext(MachineStateDispatchContext);
   const state = useContext(MachineStateStateContext);
 
@@ -2668,12 +2771,16 @@ const SceneMachineRightPanel = ({ userContext }) => {
     });
   };
 
-  const handleAddScene = () =>
+  const handleAddScene = () => {
     dispatch({
       type: 'CONFIRM',
-      payload: { confirmName: 'Add New Scene', confirmKey: 'scenes' },
-      confirmValue: initialNewSceneForm,
+      payload: {
+        confirmName: 'Add New Scene',
+        confirmKey: 'scenes',
+        confirmValue: [...state.scenes, initialNewSceneForm],
+      },
     });
+  };
 
   const handleCancel = () => {
     // dispatch({ type: 'CONFIRM', payload: 'Cancel New Scene' });
@@ -2685,6 +2792,26 @@ const SceneMachineRightPanel = ({ userContext }) => {
     });
     setViewer(initialViewerState);
     setDetail('overview');
+  };
+
+  const initialBreakdown = {
+    id: null,
+    shot: null,
+    complexity: '',
+    assets: '',
+    FX: '',
+    characters: '',
+    backgrounds: '',
+    description: '',
+    breakdown: '',
+    preProdBoard: '',
+  };
+
+  const handleAddBreakdown = () => {
+    dispatch({
+      type: 'CONFIRM',
+      payload: [...state.shotList, initialBreakdown],
+    });
   };
 
   return (
@@ -3047,7 +3174,7 @@ const SceneMachineRightPanel = ({ userContext }) => {
                     <div
                       className={`transport-breakdown-shot ${
                         state &&
-                        state.checkedOutShot.shot.id === shot.id &&
+                        state.checkedOutShot.id === shot.id &&
                         'checked-out'
                       } ${activeShot.id === shot.id && 'active'} ${
                         state &&
@@ -3075,7 +3202,7 @@ const SceneMachineRightPanel = ({ userContext }) => {
                       </div>
                       {state &&
                       state.checkedOutShot &&
-                      state.checkedOutShot.shot.id === shot.id ? (
+                      state.checkedOutShot.id === shot.id ? (
                         <div>
                           <strong>
                             Checked out by{' '}
@@ -3091,7 +3218,7 @@ const SceneMachineRightPanel = ({ userContext }) => {
                       )}
                     </div>
                   ))}
-                  <div className="add" onClick={() => setAddBreakdown()}>
+                  <div className="add" onClick={handleAddBreakdown}>
                     <i class="fas fa-plus fa-2x"></i>
                   </div>
 
@@ -3426,6 +3553,7 @@ const SceneMachine = () => {
           rel="stylesheet"
         />
       </head>
+      <Loader />
       <MachineStateContext>
         <ModalProvider>
           <ViewerProvider>
@@ -3434,7 +3562,6 @@ const SceneMachine = () => {
                 <TitleButtonProvider>
                   <SceneMachineProvider>
                     <SceneMachineStyle />
-
                     <div id="scene-machine-container" className="">
                       <div
                         id="scene-machine-location"
