@@ -345,31 +345,123 @@ const initPreviewState = {
   id: '',
 };
 
+
+// STATES
+
+// playing:
+//     stopped
+//     paused
+//     fast forward
+//     fast backward
+// paused:
+//     playing
+//     stopped
+    
+// stopped:
+//     playing
+//     fast forward
+//     fast backward
+
+// fast forward:
+//     playing
+//     paused
+//     stopped
+//     fast backward
+
+// fast backward
+//     playing
+//     paused
+//     stopped
+//     fast backward
+
 // preview machine reducer
 const previewReducer = (state, action) => {
+  // playing state
   if (state.previewState == 'playing') {
-    if (action == 'STOP') return { ...state, previewState: 'stopped' };
-    if (action == 'PAUSE') return { ...state, previewState: 'paused' };
+    switch (action) {
+      case 'PLAY':
+        return { ...state, previewState: 'paused' };
+      case 'STOP':
+        return { ...state, previewState: 'stopped' };
+      case 'PAUSE':
+        return { ...state, previewState: 'paused' };
+      case 'FORWARD':
+        return { ...state, previewState: 'fast forward' };
+      case 'BACKWARD':
+        return { ...state, previewState: 'fast backward' };
+      default:
+        return state
+    }
+  }
+  // fast foward state
+  if (state.previewState == 'fast forward') {
+    switch (action) {
+      case 'PLAY':
+        return { ...state, previewState: 'playing' };
+      case 'STOP':
+        return { ...state, previewState: 'stopped' };
+      case 'PAUSE':
+        return { ...state, previewState: 'paused' };
+      case 'BACKWARD':
+        return { ...state, previewState: 'fast backward' };
+      default:
+        return state
+    }
+  }
+  // fast backward state
+  if (state.previewState == 'fast backward') {
+    switch (action) {
+      case 'PLAY':
+        return { ...state, previewState: 'playing' };
+      case 'STOP':
+        return { ...state, previewState: 'stopped' };
+      case 'PAUSE':
+        return { ...state, previewState: 'paused' };
+      case 'FORWARD':
+        return { ...state, previewState: 'fast forward' };
+      default:
+        return state
+    }
   }
 
+  // paused state
   if (state.previewState == 'paused') {
     switch (action) {
       case 'PLAY':
         return { ...state, previewState: 'playing' };
-      case 'PAUSE':
-        return { ...state, previewState: 'playing' };
+      // case 'PAUSE':
+      //   return { ...state, previewState: 'playing' };
       case 'STOP':
         return { ...state, previewState: 'stopped' };
+      case 'FORWARD':
+        return { ...state, effect: 'frame forward' };
+      case 'BACKWARD':
+        return { ...state, effect: 'frame backward' };
       default:
-        break;
+        return state
     }
   }
 
+  
+  // stopped state
   if (state.previewState == 'stopped' || state.previewState == 'idle') {
-    if (action == 'PLAY') return { ...state, previewState: 'playing' };
+    switch (action) {
+      case 'PLAY':
+        return { ...state, previewState: 'playing', effect: 'synced' };
+      case 'FORWARD':
+        return { ...state, previewState: 'fast forward', };
+      case 'BACKWARD':
+        return { ...state, previewState: 'fast backward', };
+      default:
+        return state;
+    }
   }
 
   return state;
+  // // on
+  // (state) => {
+  //   return { ...state, effect: 'synced' };
+  // };
 };
 
 // state machine for preview
@@ -1685,12 +1777,12 @@ const SceneMachineControlPanel = () => {
 // preview
 const SceneMachineLeftPanel = () => {
   // const [machineState, dispatch] = useMachine(previewMachine);
-  const initPrevState = { previewState: 'idle' };
+  const initPrevState = { previewState: 'idle', framePosition: 'idle' };
   const [state, dispatch] = useReducer(previewReducer, initPrevState);
   const preview = useContext(PreviewStateContext);
   useEffect(() => {
     console.log('preview machine state', state);
-  })
+  });
   const Style = () => {
     return (
       <style jsx>{`
@@ -1723,6 +1815,13 @@ const SceneMachineLeftPanel = () => {
           position: absolute;
           bottom: 18px;
           right: 10px;
+          cursor: pointer;
+        }
+        .preview-state {
+          color: rgba(238, 238, 238, 0.699);
+          position: absolute;
+          bottom: 18px;
+          left: 15px;
         }
 
         .transport-title {
@@ -1775,6 +1874,10 @@ const SceneMachineLeftPanel = () => {
           <div className="btn-mini">
             <i class="fas fa-expand"></i>
           </div>
+          <div className="preview-state">
+
+          {state.previewState}
+          </div>
         </div>
         <div className="transport-title">
           <div>
@@ -1788,13 +1891,13 @@ const SceneMachineLeftPanel = () => {
           </div>
         </div>
         <div className="transport-viewer-controls">
-          <button>
+          <button onClick={() => dispatch('BACKWARD')}>
             <i class="fas fa-chevron-left"></i>
           </button>
           <button onClick={() => dispatch('STOP')}>Stop</button>
           <button onClick={() => dispatch('PLAY')}>Play</button>
           <button onClick={() => dispatch('PAUSE')}>Pause</button>
-          <button>
+          <button onClick={() => dispatch('FORWARD')}>
             <i class="fas fa-chevron-right"></i>
           </button>
         </div>
