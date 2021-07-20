@@ -5,7 +5,8 @@ export default function Loader() {
   // probably need to subscribe to a provider to get loading info
   return (
     <div className="loader spinner" style={{ opacity: 1 }}>
-      <div className="inner">hi</div>
+      
+      <div className="inner">Loading...</div>
       {/* const isFetching = useIsFetching() */}
       {/* add turnery with useisfecthing to opacity 0 and 1 */}
       <style jsx>{`

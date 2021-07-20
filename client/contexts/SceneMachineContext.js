@@ -1,3 +1,5 @@
+// unused and was trying to use login context as a template
+
 import { useReducer, createContext, useEffect } from 'react';
 // import axios from 'axios';
 // import router from 'next/router';
