@@ -7,7 +7,7 @@ const NewSceneForm = () => {
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
   // const [newSceneForm, setNewSceneForm] = useState(initialNewSceneForm);
-  console.log('new scene form state', state);
+  // console.log('new scene form state', state);
   // TODO: The new scene form only sets up the basics. We get a scene overview from this with description and scene name and hopefully script. From there the creator will go through and add assets if needed, backgrounds, FX and a shot list with breakdowns and launch the scene.
 
   // a scene card will show up if there is no image uploaded
@@ -19,7 +19,7 @@ const NewSceneForm = () => {
       setLoading(true);
       const videoData = new FormData();
       videoData.append('video', file);
-      console.log('video data', videoData);
+      // console.log('video data', videoData);
       // save progress bar and send video as formdata to backend
       const { data } = await axios.post('/api/field/video-upload', videoData, {
         onUploadProgress: (e) => {
@@ -27,7 +27,7 @@ const NewSceneForm = () => {
         },
       });
       // once res is resceived
-      console.log('video upload', data);
+      // console.log('video upload', data);
       setNewSceneForm({
         ...newSceneForm,
         video: { ...newSceneForm.video, s3: { ...data } },
@@ -91,7 +91,7 @@ const NewSceneForm = () => {
   // backend submission
   const handleAddScene = async (e) => {
     e.preventDefault();
-    console.log(newSceneForm);
+    // console.log(newSceneForm);
   };
   return (
     <>

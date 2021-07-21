@@ -14,7 +14,6 @@ const ControlPanelButtons = () => {
 
   const handleButtonPress = (e, display) => {
     e.preventDefault();
-    console.log(e.target.id === 'button1');
     setButtons({
       ...buttons,
       display: display,

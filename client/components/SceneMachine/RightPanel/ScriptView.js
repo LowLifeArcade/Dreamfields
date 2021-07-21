@@ -1,6 +1,9 @@
+import { useContext } from "react"
+import { SetViewerContext } from "../../../contexts/SceneMachineProviders"
 
 
-const RightPanelScriptView = ({state, viewer, view, setViewer}) => {
+const RightPanelScriptView = ({state, viewer, view}) => {
+  const setViewer = useContext(SetViewerContext)
   return (
     // TODO: add undo function to changes in text area. Maybe store viewer.script.script in a backup field when you hit edit button.
     <div className="transport-script">

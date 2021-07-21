@@ -5,7 +5,7 @@ const SceneMachineStripStyle = () => {
         background: rgb(218, 210, 210);
         // padding-top: 20px;
         width: 100%;
-
+        height: 100px;
         border: solid 1px rgb(22, 19, 19);
         border-radius: 2px;
         box-shadow: inset 0 0px 10px, inset 0 0 4px, inset 0 0 4px, 0 0 5px,
@@ -19,6 +19,7 @@ const SceneMachineStripStyle = () => {
         overflow-x: scroll;
         margin: 5px 0;
         box-shadow: 0 0 3px;
+        height: 80px;
         // border-radius: 7px;
         // margin-left: 30px;
         // margin-right: 30px;

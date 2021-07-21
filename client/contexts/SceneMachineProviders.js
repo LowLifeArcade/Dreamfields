@@ -1,12 +1,10 @@
 import { useReducer, createContext, useState } from 'react';
 import {
   initialViewerState,
-  initialNewSceneForm,
   initPreviewState,
   initialScenes,
-  field,
 } from '../initialStates';
-import { machineView } from '../dataModels';
+import { detailView, machineView } from '../dataModels';
 
 // Select either Scene Machine or Asset Machine
 export const TitleButtonContext = createContext();
@@ -87,14 +85,33 @@ export const ViewerProvider = ({ children }) => {
   );
 };
 
-// contextual menu
+export const DetailViewContext = createContext();
+export const SetDetailViewContext = createContext();
+export const DetailViewProvider = ({ children }) => {
+  const [detail, setDetail] = useState(detailView.overview);
+  return (
+    <>
+      <DetailViewContext.Provider value={detail}>
+        <SetDetailViewContext.Provider value={setDetail}>
+          {children}
+        </SetDetailViewContext.Provider>
+      </DetailViewContext.Provider>
+    </>
+  );
+};
+
+// actions menu for contextual menu AND transport menu
 export const MachineStateDispatchContext = createContext();
 export const MachineStateStateContext = createContext();
 export const MachineStateContext = ({ children }) => {
-  const initialMachineStateReducerState = {
-    confirm: false,
+
+  // store should be project already loaded from 
+  const store = {
+    confirm: false, // move this to detail context
     machineState: 'view',
-    checkedOutShot: {
+    // project, // this will be the whole project
+    shotList: [],
+    checkedOutShot: { // this should be simply an update to the loaded project
       id: '',
       shot: '',
       complexity: '',
@@ -106,14 +123,14 @@ export const MachineStateContext = ({ children }) => {
       breakdown: '',
       preProdBoard: '',
       user: { name: '' },
-    },
-    shotList: [],
-    checkedInShot: false,
-    confirmObj: {},
+    }, // access to shot lists to the loaded project where you checked out the shot
+    checkedInShot: false, //
+    confirmObj: {}, // move this to detail context
     scenes: [initialScenes],
   };
 
   const machineStateReducer = (state, [type, payload]) => {
+    // if view is overview for instance we do can do the bellow switch statement
     switch (type) {
       case 'RESET_VIEWER': {
         return {
@@ -191,9 +208,10 @@ export const MachineStateContext = ({ children }) => {
         state;
     }
   };
+
   const [state, dispatch] = useReducer(
     machineStateReducer,
-    initialMachineStateReducerState
+    store
   );
 
   return (

@@ -4,9 +4,11 @@ import {
   MachineStateDispatchContext,
   ViewerContext,
   SetViewerContext,
+  ControlPanelButtonsContext,
 } from '../../../contexts/SceneMachineProviders';
-import SceneMachineStripStyle from './SceneMachineStripAreaStyle';
+import StripStyle from './StripAreaStyle';
 import { initialScenes } from '../../../initialStates';
+import { machineView } from '../../../dataModels';
 
 const SceneMachineStripArea = () => {
   const setPreview = useContext(PreviewProviderContext);
@@ -14,6 +16,7 @@ const SceneMachineStripArea = () => {
   const viewer = useContext(ViewerContext);
   const setViewer = useContext(SetViewerContext);
   const dispatch = useContext(MachineStateDispatchContext);
+  const buttons = useContext(ControlPanelButtonsContext)
 
   useEffect(() => {
     setScenes(initialScenes);
@@ -44,10 +47,12 @@ const SceneMachineStripArea = () => {
   };
   return (
     <>
-      <SceneMachineStripStyle />
+      <StripStyle />
       <div className="section-strip-container">
+        
         <div id="act1" className="scenes-section-strip">
-          {scenes.map((scene) => (
+          {<>
+          {buttons.display === machineView.view4.name && scenes.map((scene) => (
             <>
               <div
                 key={scene.id}
@@ -58,7 +63,6 @@ const SceneMachineStripArea = () => {
                   src={scene.stripImage}
                   alt=""
                 />
-
                 <p>{scene.sceneName}</p>
               </div>
             </>
@@ -71,10 +75,7 @@ const SceneMachineStripArea = () => {
               </div>
             </div>
           </div>
-          {/* <div className="scene-strip">
-
-            <div className="empty-strip"></div>
-          </div> */}
+          </>}
         </div>
       </div>
     </>

@@ -3,18 +3,15 @@
 const RightPanelOverview = ({viewer}) => {
   return (
     <div id="scene-card" className="transport-description">
-      {/* <h2>Scene Card: </h2> */}
       <h3>Scene: "{viewer.sceneName}"</h3>
       <div className="transport-description-detail">{viewer.description}</div>
       <table className="details-table">
-        {/* <caption>Details Table</caption> */}
         <thead>
           <tr>
             <th>Item</th>
             <th>Detail</th>
           </tr>
         </thead>
-
         <tbody>
           <tr>
             <td>Setting: </td>

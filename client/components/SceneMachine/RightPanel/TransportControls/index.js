@@ -1,8 +1,15 @@
-import { initialNewSceneForm } from "../../../../initialStates";
+import { initialNewSceneForm } from '../../../../initialStates';
+import {
+  DetailViewContext,
+  PreviewProviderContext,
+  SetDetailViewContext,
+  SetViewerContext,
+} from '../../../../contexts/SceneMachineProviders';
+import { useContext } from 'react';
+import { initialViewerState } from '../../../../initialStates';
 
+// TODO: view should be global or at least where both contextual menu and transport menu can observe it
 const TransportControls = ({
-  detail,
-  setDetail,
   state,
   activeShot,
   setActiveShot,
@@ -11,7 +18,10 @@ const TransportControls = ({
   userContext,
   view,
 }) => {
-
+  const detail = useContext(DetailViewContext);
+  const setDetail = useContext(SetDetailViewContext);
+  const setPreview = useContext(PreviewProviderContext)
+  const setViewer = useContext(SetViewerContext)
 
   const handleCheckin = () => {
     setShowModal(true);
@@ -85,7 +95,7 @@ const TransportControls = ({
             </button>
             <button
               className={`btn-small ${
-                detail === view.background ? 'active' : ''
+                detail === view.breakdown ? 'active' : ''
               }`}
               onClick={() => setDetail(view.breakdown)}>
               Breakdowns
@@ -227,4 +237,4 @@ const TransportControls = ({
   );
 };
 
-export default TransportControls
+export default TransportControls;

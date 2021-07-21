@@ -1,14 +1,14 @@
 import Loader from './Loader';
-import SceneMachineTitle from './SceneMachineTitle';
-import SceneMachineStripArea from './SceneMachineStripArea';
-import SceneMachineLeftPanel from './SceneMachineLeftPanel';
-import SceneMachineControlPanel from './SceneMachineControlPanel';
+import SceneMachineTitle from './TitleArea';
+import SceneMachineStripArea from './StripArea';
+import SceneMachineLeftPanel from './LeftPanel';
+import SceneMachineControlPanel from './ControlPanel';
 import SceneMachineOverview from './SceneMachineOverview';
 import SceneMachineBody from './SceneMachineBody';
-import SceneMachineRightPanel from './SceneMachineRightPanel';
-import ControlPanelButtons from './SceneMachineControlPanel/ControlPanelButtons';
-import ControlPanelDisplay from './SceneMachineControlPanel/ControlPanelDisplay';
-import ControlPanelContextualMenu from './SceneMachineControlPanel/ControlPanelContextualMenu';
+import SceneMachineRightPanel from './RightPanel';
+import ControlPanelButtons from './ControlPanel/ControlPanelButtons';
+import ControlPanelDisplay from './ControlPanel/ControlPanelDisplay';
+import ControlPanelContextualMenu from './ControlPanel/ControlPanelContextualMenu';
 
 import {
   TitleButtonProvider,
@@ -17,6 +17,7 @@ import {
   ViewerProvider,
   MachineStateContext,
   ModalProvider,
+  DetailViewProvider
 } from '../../contexts/SceneMachineProviders';
 
 const Providers = ({ children }) => {
@@ -29,7 +30,9 @@ const Providers = ({ children }) => {
             <PreviewContextProvider>
               <TitleButtonProvider>
                 <ControlPanelButtonsProvider>
+                  <DetailViewProvider>
                     {children}
+                  </DetailViewProvider>
                 </ControlPanelButtonsProvider>
               </TitleButtonProvider>
             </PreviewContextProvider>

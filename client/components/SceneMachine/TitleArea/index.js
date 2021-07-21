@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { ControlPanelButtonsContext } from "../../../contexts/SceneMachineProviders";
 import TitleButtons from "./TitleButtons";
+import { machineView } from "../../../dataModels";
 
 const SceneMachineTitle = () => {
   // TODO: if scene order changes make share available.
@@ -9,6 +11,7 @@ const SceneMachineTitle = () => {
     edited: false, // this should probably be part of the globle project state
   };
   const [sceneEdit, setSceneEdit] = useState(initialSceneEditState);
+  const buttons = useContext(ControlPanelButtonsContext);
 
   
   const SceneMachineTitleStyle = () => {
@@ -122,7 +125,7 @@ const SceneMachineTitle = () => {
         </div>
         {/* <h1>{buttons.machine === 'scene' ? 'Scene' : 'Asset'} Machine</h1> */}
         <div className="title-buttons-right">
-          {sceneEdit.edited && (
+          {false && (
             <>
               <div className="btn-mini">
                 <i class="fas fa-redo-alt"></i>
@@ -132,6 +135,20 @@ const SceneMachineTitle = () => {
               </div>
             </>
           )}
+          {buttons.display === machineView.view1.name && <>
+          <div className="btn-mini">
+            <i className="fas fa-trash-alt"></i>
+          </div>
+          <div className="btn-mini">
+            <i class="fas fa-film"></i>
+          </div>
+          {true && (
+            <div className="btn-mini">
+              <i class="far fa-share-square"></i>
+            </div>
+          )}
+          </>}
+          {buttons.display === machineView.view4.name && <>
           <div className="btn-mini">
             <i className="fas fa-trash-alt"></i>
           </div>
@@ -141,14 +158,12 @@ const SceneMachineTitle = () => {
           <div className="btn-mini">
             <i class="far fa-clone"></i>
           </div>
-          <div className="btn-mini">
-            <i class="fas fa-film"></i>
-          </div>
-          {sceneEdit.sceneOrder && (
+          {true && (
             <div className="btn-mini">
               <i class="far fa-share-square"></i>
             </div>
           )}
+          </>}
         </div>
       </div>
     </>

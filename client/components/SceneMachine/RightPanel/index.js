@@ -1,52 +1,33 @@
 import { useContext, useState, useEffect, useLayoutEffect } from 'react';
 import {
   ViewerContext,
-  SetViewerContext,
   ModalContext,
   SetModalContext,
   PreviewStateContext,
   PreviewProviderContext,
   MachineStateDispatchContext,
   MachineStateStateContext,
+  DetailViewContext,
+  SetDetailViewContext,
 } from '../../../contexts/SceneMachineProviders';
 import { Context } from '../../../context';
 import { SceneMachineRightPanelStyle } from './SceneMachineRightPanelStyle';
 import NewSceneForm from '../NewSceneForm';
-import RightPanelOverview from './RightPanelOverview';
-import RightPanelScriptView from './RightPanelScriptView';
-import RightPanelBreakdownView from './RightPanelBreakdownView';
-import RightPanelBoardsView from './RightPanelBoardsView';
-import RightPanelFrame from './RightPanelFrame';
+import RightPanelOverview from './Overview';
+import RightPanelScriptView from './ScriptView';
+import RightPanelBreakdownView from './BreakdownView';
+import RightPanelBoardsView from './BoardsView';
+import RightPanelFrame from './PanelFrame';
 import TransportControls from './TransportControls';
-
-const view = {
-  edit: 'edit',
-  panelDetails: 'panel details',
-  main: 'main',
-  none: 'none',
-  newScene: 'new scene',
-  overview: 'overview',
-  script: 'script',
-  breakdown: 'breakdown',
-  boards: 'boards',
-  video: 'video',
-};
-
-const bgPresets = {
-  script: 'white',
-  overview: 'rgb(218, 214, 208)',
-  breakdown: 'rgb(218, 214, 208)',
-  boards: 'rgb(59, 63, 63)',
-  video: 'rgb(59, 63, 63)',
-};
+import { detailView as view, bgPresets } from '../../../dataModels';
 
 const SceneMachineRightPanel = () => {
   const userContext = useContext(Context);
   const [activeShot, setActiveShot] = useState('');
-  const [detail, setDetail] = useState(view.overview);
+  const detail = useContext(DetailViewContext)
+  const setDetail = useContext(SetDetailViewContext)
   const [background, setBackground] = useState(bgPresets.overview);
   const viewer = useContext(ViewerContext);
-  const setViewer = useContext(SetViewerContext);
   const showModal = useContext(ModalContext);
   const setShowModal = useContext(SetModalContext);
   const preview = useContext(PreviewStateContext);
@@ -54,6 +35,7 @@ const SceneMachineRightPanel = () => {
   const dispatch = useContext(MachineStateDispatchContext);
   const state = useContext(MachineStateStateContext);
 
+  // console.log('viewer in right panel',viewer)
   // useEffect(() => {
   //   setDetail(view.overview);
   //   dispatch(['RESET_VIEWER']); // not working yet
@@ -115,7 +97,6 @@ const SceneMachineRightPanel = () => {
       <RightPanelFrame>
         <TransportControls
           detail={detail}
-          setDetail={setDetail}
           state={state}
           dispatch={dispatch}
           activeShot={activeShot}
@@ -132,9 +113,8 @@ const SceneMachineRightPanel = () => {
           {detail === view.script && (
             <RightPanelScriptView
               state={state}
-              viewer={viewer}
               view={view}
-              setViewer={setViewer}
+              viewer={viewer}
             />
           )}
 

@@ -20,10 +20,10 @@ const FieldView = () => {
   // console.log(router);
 
   useEffect(() => {
-    loadCourse();
+    loadField();
   }, [slug]);
 
-  const loadCourse = async () => {
+  const loadField = async () => {
     const { data } = await axios.get(`/api/field/${slug}`);
     setField(data);
   };
