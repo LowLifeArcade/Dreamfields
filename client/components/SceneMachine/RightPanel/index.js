@@ -9,6 +9,7 @@ import {
   MachineStateStateContext,
   DetailViewContext,
   SetDetailViewContext,
+  ProjectContext,
 } from '../../../contexts/SceneMachineProviders';
 import { Context } from '../../../context';
 import { SceneMachineRightPanelStyle } from './SceneMachineRightPanelStyle';
@@ -34,6 +35,8 @@ const SceneMachineRightPanel = () => {
   const setPreview = useContext(PreviewProviderContext);
   const dispatch = useContext(MachineStateDispatchContext);
   const state = useContext(MachineStateStateContext);
+  const project = useContext(ProjectContext)
+  console.log('project',project)
 
   // console.log('viewer in right panel',viewer)
   // useEffect(() => {
@@ -107,6 +110,9 @@ const SceneMachineRightPanel = () => {
         />
 
         <div className="transport-overview">
+          {/* <div className="transport-overview-frame"> */}
+
+          
           {detail === view.overview && 
           <RightPanelOverview viewer={viewer} />}
 
@@ -138,9 +144,13 @@ const SceneMachineRightPanel = () => {
           )}
 
           {detail === view.panelDetails && <div>panel details</div>}
+          {detail === view.assets && <div>assets</div>}
+          {detail === view.modelSheets && <div>model sheets</div>}
+          {detail === view.backgrounds && <div>backgrounds</div>}
 
           {detail === view.newScene && <NewSceneForm />}
         </div>
+        {/* </div> */}
       </RightPanelFrame>
     </>
   );

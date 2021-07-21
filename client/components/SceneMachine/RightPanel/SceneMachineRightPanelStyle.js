@@ -9,11 +9,11 @@ export const SceneMachineRightPanelStyle = ({ background }) => {
         // border: solid 1px rgb(54, 23, 23);
         border-style: double;
         padding: 2px 4px;
-        box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.5);
+        box-shadow:  2px 2px 2px rgba(0, 0, 0, 0.5), 0 1px 2px black, inset -.4px -.5px .6px black;
       }
       .transport {
         // box-shadow: inset 0 0 10px;
-        border: solid 1px;
+        border-bottom: solid 1px;
         // border-radius: 5px;
         padding: 10px;
         display: flex;
@@ -33,33 +33,39 @@ export const SceneMachineRightPanelStyle = ({ background }) => {
       .transport-right-controls {
         width: 30px;
         display: flex;
-        flex-direction: row-reverse;
+        // flex-direction: row-reverse;
+        justify-content: flex-end;
       }
       .btn-small {
-        // color: rgb(7, 245, 233);
+        background: #1b1e1f;
+        box-shadow: 0 2px 2px;
       }
 
       .btn-small.active {
         color: rgb(7, 245, 233);
-        box-shadow: 0 0 1px rgba(167, 175, 175, 0.3);
+        // box-shadow: 0 0 1px rgba(167, 175, 175, 0.3);
       }
       .transport-overview {
         // z-index: 1;
         background-color: ${background};
         width: auto;
         // border: solid 1px rgb(65, 11, 11);
-        margin: 10px;
+        margin: 15px;
 
         // overflow: auto;
         height: 100%;
         // max-height: 100%;
         border-radius: 10px;
-        box-shadow: inset 0 0 10px, inset 0 0 3px;
-        padding: 0 2px;
+        // box-shadow: inset 0 0 10px, inset 0 0 3px;
+        box-shadow:  0 0 10px, 0 0 9px, 0 0 8px, 0 0 3px, 0 0 6px, inset 0 0 3px;
+        padding: 0 3px;
         overflow-y: scroll;
         display: flex;
         flex-direction: column;
         z-index: 2;
+      }
+      .transport-overview-frame {
+        padding: 20px;
       }
       .transport-description {
         padding: 20px;

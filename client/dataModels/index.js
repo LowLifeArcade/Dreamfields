@@ -17,6 +17,9 @@ export const detailView = {
   breakdown: 'breakdown',
   boards: 'boards',
   video: 'video',
+  backgrounds: 'backgrounds',
+  assets: 'assets',
+  modelSheets: 'modelSheets'
 };
 
 export const bgPresets = {

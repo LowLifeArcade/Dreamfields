@@ -3,6 +3,7 @@ import '../styles/globals.css';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Provider } from '../context';
+import { ProjectProvider } from '../contexts/SceneMachineProviders';
 
 // TODO: create a context and reducer for the sideMenuItems prop
 
@@ -22,12 +23,13 @@ const fakeMenuItems2 = [
 function MyApp({ Component, pageProps }) {
   return (
     <Provider>
+      <ProjectProvider>
       <head>
         {/* <script src="https://kit.fontawesome.com/69aa58689a.js" crossorigin="anonymous"></script> */}
         <link
           rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-        />
+          />
         <style>
           @import
           url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
@@ -49,11 +51,12 @@ function MyApp({ Component, pageProps }) {
         pauseOnFocusLoss
         draggable
         pauseOnHover
-      />
+        />
 
       <Layout items1={fakeMenuItems} items2={fakeMenuItems2} showSideBar={true}>
         <Component {...pageProps} />
       </Layout>
+        </ProjectProvider>
     </Provider>
   );
 }

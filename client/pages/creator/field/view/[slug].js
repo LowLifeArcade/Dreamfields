@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useRouter } from 'next/router';
 import CreatorRoute from '../../../../components/routes/CreatorRoute';
 import axios from 'axios';
 import OVSidebarItems from '../../../../components/overview/OVSidebarItem';
 import SceneMachine from '../../../../components/SceneMachine';
 import ReactMarkdown from 'react-markdown';
+import { ProjectProvider, setProjectContext } from '../../../../contexts/SceneMachineProviders';
 
 // TODO: implement smooth scrolling from link to link on page
 
@@ -17,7 +18,7 @@ const FieldView = () => {
   const [corkImage, setCorkImage] = useState();
   const router = useRouter();
   const { slug } = router.query;
-  // console.log(router);
+  const dispatch = useContext(setProjectContext)
 
   useEffect(() => {
     loadField();
@@ -26,6 +27,7 @@ const FieldView = () => {
   const loadField = async () => {
     const { data } = await axios.get(`/api/field/${slug}`);
     setField(data);
+    dispatch(['LOAD_PROJECT', data])
   };
 
   return (

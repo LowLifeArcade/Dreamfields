@@ -8,15 +8,15 @@ const SceneMachineControlPanelStyle = () => {
         align-items: center;
       }
 
-      .control-panel-buttons {
-        height: 60px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 5px;
-        cursor: pointer;
-        // width: 30px;
-      }
+      // .control-panel-buttons {
+      //   height: 60px;
+      //   display: flex;
+      //   justify-content: center;
+      //   align-items: center;
+      //   margin: 5px;
+      //   cursor: pointer;
+      //   // width: 30px;
+      // }
 
       .control-panel-display {
         font-size: 1rem;
@@ -43,17 +43,17 @@ const SceneMachineControlPanelStyle = () => {
         flex-direction: row-reverse;
       }
 
-      .btn {
-        width: 45px;
-        height: 43px;
-        // border: solid 1px rgb(10, 1, 1);
-        border: solid 1px rgb(54, 58, 61);
-        border-right: none;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-      }
+      // .btn {
+      //   width: 45px;
+      //   height: 43px;
+      //   // border: solid 1px rgb(10, 1, 1);
+      //   border: solid 1px rgb(54, 58, 61);
+      //   border-right: none;
+      //   display: flex;
+      //   align-items: center;
+      //   justify-content: center;
+      //   cursor: pointer;
+      // }
 
       .btn:last-child {
         border-right: solid 1px rgb(54, 58, 61);

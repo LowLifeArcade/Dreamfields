@@ -16,7 +16,8 @@ const SceneMachineStripArea = () => {
   const viewer = useContext(ViewerContext);
   const setViewer = useContext(SetViewerContext);
   const dispatch = useContext(MachineStateDispatchContext);
-  const buttons = useContext(ControlPanelButtonsContext)
+  const buttons = useContext(ControlPanelButtonsContext);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     setScenes(initialScenes);
@@ -49,33 +50,39 @@ const SceneMachineStripArea = () => {
     <>
       <StripStyle />
       <div className="section-strip-container">
-        
         <div id="act1" className="scenes-section-strip">
-          {<>
-          {buttons.display === machineView.view4.name && scenes.map((scene) => (
+          {
             <>
-              <div
-                key={scene.id}
-                onClick={(e) => handleViewer(e, scene)}
-                className="scene-strip">
-                <img
-                  className={scene.id === viewer.id && 'active'}
-                  src={scene.stripImage}
-                  alt=""
-                />
-                <p>{scene.sceneName}</p>
+              {buttons.display === machineView.view4.name &&
+                scenes.map((scene) => (
+                  <>
+                    <div
+                      key={scene.id}
+                      onClick={(e) => handleViewer(e, scene)}
+                      className="scene-strip">
+                      <div className="empty-strip">
+                        <img
+                          style={{opacity: loaded ? 1 : 0}}
+                          className={'scene-strip-img ' + scene.id === viewer.id && ' active'}
+                          src={scene.stripImage}
+                          alt="scene-thumbnail"
+                          onLoad={() => setLoaded(true)}
+                        />
+                      </div>
+                      <p>{scene.sceneName}</p>
+                    </div>
+                  </>
+                ))}
+              <div className="scene-strip">
+                <div onClick={handleNewScene} className="empty-strip"></div>
+                <div onClick={handleNewScene} className="scene-strip-add">
+                  <div>
+                    <i class="fas fa-plus "></i>
+                  </div>
+                </div>
               </div>
             </>
-          ))}
-          <div className="scene-strip">
-            <div onClick={handleNewScene} className="empty-strip"></div>
-            <div onClick={handleNewScene} className="scene-strip-add">
-              <div>
-                <i class="fas fa-plus "></i>
-              </div>
-            </div>
-          </div>
-          </>}
+          }
         </div>
       </div>
     </>

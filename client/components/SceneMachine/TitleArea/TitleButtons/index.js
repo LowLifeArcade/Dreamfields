@@ -14,7 +14,8 @@ const TitleButtons = () => {
       <TitleButtonsStyle />
       <div
         onClick={() => setMachine({ machine: 'Scene' })}
-        className="btn-ctrl">
+        className="btn-ctrl"
+        >
         <div
           className={`btn-ctrl-inside ${
             machine.machine === 'Scene' && 'active'

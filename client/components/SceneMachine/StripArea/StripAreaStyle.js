@@ -30,6 +30,8 @@ const SceneMachineStripStyle = () => {
         // border-top: dashed 6px rgb(201, 196, 196);
         // border-bottom: dashed 6px rgb(201, 196, 196);
         // border-bottom: dashed 8px rgb(7, 7, 5);;
+        // width: 89px;
+        background: #1D1818;
         padding: 6px 20px;
         margin: 0 3px;
         // border-right: solid 2px rgb(15, 11, 11);
@@ -41,18 +43,20 @@ const SceneMachineStripStyle = () => {
         display: none;
       }
 
-      .scene-strip > img {
+      .scene-strip > div > img {
         height: 50px;
         background: #e0e0e0;
         border-radius: 3px;
         // position: relative;
         // transform: rotate(-90deg);
+        
         cursor: pointer;
         opacity: 0.6;
       }
       .empty-strip {
         height: 50px;
         // width: 88.89px;
+        width: 89px;
         background: #3f3f3f;
         // position: relative;
         // transform: rotate(-90deg);

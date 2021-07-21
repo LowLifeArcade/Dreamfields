@@ -10,7 +10,7 @@ const TitleButtonsStyle = () => {
         display: flex;
         align-items: center;
         justify-content: center;
-        cursor: pointer;
+       
       }
       .btn-ctrl-inside > div.active {
         color: #6d6d6d;
@@ -21,6 +21,7 @@ const TitleButtonsStyle = () => {
         transition: 0.2s ease-in;
       }
       .btn-ctrl-inside {
+        cursor: pointer;
         transition: 0.7s ease-in;
         width: 25px;
         height: 25px;

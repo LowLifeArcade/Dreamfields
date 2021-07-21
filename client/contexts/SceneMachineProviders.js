@@ -5,6 +5,7 @@ import {
   initialScenes,
 } from '../initialStates';
 import { detailView, machineView } from '../dataModels';
+import axios from 'axios';
 
 // Select either Scene Machine or Asset Machine
 export const TitleButtonContext = createContext();
@@ -240,3 +241,36 @@ export const ModalProvider = ({ children }) => {
     </>
   );
 };
+
+export const ProjectContext = createContext()
+export const setProjectContext = createContext()
+export const ProjectProvider  = ({children}) => {
+  const fetchData = async (slug) => {
+    const {data} = await axios.get(`/api/field/${slug}`)
+    console.log(data)
+    return {...data}
+  }
+
+  const initialProject = {}
+
+  const projectReducer  = (state, [type, payload]) => {
+    switch (type) {
+      case 'FETCH_PROJECT':
+        fetchData(payload)
+      case 'LOAD_PROJECT':
+      return {...payload}
+      default:
+        state
+    }
+  }
+
+  const [projectState, projectDispatch] = useReducer(projectReducer, initialProject)
+
+  return <>
+    <ProjectContext.Provider value={projectState}>
+      <setProjectContext.Provider value={projectDispatch}>
+        {children}
+      </setProjectContext.Provider>
+    </ProjectContext.Provider>
+  </>
+}

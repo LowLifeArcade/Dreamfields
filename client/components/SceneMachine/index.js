@@ -1,4 +1,4 @@
-import Loader from './Loader';
+import Spinner from './Spinner';
 import SceneMachineTitle from './TitleArea';
 import SceneMachineStripArea from './StripArea';
 import SceneMachineLeftPanel from './LeftPanel';
@@ -17,13 +17,15 @@ import {
   ViewerProvider,
   MachineStateContext,
   ModalProvider,
-  DetailViewProvider
+  DetailViewProvider,
+  ProjectProvider
 } from '../../contexts/SceneMachineProviders';
 
 const Providers = ({ children }) => {
 
   return (
     <>
+    {/* <ProjectProvider> */}
       <MachineStateContext>
         <ModalProvider>
           <ViewerProvider>
@@ -39,6 +41,7 @@ const Providers = ({ children }) => {
           </ViewerProvider>
         </ModalProvider>
       </MachineStateContext>
+    {/* </ProjectProvider> */}
     </>
   );
 };
@@ -52,7 +55,7 @@ const SceneMachine = () => {
           rel="stylesheet"
         />
       </head>
-      {/* <Loader /> */}
+      <Spinner opacity={0}/> 
       <Providers>
         <SceneMachineBody>
           <SceneMachineTitle />

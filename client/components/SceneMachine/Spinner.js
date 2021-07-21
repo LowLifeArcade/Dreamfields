@@ -1,10 +1,10 @@
 // import { useIsFetching} from 'react-query'
 // use above at some point
 
-export default function Loader() {
+export default function Spinner(props) {
   // probably need to subscribe to a provider to get loading info
   return (
-    <div className="loader spinner" style={{ opacity: 1 }}>
+    <div className="loader spinner" style={{ opacity: props.opacity }}>
       
       <div className="inner">Loading...</div>
       {/* const isFetching = useIsFetching() */}
