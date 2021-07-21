@@ -1,17 +1,6 @@
-import React from 'react';
+import {useEffect} from 'react';
+import { initialBreakdown } from '../../../initialStates';
 
-const initialBreakdown = {
-  id: null,
-  shot: null,
-  complexity: '',
-  assets: '',
-  FX: '',
-  characters: '',
-  backgrounds: '',
-  description: '',
-  breakdown: '',
-  preProdBoard: '',
-};
 
 const RightPanelBreakdownView = ({
   state,
@@ -20,6 +9,10 @@ const RightPanelBreakdownView = ({
   setActiveShot,
   activeShot,
 }) => {
+  useEffect(() => {
+   setActiveShot('')
+  }, [viewer]);
+
   const handleAddBreakdown = () => {
     dispatch(['CONFIRM', [...state.shotList, initialBreakdown]]);
   };

@@ -1,5 +1,18 @@
 // data
 
+export const initialBreakdown = {
+  id: null,
+  shot: null,
+  complexity: '',
+  assets: '',
+  FX: '',
+  characters: '',
+  backgrounds: '',
+  description: '',
+  breakdown: '',
+  preProdBoard: '',
+};
+
 // scene template
 export const initialViewerState = {
   id: 210501,
@@ -360,7 +373,7 @@ export const initialScenes = [
         preProdBoard: '',
       },
       {
-        id: 2,
+        id: 3,
         shot: 2,
         complexity: 'medium',
         assets: 'snakes',

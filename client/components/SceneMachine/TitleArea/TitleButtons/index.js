@@ -22,7 +22,8 @@ const TitleButtons = () => {
           }`}>
           <div
             className={`btn-mini ${machine.machine === 'Scene' && 'active'}`}>
-            <i className="fas fa-power-off"></i>
+            {/* <i className="fas fa-power-off"></i> */}
+            <i class="fas fa-camera-retro fa-xs"></i>
           </div>
         </div>
       </div>
@@ -35,7 +36,8 @@ const TitleButtons = () => {
           }`}>
           <div
             className={`btn-mini ${machine.machine === 'Asset' && 'active'}`}>
-            <i className="fas fa-power-off"></i>
+            {/* <i className="fas fa-power-off"></i> */}
+            <i class="fas fa-palette fa-xs"></i>
           </div>
         </div>
       </div>
