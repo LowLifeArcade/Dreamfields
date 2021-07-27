@@ -50,27 +50,27 @@ const Login = () => {
       // redirect
       router.push('/')
 
-      toast.warning('Login successfull', {
-        position: 'bottom-left',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      // toast.warning('Login successfull', {
+      //   position: 'bottom-left',
+      //   autoClose: 5000,
+      //   hideProgressBar: false,
+      //   closeOnClick: true,
+      //   pauseOnHover: true,
+      //   draggable: true,
+      //   progress: undefined,
+      // });
       console.log('LOGIN RES', data);
       
     } catch (err) {
-      toast.error(err.response.data, {
-        position: 'bottom-left',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      // toast.error(err.response.data, {
+      //   position: 'bottom-left',
+      //   autoClose: 5000,
+      //   hideProgressBar: false,
+      //   closeOnClick: true,
+      //   pauseOnHover: true,
+      //   draggable: true,
+      //   progress: undefined,
+      // });
       setLoading(false);
     }
   };

@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import NavMainSection from './NavMainSection/index.js';
 import { Context } from '../context';
 import axios from 'axios';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
 import router from 'next/router';
 import NavRightItems from './NavRightItems';
 
@@ -21,7 +21,7 @@ const NavBar = ({ onLogoClick, showSideMenu }) => {
     dispatch({ type: 'LOGOUT' });
     window.localStorage.removeItem('user');
     const { data } = await axios.get('/api/logout');
-    toast.warn(data.message);
+    // toast.warn(data.message);
     router.push('/login'); // instead of const router = useRouter()
   };
   return (

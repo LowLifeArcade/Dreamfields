@@ -8,7 +8,7 @@ import FormSelect from '../../../components/formlayout/FormSelect';
 import ButtonUpload from '../../../components/ButtonUpload';
 import Button from '../../../components/Button';
 import Resizer from 'react-image-file-resizer';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
 import axios from 'axios';
 import router from 'next/router';
 
@@ -55,7 +55,8 @@ const CreateField = () => {
         setValues({ ...values, loading: false });
       } catch (err) {
         setValues({ ...values, loading: false });
-        toast.warning('failed uploadd');
+        // toast.warning('failed uploadd');
+        console.log('failed upload')
       }
     });
   };
@@ -73,7 +74,8 @@ const CreateField = () => {
       } catch (err) {
         console.log(err);
         setValues({ ...values, loading: false });
-        toast.warn('Image upload failed.');
+        // toast.warn('Image upload failed.');
+        console.log('Image upload failed')
       }
     }
   };
@@ -85,12 +87,14 @@ const CreateField = () => {
         ...values,
         image,
       });
-      toast.success('Awesome! Now we can start adding scenes to your field.');
+      // toast.success('Awesome! Now we can start adding scenes to your field.');
+      console.log('success')
       setTimeout(() => {
         router.push('/creator');
       }, 2000);
     } catch (err) {
-      toast.error(err.response.data);
+      // toast.error(err.response.data);
+      console.log(err.response.data)
     }
   };
 

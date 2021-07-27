@@ -3,7 +3,7 @@ import Card from '../components/Card';
 import FormInput from '../components/formlayout/FormInput';
 import Button from '../components/Button';
 import axios from 'axios';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
 import Link from 'next/link';
 import { Context } from '../context';
 import router from 'next/router';
@@ -38,15 +38,15 @@ const Register = () => {
         password,
       });
 
-      toast.warning('Registration successfull', {
-        position: 'bottom-left',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      // toast.warning('Registration successfull', {
+      //   position: 'bottom-left',
+      //   autoClose: 5000,
+      //   hideProgressBar: false,
+      //   closeOnClick: true,
+      //   pauseOnHover: true,
+      //   draggable: true,
+      //   progress: undefined,
+      // });
       setName('')
       setEmail('')
       setPassword('')
@@ -54,15 +54,15 @@ const Register = () => {
       setLoading(false);
       router.push('/login')
     } catch (err) {
-      toast.error(err.response.data, {
-        position: 'bottom-left',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      // toast.error(err.response.data, {
+      //   position: 'bottom-left',
+      //   autoClose: 5000,
+      //   hideProgressBar: false,
+      //   closeOnClick: true,
+      //   pauseOnHover: true,
+      //   draggable: true,
+      //   progress: undefined,
+      // });
       setLoading(false);
     }
   };

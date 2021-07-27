@@ -12,7 +12,6 @@ import { makeCreator, getAccountStatus, currentCreator, creatorFields } from '..
 router.post('/make-creator', requireSignin, makeCreator)
 router.post('/get-account-status', requireSignin, getAccountStatus)
 router.get('/current-creator', requireSignin, currentCreator)
-
 router.get('/creator-fields', requireSignin, creatorFields)
 
 module.exports = router;

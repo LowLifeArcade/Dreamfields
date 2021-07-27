@@ -7,7 +7,9 @@ import {
 import { detailView, machineView } from '../dataModels';
 import axios from 'axios';
 
-// Select either Scene Machine or Asset Machine
+/**
+ *  Select either Scene Machine or Asset Machine 
+ * */ 
 export const TitleButtonContext = createContext();
 export const TitleSetButtonContext = createContext();
 export const TitleButtonProvider = ({ children }) => {
@@ -26,9 +28,12 @@ export const TitleButtonProvider = ({ children }) => {
   );
 };
 
-// Select any of 5 states in Scene Machine Mode
-// currently set up with Reels, Acts, Sequences, Scenes, Panels
-// possibly use Timeline, Scenes and other important views instead
+/**
+ * Select any of 5 states in Scene Machine Mode
+ * 
+ * currently set up with Reels, Acts, Sequences, Scenes, Panels
+ * possibly use Timeline, Scenes and other important views instead
+ */
 export const ControlPanelButtonsContext = createContext();
 export const ControlSetPanelButtonsContext = createContext();
 export const ControlPanelButtonsProvider = ({ children }) => {

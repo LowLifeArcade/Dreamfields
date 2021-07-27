@@ -7,6 +7,7 @@ import SceneMachine from '../../../../components/SceneMachine';
 import ReactMarkdown from 'react-markdown';
 import { ProjectProvider, setProjectContext } from '../../../../contexts/SceneMachineProviders';
 
+
 // TODO: implement smooth scrolling from link to link on page
 
 const addFlicker = () => {

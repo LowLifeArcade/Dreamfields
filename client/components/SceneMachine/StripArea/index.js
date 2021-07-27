@@ -1,3 +1,4 @@
+// /@ts-check
 import { useState, useContext, useEffect } from 'react';
 import {
   PreviewProviderContext,
@@ -18,6 +19,7 @@ const SceneMachineStripArea = () => {
   const dispatch = useContext(MachineStateDispatchContext);
   const buttons = useContext(ControlPanelButtonsContext);
   const [loaded, setLoaded] = useState(false);
+
 
   useEffect(() => {
     setScenes(initialScenes);

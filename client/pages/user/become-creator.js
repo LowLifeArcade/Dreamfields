@@ -21,7 +21,7 @@ const BecomeCreator = () => {
       })
       .catch((err) => {
         console.log(err.response.status)
-        toast.error('Stripe onboarding failed')
+        // toast.error('Stripe onboarding failed')
         setLoading(false)
       })
   }

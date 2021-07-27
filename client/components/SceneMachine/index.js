@@ -1,3 +1,4 @@
+// /@ts-check
 import Spinner from './Spinner';
 import SceneMachineTitle from './TitleArea';
 import SceneMachineStripArea from './StripArea';
@@ -21,6 +22,11 @@ import {
   ProjectProvider
 } from '../../contexts/SceneMachineProviders';
 
+/**
+ * These Provider provide both the values and setters
+ * The providers are split up to prevent unnecessary rerenders
+ * @returns context values and setters
+ */
 const Providers = ({ children }) => {
 
   return (
