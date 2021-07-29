@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { initialNewSceneForm } from "../../../initialStates";
 import FormCard from "../../formlayout/FormCard";
+import axios from "axios";
 
 const NewSceneForm = () => {
   const [state, setState] = useState(initialNewSceneForm);
@@ -35,9 +36,28 @@ const NewSceneForm = () => {
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      toast('Video upload failed');
+      // toast('Video upload failed');
+      console.log('video upload failed')
     }
   };
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const { data } = await axios.post('/api/field', {
+  //       ...values,
+  //       image,
+  //     });
+  //     // toast.success('Awesome! Now we can start adding scenes to your field.');
+  //     console.log('success')
+  //     setTimeout(() => {
+  //       router.push('/creator');
+  //     }, 2000);
+  //   } catch (err) {
+  //     // toast.error(err.response.data);
+  //     console.log(err.response.data)
+  //   }
+  // };
 
   const loadItem = (e, name) => {
     e.preventDefault();
@@ -89,9 +109,18 @@ const NewSceneForm = () => {
     });
   };
   // backend submission
+  // TODO: add an id field that links the field to the scene
   const handleAddScene = async (e) => {
     e.preventDefault();
-    // console.log(newSceneForm);
+    try {
+    const {data} = await axios.post('api/scene', {
+      ...state 
+    })
+    
+    console.log('Added Scene Succesfully',data.response)
+    } catch (err) {
+      console.log(err.response.data)
+    }
   };
   return (
     <>
@@ -157,6 +186,7 @@ const NewSceneForm = () => {
         <br />
         <hr />
         <br />
+        
         <div id="scene-characters" className="section">
           <label className="label" htmlFor="characters">
             Characters {state.characters.length}
@@ -185,6 +215,7 @@ const NewSceneForm = () => {
             Add Character
           </button>
         </div>
+
         <div id="scene-assets" className="section">
           <label className="label" htmlFor="assets">
             Assets {state.assets.length}

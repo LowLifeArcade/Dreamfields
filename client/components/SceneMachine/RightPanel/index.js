@@ -19,6 +19,7 @@ import RightPanelScriptView from './ScriptView';
 import RightPanelBreakdownView from './BreakdownView';
 import RightPanelBoardsView from './BoardsView';
 import RightPanelFrame from './PanelFrame';
+import RightPanelVideoView from './VideoView'
 import TransportControls from './TransportControls';
 import { detailView as view, bgPresets } from '../../../dataModels';
 
@@ -142,6 +143,8 @@ const SceneMachineRightPanel = () => {
               preview={preview}
             />
           )}
+
+          {detail === view.video && <RightPanelVideoView viewer={viewer}/> }
 
           {detail === view.panelDetails && <div>panel details</div>}
           {detail === view.assets && <div>assets</div>}

@@ -20,20 +20,49 @@ const links = [
   { slug: 'pie', name: 'Migrate' },
   { slug: 'pie', name: 'Overview' },
 ];
+const initialFormValues = {
+  name: '',
+  slug: '',
+  description: '',
+  projects: {
+    ['projectName']: {
+      slug: '',
+      script: { Location: '', rev: 1 },
+      conceptArt: [],
+      funding: { funded: false, amount: 0 },
+      reels: {
+        ['reelName']: {
+          production: false,
+          timeLine: {
+            tiemLine: [
+              {
+                scene001: '',
+              },
+            ],
+            rev: 1,
+            frameRate: 24,
+            aspectRatio: '16:9',
+          },
+          scenes: [{ id: '', name: '', thumbNail: '' }],
+          director: '',
+          contributors: ['']
+        },
+      },
+    },
+  },
+  uploading: false,
+  loading: false,
+}
+
+
 
 const CreateField = () => {
   const [preview, setPreview] = useState('');
-  const [values, setValues] = useState({
-    name: '',
-    description: '',
-    price: '',
-    uploading: false,
-    paid: false,
-    category: '',
-    loading: false,
-  });
+  const [values, setValues] = useState(initialFormValues);
   const [image, setImage] = useState({});
+  
   const handleChange = (e) => {
+    e.preventDefault()
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
@@ -56,7 +85,7 @@ const CreateField = () => {
       } catch (err) {
         setValues({ ...values, loading: false });
         // toast.warning('failed uploadd');
-        console.log('failed upload')
+        console.log('failed upload');
       }
     });
   };
@@ -75,7 +104,7 @@ const CreateField = () => {
         console.log(err);
         setValues({ ...values, loading: false });
         // toast.warn('Image upload failed.');
-        console.log('Image upload failed')
+        console.log('Image upload failed');
       }
     }
   };
@@ -88,19 +117,19 @@ const CreateField = () => {
         image,
       });
       // toast.success('Awesome! Now we can start adding scenes to your field.');
-      console.log('success')
+      console.log('success');
       setTimeout(() => {
         router.push('/creator');
       }, 2000);
     } catch (err) {
       // toast.error(err.response.data);
-      console.log(err.response.data)
+      console.log(err.response.data);
     }
   };
 
   return (
     <CreatorRoute>
-      <FormLayout items={links} rightBoxItems={values}>
+      <FormLayout  rightBoxItems={values}>
         <FormCard title="Create Field">
           <FormInput
             onChange={handleChange}
@@ -124,8 +153,7 @@ const CreateField = () => {
             onChange={handleChange}
             value={values.category}
             htmlFor="Category"
-            name="category"
-          >
+            name="category">
             <option disabled value="">
               Select One
             </option>
@@ -146,8 +174,7 @@ const CreateField = () => {
               <div>
                 <div
                   onClick={handleImageRemove}
-                  className="banner-preview-container"
-                >
+                  className="banner-preview-container">
                   <img className="banner-preview" src={preview} alt="" />
                 </div>
                 {/* <div className="banner-preview-container">

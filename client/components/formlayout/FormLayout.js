@@ -1,10 +1,15 @@
 import FormSidebar from './FormSidebar';
+/**
+ * @param {Object} rightBoxItems object fills out the:
+ * 
+ * @param {String} Title field uses `object.name`.
+ * @param {String} Description field uses `object.description` 
+ * @param {String} Category field uses`object.category`
+ * @returns JSX for Format Layout
+ */
 const FormLayout = ({
-  title,
   children,
-  items,
-  rightBoxItems,
-  ...restProps
+  rightBoxItems
 }) => {
   return (
     <div>
@@ -23,9 +28,6 @@ const FormLayout = ({
             <div className="right-side-title">Title:{rightBoxItems && rightBoxItems.name}</div>
             <div className="right-side-item">Description:
               {rightBoxItems && rightBoxItems.description}
-            </div>
-            <div className="right-side-item">Paid:
-              {rightBoxItems && rightBoxItems.paid}
             </div>
             <div className="right-side-item">Category:
               {rightBoxItems && rightBoxItems.category}

@@ -237,7 +237,10 @@ export const initialViewerState = {
   video: 's3-videoURL',
   revision: 1,
 };
-// scene template blank
+
+/**
+ * Blank Scene Template
+ */
 export const initialNewSceneForm = {
   // id: '',
   sceneName: '', // done
