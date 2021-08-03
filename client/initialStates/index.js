@@ -1,3 +1,5 @@
+import { production, frameRate, aspectRatio } from "../dataModels";
+
 // data
 
 export const initialBreakdown = {
@@ -257,9 +259,9 @@ export const initialNewSceneForm = {
   forReel: '', // use ObjectId
 
   launched: false,
-  productionStage: 'pre production', // ['pre', 'beat boards', 'story boards', 'production']
-  frameRate: '24', // done
-  aspectRatio: '16:9', // done
+  productionStage: production.pre, 
+  frameRate: frameRate.true24, // done
+  aspectRatio: aspectRatio.HDTV, // done
 
   assets: [{ id: '', name: '', location: '' }], // add button in details
   FX: [{ id: '', name: '', location: '' }], // add button in details
@@ -323,16 +325,20 @@ export const initialNewSceneForm = {
     },
   ],
   animatic: '',
-  video: { s3: '', videoName: '', revision: 1 },
+  video: { Location: '', videoName: '', revision: 1 },
   revision: 1,
 };
 // scene preview
 export const initPreviewState = {
-  image: '//unsplash.it/id/1/400/225',
+  image: '',
+  video: '',
   sceneName: 'Scene Preview',
   panel: '',
   id: '',
+  type: 'default',
+  default: 'https://picsum.photos/id/237/500'
 };
+//unsplash.it/id/1/400/225
 
 // fake data
 export const initialScenes = [

@@ -31,7 +31,6 @@ const Providers = ({ children }) => {
 
   return (
     <>
-    {/* <ProjectProvider> */}
       <MachineStateContext>
         <ModalProvider>
           <ViewerProvider>
@@ -39,7 +38,9 @@ const Providers = ({ children }) => {
               <TitleButtonProvider>
                 <ControlPanelButtonsProvider>
                   <DetailViewProvider>
+                    {/* <ProjectProvider> */}
                     {children}
+                    {/* </ProjectProvider> */}
                   </DetailViewProvider>
                 </ControlPanelButtonsProvider>
               </TitleButtonProvider>
@@ -47,7 +48,6 @@ const Providers = ({ children }) => {
           </ViewerProvider>
         </ModalProvider>
       </MachineStateContext>
-    {/* </ProjectProvider> */}
     </>
   );
 };

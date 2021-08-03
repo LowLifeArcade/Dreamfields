@@ -7,15 +7,16 @@ const router = express.Router();
 import { isCreator, requireSignin } from '../middlewares';
 
 // controllers
-import { uploadImage, removeImage, create, read, uploadVideo } from '../controllers/scene';
+import { uploadImage, removeImage, create, read, uploadVideo, removeVideo } from '../controllers/scene';
 
 // image
 router.post('/scene/upload-image', uploadImage);
 router.post('/scene/remove-image', removeImage);
 
 // scenes
-router.post('/scene', requireSignin, isCreator, create)
+router.post('/create-scene', requireSignin, isCreator, create)
 router.get('/scene/:slug', read)
-router.post('/scene/video-upload', requireSignin, formidable(), uploadVideo)
+router.post('/scene/video-upload/:sceneId', requireSignin, formidable(), uploadVideo)
+router.post('/scene/video-remove/:sceneId', requireSignin, removeVideo)
 
 module.exports = router;

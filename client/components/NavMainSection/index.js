@@ -16,6 +16,7 @@ const NavMainSection = ({ setCurrent, loggedIn, current }) => {
         {loggedIn ? (
           <>
             <NavMainItems
+            className="item"
               active={current === '/' && true}
               setCurrent={setCurrent}
               iconName="far fa-newspaper fa-2x"
@@ -61,6 +62,11 @@ const NavMainSection = ({ setCurrent, loggedIn, current }) => {
           />
         )}
       </div>
+      <style jsx>{`
+      .item {
+        font-size: 1rem;
+      }
+      `}</style>
     </>
   );
 };

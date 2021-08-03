@@ -30,7 +30,7 @@ export const bgPresets = {
   video: 'rgb(59, 63, 63)',
 };
 
-const store = {
+export const store = {
   confirm: false, // move this to detail context
   machineState: 'view', // move this to detail context
   // project, // this will be the whole project
@@ -52,3 +52,31 @@ const store = {
   confirmObj: {}, // move this to detail context
   // scenes: [initialScenes],
 };
+
+export const production = {
+  pre: 'Pre',
+  boards: 'Boards',
+  production: 'Production',
+  post: 'Post'
+}
+
+export const frameRate = {
+  true12: '12fps',
+  sync24:'23.96fps',
+  true24: '24fps',
+  sync30:'29.97fps',
+  true30: '30fps',
+  sync60: '59.94fps',
+  true60: '60fps'
+}
+
+export const aspectRatio = {
+  SDTV: '4:3',
+  HDTV: '16:9',
+  cinema: '1.85:1',
+  netflix: '2:1',
+  cinemaScope: '2.35:1',
+  anamorphic: '2.39:1',
+  auteur: '2.76:1'
+
+}

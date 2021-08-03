@@ -33,7 +33,7 @@ const NavBar = ({ onLogoClick, showSideMenu }) => {
       
       <div className="navbar">
         <div className="leftNavItems">
-          <h1 onClick={() => onLogoClick(!showSideMenu)}>DF </h1>
+          {/* <h1 onClick={() => onLogoClick(!showSideMenu)}>DF </h1> */}
           <div className="input">
             <i className="fas fa-search"></i> &nbsp;{' '}
             <input type="search" placeholder="Search" />
@@ -61,13 +61,16 @@ export default NavBar;
 const Style = () => {
     return <style jsx>{`
     .navbar {
+      color: #4e6985;
       display: flex;
       padding: 0.55rem 0.75rem;
-      height: 50px;
+      height: 43px;
       justify-content: space-between;
       width: 100%;
       position: sticky;
-      background: rgb(252, 248, 237);
+      background: #F2F3F5;
+      // background: rgb(40, 42, 43);
+      // background: rgb(252, 248, 237);
       box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.2);
       z-index: 1;
       top: 0;
@@ -92,11 +95,11 @@ const Style = () => {
     .input {
       display: flex;
       align-items: center;
-      background: #eff2f5;
-      padding: 0.5rem;
+      background: #d9e9f8;
+      padding: 0.4rem;
       margin-left: 0.6rem;
-      border-radius: 2rem;
-      box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.2);
+      border-radius: .2rem;
+      box-shadow: inset 0px 0px 5px rgba(0, 0, 0, 0.5), inset 0px 0px 1px rgba(0, 0, 0, 0.5);
     }
 
     .input > i {

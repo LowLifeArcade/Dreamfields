@@ -144,7 +144,7 @@ const SceneMachineRightPanel = () => {
             />
           )}
 
-          {detail === view.video && <RightPanelVideoView viewer={viewer}/> }
+          {detail === view.video && <RightPanelVideoView setDetail={setDetail} viewer={viewer}/> }
 
           {detail === view.panelDetails && <div>panel details</div>}
           {detail === view.assets && <div>assets</div>}

@@ -1,6 +1,7 @@
 import AWS from 'aws-sdk';
 import { nanoid } from 'nanoid';
 import Field from '../models/field';
+import Scene from '../models/scene';
 import slugify from 'slugify';
 import {readFileSync} from 'fs' // fs.readFileSync
 
@@ -72,7 +73,7 @@ export const removeImage = async (req, res) => {
 };
 
 export const create = async (req, res) => {
-  // console.log('CREATE FIELD', req.body)
+  console.log('CREATE FIELD', req.body)
   // return
   try {
     const alreadyExists = await Field.findOne({
@@ -101,8 +102,54 @@ export const read = async (req, res) => {
   } catch (err) {}
 };
 
+export const getScenes = async (req, res) => {
+  console.log('REQ PARAMS',req.params)
+  return
+  try {
+    const scenes = await Scene.find({ forProject: req.params.fieldSlug })
+      .exec(err => {
+        if (err) return res.status(400).send('Scenes not found');
+      });
+    res.json(scenes);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export const removeScript = async () => {
+  // 
+}
+
+export const uploadScript = async (req, res) => {
+  console.log('script', req.files)
+  try {
+    const { script } = req.files 
+
+    !script && res.status(400).send('No Script')
+
+    const params = {
+      Bucket: 'dreamfields-bucket',
+      Key: `${nanoid()}.${script.type.split('/')[1]}`,
+      Body: readFileSync(script.path),
+      ACL: 'public-read',
+      ContentType: script.type
+    }
+    // upload to s3
+    S3.upload(params, (err, data) => {
+      if (err) {
+        console.log(err)
+        res.sendStatus(400)
+      }
+      console.log(data)
+      res.send(data)
+    })
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 export const uploadVideo = async (req, res) => {
-  console.log('endpoint reached');
+
   try {
     const { video } = req.files;
     // console.log(video)
@@ -129,3 +176,6 @@ export const uploadVideo = async (req, res) => {
     console.log(error);
   }
 };
+
+// uploadScript,
+//   removeScript,

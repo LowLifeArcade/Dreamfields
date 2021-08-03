@@ -38,11 +38,11 @@ const CreatorIndex = () => {
               onClick={() => router.push('/creator/field/create')}
               buttonName="New Field"
             />
+
             {fields &&
               fields.map((field) => (
                 <>
                   <div className="media">
-                    avatar el
                     <div className="media-body">
                       <div className="row">
                         <div className="col">
@@ -50,11 +50,15 @@ const CreatorIndex = () => {
                             href={`/creator/field/view/${field.slug}`}
                             className="pointer"
                           >
-                            <a className="h5 text-primary">{field.name}</a>
+                            <h2>
+
+                            <a className="h5 text-primary pointer">{field.name}</a>
+                            </h2>
                           </Link>
+                          <button>Delete {field.name}</button>
                           <p>{field.description}</p>
-                          {field.scenes.length} Scenes
-                          {field.scenes.length < 1 ? (
+                          {field.timeLine.length} Scenes
+                          {field.timeLine.length < 1 ? (
                             <p>
                               You need at least 1 scene to launch a project.
                             </p>
@@ -89,10 +93,31 @@ const CreatorIndex = () => {
                   </button> */}
                 </>
               ))}
+              {/* <div className="media-json">
+
             <pre>{JSON.stringify(fields, null, 4)}</pre>
+              </div> */}
             <style jsx>{`
+              .pointer {
+                cursor: pointer;
+              }
               .page {
                 padding: 20px;
+              }
+              .text-primary {
+                color: blue;
+              }
+              .media-json {
+                outline: solid 1px;
+                padding: 20px 10px;
+                margin: 10px 0;
+                word-wrap: normal;
+              }
+              .media {
+                outline: solid 1px;
+                padding: 20px 10px;
+                margin: 10px 0;
+                line-height: 2rem;
               }
             `}</style>
           </div>

@@ -1,12 +1,22 @@
-import { useState } from "react";
+import { useState, useContext, useEffect} from "react";
 import { initialNewSceneForm } from "../../../initialStates";
 import FormCard from "../../formlayout/FormCard";
 import axios from "axios";
+import { frameRate } from "../../../dataModels";
+import { ProjectContext } from "../../../contexts/SceneMachineProviders";
+import { SetDetailViewContext } from "../../../contexts/SceneMachineProviders";
 
 const NewSceneForm = () => {
   const [state, setState] = useState(initialNewSceneForm);
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
+  const project = useContext(ProjectContext)
+  const setDetail = useContext(SetDetailViewContext)
+  
+  // console.log('PROJECT DATA', project)
+  useEffect(() => {
+    setState({...state, forProject: project._id})
+  }, []);
   // const [newSceneForm, setNewSceneForm] = useState(initialNewSceneForm);
   // console.log('new scene form state', state);
   // TODO: The new scene form only sets up the basics. We get a scene overview from this with description and scene name and hopefully script. From there the creator will go through and add assets if needed, backgrounds, FX and a shot list with breakdowns and launch the scene.
@@ -113,11 +123,13 @@ const NewSceneForm = () => {
   const handleAddScene = async (e) => {
     e.preventDefault();
     try {
-    const {data} = await axios.post('api/scene', {
+    const {data} = await axios.post(`/api/create-scene`, {
       ...state 
     })
     
     console.log('Added Scene Succesfully',data.response)
+    // redirect user to home page
+     setDetail('overview')
     } catch (err) {
       console.log(err.response.data)
     }
@@ -354,11 +366,13 @@ const NewSceneForm = () => {
             <option disabled value="">
               select framerate
             </option>
-            <option value="12">12fps</option>
-            <option value="23.96">23.96fps</option>
-            <option value="24">24fps</option>
-            <option value="30">30fps</option>
-            <option value="60">60fps</option>
+            <option value={frameRate.true12}>12fps</option>
+            <option value={frameRate.sync24}>23.96fps</option>
+            <option value={frameRate.true24}>24fps</option>
+            <option value={frameRate.sync30}>29.97fps</option>
+            <option value={frameRate.true30}>30fps</option>
+            <option value={frameRate.sync60}>59.97fps</option>
+            <option value={frameRate.true60}>60fps</option>
           </select>
         </div>
         <div id="scene-aspectratio" className="section">

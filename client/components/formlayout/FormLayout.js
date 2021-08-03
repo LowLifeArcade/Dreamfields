@@ -1,42 +1,74 @@
+import { useEffect } from 'react';
 import FormSidebar from './FormSidebar';
+import Link from 'next/link'
 /**
  * @param {Object} rightBoxItems object fills out the:
- * 
+ *
  * @param {String} Title field uses `object.name`.
- * @param {String} Description field uses `object.description` 
+ * @param {String} Description field uses `object.description`
  * @param {String} Category field uses`object.category`
  * @returns JSX for Format Layout
  */
-const FormLayout = ({
-  children,
-  rightBoxItems
-}) => {
+const FormLayout = ({ children, rightBoxItems }) => {
+  
   return (
-    <div>
+    <>
       {/* <h1 className="mini-jumboTron">{title}</h1> */}
       <div className="layout-container">
         {/* <FormSidebar items={items} />{' '} */}
         <div className="page-container">
-          <div className="main-content">{children}</div>
-        </div>
-        <div className="right-side-container">
-          <div className="right-box">
-            <div className="right-side-item">
-
-          <h2>Title Card</h2>
-            </div>
-            <div className="right-side-title">Title:{rightBoxItems && rightBoxItems.name}</div>
-            <div className="right-side-item">Description:
-              {rightBoxItems && rightBoxItems.description}
-            </div>
-            <div className="right-side-item">Category:
-              {rightBoxItems && rightBoxItems.category}
+          <div className="main-content">
+            <div>
+            {children}
             </div>
           </div>
         </div>
-      </div>
+
+        
+        <div className="right-side-container">
+          <div className="right-box">
+            <div className="right-side-item">
+              {rightBoxItems && rightBoxItems.name ? <h2>{rightBoxItems.name}</h2> :<h2>Title Card</h2>}
+            </div>
+            <hr />
+            <div className="right-side-item">
+              <span className='box-item'>Description:</span> {rightBoxItems && rightBoxItems.description}
+            </div>
+            <div className="right-side-item">
+              <span className='box-item'>Script:</span> {rightBoxItems && rightBoxItems.script.Location && <>
+              <Link href={rightBoxItems.script.Location} >
+              <a target='_blank' style={{'color': 'blue'}}>Script Link</a>
+              </Link>
+              </> }
+            </div>
+            <div className="right-side-item">
+              <span className='box-item'>Category:</span> {rightBoxItems && rightBoxItems.category}
+            </div>
+            <hr />
+            <div className="right-side-item">
+              <span className='box-item'>Production:</span> {rightBoxItems && rightBoxItems.production}
+            </div>
+            <div className="right-side-item">
+              <span className='box-item'>Frame Rate: </span>{rightBoxItems && rightBoxItems.frameRate}
+            </div>
+            <div className="right-side-item">
+              <span className='box-item'>Aspect Ratio: </span>{rightBoxItems && rightBoxItems.aspectRatio}
+            </div>
+            <hr />
+            <div className="right-side-item">
+            <span className='box-item'>Funded: </span>
+              {rightBoxItems && rightBoxItems.funding.funded === true ? 'Funded' : 'Not Funded'}
+            </div>
+            {rightBoxItems.funding.funded && <div className="right-side-item">
+            <span className='box-item'>Amount: </span>
+              {rightBoxItems && rightBoxItems.funding.amount}
+            </div>}
+          </div>
+        </div>
+        
       {style}
-    </div>
+      </div>
+    </>
   );
 };
 
@@ -45,9 +77,14 @@ export default FormLayout;
 const style = (
   <style jsx>{`
     .layout-container {
+      width: 100%;
       display: flex;
+      // position: fixed;
       background: rgb(209, 209, 209);
       justify-content: space-between;
+    }
+    .box-item {
+      color: rgb(110, 110, 110);
     }
     .page-container {
       // display: flex;
@@ -55,6 +92,9 @@ const style = (
       background: rgb(209, 209, 209);
       // width: 800px;
       width: 100%;
+      // padding: 0 100px ;
+      display: flex;
+      justify-content: center;
       height: 100vh;
       // flex: 0 0 800px;
     }
@@ -62,8 +102,10 @@ const style = (
       //background: rgb(255, 255, 255);
       overflow-y: scroll;
       display: flex;
-      flex-direction: column;
-      align-items: center;
+      justify-content: center;
+      // display: flex;
+      // flex-direction: column;
+      // align-items: center;
       width: 100%;
       // justify-content: flex-start;
       //width: 60vw;
@@ -85,7 +127,7 @@ const style = (
 
     .right-side-container {
       background: rgb(218, 218, 218);
-      width: 20vw;
+      // width: 20vw;
       border-left: solid 1px rgb(173, 173, 173);
       display: flex;
       flex-direction: column;
@@ -106,7 +148,7 @@ const style = (
     }
     @media (max-width: 1250px) {
       .layout-container {
-        align-items: flex-start;
+        // align-items: flex-start;
       }
       .right-side-container {
         display: none;
@@ -121,6 +163,7 @@ const style = (
     @media (max-width: 1080px) {
       .page-container {
         flex: 0 1 100%;
+        padding: 0;
       }
     }
     @media (max-width: 860px) {

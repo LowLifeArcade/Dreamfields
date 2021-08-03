@@ -1,6 +1,13 @@
 export const PreviewStyle = () => {
   return (
     <style jsx>{`
+      .img, .video {
+        width: 100%;
+        aspect-ratio: 1.7777777777777777;
+        // max-height: 20rem;
+        border-radius: 8px;
+        box-shadow: 0 0 5px rgb(0, 0, 0), 0 0 7px, 0 0 8px, 0 0 1px, inset 0 0 10px rgba(63, 63, 63, 0.699);
+      }
       .left-panel {
         padding: 10px;
         width: 40%;
@@ -8,35 +15,40 @@ export const PreviewStyle = () => {
         overflow: auto;
       }
 
-      .viewer {
-        position: relative;
+      .viewer-frame {
         // max-width: 500px;
         // height: 370px;
         border-radius: 5px;
         // height: 100%;
         // border: solid 15px rgb(24, 4, 4);
-        box-shadow: inset 0 0px 10px rgba(0, 0, 0, 1);
+        box-shadow: inset 0 0px 10px rgba(0, 0, 0, 1), inset 0 0 5px, inset 0 0 8px;
       }
-      .viewer > img {
+      .viewer-media {
+        position: relative;
         // max-height: 90%;
-        padding: 8px;
+        padding: 13px;
         // height: 100%;
         width: 100%;
+
         // max-height: 270px;
       }
 
-      .viewer > div {
+      .media {
+        object-fit: cover;
+      }
+
+      .expand {
         color: rgba(238, 238, 238, 0.699);
         position: absolute;
-        bottom: 18px;
-        right: 10px;
+        bottom: 25px;
+        right: 25px;
         cursor: pointer;
       }
       .preview-state {
         color: rgba(238, 238, 238, 0.699);
         position: absolute;
-        bottom: 18px;
-        left: 15px;
+        bottom: 25px;
+        left: 25px;
       }
 
       .transport-title {

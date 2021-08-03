@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { ControlPanelButtonsContext } from "../../../contexts/SceneMachineProviders";
+import { ControlPanelButtonsContext, ProjectContext } from "../../../contexts/SceneMachineProviders";
 import TitleButtons from "./TitleButtons";
 import { machineView } from "../../../dataModels";
 
@@ -12,6 +12,8 @@ const SceneMachineTitle = () => {
   };
   const [sceneEdit, setSceneEdit] = useState(initialSceneEditState);
   const buttons = useContext(ControlPanelButtonsContext);
+  const field = useContext(ProjectContext)
+  console.log('field in scene machine title', field)
 
   
   const SceneMachineTitleStyle = () => {
@@ -124,6 +126,8 @@ const SceneMachineTitle = () => {
           <TitleButtons />
         </div>
         {/* <h1>{buttons.machine === 'scene' ? 'Scene' : 'Asset'} Machine</h1> */}
+        {/* <h1>{`{ ${field.name} }`}</h1> */}
+        <h1>{field.name}</h1>
         <div className="title-buttons-right">
           {false && (
             <>

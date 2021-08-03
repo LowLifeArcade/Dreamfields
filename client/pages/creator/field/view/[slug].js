@@ -51,7 +51,7 @@ const FieldView = () => {
                       /> */}
                       <img
                         className="banner-img"
-                        src={field.image.Location}
+                        src={field.image ? field.image.Location : 'https://picsum.photos/id/222/1000/500'}
                         alt=""
                       />
                     </div>
@@ -176,7 +176,7 @@ export default FieldView;
 const Style = () => (
   <style jsx>{`
     .fo-window {
-      width: 100%;
+      // width: 100%;
 
     }
     .fo-container {
@@ -189,9 +189,9 @@ const Style = () => (
       display: none;
     }
     .fo-main {
-      width: 100vw;
+      width: 100%;
       overflow-y: scroll;
-      height: 94vh;
+      height: 100vh;
       padding-top: 64vh;
     }
 

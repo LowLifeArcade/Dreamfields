@@ -6,15 +6,16 @@ const DashboardLayout = ({ title, children, ...restProps }) => {
       {/* <h1 className="mini-jumboTron">{title}</h1> */}
       <div className="layout-container">
         {/* <DashboardSidebar  items={items} />{' '} */}
-        <div className="page-container">
+        {/* <div className="page-container"> */}
           <div className="main-content">{children}</div>
-        </div>
-        <div className="right-side-container"></div>
+        {/* </div> */}
+        {/* <div className="right-side-container"></div> */}
       </div>
       <style jsx>{`
         .layout-container {
           display: flex;
-          position: fixed;
+          //position: fixed;
+          width: 100%;
           background: rgb(209, 209, 209);
           justify-content: space-between;
         }
@@ -25,7 +26,7 @@ const DashboardLayout = ({ title, children, ...restProps }) => {
           //display: flex;
           //width: 800px;
           width: 100%;
-          height: 94vh;
+          height: 100vh;
           //flex: 0 0 800px;
         }
         .main-content {

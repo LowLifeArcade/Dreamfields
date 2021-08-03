@@ -9,6 +9,7 @@ const sceneSchema = new Schema({
     maxlength: 100,
     required: true,
   },
+  contributors: [{ type: ObjectId, ref: 'User' }],
   description: String,
   characters: [String],
   setting: String,
@@ -19,12 +20,12 @@ const sceneSchema = new Schema({
   mainImage: String,
   stripImage: String,
   forProject: { type: ObjectId, ref: 'Field' },
-  forReel: ObjectId,
+  // forReel: ObjectId,
   launched: Boolean,
   productionStage: {
     type: String,
     default: 'Pre',
-    enum: ['Pre', 'Beat Boards', 'Story Boards', 'Production'],
+    enum: ['Pre', 'Boards', 'Production', 'Post'],
   },
   frameRate: String,
   aspectRatio: String,
@@ -46,7 +47,8 @@ const sceneSchema = new Schema({
       location: String,
     },
   ],
-  shotList: [ // this is the breakdown
+  shotList: [
+    // this is the breakdown
     {
       shot: String,
       complexity: String,
@@ -56,7 +58,7 @@ const sceneSchema = new Schema({
       backgrounds: String,
       description: String,
       breakdown: String,
-      preProBoards: [{Location: String}],
+      preProBoards: [{ Location: String }],
     },
   ],
   layoutBoards: [
@@ -99,8 +101,8 @@ const sceneSchema = new Schema({
     },
   ],
   animatic: String,
-  video: { s3: String, videoName: String, revision: 1 },
-  revision: 1,
+  video: { Location: String, name: String, shot: String, rev: Number },
+  revision: Number,
 });
 
 export default mongoose.model('Scene', sceneSchema);

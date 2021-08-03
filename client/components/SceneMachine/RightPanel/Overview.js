@@ -20,31 +20,31 @@ const RightPanelOverview = ({viewer}) => {
 
           <tr>
             <td>Character Count: </td>
-            <td>{viewer && viewer.characters.length}</td>
+            <td>{viewer && viewer.characters?.length}</td>
           </tr>
           <tr>
             <td> Shot Count: </td>
-            <td>{viewer && viewer.shotList.length}</td>
+            <td>{viewer && viewer.shotList?.length}</td>
           </tr>
           <tr>
             <td> Backgrounds: </td>
-            <td>{viewer && viewer.backgrounds.length}</td>
+            <td>{viewer && viewer.backgrounds?.length}</td>
           </tr>
           <tr>
             <td> Asset Count: </td>
-            <td>{viewer && viewer.assets.length}</td>
+            <td>{viewer && viewer.assets?.length}</td>
           </tr>
           <tr>
             <td> FX: </td>
-            <td>{viewer && viewer.FX.length}</td>
+            <td>{viewer && viewer.FX?.length}</td>
           </tr>
           <tr>
             <td>Frame Rate: </td>
-            <td>{viewer && viewer.frameRate}</td>
+            <td>{viewer && viewer.frameRate && viewer.frameRate}</td>
           </tr>
           <tr>
             <td>Aspect Ratio: </td>
-            <td>{viewer && viewer.aspectRatio}</td>
+            <td>{viewer && viewer.aspectRatio && viewer.aspectRatio}</td>
           </tr>
           <tr>
             <td>Launched: </td>
@@ -52,7 +52,7 @@ const RightPanelOverview = ({viewer}) => {
           </tr>
           <tr>
             <td>Production Stage: </td>
-            <td>{viewer && viewer.productionStage}</td>
+            <td>{viewer && viewer.productionStage && viewer.productionStage}</td>
           </tr>
         </tbody>
       </table>

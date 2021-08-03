@@ -24,8 +24,9 @@ function MyApp({ Component, pageProps }) {
   return (
     <Provider>
       <ProjectProvider>
-      <head>
+      <head lang="en" class="notranslate" translate="no">
         {/* <script src="https://kit.fontawesome.com/69aa58689a.js" crossorigin="anonymous"></script> */}
+        <meta nameName="google" content="notranslate" lang="en" class="notranslate" translate="no" className="notranslate"/>
         <link
           rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"

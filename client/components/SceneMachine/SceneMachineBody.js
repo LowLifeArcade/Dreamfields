@@ -4,6 +4,9 @@ const SceneMachineBody = ({ children }) => {
       #scene-machine-container {
         height: 100%;
         width: 100%;
+        display: flex;
+
+        justify-content: stretch;
       }
 
       .scene-machine {
@@ -18,8 +21,11 @@ const SceneMachineBody = ({ children }) => {
         border-top-right-radius: 14px;
         border-bottom-left-radius: 8px;
         border-bottom-right-radius: 8px;
-        box-shadow: inset 0 0px 10px, inset 0 0 15px, inset 0 0 5px,
-          0 20px 500px 800px rgba(180, 171, 155, 0.4), 0 0 20px rgb(39, 44, 29);
+
+        // box-shadow: inset 0 0px 10px, inset 0 0 15px, inset 0 0 5px;
+        
+        box-shadow: inset 0 0px 10px, inset 0 0 15px, inset 0 0 5px, 0 20px 100px 100px rgb(8, 8, 8), 0 0 20px rgb(8, 8, 7);
+        // box-shadow: inset 0 0px 10px, inset 0 0 15px, inset 0 0 5px, 0 20px 100px 100px rgba(8, 8, 8, 0.418), 0 0 20px rgb(39, 44, 29);
       }
 
       .scene-overview {

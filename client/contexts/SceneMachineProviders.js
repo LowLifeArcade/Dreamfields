@@ -1,4 +1,4 @@
-import { useReducer, createContext, useState } from 'react';
+import { useReducer, createContext, useState, useEffect } from 'react';
 import {
   initialViewerState,
   initPreviewState,
@@ -8,8 +8,8 @@ import { detailView, machineView } from '../dataModels';
 import axios from 'axios';
 
 /**
- *  Select either Scene Machine or Asset Machine 
- * */ 
+ *  Select either Scene Machine or Asset Machine
+ * */
 export const TitleButtonContext = createContext();
 export const TitleSetButtonContext = createContext();
 export const TitleButtonProvider = ({ children }) => {
@@ -30,10 +30,11 @@ export const TitleButtonProvider = ({ children }) => {
 
 /**
  * Select any of 5 states in Scene Machine Mode
- * 
+ *
  * currently set up with Reels, Acts, Sequences, Scenes, Panels
  * possibly use Timeline, Scenes and other important views instead
  */
+
 export const ControlPanelButtonsContext = createContext();
 export const ControlSetPanelButtonsContext = createContext();
 export const ControlPanelButtonsProvider = ({ children }) => {
@@ -110,14 +111,14 @@ export const DetailViewProvider = ({ children }) => {
 export const MachineStateDispatchContext = createContext();
 export const MachineStateStateContext = createContext();
 export const MachineStateContext = ({ children }) => {
-
-  // store should be project already loaded from 
+  // store should be project already loaded from
   const store = {
     confirm: false, // move this to detail context
     machineState: 'view',
     // project, // this will be the whole project
     shotList: [],
-    checkedOutShot: { // this should be simply an update to the loaded project
+    checkedOutShot: {
+      // this should be simply an update to the loaded project
       id: '',
       shot: '',
       complexity: '',
@@ -136,8 +137,23 @@ export const MachineStateContext = ({ children }) => {
   };
 
   const machineStateReducer = (state, [type, payload]) => {
+
     // if view is overview for instance we do can do the bellow switch statement
     switch (type) {
+      case 'FETCH_SCENES':
+        {
+          let fetchedScenes = [];
+          const fetchScenes = async (store, payload) => {
+            const { data } = await axios.get(`/api/field/${payload}/scenes`);
+            fetchedScenes = await data;
+          }
+          fetchScenes()
+          console.log('FETCHED SCENES',fetchedScenes)
+          return {
+            ...state,
+            scenes: [...fetchedScenes]
+          };
+        }
       case 'RESET_VIEWER': {
         return {
           ...state,
@@ -215,10 +231,7 @@ export const MachineStateContext = ({ children }) => {
     }
   };
 
-  const [state, dispatch] = useReducer(
-    machineStateReducer,
-    store
-  );
+  const [state, dispatch] = useReducer(machineStateReducer, store);
 
   return (
     <>
@@ -247,35 +260,60 @@ export const ModalProvider = ({ children }) => {
   );
 };
 
-export const ProjectContext = createContext()
-export const setProjectContext = createContext()
-export const ProjectProvider  = ({children}) => {
+export const ProjectContext = createContext();
+export const setProjectContext = createContext();
+export const ProjectProvider = ({ children }) => {
+  const [fields, setFields] = useState([]);
+
+  useEffect(() => {
+    const loadFields = async () => {
+      const { data } = await axios.get('/api/creator-fields');
+      setFields(data);
+    };
+    loadFields();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async (slug) => {
+      const { data } = await axios.get(`/api/field/${slug}`);
+      console.log('field from provider', data);
+      projectDispatch(['LOAD_PROJECT', data]);
+    };
+    console.log('all fields', fields[0] && fields[0].slug);
+    fetchData(fields[0] && fields[0].slug); // TODO: add a field selector to scene machine OR have it auto fill by slug from other page
+  }, []);
+
   const fetchData = async (slug) => {
-    const {data} = await axios.get(`/api/field/${slug}`)
-    console.log(data)
-    return {...data}
-  }
+    const { data } = await axios.get(`/api/field/${slug}`);
+    console.log(data);
+    return { ...data };
+  };
 
-  const initialProject = {}
+  const initialProject = {};
 
-  const projectReducer  = (state, [type, payload]) => {
+  const projectReducer = (state, [type, payload]) => {
     switch (type) {
       case 'FETCH_PROJECT':
-        fetchData(payload)
+        fetchData(payload);
       case 'LOAD_PROJECT':
-      return {...payload}
+        return { ...payload };
       default:
-        state
+        state;
     }
-  }
+  };
 
-  const [projectState, projectDispatch] = useReducer(projectReducer, initialProject)
+  const [projectState, projectDispatch] = useReducer(
+    projectReducer,
+    initialProject
+  );
 
-  return <>
-    <ProjectContext.Provider value={projectState}>
-      <setProjectContext.Provider value={projectDispatch}>
-        {children}
-      </setProjectContext.Provider>
-    </ProjectContext.Provider>
-  </>
-}
+  return (
+    <>
+      <ProjectContext.Provider value={projectState}>
+        <setProjectContext.Provider value={projectDispatch}>
+          {children}
+        </setProjectContext.Provider>
+      </ProjectContext.Provider>
+    </>
+  );
+};

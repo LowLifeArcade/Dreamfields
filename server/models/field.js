@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 const { Schema } = mongoose;
-
 const { ObjectId } = mongoose.Schema;
 
 const fieldSchema = new Schema(
@@ -21,28 +20,53 @@ const fieldSchema = new Schema(
       minlength: 100,
       required: true,
     },
-    price: {
-      type: Number,
-      default: 12.99,
+    image: {
+      name: String,
+      Location: String,
     },
-    image: {},
+    script: {
+      Location: String,
+      rev: Number,
+    },
+    scenes: [{
+      type: ObjectId,
+      ref: 'Scene',
+    }],
     category: String,
-    published: {
-      type: Boolean,
-      default: false,
+    // production: {
+    //   type: Boolean,
+    //   default: false,
+    // },
+    production: String,
+    // production: {
+    //   type: String,
+    //   default: 'Pre',
+    //   enum: ['Pre', 'Boards', 'Production', 'Post'],
+    // },
+    funding: {
+      funded: {
+        type: Boolean,
+        default: false,
+      },
+      amount: Number,
     },
-    paid: {
-      type: Boolean,
-      default: false,
-    },
+    frameRate: String,
+    // frameRate: {
+    //   type: String,
+    //   default: '24fps',
+    //   enum: ['23.96fps', '24fps', '29.97fps', '30fps', '59.94fps', '60fps'],
+    // },
+    aspectRatio: String,
     creator: {
       type: ObjectId,
       ref: 'User',
       required: true,
     },
-    scenes: [{type:ObjectId, ref: 'Scene'}],
+    timeLine: [{ type: ObjectId, ref: 'Scene' }],
+    contributors: [String],
+    rev: Number,
   },
   { timestamps: true }
 );
 
-export default mongoose.model('Field', fieldSchema)
+export default mongoose.model('Field', fieldSchema);

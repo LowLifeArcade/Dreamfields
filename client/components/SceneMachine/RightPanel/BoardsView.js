@@ -193,6 +193,7 @@ const RightPanelBoardsView = ({activeShot, viewer, preview, setPreview}) => {
           </div>
         </section>
       </div>
+      
     </div>
   );
 };

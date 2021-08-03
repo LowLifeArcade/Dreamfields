@@ -1,3 +1,10 @@
+/**
+ * Input: `htmlFor` is used for the title of the input.
+ * 
+ * @param {String} name
+ * @returns {string}
+ */
+
 const FormInput = ({
   name,
   htmlFor,

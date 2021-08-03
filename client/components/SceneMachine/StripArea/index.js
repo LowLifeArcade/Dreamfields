@@ -3,13 +3,16 @@ import { useState, useContext, useEffect } from 'react';
 import {
   PreviewProviderContext,
   MachineStateDispatchContext,
+  MachineStateStateContext,
   ViewerContext,
   SetViewerContext,
   ControlPanelButtonsContext,
+  ProjectContext,
 } from '../../../contexts/SceneMachineProviders';
 import StripStyle from './StripAreaStyle';
 import { initialScenes } from '../../../initialStates';
 import { machineView } from '../../../dataModels';
+import axios from 'axios';
 
 const SceneMachineStripArea = () => {
   const setPreview = useContext(PreviewProviderContext);
@@ -17,23 +20,43 @@ const SceneMachineStripArea = () => {
   const viewer = useContext(ViewerContext);
   const setViewer = useContext(SetViewerContext);
   const dispatch = useContext(MachineStateDispatchContext);
+  const state = useContext(MachineStateStateContext);
   const buttons = useContext(ControlPanelButtonsContext);
   const [loaded, setLoaded] = useState(false);
-
+  const project = useContext(ProjectContext);
 
   useEffect(() => {
-    setScenes(initialScenes);
+    // get scenes from database
+    console.log('PROJECT ID', project._id);
+    // dispatch(['FETCH_SCENES', project._id]);
+    const fetchScenes = async (store, payload) => {
+      const { data } = await axios.get(`/api/field/${payload}/scenes`);
+      console.log('scenes', data);
+      const scenes = await [...data];
+      
+      const stripScenes = await state.scenes?.map((scene) => ({
+        id: scene._id,
+        sceneName: scene.sceneName,
+        stripImage: scene.stripImage,
+      }));
+      
+      await setScenes(stripScenes);
+      console.log('SCENES IN STRIP AREA', scenes);
+    };
+    fetchScenes();
   }, []);
 
   const handleViewer = (e, scene) => {
     e.preventDefault();
     // TODO: find way to set scroll to top of scene overview display
-    setPreview({
+    setPreview((preview) => ({
+      ...preview,
       image: scene.stripImage,
       sceneName: scene.sceneName,
+      type: 'default',
       panel: 'Cover',
       id: 0,
-    });
+    }));
     setViewer(scene);
     dispatch(['RESET_VIEWER']); // not working yet
   };
@@ -41,12 +64,18 @@ const SceneMachineStripArea = () => {
   const handleNewScene = (e) => {
     e.preventDefault();
     // TODO: find way to set scroll to top of scene overview display
-    setPreview({
-      image: '/cork.jpeg',
+    setPreview((preview) => ({
+      ...preview,
       sceneName: 'New Scene',
-      panel: 0,
+      type: 'default',
+      panel: 'Cover',
       id: 0,
-    });
+    }));
+    // setPreview({
+    //   image: '/cork.jpeg',
+    //   panel: 0,
+    //   id: 0,
+    // });
   };
   return (
     <>
@@ -56,20 +85,36 @@ const SceneMachineStripArea = () => {
           {
             <>
               {buttons.display === machineView.view4.name &&
-                scenes.map((scene) => (
+                scenes?.map((scene) => (
                   <>
                     <div
                       key={scene.id}
                       onClick={(e) => handleViewer(e, scene)}
                       className="scene-strip">
                       <div className="empty-strip">
-                        <img
-                          style={{opacity: loaded ? 1 : 0}}
-                          className={'scene-strip-img ' + scene.id === viewer.id && ' active'}
-                          src={scene.stripImage}
-                          alt="scene-thumbnail"
-                          onLoad={() => setLoaded(true)}
-                        />
+                        {scene.stripImage ? (
+                          <img
+                            style={{ opacity: loaded ? 1 : 0 }}
+                            className={
+                              'scene-strip-img ' + scene.id === viewer.id &&
+                              ' active'
+                            }
+                            src={scene.stripImage}
+                            alt="scene-thumbnail"
+                            onLoad={() => setLoaded(true)}
+                          />
+                        ) : (
+                          <img
+                            style={{ opacity: loaded ? 1 : 0 }}
+                            className={
+                              'scene-strip-img ' + scene.id === viewer.id &&
+                              ' active'
+                            }
+                            src="https://picsum.photos/id/237/400/200"
+                            alt="scene-thumbnail"
+                            onLoad={() => setLoaded(true)}
+                          />
+                        )}
                       </div>
                       <p>{scene.sceneName}</p>
                     </div>

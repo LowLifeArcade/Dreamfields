@@ -1,8 +1,9 @@
 import AWS from 'aws-sdk';
 import { nanoid } from 'nanoid';
-import Field from '../models/field';
+import Scene from '../models/scene';
 import slugify from 'slugify';
-import {readFileSync} from 'fs' // fs.readFileSync
+import { readFileSync } from 'fs'; // fs.readFileSync
+import Field from '../models/field';
 
 const awsConfig = {
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -72,8 +73,9 @@ export const removeImage = async (req, res) => {
 };
 
 export const create = async (req, res) => {
-  // console.log('CREATE FIELD', req.body)
-  // return
+  // console.log('CREATE SCENE', req.body);
+
+  // return;
   try {
     // const alreadyExists = await Scene.findOne({
     //   slug: slugify(req.body.name.toLowerCase()),
@@ -81,15 +83,44 @@ export const create = async (req, res) => {
 
     // if (alreadyExists) return res.status(400).send('Scene aleady exists');
 
-    const Scene = await new Scene({
-      slug: slugify(req.body.name),
+    const scene = await new Scene({
+      slug: slugify(req.body.sceneName),
       creator: req.user._id,
       ...req.body,
     }).save();
-    res.json(Scene);
+
+    // { $push: { friends: friend } }
+    // find field and update with new scene
+    const field = await Field.findOneAndUpdate({ _id: scene.forProject }, {$push: {scenes: [scene._id]}}, {new: true})
+    .exec(
+      // error handler
+      (err) => {
+        if (err) {
+          console.log(err);
+          return res.status(400).send('Error while updating field with new scene');
+        }
+      }
+    )
+
+    console.log('field updated', field)
+
+    // Link.findOneAndUpdate({ _id: id }, updatedLink, { new: true }).exec(
+    //   (err, updated) => {
+    //     if (err) {
+    //       return res.status(400).json({
+    //         error: 'Error updating link',
+    //       });
+    //     }
+    //     res.json(updated);
+    //   }
+    // );
+
+    // console.log('SCENE SAVED', scene)
+    res.json(scene);
+    console.log('RESPONSE SENT')
   } catch (err) {
     console.log(err);
-    return res.status(400).send('Field creation failed. Try again.');
+    return res.status(400).send('Error creating scene. Check log.');
   }
 };
 
@@ -103,7 +134,29 @@ export const read = async (req, res) => {
 };
 
 export const uploadVideo = async (req, res) => {
-  console.log('endpoint reached');
+  // console.log('UPLOAD VIDEO REQ USER ID', req.user._id);
+  // console.log('UPLOAD VIDEO PARAMS', req.params.creatorId);
+  // match user id with contributor id or creator id
+  // if (req.user._id != req.params.creatorId) {
+  //   return res.status(400).send('Unauthorized');
+  // }
+
+  // find scene from schema
+  const scene = await Scene.findOne({
+    _id: req.params.sceneId,
+  })
+
+  const isContributor = JSON.parse(contributors).some((contributor) => {
+    return req.user._id != contributor ? false : true;
+  });
+
+  if (!isCreator && !isContributor) {
+    return res.status(400).send('Unauthorized');
+  }
+
+  // if (!isContributor) return res.status(400).send('Unauthorized');
+  const isCreator = req.user._id == req.params.creatorId; // add this in if statement after testing
+
   try {
     const { video } = req.files;
     // console.log(video)
@@ -115,17 +168,46 @@ export const uploadVideo = async (req, res) => {
       Body: readFileSync(video.path),
       ACL: 'public-read',
       ContentType: video.type,
-    }
+    };
 
     // upload to s3
     S3.upload(params, (err, data) => {
-      if(err) {
-        console.log(err)
-        res.sendStatus(400)
+      if (err) {
+        console.log(err);
+        res.sendStatus(400);
       }
-      console.log(data)
-      res.send(data)
-    })
+      console.log(data);
+      res.send(data);
+    });
+
+    const scene = await Scene.findOne({ _id: req._id });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const removeVideo = async (req, res) => {
+  if (req.user._id != req.params.creatorId) {
+    return res.status(400).send('Unauthorized');
+  }
+  try {
+    const video = req.body;
+    !video && res.status(400).send('No video');
+
+    const params = {
+      Bucket: video.Bucket,
+      Key: video.Key,
+    };
+
+    // delete to s3
+    S3.deleteObject(params, (err, data) => {
+      if (err) {
+        console.log(err);
+        res.sendStatus(400);
+      }
+      console.log(data);
+      res.json({ ok: true });
+    });
   } catch (error) {
     console.log(error);
   }

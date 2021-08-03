@@ -1,6 +1,6 @@
-import { useReducer, useContext, useEffect } from "react";
-import { PreviewStyle } from "./PreviewStyle";
-import { PreviewStateContext } from "../../../contexts/SceneMachineProviders";
+import { useReducer, useContext, useEffect } from 'react';
+import { PreviewStyle } from './PreviewStyle';
+import { PreviewStateContext } from '../../../contexts/SceneMachineProviders';
 
 const initPrevState = { previewState: 'idle', framePosition: 'idle' };
 const previewReducer = (state, action) => {
@@ -97,18 +97,39 @@ const SceneMachineLeftPanel = () => {
   useEffect(() => {
     console.log('preview machine state', state);
   });
-  
+
+  console.log('PREVIEW',preview)
+
   return (
     <>
       <PreviewStyle />
       <div className="left-panel">
-        <div className="viewer">
-          <img src={preview.image} alt="" />
-          {/* change to state */}
-          <div className="btn-mini">
-            <i class="fas fa-expand"></i>
+        <div className="viewer-frame">
+          <div className="viewer-media">
+            {preview.type !== 'image' && preview.type !== 'video' && (
+              <img className="media img" src='https://picsum.photos/id/237/500' alt="" />
+            )}
+            {preview.type === 'image' && <img src={preview.image} alt="" />}
+            {preview.type === 'video' && (
+              <div>
+                <video className="video" controls>
+                  {/* <source
+                    src="/media/cc0-videos/flower.webm"
+                    type="video/webm"
+                  /> */}
+
+                  <source src={preview.video} type="video/mp4" />
+                </video>
+                
+              </div>
+            )}
+
+            {/* <div className="expand">
+              <i class="fas fa-expand"></i>
+            </div> */}
+
+            {/* <div className="preview-state">{state.previewState}</div> */}
           </div>
-          <div className="preview-state">{state.previewState}</div>
         </div>
         <div className="transport-title">
           <div>
@@ -137,4 +158,4 @@ const SceneMachineLeftPanel = () => {
   );
 };
 
-export default SceneMachineLeftPanel
+export default SceneMachineLeftPanel;

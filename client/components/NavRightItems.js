@@ -32,14 +32,16 @@ const NavRightItems = ({ loggedIn, setCurrent, logOut }) => {
           flex-grow: 1;
           align-items: center;
           justify-content: flex-end;
-          color: rgb(95, 95, 95);
+          //color: rgb(161, 161, 161);
+          color: rgb(112, 113, 114);
         }
         .rightLoggedInNavItems {
           display: flex;
           flex-grow: 1;
           align-items: center;
           justify-content: flex-end;
-          color: rgb(95, 95, 95);
+          //color: rgb(161, 161, 161);
+          color: rgb(112, 113, 114);
         }
         @media(max-width: 1060px) {
           .rightLoggedInNavItems {
