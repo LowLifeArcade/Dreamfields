@@ -3,6 +3,7 @@ import { Context } from '../context';
 import NavBar from './NavBar';
 import SideBar from './SideBar';
 import DashboardSideBar from './dashboard/DashboardSidebar';
+import { ProjectContext } from '../contexts/SceneMachineProviders';
 
 const Style = () => {
   return (
@@ -32,6 +33,20 @@ const Style = () => {
 };
 
 const Layout = (props) => {
+  const project = useContext(ProjectContext)
+  console.log('PROJECT IN APP', project)
+  const fakeMenuItems = [
+    { slug: '/', icon: <i class="fas fa-home"></i>, name: 'Home' },
+    { slug: '/edit/creator', icon: <i class="far fa-edit"></i>, name: 'Scene Machine' },
+    { slug: '/creator', icon: <i class="fas fa-cog"></i>, name: 'Settings' },
+    ,
+  ];
+  const fakeMenuItems2 = [
+    { slug: '/projects', icon: <i class="fas fa-photo-video"></i>, name: 'Library' },
+    { slug: `/creator/field/view/${project?.slug}`, icon: <i class="fas fa-phone-square-alt"></i>, name: 'Connect' },
+    { slug: '/creator', icon: <i class="fas fa-poll"></i>, name: 'Stats' },
+    { slug: '/creator/field/create', icon: <i class="far fa-plus-square"></i>, name: 'Create New' }
+  ];
   const [showSideMenu, setShowSideMenu] = useState(true); // lifted and shared state for sidebar and navbar
 
   const {
@@ -52,8 +67,8 @@ const Layout = (props) => {
               </div>
               <DashboardSideBar
                 showSideMenu={showSideMenu}
-                items1={props.items1}
-                items2={props.items2}
+                items1={fakeMenuItems}
+                items2={fakeMenuItems2}
               />
             </>
           )}

@@ -43,7 +43,7 @@ const SceneMachineStripStyle = () => {
         display: none;
       }
 
-      .scene-strip > div > img {
+      .empty-strip > img {
         height: 50px;
         background: #e0e0e0;
         border-radius: 3px;
@@ -64,13 +64,18 @@ const SceneMachineStripStyle = () => {
         cursor: pointer;
         border-radius: 3px;
       }
-      .scene-strip > img.active {
+
+      .active > img {
         // border: solid 2px green;
         // position: absolute;
+        // outline: solid #b4b4b4 2px;
         opacity: 1;
-        background: rgba(3, 150, 3);
+        // border-radius: 0px;
+        // width: 110px;
+        // height: 60px;
+        // background: rgba(3, 150, 3);
         box-shadow: 0 0 2px rgba(231, 230, 230, 0.2),
-          0 0 6px rgba(231, 230, 230, 0.4), 0 0 1px white;
+          0 0 6px rgba(231, 230, 230, 0.747), 0px 0px 10px rgba(253, 253, 253, 0.582);
         // margin: 1px;
       }
       .scene-strip > p {

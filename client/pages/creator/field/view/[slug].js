@@ -5,7 +5,7 @@ import axios from 'axios';
 import OVSidebarItems from '../../../../components/overview/OVSidebarItem';
 import SceneMachine from '../../../../components/SceneMachine';
 import ReactMarkdown from 'react-markdown';
-import { ProjectProvider, setProjectContext } from '../../../../contexts/SceneMachineProviders';
+import { ProjectProvider, setProjectContext, ProjectContext } from '../../../../contexts/SceneMachineProviders';
 
 
 // TODO: implement smooth scrolling from link to link on page
@@ -20,10 +20,15 @@ const FieldView = () => {
   const router = useRouter();
   const { slug } = router.query;
   const dispatch = useContext(setProjectContext)
+  const project = useContext(ProjectContext);
 
   useEffect(() => {
-    loadField();
-  }, [slug]);
+   setField(project)
+  }, [project]);
+  // useEffect(() => {
+  //   if (project.slug === slug) return
+  //   loadField();
+  // }, [project]);
 
   const loadField = async () => {
     const { data } = await axios.get(`/api/field/${slug}`);

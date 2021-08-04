@@ -73,7 +73,7 @@ const initialFavorites = [
   // },
 ];
 
-const SideBar = ({onLogoClick, showSideMenu}) => {
+const SideBar = ({ onLogoClick, showSideMenu }) => {
   const [clicked, setClicked] = useState(false);
   const [projects, setProjects] = useState(initialProjects);
   const [favorites, setFavorites] = useState(initialFavorites);
@@ -96,8 +96,11 @@ const SideBar = ({onLogoClick, showSideMenu}) => {
       <div className="sideBarSmall">
         <div className="top">
           <span>
-
-          <div className="home" ><i onClick={() => onLogoClick(!showSideMenu)} class="far fa-caret-square-right fa-2x"></i> </div>
+            <div className="home" onClick={() => onLogoClick(!showSideMenu)}>
+              <i
+                
+                class="far fa-caret-square-right fa-2x"></i>{' '}
+            </div>
           </span>
           <div className="topContent">
             {fields.map((project, i) => (
@@ -122,17 +125,16 @@ const SideBar = ({onLogoClick, showSideMenu}) => {
             </div>
           </div> */}
         <div className="bottomContent">
-          <div  className='bottom-item'>
+          <div className="bottom-item">
             <span>
-
-            <i class="fas fa-palette fa-2x"></i>
+              <i class="fas fa-palette fa-2x"></i>
             </span>
           </div>
 
-          <div className='bottom-item'>
-          <span>
-            <i class="fas fa-cog fa-2x"></i>
-          </span>
+          <div className="bottom-item">
+            <span>
+              <i class="fas fa-cog fa-2x"></i>
+            </span>
           </div>
           {/* {favorites.map((project, i) => (
               <>
@@ -150,16 +152,16 @@ export default SideBar;
 const Style = () => {
   return (
     <style jsx>{`
-    .home {
-      color: rgb(107, 107, 107);
-      margin-bottom: 10px;
-      padding: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-bottom: 1px solid rgb(197, 194, 173);
-      cursor: pointer;
-    }
+      .home {
+        color: rgb(107, 107, 107);
+        padding-bottom: 10px;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-bottom: 1px solid rgb(197, 194, 173);
+        cursor: pointer;
+      }
       .sideBar {
         padding: 10px 2px;
         /* flex: 0 1 360px; */
@@ -204,20 +206,21 @@ const Style = () => {
         padding: 2px;
       }
 
-      .top {
+      .topContent {
         height: 70vh;
         width: 100%;
+        padding-top: 10px;
         // border-bottom: 1px solid rgb(230, 230, 230);
-        margin-bottom: 10px;
+        // margin-bottom: 10px;
         overflow-y: scroll;
       }
 
       /* hides scroll bar */
-      .top::-webkit-scrollbar {
+      .topContent::-webkit-scrollbar {
         display: none;
       }
 
-      .top {
+      .topContent {
         -ms-overflow-style: none;
         scrollbar-width: none;
       }
@@ -231,7 +234,7 @@ const Style = () => {
         font-size: 1.1rem;
         font-weight: 600;
         margin-bottom: 10px;
-        margin-top: 10px;
+        // margin-top: 10px;
       }
       .bottomContent {
         display: flex;

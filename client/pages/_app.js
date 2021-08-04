@@ -4,23 +4,30 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Provider } from '../context';
 import { ProjectProvider } from '../contexts/SceneMachineProviders';
+import { ProjectContext } from '../contexts/SceneMachineProviders';
+import { useContext } from 'react';
+
 
 // TODO: create a context and reducer for the sideMenuItems prop
 
-const fakeMenuItems = [
-  { slug: '/', icon: <i class="fas fa-home"></i>, name: 'Home' },
-  { slug: '/edit/creator', icon: <i class="far fa-edit"></i>, name: 'Scene Machine' },
-  { slug: '/creator', icon: <i class="fas fa-cog"></i>, name: 'Settings' },
-  ,
-];
-const fakeMenuItems2 = [
-  { slug: '/projects', icon: <i class="fas fa-photo-video"></i>, name: 'Library' },
-  { slug: '/edit/creator', icon: <i class="fas fa-phone-square-alt"></i>, name: 'Connect' },
-  { slug: '/creator', icon: <i class="fas fa-poll"></i>, name: 'Stats' },
-  { slug: '/creator/field/create', icon: <i class="far fa-plus-square"></i>, name: 'Create New' }
-];
+
 
 function MyApp({ Component, pageProps }) {
+  // const project = useContext(ProjectContext)
+  // console.log('PROJECT IN APP', project)
+  // const fakeMenuItems = [
+  //   { slug: '/', icon: <i class="fas fa-home"></i>, name: 'Home' },
+  //   { slug: '/edit/creator', icon: <i class="far fa-edit"></i>, name: 'Scene Machine' },
+  //   { slug: '/creator', icon: <i class="fas fa-cog"></i>, name: 'Settings' },
+  //   ,
+  // ];
+  // const fakeMenuItems2 = [
+  //   { slug: '/projects', icon: <i class="fas fa-photo-video"></i>, name: 'Library' },
+  //   { slug: `/creator/field/view/${project?.slug}`, icon: <i class="fas fa-phone-square-alt"></i>, name: 'Connect' },
+  //   { slug: '/creator', icon: <i class="fas fa-poll"></i>, name: 'Stats' },
+  //   { slug: '/creator/field/create', icon: <i class="far fa-plus-square"></i>, name: 'Create New' }
+  // ];
+  
   return (
     <Provider>
       <ProjectProvider>
@@ -54,7 +61,7 @@ function MyApp({ Component, pageProps }) {
         pauseOnHover
         />
 
-      <Layout items1={fakeMenuItems} items2={fakeMenuItems2} showSideBar={true}>
+      <Layout showSideBar={true}>
         <Component {...pageProps} />
       </Layout>
         </ProjectProvider>

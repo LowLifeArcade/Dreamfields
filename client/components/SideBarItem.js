@@ -1,12 +1,14 @@
 import Link from 'next/link';
 import { useContext } from 'react';
-import { setProjectContext } from '../contexts/SceneMachineProviders';
+import { setProjectContext, ProjectContext } from '../contexts/SceneMachineProviders';
 import axios from 'axios';
 
 const SideBarItem = ({ index,slug, image, title, clicked, ...rest }) => {
   const dispatch = useContext(setProjectContext);
+  const  project  = useContext(ProjectContext);
 
   console.log('slug ',slug)
+  console.log('project', project._id)
 
   const loadField = async () => {
     const { data } = await axios.get(`/api/field/${slug}`);
@@ -18,11 +20,11 @@ const SideBarItem = ({ index,slug, image, title, clicked, ...rest }) => {
       <Style />
       {/* <Link href={`/creator/field/view/${slug}` || ''}> */}
         {/* <a> */}
-          <div className="sideBarItem">
+          <div className={`sideBarItem`}>
             <div>
               {image ? (
                 <img
-                  className="sideBarImage"
+                  className={`sideBarImage ${project?.slug === slug && ' active'}`}
                   src={image.Location}
                   alt="Proj"
                   onClick={loadField}
@@ -30,9 +32,10 @@ const SideBarItem = ({ index,slug, image, title, clicked, ...rest }) => {
               ) : (
                 <div className="sideBarAdd">
                   <img
-                  className="sideBarImage"
+                  className={`sideBarImage ${project?.slug === slug && ' active'}`}
                   src={`https://picsum.photos/id/${80}/50`}
                   alt="Proj"
+                  onClick={loadField}
                 />
                 </div>
               )}
@@ -63,8 +66,16 @@ const Style = () => {
   }
   
   .sideBarItem:hover img {
-    border-radius: 4px;
-    transition: ease-in-out 0.2s;
+    border-radius: 15px;
+    transition: ease-in 0.2s;
+  }
+
+
+  .sideBarItem  img:active {
+    border-radius: 20px;
+  }
+  .sideBarItem  img.active {
+    border-radius: 10px;
   }
 
   .sideBarImage {
@@ -74,7 +85,7 @@ const Style = () => {
     height: 50px;
     background-size: cover;
     
-    transition: ease-in-out 0.1s;
+    transition: ease-in 0.1s;
     /* background-position: top center; */
   }
   .sideBarAdd {

@@ -104,12 +104,12 @@ export const read = async (req, res) => {
 
 export const getScenes = async (req, res) => {
   console.log('REQ PARAMS',req.params)
-  return
+  // return
   try {
     const scenes = await Scene.find({ forProject: req.params.fieldSlug })
-      .exec(err => {
-        if (err) return res.status(400).send('Scenes not found');
-      });
+      .populate('creator', '_id name')
+      .exec();
+      console.log('SCENES', scenes)
     res.json(scenes);
   } catch (err) {
     console.log(err);

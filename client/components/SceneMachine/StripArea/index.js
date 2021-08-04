@@ -25,26 +25,27 @@ const SceneMachineStripArea = () => {
   const [loaded, setLoaded] = useState(false);
   const project = useContext(ProjectContext);
 
-  useEffect(() => {
-    // get scenes from database
-    console.log('PROJECT ID', project._id);
-    // dispatch(['FETCH_SCENES', project._id]);
-    const fetchScenes = async (store, payload) => {
-      const { data } = await axios.get(`/api/field/${payload}/scenes`);
-      console.log('scenes', data);
+  
+
+  const handleLoadScenes = async () => {
+      console.log('PROJECT ID', project._id);   
+      if(!project._id) return
+      const { data } = await axios.get(`/api/field/${project._id}/scenes`);
       const scenes = await [...data];
+      // console.log('SCENES IN STRIP AREA', scenes);
       
-      const stripScenes = await state.scenes?.map((scene) => ({
+      const stripScenes = await scenes.map((scene) => ({
         id: scene._id,
         sceneName: scene.sceneName,
         stripImage: scene.stripImage,
       }));
       
       await setScenes(stripScenes);
-      console.log('SCENES IN STRIP AREA', scenes);
-    };
-    fetchScenes();
-  }, []);
+  }
+
+  useEffect(() => {
+    handleLoadScenes()
+  }, [project]);
 
   const handleViewer = (e, scene) => {
     e.preventDefault();
@@ -55,7 +56,7 @@ const SceneMachineStripArea = () => {
       sceneName: scene.sceneName,
       type: 'default',
       panel: 'Cover',
-      id: 0,
+      id: scene._id,
     }));
     setViewer(scene);
     dispatch(['RESET_VIEWER']); // not working yet
@@ -77,6 +78,8 @@ const SceneMachineStripArea = () => {
     //   id: 0,
     // });
   };
+  // console.log('scenes for mapping', scenes)
+  // console.log('viewer for mapping', viewer.id)
   return (
     <>
       <StripStyle />
@@ -85,18 +88,21 @@ const SceneMachineStripArea = () => {
           {
             <>
               {buttons.display === machineView.view4.name &&
-                scenes?.map((scene) => (
+                scenes.map((scene, i) => (
                   <>
+                  {/* {console.log('Scene Id',scene.id )}
+                  {console.log('Viewer Id',viewer.id )} */}
                     <div
                       key={scene.id}
                       onClick={(e) => handleViewer(e, scene)}
                       className="scene-strip">
-                      <div className="empty-strip">
+                        
+                      <div className={`empty-strip ${scene.id === viewer.id && ' active'}`}>
                         {scene.stripImage ? (
                           <img
                             style={{ opacity: loaded ? 1 : 0 }}
                             className={
-                              'scene-strip-img ' + scene.id === viewer.id &&
+                              'scene-strip-img ' + scene.id === viewer.id && 
                               ' active'
                             }
                             src={scene.stripImage}
@@ -110,7 +116,7 @@ const SceneMachineStripArea = () => {
                               'scene-strip-img ' + scene.id === viewer.id &&
                               ' active'
                             }
-                            src="https://picsum.photos/id/237/400/200"
+                            src={`https://picsum.photos/id/1${i}/400/200`}
                             alt="scene-thumbnail"
                             onLoad={() => setLoaded(true)}
                           />
