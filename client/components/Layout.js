@@ -43,7 +43,7 @@ const Layout = (props) => {
   ];
   const fakeMenuItems2 = [
     { slug: '/projects', icon: <i class="fas fa-photo-video"></i>, name: 'Library' },
-    { slug: `/creator/field/view/${project?.slug}`, icon: <i class="fas fa-phone-square-alt"></i>, name: 'Connect' },
+    { slug: `/creator/field/view/${project?.slug}`, icon: <i class="fas fa-phone-square-alt"></i>, name: 'Field' },
     { slug: '/creator', icon: <i class="fas fa-poll"></i>, name: 'Stats' },
     { slug: '/creator/field/create', icon: <i class="far fa-plus-square"></i>, name: 'Create New' }
   ];

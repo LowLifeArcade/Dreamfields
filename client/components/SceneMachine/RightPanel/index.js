@@ -37,8 +37,7 @@ const SceneMachineRightPanel = () => {
   const dispatch = useContext(MachineStateDispatchContext);
   const state = useContext(MachineStateStateContext);
   const project = useContext(ProjectContext)
-  console.log('project',project)
-
+  console.log('DETAIL RIGHT PANEL INDEX', detail)
   // console.log('viewer in right panel',viewer)
   // useEffect(() => {
   //   setDetail(view.overview);
@@ -68,9 +67,9 @@ const SceneMachineRightPanel = () => {
     }
   }, [detail]);
 
-  useEffect(() => {
-    preview.sceneName === 'New Scene' && setDetail(view.newScene);
-  }, [preview]);
+  // useEffect(() => {
+  //   preview.sceneName === 'New Scene' && setDetail(view.newScene);
+  // }, [preview]);
 
   // make a form where they initalize or 'Launch' the scene. A 'Scene Launcher'.
   useEffect(() => {

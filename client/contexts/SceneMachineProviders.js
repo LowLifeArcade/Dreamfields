@@ -107,8 +107,10 @@ export const DetailViewProvider = ({ children }) => {
   );
 };
 
-// actions menu for contextual menu AND transport menu
+// TODO: fix this so that it actually is based on state
+/**`actions menu` for contextual menu AND transport menu for `machine state` */
 export const MachineStateDispatchContext = createContext();
+/** `Machine State` -   */
 export const MachineStateStateContext = createContext();
 export const MachineStateContext = ({ children }) => {
   // store should be project already loaded from
@@ -137,23 +139,21 @@ export const MachineStateContext = ({ children }) => {
   };
 
   const machineStateReducer = (state, [type, payload]) => {
-
     // if view is overview for instance we do can do the bellow switch statement
     switch (type) {
-      case 'FETCH_SCENES':
-        {
-          let fetchedScenes = [];
-          const fetchScenes = async (store, payload) => {
-            const { data } = await axios.get(`/api/field/${payload}/scenes`);
-            fetchedScenes = await data;
-          }
-          fetchScenes()
-          console.log('FETCHED SCENES',fetchedScenes)
-          return {
-            ...state,
-            scenes: [...fetchedScenes]
-          };
-        }
+      case 'FETCH_SCENES': {
+        let fetchedScenes = [];
+        const fetchScenes = async (store, payload) => {
+          const { data } = await axios.get(`/api/field/${payload}/scenes`);
+          fetchedScenes = await data;
+        };
+        fetchScenes();
+        console.log('FETCHED SCENES', fetchedScenes);
+        return {
+          ...state,
+          scenes: [...fetchedScenes],
+        };
+      }
       case 'RESET_VIEWER': {
         return {
           ...state,
@@ -260,28 +260,35 @@ export const ModalProvider = ({ children }) => {
   );
 };
 
+/**`project` is the whole project (field with all the scenes and shots)*/
 export const ProjectContext = createContext();
+/**
+ * `FETCH_PROJECT` - fetch project from server and set it to the project context. `Payload` should be the project slug.
+ * 
+ * `LOAD_PROJECT` - load project with `payload` spread into projectState
+ */
 export const setProjectContext = createContext();
+
 export const ProjectProvider = ({ children }) => {
-  const [fields, setFields] = useState([]);
+  // const [fields, setFields] = useState([]);
 
-  useEffect(() => {
-    const loadFields = async () => {
-      const { data } = await axios.get('/api/creator-fields');
-      setFields(data);
-    };
-    loadFields();
-  }, []);
+  // useEffect(() => {
+  //   const loadFields = async () => {
+  //     const { data } = await axios.get('/api/creator-fields');
+  //     setFields(data);
+  //   };
+  //   loadFields();
+  // }, []);
 
-  useEffect(() => {
-    const fetchData = async (slug) => {
-      const { data } = await axios.get(`/api/field/${slug}`);
-      console.log('field from provider', data);
-      projectDispatch(['LOAD_PROJECT', data]);
-    };
-    console.log('all fields', fields[0] && fields[0].slug);
-    fetchData(fields[0] && fields[0].slug); // TODO: add a field selector to scene machine OR have it auto fill by slug from other page
-  }, []);
+  // useEffect(() => {
+  //   const fetchData = async (slug) => {
+  //     const { data } = await axios.get(`/api/field/${slug}`);
+  //     console.log('field from provider', data);
+  //     projectDispatch(['LOAD_PROJECT', data]);
+  //   };
+  //   console.log('all fields', fields[0] && fields[0].slug);
+  //   fetchData(fields[0] && fields[0].slug); // TODO: add a field selector to scene machine OR have it auto fill by slug from other page
+  // }, []);
 
   const fetchData = async (slug) => {
     const { data } = await axios.get(`/api/field/${slug}`);
@@ -289,14 +296,22 @@ export const ProjectProvider = ({ children }) => {
     return { ...data };
   };
 
+  // const loadViewerScene = async (id) => {
+  //   const { data } = await axios.get(`/api/scene/${id}`);
+  //   await setViewer(data);
+  //  }
+
   const initialProject = {};
 
   const projectReducer = (state, [type, payload]) => {
     switch (type) {
+      /**payload should be slug */
       case 'FETCH_PROJECT':
         fetchData(payload);
       case 'LOAD_PROJECT':
         return { ...payload };
+      // case 'FETCH_SCENE':
+      //   loadViewerScene(payload);
       default:
         state;
     }

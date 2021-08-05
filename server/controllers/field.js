@@ -96,20 +96,17 @@ export const create = async (req, res) => {
 export const read = async (req, res) => {
   try {
     const field = await Field.findOne({ slug: req.params.slug })
-      .populate('creator', '_id name')
+      // .populate('creator', '_id name')
       .exec();
     res.json(field);
   } catch (err) {}
 };
 
 export const getScenes = async (req, res) => {
-  console.log('REQ PARAMS',req.params)
-  // return
   try {
     const scenes = await Scene.find({ forProject: req.params.fieldSlug })
       .populate('creator', '_id name')
       .exec();
-      console.log('SCENES', scenes)
     res.json(scenes);
   } catch (err) {
     console.log(err);

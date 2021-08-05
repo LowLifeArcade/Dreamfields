@@ -1,10 +1,210 @@
+import { useEffect, useState, useContext, useRef } from 'react';
+import axios from 'axios';
+import {
+  setProjectContext,
+  SetViewerContext,
+} from '../../../contexts/SceneMachineProviders';
+import BecomeCreator from '../../../pages/user/become-creator';
 
+// make axios call to api to update scene
+// export const useUpdateScene = (sceneName) => {
+//   const [viewer, setViewer] = useState({});
+//   const [loading, setLoading] = useState(true);
+//   const [error, setError] = useState(null);
 
-const RightPanelOverview = ({viewer}) => {
+//   useEffect(() => {
+//     axios.get(`/api/v1/scenes/${sceneName}`)
+//       .then(({data}) => {
+//         setViewer(data);
+//         setLoading(false);
+//       })
+//       .catch(err => {
+//         setError(err);
+//         setLoading(false);
+//       });
+//   }, [sceneName]);
+
+//   return [viewer, loading, error];
+// }
+
+const RightPanelOverview = ({ viewer }) => {
+  const [loading, setLoading] = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
+  const [error, setError] = useState(null);
+  const [sceneItem, setSceneItem] = useState('');
+  const dispatch = useContext(setProjectContext);
+  const setViewer = useContext(SetViewerContext);
+  const titleRef = useRef();
+  const descRef = useRef();
+  const settingRef = useRef();
+  const charRef = useRef();
+
+  useEffect(() => {
+    if (isEditing == 'title') {
+      titleRef.current.focus();
+    }
+    if (isEditing == 'description') {
+      descRef.current.focus();
+    }
+    if (isEditing == 'setting') {
+      settingRef.current.focus();
+    }
+    if (isEditing == 'characters') {
+      charRef.current.focus();
+    }
+  }, [isEditing]);
+
+  // useEffect(() => {
+  //   const handleClick = (event) => {
+  //     if (!titleRef?.current?.contains(event.target)) {
+  //       setEditing(false);
+  //     }
+  //   };
+  //   document.addEventListener('click', handleClick);
+  //   return () => document.removeEventListener('click', handleClick);
+  // });
+
+  // useEffect(() => {
+  //   setSceneItem(viewer);
+  // }, [viewer]);
+
+  // useEffect(() => {
+  //   axios.post(`/api/scenes/overview/${sceneItem}`)
+  //     .then(({data}) => {
+  //       dispatch(['FETCH_PROJECT', data])
+  //       setLoading(false);
+  //     })
+  //     .catch(err => {
+  //       setError(err);
+  //       setLoading(false);
+  //     });
+  // }, [sceneItem]);
+
+  // const loadViewerScene = async (id) => {
+  //   const { data } = await axios.get(`/api/scene/${id}`);
+  //   await setViewer(data);
+  //   // console.log('RESPONSE SCENE',data)
+  //  }
+  //  console.log('VIEWER', viewer)
+
+  const changeItem = async (sceneItem) => {
+    try {
+      await axios.post(`/api/scene/overview/${viewer._id}`, sceneItem);
+      const { data } = await axios.get(`/api/scene/${viewer._id}`);
+
+      await setViewer(data);
+
+      await setLoading(false);
+    } catch (err) {
+      setError(err);
+      setLoading(false);
+    }
+  };
+
+  const changeArrayItem = async (sceneItem) => {
+    try {
+      await axios.post(`/api/scene/overview-array/${viewer._id}`, sceneItem);
+      const { data } = await axios.get(`/api/scene/${viewer._id}`);
+
+      await setViewer(data);
+
+      await setLoading(false);
+    } catch (err) {
+      setError(err);
+      setLoading(false);
+    }
+  };
+
+  const exitEdit = (e, sceneItem) => {
+    if (e.key === 'Enter') {
+      changeItem(sceneItem);
+      setIsEditing(false);
+      // loadViewerScene(viewer._id);
+      setSceneItem('');
+    }
+    if (e.key === 'Escape') {
+      setIsEditing(false);
+      setSceneItem('');
+    }
+  };
+
+  const exitArrayEdit = (e, sceneItem) => {
+    if (e.key === 'Enter') {
+      changeArrayItem(sceneItem);
+      setIsEditing(false);
+      // loadViewerScene(viewer._id);
+      setSceneItem('');
+    }
+    if (e.key === 'Escape') {
+      setIsEditing(false);
+      setSceneItem('');
+    }
+  };
+
+  // TODO: fix this
+  const handleArrayItem = (e, arrayName) => {
+    e.preventDefault();
+    setSceneItem({ arrayName: [arrayName], itemName: e.target.value });
+  };
+
+  const handleItem = (e, sceneItem) => {
+    e.preventDefault();
+    setSceneItem({ [sceneItem]: e.target.value });
+  };
+
+  const handleEditing = (e, editName) => {
+    const el = e.target.getAttribute('data-index');
+    e.preventDefault();
+    // set focus on the input
+    setIsEditing(editName);
+    // titleRef.current = el;
+    // console.log('EL', el)
+
+    // titleRef.current.focus()
+  };
+  console.log('CHARACTERS', viewer.characters);
+
   return (
     <div id="scene-card" className="transport-description">
-      <h3>Scene: "{viewer.sceneName}"</h3>
-      <div className="transport-description-detail">{viewer.description}</div>
+      <div
+        className="transport-description"
+        onClick={(e) => handleEditing(e, 'title')}>
+        {isEditing === 'title' ? (
+          <h3>
+            <input
+              ref={titleRef}
+              data-index="title"
+              value={sceneItem.sceneName}
+              onChange={(e) => handleItem(e, 'sceneName')}
+              type="text"
+              placeholder={viewer.sceneName}
+              onKeyDown={(e) => exitEdit(e, sceneItem)}
+              onBlur={(e) => setIsEditing(false)}
+            />
+          </h3>
+        ) : (
+          <h3>Scene: "{viewer.sceneName}"</h3>
+        )}
+      </div>
+      <div
+        className="transport-description-detail"
+        onClick={(e) => handleEditing(e, 'description')}>
+        {isEditing === 'description' ? (
+          <textarea
+            ref={descRef}
+            name="text"
+            id=""
+            cols="50"
+            rows="10"
+            value={sceneItem.description}
+            placeholder={viewer.description}
+            onChange={(e) => handleItem(e, 'description')}
+            onKeyDown={(e) => exitEdit(e, sceneItem)}
+            onBlur={(e) => setIsEditing(false)}></textarea>
+        ) : (
+          viewer.description
+        )}
+      </div>
       <table className="details-table">
         <thead>
           <tr>
@@ -15,12 +215,40 @@ const RightPanelOverview = ({viewer}) => {
         <tbody>
           <tr>
             <td>Setting: </td>
-            <td>{viewer && viewer.setting}</td>
+            <td onClick={(e) => handleEditing(e, 'setting')}>
+              {isEditing === 'setting' ? (
+                <input
+                  value={sceneItem.setting}
+                  placeholder={viewer.setting}
+                  ref={settingRef}
+                  onChange={(e) => handleItem(e, 'setting')}
+                  onKeyDown={(e) => exitEdit(e, sceneItem)}
+                  onBlur={(e) => setIsEditing(false)}
+                  type="text"
+                />
+              ) : (
+                viewer?.setting
+              )}
+            </td>
           </tr>
 
           <tr>
-            <td>Character Count: </td>
-            <td>{viewer && viewer.characters?.length}</td>
+            <td>Characters: </td>
+
+            <td onClick={(e) => handleEditing(e, 'characters')}>
+              {isEditing === 'characters' ? (
+                <input
+                  placeholder={viewer.characters.join(', ')}
+                  ref={charRef}
+                  onChange={(e) => handleArrayItem(e, 'characters')}
+                  onKeyDown={(e) => exitArrayEdit(e, sceneItem)}
+                  onBlur={(e) => setIsEditing(false)}
+                  type="text"
+                />
+              ) : (
+                viewer?.characters.join(', ')
+              )}
+            </td>
           </tr>
           <tr>
             <td> Shot Count: </td>
@@ -52,7 +280,9 @@ const RightPanelOverview = ({viewer}) => {
           </tr>
           <tr>
             <td>Production Stage: </td>
-            <td>{viewer && viewer.productionStage && viewer.productionStage}</td>
+            <td>
+              {viewer && viewer.productionStage && viewer.productionStage}
+            </td>
           </tr>
         </tbody>
       </table>

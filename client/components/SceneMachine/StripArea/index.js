@@ -8,6 +8,8 @@ import {
   SetViewerContext,
   ControlPanelButtonsContext,
   ProjectContext,
+  SetDetailViewContext
+  
 } from '../../../contexts/SceneMachineProviders';
 import StripStyle from './StripAreaStyle';
 import { initialScenes } from '../../../initialStates';
@@ -24,11 +26,22 @@ const SceneMachineStripArea = () => {
   const buttons = useContext(ControlPanelButtonsContext);
   const [loaded, setLoaded] = useState(false);
   const project = useContext(ProjectContext);
+  const setDetail = useContext(SetDetailViewContext);
 
-  
+  // useEffect(() => {
+  //   handleLoadScenes()
+  // }, [viewer]);
 
+  useEffect(() => {
+    
+  /**
+   * 
+   * @returns {Array} An array of objects with the following properties:
+   * - `id:` the id of the scene
+   * - `sceneName:` the name of the scene
+   * - `stripImage:` the url of the strip image
+   */
   const handleLoadScenes = async () => {
-      console.log('PROJECT ID', project._id);   
       if(!project._id) return
       const { data } = await axios.get(`/api/field/${project._id}/scenes`);
       const scenes = await [...data];
@@ -42,10 +55,13 @@ const SceneMachineStripArea = () => {
       
       await setScenes(stripScenes);
   }
+  handleLoadScenes()
+  }, [project, viewer]);
 
-  useEffect(() => {
-    handleLoadScenes()
-  }, [project]);
+  const loadViewerScene = async (id) => {
+   const { data } = await axios.get(`/api/scene/${id}`);
+   await setViewer(data);
+  }
 
   const handleViewer = (e, scene) => {
     e.preventDefault();
@@ -54,11 +70,13 @@ const SceneMachineStripArea = () => {
       ...preview,
       image: scene.stripImage,
       sceneName: scene.sceneName,
-      type: 'default',
+      type: scene.stripImage ? 'image' : 'default',
       panel: 'Cover',
-      id: scene._id,
+      id: scene.id,
     }));
-    setViewer(scene);
+
+    loadViewerScene(scene.id)
+    
     dispatch(['RESET_VIEWER']); // not working yet
   };
 
@@ -72,14 +90,9 @@ const SceneMachineStripArea = () => {
       panel: 'Cover',
       id: 0,
     }));
-    // setPreview({
-    //   image: '/cork.jpeg',
-    //   panel: 0,
-    //   id: 0,
-    // });
+    setDetail('new scene')
   };
-  // console.log('scenes for mapping', scenes)
-  // console.log('viewer for mapping', viewer.id)
+
   return (
     <>
       <StripStyle />
@@ -90,19 +103,18 @@ const SceneMachineStripArea = () => {
               {buttons.display === machineView.view4.name &&
                 scenes.map((scene, i) => (
                   <>
-                  {/* {console.log('Scene Id',scene.id )}
-                  {console.log('Viewer Id',viewer.id )} */}
+                  {/* {console.log('Viewer Id',viewer.id )} */}
                     <div
                       key={scene.id}
                       onClick={(e) => handleViewer(e, scene)}
                       className="scene-strip">
                         
-                      <div className={`empty-strip ${scene.id === viewer.id && ' active'}`}>
+                      <div className={`empty-strip ${scene.id === viewer._id && ' active'}`}>
                         {scene.stripImage ? (
                           <img
                             style={{ opacity: loaded ? 1 : 0 }}
                             className={
-                              'scene-strip-img ' + scene.id === viewer.id && 
+                              'scene-strip-img ' + scene.id === viewer._id && 
                               ' active'
                             }
                             src={scene.stripImage}

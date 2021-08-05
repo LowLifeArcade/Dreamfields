@@ -91,18 +91,23 @@ export const create = async (req, res) => {
 
     // { $push: { friends: friend } }
     // find field and update with new scene
-    const field = await Field.findOneAndUpdate({ _id: scene.forProject }, {$push: {scenes: [scene._id]}}, {new: true})
-    .exec(
+    const field = await Field.findOneAndUpdate(
+      { _id: scene.forProject },
+      { $push: { scenes: [scene._id] } },
+      { new: true }
+    ).exec(
       // error handler
       (err) => {
         if (err) {
           console.log(err);
-          return res.status(400).send('Error while updating field with new scene');
+          return res
+            .status(400)
+            .send('Error while updating field with new scene');
         }
       }
-    )
+    );
 
-    console.log('field updated', field)
+    console.log('field updated', field);
 
     // Link.findOneAndUpdate({ _id: id }, updatedLink, { new: true }).exec(
     //   (err, updated) => {
@@ -117,7 +122,7 @@ export const create = async (req, res) => {
 
     // console.log('SCENE SAVED', scene)
     res.json(scene);
-    console.log('RESPONSE SENT')
+    console.log('RESPONSE SENT');
   } catch (err) {
     console.log(err);
     return res.status(400).send('Error creating scene. Check log.');
@@ -125,12 +130,15 @@ export const create = async (req, res) => {
 };
 
 export const read = async (req, res) => {
+  // console.log('REQ PARAMS',req.params.sceneId)
+  // return
   try {
-    const field = await Field.findOne({ slug: req.params.slug })
-      .populate('creator', '_id name')
-      .exec();
-    res.json(field);
-  } catch (err) {}
+    const scene = await Scene.findOne({ _id: req.params.sceneId }).exec();
+    // .populate('creator', '_id name')
+    res.json(scene);
+  } catch (err) {
+    console.log('ERROR reading scene', err);
+  }
 };
 
 export const uploadVideo = async (req, res) => {
@@ -144,7 +152,7 @@ export const uploadVideo = async (req, res) => {
   // find scene from schema
   const scene = await Scene.findOne({
     _id: req.params.sceneId,
-  })
+  });
 
   const isContributor = JSON.parse(contributors).some((contributor) => {
     return req.user._id != contributor ? false : true;
@@ -208,6 +216,41 @@ export const removeVideo = async (req, res) => {
       console.log(data);
       res.json({ ok: true });
     });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const update = async (req, res) => {
+  // console.log('UPDATE SCENE', req.body);
+  const itemUpdate = req.body;
+  // return;
+  try {
+    const scene = await Scene.findOneAndUpdate(
+      { _id: req.params.sceneId },
+      itemUpdate,
+      { new: true }
+    ).exec();
+
+    res.json(scene);
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const updateArrayItem = async (req, res) => {
+  // { arrayName: [ 'characters' ], itemName: 'boob' }
+  // console.log('UPDATE SCENE', req.body);
+  // return
+  const { arrayName, itemName } = req.body;
+  // return;
+  try {
+    const scene = await Scene.findOneAndUpdate(
+      { _id: req.params.sceneId },
+      { $push: { [arrayName]: [itemName] } },
+      { new: true }
+    ).exec();
+
+    res.json(scene);
   } catch (error) {
     console.log(error);
   }
