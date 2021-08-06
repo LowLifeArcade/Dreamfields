@@ -226,6 +226,17 @@ export const MachineStateContext = ({ children }) => {
           addScene: payload.scene,
         };
       }
+      case 'SAVE_VIDEO':
+        return {
+          ...state,
+          machineState: 'view',
+        };
+      case 'EDIT_VIDEO':
+        return {
+          ...state,
+          machineState: 'edit',
+        };
+
       default:
         state;
     }

@@ -283,6 +283,33 @@ const TransportControls = ({
             )}
           </>
         )}
+        {detail === detailView.video && (
+          <>
+            <button
+              className={`btn-small ${
+                detail === detailView.none ? 'active' : ''
+              }`}>
+              Remove
+            </button>
+            {state.machineState === detailView.edit ? (
+              <button
+                className={`btn-small ${
+                  detail === detailView.none ? 'active' : ''
+                }`}
+                onClick={() => dispatch(['SAVE_VIDEO'])}>
+                Save
+              </button>
+            ) : (
+              <button
+                className={`btn-small ${
+                  detail === detailView.none ? 'active' : ''
+                }`}
+                onClick={() => dispatch(['EDIT_VIDEO'])}>
+                Edit
+              </button>
+            )}
+          </>
+        )}
       </div>
     </div>
   );

@@ -8,11 +8,11 @@ const previewReducer = (state, action) => {
   if (state.previewState == 'playing') {
     switch (action) {
       case 'PLAY':
-        return { ...state, previewState: 'paused' };
+        return { ...state, player: 'pause',  previewState: 'paused' };
       case 'STOP':
-        return { ...state, previewState: 'stopped' };
+        return { ...state, player: 'pause', previewState: 'stopped' };
       case 'PAUSE':
-        return { ...state, previewState: 'paused' };
+        return { ...state, player: 'pause', previewState: 'paused' };
       case 'FORWARD':
         return { ...state, previewState: 'fast forward' };
       case 'BACKWARD':
@@ -56,7 +56,7 @@ const previewReducer = (state, action) => {
   if (state.previewState == 'paused') {
     switch (action) {
       case 'PLAY':
-        return { ...state, previewState: 'playing' };
+        return { ...state, player: 'play', previewState: 'playing' };
       // case 'PAUSE':
       //   return { ...state, previewState: 'playing' };
       case 'STOP':
@@ -74,7 +74,7 @@ const previewReducer = (state, action) => {
   if (state.previewState == 'stopped' || state.previewState == 'idle') {
     switch (action) {
       case 'PLAY':
-        return { ...state, previewState: 'playing', effect: 'synced' };
+        return { ...state, player: 'play',  previewState: 'playing', effect: 'synced' };
       case 'FORWARD':
         return { ...state, previewState: 'fast forward' };
       case 'BACKWARD':
@@ -110,6 +110,11 @@ const SceneMachineLeftPanel = () => {
     // setVideo(preview.video);
     videoRef.current?.load();
   },[preview.video]);
+
+  useEffect(() => {
+    console.log(state.player)
+    videoRef.current && videoRef.current[state?.player]()
+  }, [state]);
 
   // get item at end of string by period
   const getItemAtEnd = (str, delim) => {

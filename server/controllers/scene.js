@@ -196,9 +196,10 @@ export const uploadVideo = async (req, res) => {
 };
 
 export const removeVideo = async (req, res) => {
-  if (req.user._id != req.params.creatorId) {
-    return res.status(400).send('Unauthorized');
-  }
+  // if (req.user._id != req.params.creatorId) {
+  //   return res.status(400).send('Unauthorized');
+  // }
+
   try {
     const video = req.body;
     !video && res.status(400).send('No video');
@@ -217,6 +218,8 @@ export const removeVideo = async (req, res) => {
       console.log(data);
       res.json({ ok: true });
     });
+
+    
   } catch (error) {
     console.log(error);
   }

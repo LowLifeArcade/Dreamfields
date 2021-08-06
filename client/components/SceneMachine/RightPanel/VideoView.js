@@ -1,6 +1,10 @@
 import { useState, useEffect, useContext, useRef } from 'react';
 import axios from 'axios';
-import { PreviewProviderContext, SetViewerContext, ProjectContext } from '../../../contexts/SceneMachineProviders';
+import {
+  PreviewProviderContext,
+  SetViewerContext,
+  ProjectContext,
+} from '../../../contexts/SceneMachineProviders';
 // import { ProjectContext } from '../../../contexts/SceneMachineProviders';
 
 /**
@@ -20,7 +24,7 @@ const VideoEdit = ({ setAddVideo, setDetail, viewer }) => {
   const [videoData, setVideoData] = useState();
   const [videoThumb, setVideoThumb] = useState();
   const setPreview = useContext(PreviewProviderContext);
-  const setViewer = useContext(SetViewerContext)
+  const setViewer = useContext(SetViewerContext);
   const project = useContext(ProjectContext);
   const videoInput = useRef();
   const videoSN = useRef();
@@ -44,7 +48,7 @@ const VideoEdit = ({ setAddVideo, setDetail, viewer }) => {
   const handleVideo = async (e) => {
     console.log('VIEWER IN VIDEO UPLOAD', viewer);
     // return
-    
+
     try {
       const file = e.target.files[0];
       setLoading(true);
@@ -95,9 +99,13 @@ const VideoEdit = ({ setAddVideo, setDetail, viewer }) => {
   };
 
   const handleSubmit = async () => {
-    const {data} = await axios.post(`/api/scene/video-add/${viewer._id}`, {videoName, videoData, videoShotNumber});
-    console.log('VIDEO ADDED', data)
-    setViewer(data)
+    const { data } = await axios.post(`/api/scene/video-add/${viewer._id}`, {
+      videoName,
+      videoData,
+      videoShotNumber,
+    });
+    console.log('VIDEO ADDED', data);
+    setViewer(data);
     // await axios.post(`/api/scene/video-add/${viewer._id}`, videoData);
     setAddVideo(false);
   };
@@ -107,69 +115,72 @@ const VideoEdit = ({ setAddVideo, setDetail, viewer }) => {
       <div className="transport-panels-section">
         <div className="transport-panels">
           <div className="video-add-body">
-          <button onClick={e => setAddVideo(false)} >Cancel</button>
+            <button onClick={(e) => setAddVideo(false)}>Cancel</button>
             {isEditing ? (
-              <>  
-              <input
-                value={videoName}
-                ref={videoInput}
-                onChange={(e) => setVideoName(e.target.value)}
-                className="input-text"
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    setIsEditing(false);
-                  }
-                }}
-                type={'text'}
-                name={''} // use this field to handle state with [e.target.name]: [e.target.value] in the object
-                // autoComplete={'text' && true}
-                onBlur={(e) => setIsEditing(false)}
-                placeholder={'Give a name for this video'}
-                // disabled={false}
-              />
+              <>
+                <input
+                  value={videoName}
+                  ref={videoInput}
+                  onChange={(e) => setVideoName(e.target.value)}
+                  className="input-text"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      setIsEditing(false);
+                    }
+                  }}
+                  
+                  type={'text'}
+                  name={''} // use this field to handle state with [e.target.name]: [e.target.value] in the object
+                  // autoComplete={'text' && true}
+                  onBlur={(e) => setIsEditing(false)}
+                  placeholder={'Give a name for this video'}
+                  // disabled={false}
+                />
               </>
             ) : (
               <>
-              
-              <label
-                onClick={(e) => setIsEditing(true)}
-                className="label"
-                htmlFor="scene-video">
-                {videoName ? <div>{videoName}</div> : <div>Video Name</div>}
-              </label>
+                <label
+                  onClick={(e) => setIsEditing(true)}
+                  className="label"
+                  htmlFor="scene-video">
+                  {videoName ? <div>{videoName}</div> : <div>Video Name</div>}
+                </label>
               </>
             )}
             {isEditingSN ? (
-              <>  
-              <input
-                value={videoShotNumber}
-                ref={videoSN}
-                onChange={(e) => setVideoShotNumber(e.target.value)}
-                className="input-text"
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    setIsEditingSN(false);
-                  }
-                }}
-                type={'text'}
-                name={''} // use this field to handle state with [e.target.name]: [e.target.value] in the object
-                // autoComplete={'text' && true}
-                onBlur={(e) => setIsEditingSN(false)}
-                placeholder={'Give a name for this video'}
-                // disabled={false}
-              />
+              <>
+                <input
+                  value={videoShotNumber}
+                  ref={videoSN}
+                  onChange={(e) => setVideoShotNumber(e.target.value)}
+                  className="input-text"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      setIsEditingSN(false);
+                    }
+                  }}
+                  type={'text'}
+                  name={''} // use this field to handle state with [e.target.name]: [e.target.value] in the object
+                  // autoComplete={'text' && true}
+                  onBlur={(e) => setIsEditingSN(false)}
+                  placeholder={'Give a name for this video'}
+                  // disabled={false}
+                />
               </>
             ) : (
               <>
-              <label
-                onClick={(e) => setIsEditingSN(true)}
-                className="label"
-                htmlFor="scene-video">
-                {videoShotNumber ? <div>{videoShotNumber}</div> : <div>Shot Number</div>}
-              </label>
+                <label
+                  onClick={(e) => setIsEditingSN(true)}
+                  className="label"
+                  htmlFor="scene-video">
+                  {videoShotNumber ? (
+                    <div>{videoShotNumber}</div>
+                  ) : (
+                    <div>Shot Number</div>
+                  )}
+                </label>
               </>
             )}
-
 
             {loading && <>Upload: {progress} %</>}
             <div className="video-upload-section">
@@ -230,8 +241,8 @@ const VideoEdit = ({ setAddVideo, setDetail, viewer }) => {
   );
 };
 const VideoView = ({ activeShot, viewer, preview, setPreview, setDetail }) => {
-  
   const [addVideo, setAddVideo] = useState(false);
+  console.log('VIDEO VIEW VIEWER DATA', viewer)
   return (
     <>
       <div className="transport-panels-section">
@@ -249,71 +260,103 @@ const VideoView = ({ activeShot, viewer, preview, setPreview, setDetail }) => {
           <>
             <div className="board-titles">Videos</div>
             <div className="transport-panels">
-              {viewer.videos?.map( 
+              {viewer.videos?.map(
                 //TODO: change to viewer.videos.map
                 // Make it so that it's broken up by shot number
+
+                /**
+                 * 'video' is the video object
+                 * 
+                 * @param {Object} video `{sceneId, videoData, videoName, _id}`
+                 * @param {string} video.sceneId
+                 * @param {string} video.videoName
+                 * @param {string} video._id
+                 * 
+                 * 'Video Data' is the video data that is uploaded to the server
+                 * @param {Object} video.videoData `{Bucket, ETag, Key, Location}`
+                 * @param {string} video.videoData.Bucket
+                 * @param {string} video.videoData.ETag
+                 * @param {string} video.videoData.Key
+                 * @param {string} video.videoData.Location
+                 */
                 (video, i) =>
                   (true && (
                     <>
-                    <div className="transport-panel">
-                    
-
-                      <img
-                        onClick={() =>
-                          setPreview({
-                            video: video.videoData?.Location,
-                            type: 'video',
-                            image: '',
-                            sceneName: video.videoName,
-                            panel: i + 1,
-                            shotNumber: video.videoShotNumber,
-                            // id: video.id,
-                          })
-                        }
-                        src={`https://picsum.photos/id/1${i}/100/50`}
-                        className="img-transport-panel" />
-                        
+                      <div className="transport-panel">
+                        {console.log(video._id)}
+                        {console.log(preview)}
+                        <img
+                          onClick={() =>
+                            setPreview({
+                              video: video.videoData?.Location,
+                              type: 'video',
+                              image: '',
+                              sceneName: video.videoName,
+                              panel: i + 1,
+                              shotNumber: video.videoShotNumber,
+                              id: video._id,
+                              // id: video.id,
+                            })
+                          }
+                          src={`https://picsum.photos/id/1${i}/100/50`}
+                          // className="img-transport-panel active"
+                          className={`img-transport-panel ${video._id === preview.id && 'active'}`}
+                        />
                         <div className="panel-index">{i + 1}</div>
-                        <div className="panel-shot">{video.videoShotNumber}</div>
-                        {/* <img
-                          className={video.id === preview.id && 'active'}
-                          src={video.videoData?.thumbNail}
-                          alt=""
-                        /> */}
-                        <div className="transport-video-label">{video.videoName}</div>
-                    </div>
-                    
-                        {/* <p>shot: {board.shotNumber}</p> */}
+                        <div className="panel-shot">
+                          {video.videoShotNumber}
+                        </div>
+                        <div className="transport-video-label">
+                          {video.videoName}
+                        </div>
+                      </div>
+
+                      {/* <p>shot: {board.shotNumber}</p> */}
                     </>
                   )) ||
-                  (true && (
-                    <div
-                      onClick={() =>
-                        setPreview({
-                          image: video.board,
-                          sceneName: viewer.sceneName,
-                          panel: i + 1,
-                          shotNumber: board.shotNumber,
-                          id: board.id,
-                        })
-                      }
-                      className="transport-panel">
-                      <div className="transport-label">{video.videoName}</div>
+                  (false && (
+                    <div className="transport-panel">
+                      <div className="transport-label">
+                        <img
+                          onClick={() =>
+                            setPreview({
+                              video: video.videoData?.Location,
+                              type: 'video',
+                              image: '',
+                              sceneName: video.videoName,
+                              panel: i + 1,
+                              shotNumber: video.videoShotNumber,
+                              // id: video.id,
+                            })
+                          }
+                          src={`https://picsum.photos/id/1${i}/100/50`}
+                          className="img-transport-panel"
+                        />
+                        <div className="panel-index">{i + 1}</div>
+                        <div className="panel-shot">
+                          {video.videoShotNumber}
+                        </div>
+                        <div className="transport-video-label">
+                          {video.videoName}
+                        </div>
+                      </div>
                       <div className="panel-index">{i + 1}</div>
-                      <div className="panel-shot">{video.Location.Location}</div>
-                      <img
+                      <div className="panel-shot">
+                        {video.Location?.Location}
+                      </div>
+                      {/* <img
                         className={video._id === preview.id && 'active'}
                         src={video.videoName}
                         alt=""
-                      />
+                      /> */}
                       {/* <p>shot: {board.shotNumber}</p> */}
                     </div>
                   ))
               )}
 
-              <section className="transport-panel-add">
+              <section className="transport-video-add">
                 <div onClick={() => setAddVideo(true)}>
-                  <i class="fas fa-plus "></i>
+                  <i className="fas fa-plus "></i>
                 </div>
               </section>
             </div>
@@ -325,10 +368,39 @@ const VideoView = ({ activeShot, viewer, preview, setPreview, setDetail }) => {
           </>
         )}
         <style jsx>{`
-        .transport-video-label {
-          font-size: .8em;
-          color: #ebe9e3;
-        }
+          .transport-video-label {
+            font-size: 0.8em;
+            color: #ebe9e3;
+          }
+          .transport-video-add {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 110px;
+            height: 80px;
+          }
+
+          .transport-video-add > div > i {
+            color: #b6b6b6;
+            // background: #e6e6e6;
+            z-index: 1;
+          }
+          .transport-video-add > div {
+            cursor: pointer;
+            color: #2f3c41;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(228, 227, 227, 0.192);
+            border-radius: 50%;
+            width: 33px;
+            height: 33px;
+            padding: 10px 0;
+            border: none;
+          }
+          .img-transport-panel .active {
+        border: solid 2px rgb(28, 226, 183);
+      }
         `}</style>
       </div>
 

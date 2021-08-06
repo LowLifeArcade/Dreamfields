@@ -4,7 +4,7 @@ import {
   MachineStateDispatchContext,
   MachineStateStateContext,
 } from '../../../contexts/SceneMachineProviders';
-import { detailView } from '../../../dataModels';
+import { detailView, machineView } from '../../../dataModels';
 
 const ControlPanelContextualMenu = () => {
   const dispatch = useContext(MachineStateDispatchContext);
@@ -92,7 +92,7 @@ const ControlPanelContextualMenu = () => {
           </div>
         </>
       )}
-      
+
       {detail === detailView.breakdown && (
         <>
           {false && ( // make boolean that reads project file to reverse changes
@@ -124,6 +124,33 @@ const ControlPanelContextualMenu = () => {
         </>
       )}
 
+      {detail === detailView.video && (
+        <>
+          {state.machineState == 'edit' && ( // make boolean that reads project file to reverse changes
+            <>
+              <div className="btn-mini">
+                <i class="fas fa-redo-alt"></i>
+              </div>
+              <div className="btn-mini">
+                <i class="fas fa-undo-alt"></i>
+              </div>
+            </>
+          )}
+
+          <div className="btn-mini">
+            <i class="fas fa-photo-video"></i>
+          </div>
+          <div className="btn-mini">
+            <i class="fas fa-file-export"></i>
+          </div>
+          <div className="btn-mini">
+            <i class="fas fa-info-circle"></i>
+          </div>
+          <div className="btn-mini">
+            <i class="far fa-save"></i>
+          </div>
+        </>
+      )}
     </div>
   );
 };
