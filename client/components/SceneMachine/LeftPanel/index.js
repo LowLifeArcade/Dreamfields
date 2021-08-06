@@ -1,4 +1,4 @@
-import { useReducer, useContext, useEffect } from 'react';
+import { useState, useReducer, useContext, useEffect, useRef } from 'react';
 import { PreviewStyle } from './PreviewStyle';
 import { PreviewStateContext } from '../../../contexts/SceneMachineProviders';
 
@@ -91,15 +91,32 @@ const previewReducer = (state, action) => {
   // };
 };
 
+// const Video = ({preview}) => (
+//   <div>
+//     <video  className="video" controls>
+//       <source src={preview.video} type={`video/mp4`} />
+//     </video>
+//   </div>
+// );
+
 const SceneMachineLeftPanel = () => {
   const [state, dispatch] = useReducer(previewReducer, initPrevState);
+  const [video, setVideo] = useState();
+  const videoRef = useRef();
   const preview = useContext(PreviewStateContext);
   useEffect(() => {
     console.log('preview machine state', state);
-  });
+    console.log('VIDEO TYPE', getItemAtEnd(preview.video, '.'));
+    // setVideo(preview.video);
+    videoRef.current?.load();
+  },[preview.video]);
 
-  console.log('PREVIEW',preview)
-
+  // get item at end of string by period
+  const getItemAtEnd = (str, delim) => {
+    const index = str?.lastIndexOf(delim);
+    return str?.substr(index + 1);
+  };
+  // `video/${getItemAtEnd(preview.video, '.')}`
   return (
     <>
       <PreviewStyle />
@@ -107,20 +124,18 @@ const SceneMachineLeftPanel = () => {
         <div className="viewer-frame">
           <div className="viewer-media">
             {preview.type !== 'image' && preview.type !== 'video' && (
-              <img className="media img" src='https://picsum.photos/id/237/500' alt="" />
+              <img
+                className="media img"
+                src="https://picsum.photos/id/237/500"
+                alt=""
+              />
             )}
             {preview.type === 'image' && <img src={preview.image} alt="" />}
             {preview.type === 'video' && (
               <div>
-                <video className="video" controls>
-                  {/* <source
-                    src="/media/cc0-videos/flower.webm"
-                    type="video/webm"
-                  /> */}
-
-                  <source src={preview.video} type="video/mp4" />
+                <video ref={videoRef} className="video" controls>
+                  <source src={preview.video} type={`video/mp4`} />
                 </video>
-                
               </div>
             )}
 

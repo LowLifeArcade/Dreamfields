@@ -10,6 +10,12 @@ import { initialViewerState } from '../../../../initialStates';
 import { detailView } from '../../../../dataModels';
 
 // TODO: view should be global or at least where both contextual menu and transport menu can observe it
+
+/**
+ * 
+ * @param {callback} setActiveShot is used only for setting to blank 
+ * @returns {jsx}
+ */
 const TransportControls = ({
   state,
   activeShot,

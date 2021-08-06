@@ -101,8 +101,26 @@ const sceneSchema = new Schema({
     },
   ],
   animatic: String,
-  video: { Location: String, name: String, shot: String, rev: Number },
+  videos: [
+    {
+      videoName: { type: String, required: true },
+      videoShotNumber: { type: String, required: true },
+      sceneId: {type: ObjectId, ref: 'Scene'},
+      videoData: {
+        Location: { type: String, required: true },
+        Bucket: { type: String, required: true },
+        Key: { type: String, required: true },
+        ETag: { type: String, required: true },
+      },
+    },
+  ],
   revision: Number,
+  // const returnedData = {
+  //   Location: 'https://dreamfields-bucket.s3.us-west-1.amazonaws.com/M3Cj--wcPikYLzcj05QSC.quicktime',
+  //   Bucket: 'dreamfields-bucket',
+  //   Key: 'M3Cj--wcPikYLzcj05QSC.quicktime',
+  //   ETag: '"1d6f3e4fdad50601ca63ab686f151ae3-7"',
+  // };
 });
 
 export default mongoose.model('Scene', sceneSchema);

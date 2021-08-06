@@ -19,15 +19,15 @@ import RightPanelScriptView from './ScriptView';
 import RightPanelBreakdownView from './BreakdownView';
 import RightPanelBoardsView from './BoardsView';
 import RightPanelFrame from './PanelFrame';
-import RightPanelVideoView from './VideoView'
+import VideoView from './VideoView';
 import TransportControls from './TransportControls';
 import { detailView as view, bgPresets } from '../../../dataModels';
 
 const SceneMachineRightPanel = () => {
   const userContext = useContext(Context);
   const [activeShot, setActiveShot] = useState('');
-  const detail = useContext(DetailViewContext)
-  const setDetail = useContext(SetDetailViewContext)
+  const detail = useContext(DetailViewContext);
+  const setDetail = useContext(SetDetailViewContext);
   const [background, setBackground] = useState(bgPresets.overview);
   const viewer = useContext(ViewerContext);
   const showModal = useContext(ModalContext);
@@ -36,8 +36,8 @@ const SceneMachineRightPanel = () => {
   const setPreview = useContext(PreviewProviderContext);
   const dispatch = useContext(MachineStateDispatchContext);
   const state = useContext(MachineStateStateContext);
-  const project = useContext(ProjectContext)
-  console.log('DETAIL RIGHT PANEL INDEX', detail)
+  const project = useContext(ProjectContext);
+  console.log('DETAIL RIGHT PANEL INDEX', detail);
   // console.log('viewer in right panel',viewer)
   // useEffect(() => {
   //   setDetail(view.overview);
@@ -112,16 +112,10 @@ const SceneMachineRightPanel = () => {
         <div className="transport-overview">
           {/* <div className="transport-overview-frame"> */}
 
-          
-          {detail === view.overview && 
-          <RightPanelOverview viewer={viewer} />}
+          {detail === view.overview && <RightPanelOverview viewer={viewer} />}
 
           {detail === view.script && (
-            <RightPanelScriptView
-              state={state}
-              view={view}
-              viewer={viewer}
-            />
+            <RightPanelScriptView state={state} view={view} viewer={viewer} />
           )}
 
           {detail === view.breakdown && (
@@ -143,7 +137,16 @@ const SceneMachineRightPanel = () => {
             />
           )}
 
-          {detail === view.video && <RightPanelVideoView setDetail={setDetail} viewer={viewer}/> }
+          {detail === view.video && (
+            <VideoView
+              setDetail={setDetail}
+              viewer={viewer}
+              activeShot={activeShot}
+              viewer={viewer}
+              setPreview={setPreview}
+              preview={preview}
+            />
+          )}
 
           {detail === view.panelDetails && <div>panel details</div>}
           {detail === view.assets && <div>assets</div>}

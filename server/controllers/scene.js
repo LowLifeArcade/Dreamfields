@@ -23,10 +23,10 @@ export const uploadImage = async (req, res) => {
     // prepare image for upload
     const base64Data = new Buffer.from(
       image.replace(/^data:image\/\w+;base64,/, ''),
-      'base64'
+      'base64' 
     );
 
-    const type = image.split(';')[0].split('/')[1];
+    const type = image.split(';')[0].split('/')[1]; 
 
     // image params
     const params = {
@@ -154,13 +154,14 @@ export const uploadVideo = async (req, res) => {
     _id: req.params.sceneId,
   });
 
-  const isContributor = JSON.parse(contributors).some((contributor) => {
-    return req.user._id != contributor ? false : true;
-  });
+  // TODO: make isContributor work 
+  // const isContributor = JSON.parse(contributors).some((contributor) => {
+  //   return req.user._id != contributor ? false : true;
+  // });
 
-  if (!isCreator && !isContributor) {
-    return res.status(400).send('Unauthorized');
-  }
+  // if (!isCreator && !isContributor) {
+  //   return res.status(400).send('Unauthorized');
+  // }
 
   // if (!isContributor) return res.status(400).send('Unauthorized');
   const isCreator = req.user._id == req.params.creatorId; // add this in if statement after testing
@@ -237,7 +238,46 @@ export const update = async (req, res) => {
     console.log(error);
   }
 };
-export const updateArrayItem = async (req, res) => {
+
+export const updateVideo = async (req, res) => {
+  console.log('UPDATE VIDEO', req.body);
+  // return
+  let itemUpdate = req.body;
+  itemUpdate.sceneId = req.params.sceneId;
+  // return;
+  try {
+    const scene = await Scene.findOneAndUpdate(
+      { _id: req.params.sceneId },
+      { $push: {videos:[itemUpdate]}},
+      { new: true }
+    ).exec();
+      console.log('PUSHED VIDEO', scene)
+    res.json(scene);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+export const updateArray = async (req, res) => {
+  // { arrayName: [ 'characters' ], itemName: 'boob' }
+  // console.log('UPDATE SCENE', req.body);
+  // return
+  const { arrayName, itemName } = req.body;
+  // return;
+  try {
+    const scene = await Scene.findOneAndUpdate(
+      { _id: req.params.sceneId },
+      { [arrayName]: itemName },
+      { new: true }
+    ).exec();
+
+    res.json(scene);
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const updatePushArrayItem = async (req, res) => {
   // { arrayName: [ 'characters' ], itemName: 'boob' }
   // console.log('UPDATE SCENE', req.body);
   // return

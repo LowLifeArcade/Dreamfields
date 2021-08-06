@@ -6,27 +6,6 @@ import {
 } from '../../../contexts/SceneMachineProviders';
 import BecomeCreator from '../../../pages/user/become-creator';
 
-// make axios call to api to update scene
-// export const useUpdateScene = (sceneName) => {
-//   const [viewer, setViewer] = useState({});
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState(null);
-
-//   useEffect(() => {
-//     axios.get(`/api/v1/scenes/${sceneName}`)
-//       .then(({data}) => {
-//         setViewer(data);
-//         setLoading(false);
-//       })
-//       .catch(err => {
-//         setError(err);
-//         setLoading(false);
-//       });
-//   }, [sceneName]);
-
-//   return [viewer, loading, error];
-// }
-
 const RightPanelOverview = ({ viewer }) => {
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
@@ -40,7 +19,7 @@ const RightPanelOverview = ({ viewer }) => {
   const charRef = useRef();
 
   useEffect(() => {
-    if (isEditing == 'title') {
+    if (isEditing == 'sceneName') {
       titleRef.current.focus();
     }
     if (isEditing == 'description') {
@@ -102,10 +81,11 @@ const RightPanelOverview = ({ viewer }) => {
   };
 
   const changeArrayItem = async (sceneItem) => {
+
     try {
       await axios.post(`/api/scene/overview-array/${viewer._id}`, sceneItem);
       const { data } = await axios.get(`/api/scene/${viewer._id}`);
-
+      console.log('AXIOS DATA', data)
       await setViewer(data);
 
       await setLoading(false);
@@ -128,9 +108,14 @@ const RightPanelOverview = ({ viewer }) => {
     }
   };
 
-  const exitArrayEdit = (e, sceneItem) => {
+  const exitArrayEdit = (e, key, objWithArray) => {
     if (e.key === 'Enter') {
-      changeArrayItem(sceneItem);
+      const objToSend = {arrayName: key, itemName: objWithArray[key].split(',')}
+      console.log('ARRAY TO SEND', objToSend)
+
+      // setSceneItem({ arrayName: [key], itemName: arrayValue });
+      // console.log('ARRAY ITEM ON EXIT', sceneItem);
+      changeArrayItem(objToSend);
       setIsEditing(false);
       // loadViewerScene(viewer._id);
       setSceneItem('');
@@ -146,6 +131,11 @@ const RightPanelOverview = ({ viewer }) => {
     e.preventDefault();
     setSceneItem({ arrayName: [arrayName], itemName: e.target.value });
   };
+  const handleArray = (e, arrayName) => {
+    e.preventDefault();
+    setSceneItem({ [arrayName]: e.target.value });
+    console.log('HANDLE ARRAY', sceneItem);
+  };
 
   const handleItem = (e, sceneItem) => {
     e.preventDefault();
@@ -153,7 +143,10 @@ const RightPanelOverview = ({ viewer }) => {
   };
 
   const handleEditing = (e, editName) => {
+    if (isEditing === editName) return
     const el = e.target.getAttribute('data-index');
+    setSceneItem({[editName]: viewer[editName]})
+    console.log('HANDLE EDITING', sceneItem)
     e.preventDefault();
     // set focus on the input
     setIsEditing(editName);
@@ -162,14 +155,25 @@ const RightPanelOverview = ({ viewer }) => {
 
     // titleRef.current.focus()
   };
-  console.log('CHARACTERS', viewer.characters);
+
+  const handleArrayEditing = (e, arrayName) => {
+    e.preventDefault();
+    setSceneItem({ [arrayName]: viewer[arrayName] });
+    console.log('HANDLE ARRAY EDIT', sceneItem);
+    // set focus on the input
+    setIsEditing(arrayName);
+    // titleRef.current = el;
+    // console.log('EL', el)
+
+    // titleRef.current.focus()
+  };
 
   return (
     <div id="scene-card" className="transport-description">
       <div
         className="transport-description"
-        onClick={(e) => handleEditing(e, 'title')}>
-        {isEditing === 'title' ? (
+        onClick={(e) => handleEditing(e, 'sceneName')}>
+        {isEditing === 'sceneName' ? (
           <h3>
             <input
               ref={titleRef}
@@ -177,7 +181,7 @@ const RightPanelOverview = ({ viewer }) => {
               value={sceneItem.sceneName}
               onChange={(e) => handleItem(e, 'sceneName')}
               type="text"
-              placeholder={viewer.sceneName}
+              // placeholder={viewer.sceneName}
               onKeyDown={(e) => exitEdit(e, sceneItem)}
               onBlur={(e) => setIsEditing(false)}
             />
@@ -197,7 +201,7 @@ const RightPanelOverview = ({ viewer }) => {
             cols="50"
             rows="10"
             value={sceneItem.description}
-            placeholder={viewer.description}
+            // placeholder={viewer.description}
             onChange={(e) => handleItem(e, 'description')}
             onKeyDown={(e) => exitEdit(e, sceneItem)}
             onBlur={(e) => setIsEditing(false)}></textarea>
@@ -219,7 +223,7 @@ const RightPanelOverview = ({ viewer }) => {
               {isEditing === 'setting' ? (
                 <input
                   value={sceneItem.setting}
-                  placeholder={viewer.setting}
+                  // placeholder={viewer.setting}
                   ref={settingRef}
                   onChange={(e) => handleItem(e, 'setting')}
                   onKeyDown={(e) => exitEdit(e, sceneItem)}
@@ -233,15 +237,16 @@ const RightPanelOverview = ({ viewer }) => {
           </tr>
 
           <tr>
-            <td>Characters: </td>
-
-            <td onClick={(e) => handleEditing(e, 'characters')}>
+            <td>Characters: (count: {viewer.characters.length})</td>
+            {/* TODO: add ability to see and edit whole array  */}
+            <td onClick={(e) => handleArrayEditing(e, 'characters')}>
               {isEditing === 'characters' ? (
                 <input
                   placeholder={viewer.characters.join(', ')}
+                  value={sceneItem.characters}
                   ref={charRef}
-                  onChange={(e) => handleArrayItem(e, 'characters')}
-                  onKeyDown={(e) => exitArrayEdit(e, sceneItem)}
+                  onChange={(e) => handleArray(e, 'characters')}
+                  onKeyDown={(e) => exitArrayEdit(e, 'characters', sceneItem)}
                   onBlur={(e) => setIsEditing(false)}
                   type="text"
                 />

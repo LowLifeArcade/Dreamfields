@@ -7,7 +7,7 @@ const router = express.Router();
 import { isCreator, requireSignin } from '../middlewares';
 
 // controllers
-import { uploadImage, removeImage, create, read, uploadVideo, removeVideo, update, updateArrayItem } from '../controllers/scene';
+import { uploadImage, removeImage, create, read, uploadVideo, removeVideo, update, updateArray, updateVideo } from '../controllers/scene';
 
 // image
 router.post('/scene/upload-image', uploadImage);
@@ -22,6 +22,7 @@ router.post('/scene/video-remove/:sceneId', requireSignin, removeVideo)
 
 // scene 
 router.post(`/scene/overview/:sceneId`, requireSignin, isCreator, update)
-router.post(`/scene/overview-array/:sceneId`, requireSignin, isCreator, updateArrayItem)
+router.post(`/scene/overview-array/:sceneId`, requireSignin, isCreator, updateArray)
+router.post(`/scene/video-add/:sceneId`, requireSignin, isCreator, updateVideo)
 
 module.exports = router;
