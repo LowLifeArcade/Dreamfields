@@ -12,9 +12,10 @@ import {
   
 } from '../../../contexts/SceneMachineProviders';
 import StripStyle from './StripAreaStyle';
-import { initialScenes } from '../../../initialStates';
+import { initialViewerState } from '../../../initialStates';
 import { machineView } from '../../../dataModels';
 import axios from 'axios';
+import {detailView} from '../../../dataModels';
 
 const SceneMachineStripArea = () => {
   const setPreview = useContext(PreviewProviderContext);
@@ -31,6 +32,14 @@ const SceneMachineStripArea = () => {
   // useEffect(() => {
   //   handleLoadScenes()
   // }, [viewer]);
+
+  // TODO: might need to fix this beahvior. It loads the scene and defaults to the overview, but I might not want that.
+  useEffect(() => {
+    // setViewer(project.scenes[0])
+    project.scenes && project.scenes[0] ? loadViewerScene(project.scenes[0] ) : setViewer(initialViewerState)
+    setDetail(detailView.overview)
+    console.log('PROJECT IN STRIP AREA',project.scenes && project)
+  }, [project]);
 
   useEffect(() => {
     

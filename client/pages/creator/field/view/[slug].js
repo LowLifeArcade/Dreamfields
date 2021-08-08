@@ -30,11 +30,11 @@ const FieldView = () => {
   //   loadField();
   // }, [project]);
 
-  const loadField = async () => {
-    const { data } = await axios.get(`/api/field/${slug}`);
-    setField(data);
-    dispatch(['LOAD_PROJECT', data])
-  };
+  // const loadField = async () => {
+  //   const { data } = await axios.get(`/api/field/${slug}`);
+  //   setField(data);
+  //   dispatch(['LOAD_PROJECT', data])
+  // };
 
   return (
     <CreatorRoute>

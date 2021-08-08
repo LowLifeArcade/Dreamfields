@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { setProjectContext, ProjectContext } from '../contexts/SceneMachineProviders';
 import axios from 'axios';
 
@@ -7,13 +7,27 @@ const SideBarItem = ({ index,slug, image, title, clicked, ...rest }) => {
   const dispatch = useContext(setProjectContext);
   const  project  = useContext(ProjectContext);
 
-  console.log('slug ',slug)
-  console.log('project', project._id)
 
+  
+
+  // useEffect(() => {
+  //   const loadFieldFromLocalStorage = async (slug) => {
+  //     const { data } = await axios.get(`/api/field/${slug}`);
+  //     dispatch(['LOAD_PROJECT', data])
+  //   };
+    
+  //  const slug = localStorage.getItem('projectslug');
+  //  console.log('SLUG IN SIDEBAR ITEM',slug)
+  //  if (slug) {
+  //   loadFieldFromLocalStorage(slug);
+  //  }
+  // }, []);
+
+  // TODO: change to dispatch and use the action to load the project by slug
   const loadField = async () => {
     const { data } = await axios.get(`/api/field/${slug}`);
-    // setField(data);
-    dispatch(['LOAD_PROJECT', data])
+    dispatch(['LOAD_PROJECT', {data, slug}])
+    localStorage.setItem('projectslug', JSON.stringify(slug));
   };
   return (
     <>

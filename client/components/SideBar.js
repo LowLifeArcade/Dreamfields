@@ -88,7 +88,6 @@ const SideBar = ({ onLogoClick, showSideMenu }) => {
     setFields(data);
   };
 
-  console.log('fields', fields);
 
   return (
     <>
@@ -242,7 +241,7 @@ const Style = () => {
         justify-content: flex-end;
         align-items: center;
         padding-top: 40px;
-        height: 25vh;
+        height: 22vh;
         width: 100%;
         overflow: scroll;
         border-top: 1px solid rgb(197, 194, 173);

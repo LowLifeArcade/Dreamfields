@@ -104,6 +104,7 @@ const sceneSchema = new Schema({
   videos: [
     {
       videoName: { type: String, required: true },
+      videoKey: { type: String, required: true },
       videoShotNumber: { type: String, required: true },
       sceneId: {type: ObjectId, ref: 'Scene'},
       videoData: {

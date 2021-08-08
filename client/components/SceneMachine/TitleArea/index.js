@@ -13,7 +13,6 @@ const SceneMachineTitle = () => {
   const [sceneEdit, setSceneEdit] = useState(initialSceneEditState);
   const buttons = useContext(ControlPanelButtonsContext);
   const field = useContext(ProjectContext)
-  console.log('field in scene machine title', field)
 
   
   const SceneMachineTitleStyle = () => {

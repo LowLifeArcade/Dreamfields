@@ -4,6 +4,7 @@ import {
   PreviewProviderContext,
   SetDetailViewContext,
   SetViewerContext,
+  MachineStateDispatchContext
 } from '../../../../contexts/SceneMachineProviders';
 import { useContext } from 'react';
 import { initialViewerState } from '../../../../initialStates';
@@ -12,8 +13,8 @@ import { detailView } from '../../../../dataModels';
 // TODO: view should be global or at least where both contextual menu and transport menu can observe it
 
 /**
- * 
- * @param {callback} setActiveShot is used only for setting to blank 
+ *
+ * @param {callback} setActiveShot is used only for setting to blank
  * @returns {jsx}
  */
 const TransportControls = ({
@@ -29,6 +30,7 @@ const TransportControls = ({
   const setDetail = useContext(SetDetailViewContext);
   const setPreview = useContext(PreviewProviderContext);
   const setViewer = useContext(SetViewerContext);
+  // const state = useContext(MachineStateDispatchContext)
 
   const handleCheckin = () => {
     setShowModal(true);
@@ -72,11 +74,13 @@ const TransportControls = ({
 
   const handleCancel = () => {
     // dispatch({ type: 'CONFIRM', payload: 'Cancel New Scene' });
+    // TODO: make a default preview state and put it in data models 
     setPreview({
       image: '//unsplash.it/id/1/400/225',
-      sceneName: 'Open',
-      panel: '',
-      id: '',
+      type: 'default'
+      // sceneName: 'Open',
+      // panel: '',
+      // id: '',
     });
     setViewer(initialViewerState);
     setDetail(detailView.overview);
@@ -288,7 +292,8 @@ const TransportControls = ({
             <button
               className={`btn-small ${
                 detail === detailView.none ? 'active' : ''
-              }`}>
+              }`}
+              onclick={() => dispatch(['REMOVE_VIDEO'])}>
               Remove
             </button>
             {state.machineState === detailView.edit ? (

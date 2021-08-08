@@ -105,14 +105,12 @@ const SceneMachineLeftPanel = () => {
   const videoRef = useRef();
   const preview = useContext(PreviewStateContext);
   useEffect(() => {
-    console.log('preview machine state', state);
-    console.log('VIDEO TYPE', getItemAtEnd(preview.video, '.'));
     // setVideo(preview.video);
     videoRef.current?.load();
   },[preview.video]);
 
   useEffect(() => {
-    console.log(state.player)
+    // console.log(state.player)
     videoRef.current && videoRef.current[state?.player]()
   }, [state]);
 

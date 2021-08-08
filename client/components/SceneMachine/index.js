@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 // /@ts-check
 import Spinner from './Spinner';
 import SceneMachineTitle from './TitleArea';
@@ -21,6 +22,8 @@ import {
   DetailViewProvider,
   ProjectProvider
 } from '../../contexts/SceneMachineProviders';
+
+
 
 /**
  * These Provider provide both the values and setters
@@ -53,6 +56,7 @@ const Providers = ({ children }) => {
 };
 
 const SceneMachine = () => {
+  
   return (
     <>
       <head>

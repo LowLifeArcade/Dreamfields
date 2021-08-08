@@ -23,10 +23,10 @@ export const uploadImage = async (req, res) => {
     // prepare image for upload
     const base64Data = new Buffer.from(
       image.replace(/^data:image\/\w+;base64,/, ''),
-      'base64' 
+      'base64'
     );
 
-    const type = image.split(';')[0].split('/')[1]; 
+    const type = image.split(';')[0].split('/')[1];
 
     // image params
     const params = {
@@ -154,7 +154,7 @@ export const uploadVideo = async (req, res) => {
     _id: req.params.sceneId,
   });
 
-  // TODO: make isContributor work 
+  // TODO: make isContributor work
   // const isContributor = JSON.parse(contributors).some((contributor) => {
   //   return req.user._id != contributor ? false : true;
   // });
@@ -196,10 +196,10 @@ export const uploadVideo = async (req, res) => {
 };
 
 export const removeVideo = async (req, res) => {
-  // if (req.user._id != req.params.creatorId) {
-  //   return res.status(400).send('Unauthorized');
-  // }
-
+  if (req.user._id != req.params.creatorId) {
+    return res.status(400).send('Unauthorized');
+  }
+  console.log('REQ BODY VIDEO REMOVE', req.body);
   try {
     const video = req.body;
     !video && res.status(400).send('No video');
@@ -218,8 +218,6 @@ export const removeVideo = async (req, res) => {
       console.log(data);
       res.json({ ok: true });
     });
-
-    
   } catch (error) {
     console.log(error);
   }
@@ -242,7 +240,7 @@ export const update = async (req, res) => {
   }
 };
 
-export const updateVideo = async (req, res) => {
+export const saveVideo = async (req, res) => {
   console.log('UPDATE VIDEO', req.body);
   // return
   let itemUpdate = req.body;
@@ -251,16 +249,34 @@ export const updateVideo = async (req, res) => {
   try {
     const scene = await Scene.findOneAndUpdate(
       { _id: req.params.sceneId },
-      { $push: {videos:[itemUpdate]}},
+      { $push: { videos: [itemUpdate] } },
       { new: true }
     ).exec();
-      console.log('PUSHED VIDEO', scene)
+    console.log('PUSHED VIDEO', scene);
     res.json(scene);
   } catch (error) {
     console.log(error);
   }
 };
 
+export const updateVideo = async (req, res) => {
+  console.log('UPDATE VIDEO', req.body);
+  // return
+  let itemUpdate = req.body;
+  itemUpdate.sceneId = req.params.sceneId;
+  // return;
+  try {
+    const scene = await Scene.findOneAndUpdate(
+      { _id: req.params.sceneId,  'videos.videoKey': itemUpdate.videoData.Key }  ,
+      { $set: { 'videos.$': itemUpdate } },   
+      { new: true }
+    ).exec();
+    console.log('PUSHED VIDEO', scene);
+    res.json(scene);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const updateArray = async (req, res) => {
   // { arrayName: [ 'characters' ], itemName: 'boob' }

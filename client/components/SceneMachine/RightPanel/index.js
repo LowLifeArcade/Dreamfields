@@ -37,7 +37,19 @@ const SceneMachineRightPanel = () => {
   const dispatch = useContext(MachineStateDispatchContext);
   const state = useContext(MachineStateStateContext);
   const project = useContext(ProjectContext);
-  console.log('DETAIL RIGHT PANEL INDEX', detail);
+
+  useEffect(() => {
+   console.log('PREVIEW IN RIGHT PANEL', preview)
+  });
+  // const things = {
+  // id: "610c720d638f5a9ac6f3c384",
+  // image: "",
+  // panel: 9,
+  // sceneName: "Tester",
+  // shotNumber: "9",
+  // type: "video",
+  // }
+  
   // console.log('viewer in right panel',viewer)
   // useEffect(() => {
   //   setDetail(view.overview);

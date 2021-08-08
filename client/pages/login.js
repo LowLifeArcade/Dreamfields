@@ -59,7 +59,7 @@ const Login = () => {
       //   draggable: true,
       //   progress: undefined,
       // });
-      console.log('LOGIN RES', data);
+
       
     } catch (err) {
       // toast.error(err.response.data, {

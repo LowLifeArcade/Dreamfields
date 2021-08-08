@@ -7,15 +7,91 @@ import {
 import { detailView, machineView } from '../dataModels';
 import axios from 'axios';
 
+// -------------------------
+// Custom Hooks
+// -------------------------
+
+/**
+ * `key` sets the item `state` returns the initial state of any key
+ *
+ * @param {string} key is the name of the local stroage item to set
+ * @returns {Object} the value of the local storage item}
+ */
+const useStateAndLocalStorage = (key, initState) => {
+  const [state, setState] = useState(initState);
+  useEffect(() => {
+    const value = localStorage.getItem(key);
+    if (value) {
+      setState(JSON.parse(value));
+    }
+  }, []);
+  // useeffect that sets machine state in local storage
+  useEffect(() => {
+    localStorage.setItem(key, JSON.stringify(state));
+  }, [state]);
+  return [state, setState];
+};
+// const useReducerAndLocalStorage = (key, reducer, initState, initalizer) => {
+//   const [localState, setLocalState] = useState(initState);
+//   const [state, dispatch] = useReducer(reducer, localState, initalizer);
+
+//   useEffect(() => {
+//     const value = localStorage.getItem(key);
+//     if (value) {
+//       setLocalState(JSON.parse(value));
+//     }
+//   }, []);
+//   // useeffect that sets machine state in local storage
+//   useEffect(() => {
+//     localStorage.setItem(key, JSON.stringify(state));
+//   }, [state]);
+
+//   return [state, dispatch];
+// };
+
+
+
+// ------------------------- 
+// PROVIDERS
+// -------------------------
+
+export const TitleButtonContext = createContext();
+export const TitleSetButtonContext = createContext();
+
 /**
  *  Select either Scene Machine or Asset Machine
  * */
-export const TitleButtonContext = createContext();
-export const TitleSetButtonContext = createContext();
 export const TitleButtonProvider = ({ children }) => {
-  const [machine, setMachine] = useState({
+  const [machine, setMachine] = useStateAndLocalStorage('titlebutton', {
     machine: 'Scene',
   });
+  // uselocalstorage to set machine
+
+  //   useEffect(() => {
+  //     const machine = localStorage.getItem('titleButton');
+  //     if (machine) {
+  //       setMachine(JSON.parse(machine));
+  //     }
+  //   }, []);
+  // // useeffect that sets machine state in local storage
+  //   useEffect(() => {
+  //     localStorage.setItem('titleButton', JSON.stringify(machine));
+  //   }, [machine]);
+
+  // useEffect is a hook that runs when the component is mounted and loads data from local storage
+
+  // example
+  // useEffect(() => {
+  //   const data = localStorage.getItem('search-date');
+  //   // console.log('data', data);
+  //   if (data) {
+  //     try {
+  //       handleDateChange(JSON.parse(data));
+  //     } catch (error) {
+  //       setState({ ...state, error: error });
+  //     }
+  //   }
+  // }, []);
 
   return (
     <>
@@ -47,7 +123,10 @@ export const ControlPanelButtonsProvider = ({ children }) => {
     button4: { active: false },
     button5: { active: false },
   };
-  const [buttons, setButtons] = useState(initialButtonState);
+  const [buttons, setButtons] = useStateAndLocalStorage(
+    'controlbuttons',
+    initialButtonState
+  );
   return (
     <>
       <ControlPanelButtonsContext.Provider value={buttons}>
@@ -63,7 +142,10 @@ export const ControlPanelButtonsProvider = ({ children }) => {
 export const PreviewStateContext = createContext();
 export const PreviewProviderContext = createContext();
 export const PreviewContextProvider = ({ children }) => {
-  const [preview, setPreview] = useState(initPreviewState);
+  const [preview, setPreview] = useStateAndLocalStorage(
+    'preview',
+    initPreviewState
+  );
 
   return (
     <>
@@ -80,7 +162,13 @@ export const PreviewContextProvider = ({ children }) => {
 export const ViewerContext = createContext();
 export const SetViewerContext = createContext();
 export const ViewerProvider = ({ children }) => {
-  const [viewer, setViewer] = useState(initialViewerState);
+  const [viewer, setViewer] = useStateAndLocalStorage(
+    'viewer',
+    initialViewerState
+  );
+  useEffect(() => {
+    console.log('VIEWER PROVIDER', viewer)
+   });
   return (
     <>
       <ViewerContext.Provider value={viewer}>
@@ -95,7 +183,10 @@ export const ViewerProvider = ({ children }) => {
 export const DetailViewContext = createContext();
 export const SetDetailViewContext = createContext();
 export const DetailViewProvider = ({ children }) => {
-  const [detail, setDetail] = useState(detailView.overview);
+  const [detail, setDetail] = useStateAndLocalStorage(
+    'detail',
+    detailView.overview
+  );
   return (
     <>
       <DetailViewContext.Provider value={detail}>
@@ -148,7 +239,6 @@ export const MachineStateContext = ({ children }) => {
           fetchedScenes = await data;
         };
         fetchScenes();
-        console.log('FETCHED SCENES', fetchedScenes);
         return {
           ...state,
           scenes: [...fetchedScenes],
@@ -229,12 +319,16 @@ export const MachineStateContext = ({ children }) => {
       case 'SAVE_VIDEO':
         return {
           ...state,
+          contextMenu: 'view',
           machineState: 'view',
+          videoEdit: false,
         };
       case 'EDIT_VIDEO':
         return {
           ...state,
+          contextMenu: 'edit',
           machineState: 'edit',
+          videoEdit: true,
         };
 
       default:
@@ -275,37 +369,19 @@ export const ModalProvider = ({ children }) => {
 export const ProjectContext = createContext();
 /**
  * `FETCH_PROJECT` - fetch project from server and set it to the project context. `Payload` should be the project slug.
- * 
+ *
  * `LOAD_PROJECT` - load project with `payload` spread into projectState
  */
 export const setProjectContext = createContext();
 
 export const ProjectProvider = ({ children }) => {
-  // const [fields, setFields] = useState([]);
 
-  // useEffect(() => {
-  //   const loadFields = async () => {
-  //     const { data } = await axios.get('/api/creator-fields');
-  //     setFields(data);
-  //   };
-  //   loadFields();
-  // }, []);
 
-  // useEffect(() => {
-  //   const fetchData = async (slug) => {
-  //     const { data } = await axios.get(`/api/field/${slug}`);
-  //     console.log('field from provider', data);
-  //     projectDispatch(['LOAD_PROJECT', data]);
-  //   };
-  //   console.log('all fields', fields[0] && fields[0].slug);
-  //   fetchData(fields[0] && fields[0].slug); // TODO: add a field selector to scene machine OR have it auto fill by slug from other page
-  // }, []);
-
-  const fetchData = async (slug) => {
-    const { data } = await axios.get(`/api/field/${slug}`);
-    console.log(data);
-    return { ...data };
-  };
+  // const fetchData = async (slug) => {
+  //   const { data } = await axios.get(`/api/field/${slug}`);
+  //   console.log(data);
+  //   return { ...data };
+  // };
 
   // const loadViewerScene = async (id) => {
   //   const { data } = await axios.get(`/api/scene/${id}`);
@@ -317,10 +393,12 @@ export const ProjectProvider = ({ children }) => {
   const projectReducer = (state, [type, payload]) => {
     switch (type) {
       /**payload should be slug */
-      case 'FETCH_PROJECT':
-        fetchData(payload);
+      // case 'FETCH_PROJECT':
+      //   // localStorage.setItem('project', JSON.stringify(payload));
+      //   return fetchData(payload);
+        
       case 'LOAD_PROJECT':
-        return { ...payload };
+        return { ...payload.data };
       // case 'FETCH_SCENE':
       //   loadViewerScene(payload);
       default:
@@ -332,6 +410,26 @@ export const ProjectProvider = ({ children }) => {
     projectReducer,
     initialProject
   );
+
+  const loadFieldFromLocalStorage = async (slug) => {
+    const { data } = await axios.get(`/api/field/${slug}`);
+    await console.log('field from provider', data);
+    await projectDispatch(['LOAD_PROJECT', {data, slug}])
+  };
+  useEffect(() => {
+   const slug = localStorage.getItem('projectslug');
+   if (slug) {
+    loadFieldFromLocalStorage(JSON.parse(slug));
+   }
+  }, []);
+
+  
+  // const loadField = async () => {
+  //   const { data } = await axios.get(`/api/field/${slug}`);
+  //   // setField(data);
+  //   dispatch(['LOAD_PROJECT', data])
+  //   localStorage.setItem('projectslug', JSON.stringify(slug));
+  // };
 
   return (
     <>

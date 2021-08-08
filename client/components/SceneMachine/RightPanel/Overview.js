@@ -3,16 +3,18 @@ import axios from 'axios';
 import {
   setProjectContext,
   SetViewerContext,
+  ViewerContext
 } from '../../../contexts/SceneMachineProviders';
 import BecomeCreator from '../../../pages/user/become-creator';
 
-const RightPanelOverview = ({ viewer }) => {
+const RightPanelOverview = () => {
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [error, setError] = useState(null);
   const [sceneItem, setSceneItem] = useState('');
   const dispatch = useContext(setProjectContext);
   const setViewer = useContext(SetViewerContext);
+  const viewer = useContext(ViewerContext);
   const titleRef = useRef();
   const descRef = useRef();
   const settingRef = useRef();
@@ -85,7 +87,6 @@ const RightPanelOverview = ({ viewer }) => {
     try {
       await axios.post(`/api/scene/overview-array/${viewer._id}`, sceneItem);
       const { data } = await axios.get(`/api/scene/${viewer._id}`);
-      console.log('AXIOS DATA', data)
       await setViewer(data);
 
       await setLoading(false);
@@ -134,7 +135,6 @@ const RightPanelOverview = ({ viewer }) => {
   const handleArray = (e, arrayName) => {
     e.preventDefault();
     setSceneItem({ [arrayName]: e.target.value });
-    console.log('HANDLE ARRAY', sceneItem);
   };
 
   const handleItem = (e, sceneItem) => {
@@ -159,7 +159,6 @@ const RightPanelOverview = ({ viewer }) => {
   const handleArrayEditing = (e, arrayName) => {
     e.preventDefault();
     setSceneItem({ [arrayName]: viewer[arrayName] });
-    console.log('HANDLE ARRAY EDIT', sceneItem);
     // set focus on the input
     setIsEditing(arrayName);
     // titleRef.current = el;
