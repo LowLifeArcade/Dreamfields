@@ -187,6 +187,7 @@ export const DetailViewProvider = ({ children }) => {
     'detail',
     detailView.overview
   );
+  
   return (
     <>
       <DetailViewContext.Provider value={detail}>
@@ -232,6 +233,11 @@ export const MachineStateContext = ({ children }) => {
   const machineStateReducer = (state, [type, payload]) => {
     // if view is overview for instance we do can do the bellow switch statement
     switch (type) {
+      // case "ADD_BREAKDOWN": {
+      //   // console.log('machine state: add breakdown')
+        
+      // }
+
       case 'FETCH_SCENES': {
         let fetchedScenes = [];
         const fetchScenes = async (store, payload) => {

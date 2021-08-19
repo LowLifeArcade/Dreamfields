@@ -1,6 +1,7 @@
-import mongoose from 'mongoose';
+// import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 const { Schema } = mongoose;
-const { ObjectId } = mongoose.Schema;
+const { ObjectId } = mongoose.Types;
 
 const fieldSchema = new Schema(
   {
@@ -28,21 +29,19 @@ const fieldSchema = new Schema(
       Location: String,
       rev: Number,
     },
-    scenes: [{
-      type: ObjectId,
-      ref: 'Scene',
-    }],
+    scenes: [
+      {
+        type: ObjectId,
+        ref: 'Scene',
+      },
+    ],
     category: String,
-    // production: {
-    //   type: Boolean,
-    //   default: false,
-    // },
-    production: String,
-    // production: {
-    //   type: String,
-    //   default: 'Pre',
-    //   enum: ['Pre', 'Boards', 'Production', 'Post'],
-    // },
+    // production: String, //   enum: ['Pre', 'Boards', 'Production', 'Post'],
+    production: {
+      type: String,
+      default: 'Pre',
+      enum: ['Pre', 'Boards', 'Production', 'Post'],
+    },
     funding: {
       funded: {
         type: Boolean,
@@ -50,12 +49,12 @@ const fieldSchema = new Schema(
       },
       amount: Number,
     },
-    frameRate: String,
-    // frameRate: {
-    //   type: String,
-    //   default: '24fps',
-    //   enum: ['23.96fps', '24fps', '29.97fps', '30fps', '59.94fps', '60fps'],
-    // },
+    // frameRate: String, //   enum: ['23.96fps', '24fps', '29.97fps', '30fps', '59.94fps', '60fps'],
+    frameRate: {
+      type: String,
+      default: '24fps',
+      enum: ['23.96fps', '24fps', '29.97fps', '30fps', '59.94fps', '60fps'],
+    },
     aspectRatio: String,
     creator: {
       type: ObjectId,
@@ -69,4 +68,4 @@ const fieldSchema = new Schema(
   { timestamps: true }
 );
 
-export default mongoose.model('Field', fieldSchema);
+module.exports = mongoose.model('Field', fieldSchema);

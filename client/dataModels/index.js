@@ -12,6 +12,7 @@ export const detailView = {
   main: 'main',
   none: 'none',
   newScene: 'new scene',
+  newShot: 'new shot',
   overview: 'overview',
   script: 'script',
   breakdown: 'breakdown',
@@ -19,8 +20,47 @@ export const detailView = {
   video: 'video',
   backgrounds: 'backgrounds',
   assets: 'assets',
-  modelSheets: 'modelSheets'
+  modelSheets: 'modelSheets',
+  addScene: 'add scene',
+  addShot: 'add shot'
 };
+
+export const shotLength = {
+  short: 'short',
+  medium: 'medium',
+  long: 'long',
+  oner: 'oner'
+}
+
+export const shotComplexity = {
+  easy: 'easy',
+  medium: 'medium',
+  hard: 'hard',
+  expert: 'expert',
+}
+
+export const shotFocal = {
+  fish: 'fish eye',
+  ultraWide: 'ultra wide',
+  wide: 'wide',
+  normal: 'normal',
+  long: 'long',
+  tele: 'telephoto'
+}
+
+export const shotAngle = {
+  ground: 'ground',
+  low: 'low',
+  normal: 'normal',
+  high: 'high',
+}
+
+export const shotFrame = {
+  superCloseup: 'super closeup',
+  closeup: 'closeup',
+  medium: 'medium',
+  wide: 'wide',
+}
 
 export const bgPresets = {
   script: 'white',

@@ -8,6 +8,7 @@ import {
 import BecomeCreator from '../../../pages/user/become-creator';
 
 const RightPanelOverview = () => {
+  const [deleteScene, setDeleteScene] = useState();
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [error, setError] = useState(null);
@@ -67,6 +68,18 @@ const RightPanelOverview = () => {
   //   // console.log('RESPONSE SCENE',data)
   //  }
   //  console.log('VIEWER', viewer)
+
+  const handleDelete = async (event) => {
+    event.preventDefault();
+    // return
+    const { _id } = viewer;
+    const {forProject} = viewer;
+    const { data } = await axios.delete(`/api/scene/${_id}/${forProject}`);
+    // await setViewer(data);
+    window.location.reload();
+
+    console.log('RESPONSE SCENE',data)
+  }
 
   const changeItem = async (sceneItem) => {
     try {
@@ -255,10 +268,10 @@ const RightPanelOverview = () => {
             </td>
           </tr>
           <tr>
-            <td> Shot Count: </td>
+            <td> Shot Breakdown Count: </td>
             <td>{viewer && viewer.shotList?.length}</td>
           </tr>
-          <tr>
+          {/* <tr>
             <td> Backgrounds: </td>
             <td>{viewer && viewer.backgrounds?.length}</td>
           </tr>
@@ -269,7 +282,7 @@ const RightPanelOverview = () => {
           <tr>
             <td> FX: </td>
             <td>{viewer && viewer.FX?.length}</td>
-          </tr>
+          </tr> */}
           <tr>
             <td>Frame Rate: </td>
             <td>{viewer && viewer.frameRate && viewer.frameRate}</td>
@@ -314,6 +327,28 @@ const RightPanelOverview = () => {
           </tr>
         </tbody>
       </table>
+      <div className="delete-section" >
+        <label htmlFor="delete">Type 'delete scene' to delte</label>
+        <input type="text" value={deleteScene} onChange={(e)=>setDeleteScene(e.target.value)} />
+        <button disabled={deleteScene != 'delete scene'} onClick={handleDelete}>Delete Scene</button>
+      </div>
+      <style jsx>{`
+      .delete-section {
+        display: flex;
+        flex-direction: column;
+      }
+      .delete-section input {
+        padding: 5px;
+      }
+      .delete-section button {
+        padding: 5px;
+        cursor: pointer;
+      }
+      .delete-section label {
+        color: #535353;
+        padding: 5px;
+      }
+      `}</style>
     </div>
   );
 };

@@ -1,12 +1,23 @@
-import express from 'express';
+// import express from 'express';
+const express = require('express');
 
 const router = express.Router();
 
 // middlewares
-import { requireSignin } from '../middlewares';
+// import authControllers from '../middlewares/index.js';
+const { requireSignin, isCreator} = require('../middlewares');
 
 // controllers
-import {
+// import {
+//   register,
+//   login,
+//   logout,
+// currentUser,
+//   sendTestEmail,
+//   forgotPassword,
+//   resetPassword,
+// } from '../controllers/auth.js';
+const {
   register,
   login,
   logout,
@@ -14,7 +25,7 @@ import {
   sendTestEmail,
   forgotPassword,
   resetPassword,
-} from '../controllers/auth';
+} = require('../controllers/auth');
 
 router.post('/register', register);
 router.post('/login', login);
@@ -24,4 +35,5 @@ router.get('/send-email', sendTestEmail);
 router.post('/forgot-password', forgotPassword);
 router.post('/reset-password', resetPassword);
 
+// export default router;
 module.exports = router;

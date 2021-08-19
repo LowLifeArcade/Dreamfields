@@ -3,6 +3,8 @@
 
 export default function Spinner(props) {
   // probably need to subscribe to a provider to get loading info
+  
+
   return (
     <div className="loader spinner" style={{ opacity: props.opacity }}>
       

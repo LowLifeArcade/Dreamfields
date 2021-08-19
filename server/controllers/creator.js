@@ -1,10 +1,13 @@
-import User from '../models/user';
+// import User from '../models/user';
+const User = require('../models/user');
 // import stripe from 'stripe';
-import queryString from 'query-string';
-import Field from '../models/field';
+// import queryString from 'query-string';
+const queryString = require('query-string');
+// import Field from '../models/field';
+const Field = require('../models/field');
 const stripe = require('stripe')(process.env.STRIPE_SECRET);
 
-export const makeCreator = async (req, res) => {
+exports.makeCreator = async (req, res) => {
   try {
     // 1 find user from db
     const user = await User.findById(req.user._id).exec();
@@ -34,7 +37,7 @@ export const makeCreator = async (req, res) => {
   }
 };
 
-export const getAccountStatus = async (req, res) => {
+exports.getAccountStatus = async (req, res) => {
   try {
     const user = await User.findById(req.user._id).exec();
     const account = await stripe.accounts.retrieve(user.stripe_account_id);
@@ -59,7 +62,7 @@ export const getAccountStatus = async (req, res) => {
   } catch (err) {}
 };
 
-export const currentCreator = async (req, res) => {
+exports.currentCreator = async (req, res) => {
   try {
     let user = await User.findById(req.user._id).select('-password').exec();
     if (!user.role.includes('Creator')) {
@@ -70,7 +73,7 @@ export const currentCreator = async (req, res) => {
   }
 };
 
-export const creatorFields = async (req, res) => {
+exports.creatorFields = async (req, res) => {
   try {
     const fields = await Field.find({ creator: req.user._id })
       .sort({ createdAt: -1 })

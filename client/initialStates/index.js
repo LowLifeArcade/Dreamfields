@@ -267,21 +267,21 @@ export const initialNewSceneForm = {
   FX: [{ id: '', name: '', location: '' }], // add button in details
   backgrounds: [{ id: '', name: '', location: '' }], // add button in details
 
-  shotList: [
-    // in breakdown section
-    {
-      id: '',
-      shot: '',
-      complexity: '',
-      assets: '',
-      FX: '',
-      characters: [],
-      backgrounds: '',
-      description: '',
-      breakdown: '',
-      preProdBoard: '',
-    },
-  ], // maybe every time you add to this array it makes an index card
+  // shotList: [
+  //   // in breakdown section
+  //   {
+  //     id: '',
+  //     shot: '',
+  //     complexity: '',
+  //     assets: '',
+  //     FX: '',
+  //     characters: [],
+  //     backgrounds: '',
+  //     description: '',
+  //     breakdown: '',
+  //     preProdBoard: '',
+  //   },
+  // ], // maybe every time you add to this array it makes an index card
   layoutBoards: [
     {
       id: '',

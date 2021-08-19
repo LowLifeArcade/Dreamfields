@@ -17,10 +17,10 @@ const SceneMachineBody = ({ children }) => {
         padding: 10px 40px;
         padding-bottom: 30px;
         width: 100%;
-        border-top-left-radius: 14px;
-        border-top-right-radius: 14px;
-        border-bottom-left-radius: 8px;
-        border-bottom-right-radius: 8px;
+        // border-top-left-radius: 14px;
+        // border-top-right-radius: 14px;
+        // border-bottom-left-radius: 8px;
+        // border-bottom-right-radius: 8px;
 
         // box-shadow: inset 0 0px 10px, inset 0 0 15px, inset 0 0 5px;
         

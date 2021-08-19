@@ -1,12 +1,15 @@
-import express from 'express';
+// import express from 'express';
+const express = require('express');
 
 const router = express.Router();
 
 // middlewares
-import { requireSignin } from '../middlewares';
+// import { requireSignin } from '../middlewares';
+const {requireSignin} = require('../middlewares');
 
 // controllers
-import { makeCreator, getAccountStatus, currentCreator, creatorFields } from '../controllers/creator';
+// import { makeCreator, getAccountStatus, currentCreator, creatorFields } from '../controllers/creator';
+const {makeCreator, getAccountStatus, currentCreator, creatorFields } = require('../controllers/creator');
 
 // endpoints
 router.post('/make-creator', requireSignin, makeCreator)

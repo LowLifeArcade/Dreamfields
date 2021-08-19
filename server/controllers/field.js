@@ -1,9 +1,16 @@
-import AWS from 'aws-sdk';
-import { nanoid } from 'nanoid';
-import Field from '../models/field';
-import Scene from '../models/scene';
-import slugify from 'slugify';
-import {readFileSync} from 'fs' // fs.readFileSync
+// import AWS from 'aws-sdk';
+const AWS = require('aws-sdk');
+// import { nanoid } from 'nanoid';
+const {nanoid} = require('nanoid')
+// import Field from '../models/field';
+const Field = require('../models/field');
+// import Scene from '../models/scene';
+const Scene = require('../models/scene');
+// import slugify from 'slugify';
+const slugify = require('slugify');
+// import { readFileSync } from 'fs'; // fs.readFileSync
+const {readFileSync} = require('fs')
+// fs.readFileSync}
 
 const awsConfig = {
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -14,7 +21,7 @@ const awsConfig = {
 
 const S3 = new AWS.S3(awsConfig);
 
-export const uploadImage = async (req, res) => {
+exports.uploadImage = async (req, res) => {
   // console.log(req.body)
   try {
     const { image } = req.body;
@@ -49,7 +56,7 @@ export const uploadImage = async (req, res) => {
   } catch (err) {}
 };
 
-export const removeImage = async (req, res) => {
+exports.removeImage = async (req, res) => {
   try {
     const { image } = req.body;
     console.log(image);
@@ -72,8 +79,8 @@ export const removeImage = async (req, res) => {
   }
 };
 
-export const create = async (req, res) => {
-  console.log('CREATE FIELD', req.body)
+exports.create = async (req, res) => {
+  console.log('CREATE FIELD', req.body);
   // return
   try {
     const alreadyExists = await Field.findOne({
@@ -93,8 +100,9 @@ export const create = async (req, res) => {
   }
 };
 
-export const read = async (req, res) => {
+exports.read = async (req, res) => {
   try {
+    console.log('GET FIELD')
     const field = await Field.findOne({ slug: req.params.slug })
       // .populate('creator', '_id name')
       .exec();
@@ -102,7 +110,7 @@ export const read = async (req, res) => {
   } catch (err) {}
 };
 
-export const getScenes = async (req, res) => {
+exports.getScenes = async (req, res) => {
   try {
     const scenes = await Scene.find({ forProject: req.params.fieldSlug })
       .populate('creator', '_id name')
@@ -111,42 +119,41 @@ export const getScenes = async (req, res) => {
   } catch (err) {
     console.log(err);
   }
-}
+};
 
-export const removeScript = async () => {
-  // 
-}
+exports.removeScript = async () => {
+  //
+};
 
-export const uploadScript = async (req, res) => {
-  console.log('script', req.files)
+exports.uploadScript = async (req, res) => {
+  console.log('script', req.files);
   try {
-    const { script } = req.files 
+    const { script } = req.files;
 
-    !script && res.status(400).send('No Script')
+    !script && res.status(400).send('No Script');
 
     const params = {
       Bucket: 'dreamfields-bucket',
       Key: `${nanoid()}.${script.type.split('/')[1]}`,
       Body: readFileSync(script.path),
       ACL: 'public-read',
-      ContentType: script.type
-    }
+      ContentType: script.type,
+    };
     // upload to s3
     S3.upload(params, (err, data) => {
       if (err) {
-        console.log(err)
-        res.sendStatus(400)
+        console.log(err);
+        res.sendStatus(400);
       }
-      console.log(data)
-      res.send(data)
-    })
+      console.log(data);
+      res.send(data);
+    });
   } catch (err) {
-    console.log(err)
+    console.log(err);
   }
-}
+};
 
-export const uploadVideo = async (req, res) => {
-
+exports.uploadVideo = async (req, res) => {
   try {
     const { video } = req.files;
     // console.log(video)
@@ -158,17 +165,17 @@ export const uploadVideo = async (req, res) => {
       Body: readFileSync(video.path),
       ACL: 'public-read',
       ContentType: video.type,
-    }
+    };
 
     // upload to s3
     S3.upload(params, (err, data) => {
-      if(err) {
-        console.log(err)
-        res.sendStatus(400)
+      if (err) {
+        console.log(err);
+        res.sendStatus(400);
       }
-      console.log(data)
-      res.send(data)
-    })
+      console.log(data);
+      res.send(data);
+    });
   } catch (error) {
     console.log(error);
   }

@@ -13,7 +13,8 @@ import {
 } from '../../../contexts/SceneMachineProviders';
 import { Context } from '../../../context';
 import { SceneMachineRightPanelStyle } from './SceneMachineRightPanelStyle';
-import NewSceneForm from '../NewSceneForm';
+import NewSceneForm from '../MachineForms/newSceneForm';
+import NewShotForm from '../MachineForms/newShotForm';
 import RightPanelOverview from './Overview';
 import RightPanelScriptView from './ScriptView';
 import RightPanelBreakdownView from './BreakdownView';
@@ -38,9 +39,9 @@ const SceneMachineRightPanel = () => {
   const state = useContext(MachineStateStateContext);
   const project = useContext(ProjectContext);
 
-  useEffect(() => {
-   console.log('PREVIEW IN RIGHT PANEL', preview)
-  });
+  // useEffect(() => {
+  //  console.log('PREVIEW IN RIGHT PANEL', preview)
+  // });
   // const things = {
   // id: "610c720d638f5a9ac6f3c384",
   // image: "",
@@ -166,6 +167,7 @@ const SceneMachineRightPanel = () => {
           {detail === view.backgrounds && <div>backgrounds</div>}
 
           {detail === view.newScene && <NewSceneForm />}
+          {detail === view.newShot && <NewShotForm />}
         </div>
         {/* </div> */}
       </RightPanelFrame>

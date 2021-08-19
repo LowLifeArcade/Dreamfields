@@ -8,14 +8,13 @@ import {
   SetViewerContext,
   ControlPanelButtonsContext,
   ProjectContext,
-  SetDetailViewContext
-  
+  SetDetailViewContext,
 } from '../../../contexts/SceneMachineProviders';
 import StripStyle from './StripAreaStyle';
 import { initialViewerState } from '../../../initialStates';
 import { machineView } from '../../../dataModels';
 import axios from 'axios';
-import {detailView} from '../../../dataModels';
+import { detailView } from '../../../dataModels';
 
 const SceneMachineStripArea = () => {
   const setPreview = useContext(PreviewProviderContext);
@@ -33,44 +32,49 @@ const SceneMachineStripArea = () => {
   //   handleLoadScenes()
   // }, [viewer]);
 
+
   // TODO: might need to fix this beahvior. It loads the scene and defaults to the overview, but I might not want that.
   useEffect(() => {
-    // setViewer(project.scenes[0])
-    project.scenes && project.scenes[0] ? loadViewerScene(project.scenes[0] ) : setViewer(initialViewerState)
-    setDetail(detailView.overview)
-    console.log('PROJECT IN STRIP AREA',project.scenes && project)
+    project.scenes && project.scenes[0]
+      ? loadViewerScene(project.scenes[0])
+      : setViewer(initialViewerState);
+    setDetail(project.scenes?.length === 0 ? detailView.newScene : detailView.overview);
+    console.log('PROJECT IN STRIP AREA', project.scenes && project);
   }, [project]);
 
   useEffect(() => {
-    
-  /**
-   * 
-   * @returns {Array} An array of objects with the following properties:
-   * - `id:` the id of the scene
-   * - `sceneName:` the name of the scene
-   * - `stripImage:` the url of the strip image
-   */
-  const handleLoadScenes = async () => {
-      if(!project._id) return
+    /**
+     *
+     * @returns {Array} An array of objects with the following properties:
+     * - `id:` the id of the scene
+     * - `sceneName:` the name of the scene
+     * - `stripImage:` the url of the strip image
+     */
+    const handleLoadScenes = async () => {
+      if (!project._id) return;
       const { data } = await axios.get(`/api/field/${project._id}/scenes`);
       const scenes = await [...data];
       // console.log('SCENES IN STRIP AREA', scenes);
-      
+
       const stripScenes = await scenes.map((scene) => ({
         id: scene._id,
         sceneName: scene.sceneName,
         stripImage: scene.stripImage,
       }));
-      
+
       await setScenes(stripScenes);
-  }
-  handleLoadScenes()
+    };
+    handleLoadScenes();
   }, [project, viewer]);
 
+  // useEffect(() => {
+  //   console.log('SCENES',scenes)
+  // })
+
   const loadViewerScene = async (id) => {
-   const { data } = await axios.get(`/api/scene/${id}`);
-   await setViewer(data);
-  }
+    const { data } = await axios.get(`/api/scene/${id}`);
+    await setViewer(data);
+  };
 
   const handleViewer = (e, scene) => {
     e.preventDefault();
@@ -84,8 +88,8 @@ const SceneMachineStripArea = () => {
       id: scene.id,
     }));
 
-    loadViewerScene(scene.id)
-    
+    loadViewerScene(scene.id);
+
     dispatch(['RESET_VIEWER']); // not working yet
   };
 
@@ -99,9 +103,10 @@ const SceneMachineStripArea = () => {
       panel: 'Cover',
       id: 0,
     }));
-    setDetail('new scene')
+    setDetail('new scene');
   };
 
+  
   return (
     <>
       <StripStyle />
@@ -112,18 +117,19 @@ const SceneMachineStripArea = () => {
               {buttons.display === machineView.view4.name &&
                 scenes.map((scene, i) => (
                   <>
-                  {/* {console.log('Viewer Id',viewer.id )} */}
                     <div
                       key={scene.id}
                       onClick={(e) => handleViewer(e, scene)}
                       className="scene-strip">
-                        
-                      <div className={`empty-strip ${scene.id === viewer._id && ' active'}`}>
+                      <div
+                        className={`empty-strip ${
+                          scene.id === viewer?._id && ' active'
+                        }`}>
                         {scene.stripImage ? (
                           <img
                             style={{ opacity: loaded ? 1 : 0 }}
                             className={
-                              'scene-strip-img ' + scene.id === viewer._id && 
+                              'scene-strip-img ' + scene.id === viewer._id &&
                               ' active'
                             }
                             src={scene.stripImage}
@@ -134,7 +140,7 @@ const SceneMachineStripArea = () => {
                           <img
                             style={{ opacity: loaded ? 1 : 0 }}
                             className={
-                              'scene-strip-img ' + scene.id === viewer.id &&
+                              'scene-strip-img ' + scene.id === viewer?.id &&
                               ' active'
                             }
                             src={`https://picsum.photos/id/1${i}/400/200`}

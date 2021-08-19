@@ -36,6 +36,7 @@ const previewMachine = {
   },
 };
 
+
 const useMachine = (machineModel) => {
   // 1 - contain current state string & nextEvents
   // 2 - should listn to events and transitions

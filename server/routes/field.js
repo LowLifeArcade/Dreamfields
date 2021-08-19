@@ -1,13 +1,27 @@
-import express from 'express';
-import formidable from 'express-formidable'; // we need this to access req.files for the video file
+// import express from 'express';
+const express = require('express');
+// import formidable from 'express-formidable'; // we need this to access req.files for the video file
+const formidable = require('express-formidable');
 
 const router = express.Router();
 
 // middlewares
-import { isCreator, requireSignin } from '../middlewares';
+// import { isCreator, requireSignin } from '../middlewares';
+const {requireSignin, isCreator} = require('../middlewares');
 
 // controllers
-import {
+// import {
+//   uploadImage,
+//   removeImage,
+//   create,
+//   read,
+//   getScenes,
+//   uploadVideo,
+//   uploadScript,
+//   removeScript,
+// } from '../controllers/field';
+
+const {
   uploadImage,
   removeImage,
   create,
@@ -16,7 +30,7 @@ import {
   uploadVideo,
   uploadScript,
   removeScript,
-} from '../controllers/field';
+} = require('../controllers/field');
 
 // image
 router.post('/field/upload-image', uploadImage);

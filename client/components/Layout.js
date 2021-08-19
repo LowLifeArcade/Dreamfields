@@ -55,16 +55,18 @@ const Layout = (props) => {
   return (
     <>
       <div className="layout-container">
-          {!user && <NavBar showSideMenu={showSideMenu} onLogoClick={setShowSideMenu} />}
         <div className="flex-layout">
+          {!user && <NavBar showSideMenu={showSideMenu} onLogoClick={setShowSideMenu} />}
           {props.showSideBar && user && (
             <>
               <div className="sidebar">
                 <SideBar
                   showSideMenu={showSideMenu}
                   onLogoClick={setShowSideMenu}
-                />
+                  />
               </div>
+
+              
               <DashboardSideBar
                 showSideMenu={showSideMenu}
                 items1={fakeMenuItems}

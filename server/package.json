@@ -4,8 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon -r esm server.js"
+    "test": "jest --detectOpenHandles  --watch",
+    "start": "nodemon server.js"
+  },
+  "jest": {
+    "verbose": true
   },
   "keywords": [],
   "author": "",
@@ -17,7 +20,6 @@
     "cors": "^2.8.5",
     "csurf": "^1.11.0",
     "dotenv": "^10.0.0",
-    "esm": "^3.2.25",
     "express": "^4.17.1",
     "express-formidable": "^1.2.0",
     "express-jwt": "^6.0.0",
@@ -30,5 +32,9 @@
     "query-string": "^7.0.0",
     "slugify": "^1.5.3",
     "stripe": "^8.155.0"
+  },
+  "devDependencies": {
+    "jest": "^27.0.6",
+    "supertest": "^6.1.5"
   }
 }

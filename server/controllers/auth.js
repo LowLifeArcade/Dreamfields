@@ -1,8 +1,13 @@
-import User from '../models/user';
-import { hashPassword, comparePassword } from '../utils/auth';
-import jwt from 'jsonwebtoken';
-import AWS from 'aws-sdk';
-import { nanoid } from 'nanoid';
+// import User from '../models/user.js';
+const User = require('../models/user');
+// import { hashPassword, comparePassword } from '../utils/auth.js';
+const { hashPassword, comparePassword } = require('../utils/auth')
+// import jwt from 'jsonwebtoken';
+const jwt = require('jsonwebtoken');
+// import AWS from 'aws-sdk';
+const AWS = require('aws-sdk');
+// import { nanoid } from 'nanoid';
+const nanoid = require('nanoid');
 
 // AWS config
 const awsConfig = {
@@ -14,7 +19,7 @@ const awsConfig = {
 
 const SES = new AWS.SES();
 
-export const register = async (req, res) => {
+exports.register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
@@ -42,7 +47,7 @@ export const register = async (req, res) => {
   }
 };
 
-export const login = async (req, res) => {
+exports.login = async (req, res) => {
   try {
     // console.log(req.body)
     const { email, password } = req.body;
@@ -79,7 +84,7 @@ export const login = async (req, res) => {
   }
 };
 
-export const logout = async (req, res) => {
+exports.logout = async (req, res) => {
   try {
     res.clearCookie('token');
     return res.json({ message: 'Successfully signed out' });
@@ -88,7 +93,7 @@ export const logout = async (req, res) => {
   }
 };
 
-export const currentUser = async (req, res) => {
+exports.currentUser = async (req, res) => {
   try {
     const user = await User.findById(req.user._id).select('-password').exec();
     console.log('CURRENT USER', user);
@@ -98,7 +103,7 @@ export const currentUser = async (req, res) => {
   }
 };
 
-export const sendTestEmail = async (req, res) => {
+exports.sendTestEmail = async (req, res) => {
   const params = {
     Source: process.env.EMAIL_FROM,
     Destination: {
@@ -136,7 +141,7 @@ export const sendTestEmail = async (req, res) => {
     });
 };
 
-export const forgotPassword = async (req, res) => {
+exports.forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
 
@@ -188,7 +193,7 @@ export const forgotPassword = async (req, res) => {
   }
 };
 
-export const resetPassword = async (req, res) => {
+exports.resetPassword = async (req, res) => {
   try {
     const { email, code, newPassword } = await req.body;
 

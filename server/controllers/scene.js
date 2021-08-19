@@ -1,9 +1,16 @@
-import AWS from 'aws-sdk';
-import { nanoid } from 'nanoid';
-import Scene from '../models/scene';
-import slugify from 'slugify';
-import { readFileSync } from 'fs'; // fs.readFileSync
-import Field from '../models/field';
+// import AWS from 'aws-sdk';
+const AWS = require('aws-sdk');
+// import { nanoid } from 'nanoid';
+const { nanoid } = require('nanoid');
+// import Scene from '../models/scene';
+const Scene = require('../models/scene');
+// import slugify from 'slugify';
+const slugify = require('slugify');
+// import { readFileSync } from 'fs'; // fs.readFileSync
+const { readFileSync } = require('fs');
+// import Field from '../models/field';
+const Field = require('../models/field');
+const Shot = require('../models/shot');
 
 const awsConfig = {
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -14,7 +21,7 @@ const awsConfig = {
 
 const S3 = new AWS.S3(awsConfig);
 
-export const uploadImage = async (req, res) => {
+exports.uploadImage = async (req, res) => {
   // console.log(req.body)
   try {
     const { image } = req.body;
@@ -49,7 +56,7 @@ export const uploadImage = async (req, res) => {
   } catch (err) {}
 };
 
-export const removeImage = async (req, res) => {
+exports.removeImage = async (req, res) => {
   try {
     const { image } = req.body;
     console.log(image);
@@ -72,7 +79,7 @@ export const removeImage = async (req, res) => {
   }
 };
 
-export const create = async (req, res) => {
+exports.create = async (req, res) => {
   // console.log('CREATE SCENE', req.body);
 
   // return;
@@ -129,7 +136,7 @@ export const create = async (req, res) => {
   }
 };
 
-export const read = async (req, res) => {
+exports.read = async (req, res) => {
   // console.log('REQ PARAMS',req.params.sceneId)
   // return
   try {
@@ -141,7 +148,33 @@ export const read = async (req, res) => {
   }
 };
 
-export const uploadVideo = async (req, res) => {
+exports.deleteScene = async (req, res) => {
+  console.log('DELETE SCENE', req.params.sceneId, req.params.fieldId);
+
+  const fieldId = req.params.fieldId;
+  try {
+    const sceneObjectId = await Field.findOneAndUpdate(
+      { _id: fieldId },
+      { $pull: { scenes: req.params.sceneId } }
+    ).exec((err, updatedField) => {
+      if (err) {
+        console.log(err);
+        return res.status(400).send('Error while updating field');
+      }
+      console.log('field updated', updatedField);
+      res.sendStatus(200);
+    });
+    const scene = await Scene.findOneAndRemove({
+      _id: req.params.sceneId,
+    }).exec();
+    // .populate('creator', '_id name')
+    res.json(scene, sceneObjectId);
+  } catch (err) {
+    console.log('ERROR deleting scene', err);
+  }
+};
+
+exports.uploadVideo = async (req, res) => {
   // console.log('UPLOAD VIDEO REQ USER ID', req.user._id);
   // console.log('UPLOAD VIDEO PARAMS', req.params.creatorId);
   // match user id with contributor id or creator id
@@ -195,7 +228,7 @@ export const uploadVideo = async (req, res) => {
   }
 };
 
-export const removeVideo = async (req, res) => {
+exports.removeVideo = async (req, res) => {
   if (req.user._id != req.params.creatorId) {
     return res.status(400).send('Unauthorized');
   }
@@ -223,7 +256,7 @@ export const removeVideo = async (req, res) => {
   }
 };
 
-export const update = async (req, res) => {
+exports.update = async (req, res) => {
   // console.log('UPDATE SCENE', req.body);
   const itemUpdate = req.body;
   // return;
@@ -240,7 +273,7 @@ export const update = async (req, res) => {
   }
 };
 
-export const saveVideo = async (req, res) => {
+exports.saveVideo = async (req, res) => {
   console.log('UPDATE VIDEO', req.body);
   // return
   let itemUpdate = req.body;
@@ -259,7 +292,7 @@ export const saveVideo = async (req, res) => {
   }
 };
 
-export const updateVideo = async (req, res) => {
+exports.updateVideo = async (req, res) => {
   console.log('UPDATE VIDEO', req.body);
   // return
   let itemUpdate = req.body;
@@ -267,8 +300,8 @@ export const updateVideo = async (req, res) => {
   // return;
   try {
     const scene = await Scene.findOneAndUpdate(
-      { _id: req.params.sceneId,  'videos.videoKey': itemUpdate.videoData.Key }  ,
-      { $set: { 'videos.$': itemUpdate } },   
+      { _id: req.params.sceneId, 'videos.videoKey': itemUpdate.videoData.Key },
+      { $set: { 'videos.$': itemUpdate } },
       { new: true }
     ).exec();
     console.log('PUSHED VIDEO', scene);
@@ -278,7 +311,7 @@ export const updateVideo = async (req, res) => {
   }
 };
 
-export const updateArray = async (req, res) => {
+exports.updateArray = async (req, res) => {
   // { arrayName: [ 'characters' ], itemName: 'boob' }
   // console.log('UPDATE SCENE', req.body);
   // return
@@ -296,7 +329,7 @@ export const updateArray = async (req, res) => {
     console.log(error);
   }
 };
-export const updatePushArrayItem = async (req, res) => {
+exports.updatePushArrayItem = async (req, res) => {
   // { arrayName: [ 'characters' ], itemName: 'boob' }
   // console.log('UPDATE SCENE', req.body);
   // return
@@ -310,6 +343,105 @@ export const updatePushArrayItem = async (req, res) => {
     ).exec();
 
     res.json(scene);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+exports.createShot = async (req, res) => {
+  try {
+    // const user = await User.findOne({ name: 'Joe' });
+    // const field = await Field.findOne({ name: user.name });
+    // const scene = await Scene.findOne({ sceneName: 'test' });
+    const shotData = req.body;
+
+    // const {shotQuery} = query.body
+    // const shotQuery = {
+    //   shot: 'test shot',
+    //   forScene: scene._id,
+    //   complexity: 'Medium',
+    // };
+
+    /**
+     * Create a shot
+     */
+    const shot = await new Shot(shotData);
+    await shot.save();
+
+    /**
+     * Save shot to scene
+     */
+    const updatedScene = await Scene.findById(shotData.forScene);
+    await updatedScene.shotList.push({
+      shotId: shot._id,
+      shotName: shot.shotName,
+      shotNumber: shot.shotNumber,
+    });
+    await updatedScene.save();
+    console.log('SHOT CREATED: ', shot);
+    console.log('UPDATED SCENE: ', updatedScene);
+    res.json(shot);
+  } catch (error) {
+    console.log(error);
+    return res.status(400).send('Error creating shot');
+  }
+};
+
+exports.readShots = async (req, res) => {
+  try {
+    // const scene = await Scene.findById(req.params.sceneId);
+    // res.json(scene.shotList);
+    const shots = await Shot.find({ forScene: req.params.sceneId });
+    // await console.log('SHOTS REQUESTED: ', shots);
+    res.json(shots);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// update shot
+exports.updateShot = async (req, res) => {
+  try {
+    const shot = await Shot.findById(req.params.shotId);
+    await shot.update(req.body);
+    res.json(shot);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+exports.creatorUpdateShot = async (req, res) => {
+  try {
+    const shot = await Shot.findByIdAndUpdate(req.params.shotId, req.body);
+   // await shot.update(shotUpdate); 
+   // res.json(shot);
+   console.log('SHOT UPDATE: ', shot)
+   const updatedShots = await Shot.find({forScene: req.params.sceneId});
+  
+    // const shot = await Shot.findById(req.params.shotId);
+    // await shot.update(req.body);
+    res.json(updatedShots);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// delete shot
+exports.deleteShot = async (req, res) => {
+  try {
+    // const scene = await Scene.findOne({ _id: req.params.sceneId });
+    // const shot = await Shot.findOne({ _id: req.params.shotId });
+    const shot = await Shot.findByIdAndRemove(req.params.shotId);
+
+    const updatedScene = await Scene.findByIdAndUpdate(
+      req.params.sceneId,
+      { $pull: { shotList: { shotId: shot._id } } },
+      { new: true }
+    );
+
+    console.log('DELETED: SHOT NAME: ', shot);
+    console.log('DELETED: UPDATED SCENE: ', updatedScene);
+    res.json(shot);
   } catch (error) {
     console.log(error);
   }

@@ -67,7 +67,7 @@ const Style = () => {
       height: 43px;
       justify-content: space-between;
       width: 100%;
-      position: sticky;
+      position: absolute;
       background: #F2F3F5;
       // background: rgb(40, 42, 43);
       // background: rgb(252, 248, 237);

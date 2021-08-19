@@ -83,7 +83,7 @@ export const SceneMachineRightPanelStyle = ({ background }) => {
       .transport-description-detail {
         background: #fff;
         line-height: 1.8rem;
-        text-indent: 2rem;
+        // text-indent: 2rem;
         padding: 20px;
         border: solid 1px;
       }
@@ -97,6 +97,7 @@ export const SceneMachineRightPanelStyle = ({ background }) => {
         min-width: 200px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
         border-radius: 5px;
+        table-layout : fixed;
       }
 
       .details-table thead tr {
@@ -136,39 +137,39 @@ export const SceneMachineRightPanelStyle = ({ background }) => {
         border: none;
       }
 
-      .transport-breakdown {
-        // background: #2f3c41;
-        padding: 20px 10px;
-      }
-      .transport-breakdown-shot {
-        cursor: pointer;
-        border: solid rgba(0, 0, 0, 0.15);
-      }
-      .transport-breakdown-shot.active {
-        border: solid;
-      }
-      .transport-breakdown-shot.checked-out {
-        color: #2f3c41;
-        background: #acb7bb;
-      }
-      .transport-breakdown-shot.checked-out.not-user {
-        color: #2f3c41;
-        background: #acb7bb;
-        pointer-events: none;
-        cursor: default;
-      }
+      // .transport-breakdown {
+      //   // background: #2f3c41;
+      //   padding: 20px 10px;
+      // }
+      // .transport-breakdown-shot {
+      //   // cursor: pointer;
+      //   border: solid rgba(0, 0, 0, 0.15);
+      // }
+      // .transport-breakdown-shot.active {
+      //   border: solid;
+      // }
+      // .transport-breakdown-shot.checked-out {
+      //   color: #2f3c41;
+      //   background: #acb7bb;
+      // }
+      // .transport-breakdown-shot.checked-out.not-user {
+      //   color: #2f3c41;
+      //   background: #acb7bb;
+      //   pointer-events: none;
+      //   cursor: default;
+      // }
 
-      .transport-breakdown > div {
-        background-color: white;
-        padding: 20px;
-        margin-bottom: 10px;
-      }
-      .transport-breakdown > div > div {
-        margin: 20px;
-      }
-      .checked-out {
-        background: #747373;
-      }
+      // .transport-breakdown > div {
+      //   background-color: white;
+      //   padding: 20px;
+      //   margin-bottom: 10px;
+      // }
+      // .transport-breakdown > div > div {
+      //   margin: 20px;
+      // }
+      // .checked-out {
+      //   background: #747373;
+      // }
       .add {
         cursor: pointer;
         color: #2f3c41;

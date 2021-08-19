@@ -147,7 +147,7 @@ const TransportControls = ({
         {/* <button>&rArr;</button> */}
       </div>
       <div className="transport-right-controls">
-        {detail === detailView.newScene && (
+        {detail === detailView.newScene  && (
           <>
             <button
               onClick={handleCancel}
