@@ -90,8 +90,9 @@ const CreateField = () => {
   }, []);
 
   useEffect(() => {
-
-    user.state.user && user.state.user._id && setValues({ ...values, creator: user.state.user._id });
+    user.state.user &&
+      user.state.user._id &&
+      setValues({ ...values, creator: user.state.user._id });
 
     console.log('user values', user.state.user && user.state.user._id);
   }, []);

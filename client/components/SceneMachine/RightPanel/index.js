@@ -15,6 +15,7 @@ import { Context } from '../../../context';
 import { SceneMachineRightPanelStyle } from './SceneMachineRightPanelStyle';
 import NewSceneForm from '../MachineForms/newSceneForm';
 import NewShotForm from '../MachineForms/newShotForm';
+import NewBoardForm from '../MachineForms/newBoardForm';
 import RightPanelOverview from './Overview';
 import RightPanelScriptView from './ScriptView';
 import RightPanelBreakdownView from './BreakdownView';
@@ -168,6 +169,7 @@ const SceneMachineRightPanel = () => {
 
           {detail === view.newScene && <NewSceneForm />}
           {detail === view.newShot && <NewShotForm />}
+          {detail === view.addBoard && <NewBoardForm />}
         </div>
         {/* </div> */}
       </RightPanelFrame>

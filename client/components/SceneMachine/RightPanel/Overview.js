@@ -328,7 +328,7 @@ const RightPanelOverview = () => {
         </tbody>
       </table>
       <div className="delete-section" >
-        <label htmlFor="delete">Type 'delete scene' to delte</label>
+        <label htmlFor="delete">Type 'delete scene' to delete</label>
         <input type="text" value={deleteScene} onChange={(e)=>setDeleteScene(e.target.value)} />
         <button disabled={deleteScene != 'delete scene'} onClick={handleDelete}>Delete Scene</button>
       </div>

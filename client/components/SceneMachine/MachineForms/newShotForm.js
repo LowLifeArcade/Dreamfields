@@ -15,7 +15,7 @@ import {
   shotAngle,
   shotFocal,
   shotFrame,
-  view
+  view,
 } from '../../../dataModels';
 
 // TODO:
@@ -49,19 +49,23 @@ const NewShotForm = () => {
   const setDetail = useContext(SetDetailViewContext);
   const detail = useContext(DetailViewContext);
   const viewer = useContext(ViewerContext); // all the scene data is in here
-  // console.log('viewer', viewer)
-  const shotNumbersData = viewer.shotNumbers
-    ? [...viewer?.shotNumbers?.map((shot) => shot)]
+  console.log('viewer', viewer)
+  const shotNumbersData = viewer.shotList
+    ? [(viewer.shotList?.length + 1)]
     : [1];
+  // const shotNumbersData = viewer.shotList
+  //   ? [...viewer?.shotList?.map((shot) => shot.shotNumber), (viewer.shotList?.length + 1)]
+  //   : [1];
+
   const [shotNumbers, setShotNumbers] = useState(shotNumbersData);
 
   useEffect(() => {
-      window.scrollTo(0, 0);
+    window.scrollTo(0, 0);
   }, [detail]);
-  
+
   useEffect(() => {
-    setState({ ...state, forScene: viewer._id });
-  }, []);
+    setState({ ...state, forScene: viewer._id, shotNumber: viewer.shotList.length + 1 });
+  }, [shotNumbers]);
 
   const addCharacter = (e) => {
     e.preventDefault();
@@ -135,7 +139,7 @@ const NewShotForm = () => {
       setDetail('breakdown');
       window.onbeforeunload = function () {
         window.scrollTo(0, 0);
-      }
+      };
       // window.location.reload();
     } catch (err) {
       console.log(err.response.data);
@@ -275,7 +279,9 @@ const NewShotForm = () => {
             </label>
             <select
               value={state.shotFrame}
-              onChange={(e) => setState({ ...state, shotFrame: e.target.value })}
+              onChange={(e) =>
+                setState({ ...state, shotFrame: e.target.value })
+              }
               className="input"
               type={'text'}
               name={''} // use this field to handle state with [e.target.name]: [e.target.value] in the object

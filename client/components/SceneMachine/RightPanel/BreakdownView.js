@@ -29,6 +29,7 @@ const RightPanelBreakdownView = ({
   const [shotItem, setShotItem] = useState();
   const [isEditing, setIsEditing] = useState(false);
   const [error, setError] = useState(null);
+  const [deleteShot, setDeleteShot] = useState();
 
   const shotKeys = {
     shotnumber: 'shot number',
@@ -83,7 +84,8 @@ const RightPanelBreakdownView = ({
 
   useEffect(() => {
     getCurrentShots();
-  }, [detail]);
+    console.log('SHOT ITEM UF ', shotItem);
+  }, [shotItem, viewer]);
 
   /**
    *
@@ -144,17 +146,35 @@ const RightPanelBreakdownView = ({
     }
   };
 
-  const changeArrayItem = async (sceneItem) => {
+  const changeArrayItem = async (shotArray, shotId) => {
     try {
-      await axios.post(`/api/scene/overview-array/${viewer._id}`, sceneItem);
+      await axios.post(`/api/shot-array/${shotId}/${viewer._id}`, shotArray);
       const { data } = await axios.get(`/api/scene/${viewer._id}`);
+      console.log('SUCCESS CHANGING ARRAY: ', data1);
       await setViewer(data);
 
-      await setLoading(false);
+      // await setLoading(false);
     } catch (err) {
       setError(err);
-      setLoading(false);
+      // setLoading(false);
     }
+  };
+
+  const removeCharacter = (e, name, shot) => {
+    const i = e.target.getAttribute('data-index');
+    e.preventDefault();
+    const list = [...shot[name]];
+    list.splice(i, 1);
+    console.log('REMOVE LIST ', list);
+    setShotItem({ [name]: list });
+
+    const objToSend = {
+      arrayName: name,
+      itemName: list,
+    };
+    setIsEditing(false);
+    setShotItem('');
+    changeArrayItem(objToSend, shot._id);
   };
 
   const exitEdit = (e, shotItem, shotId, forScene) => {
@@ -215,6 +235,39 @@ const RightPanelBreakdownView = ({
   //   }
   // };
 
+  const addCharacter = (e, shot, key) => {
+    e.preventDefault();
+    if (shot.characters.includes(e.target.value)) {
+      setIsEditing(false);
+      return;
+    }
+    let currentCharacters;
+    if (shot.characters.length !== 0) {
+      currentCharacters = shot.characters.filter((c) => c !== e.target.value);
+    } else {
+      currentCharacters = shot.characters;
+    }
+    console.log('SHOT CHARACTERS: ', shot.characters);
+    setShotItem({
+      ...shotItem,
+      characters: [...currentCharacters, e.target.value],
+    });
+    console.log('SHOT ITEM SPLIT', [...currentCharacters, e.target.value]);
+    // console.log('SHOT ITEM SPLIT', shotItem[key] );
+    const objToSend = {
+      arrayName: key,
+      itemName: [...currentCharacters, e.target.value],
+    };
+    console.log('ARRAY TO SEND', objToSend);
+
+    // setSceneItem({ arrayName: [key], itemName: arrayValue });
+    // console.log('ARRAY ITEM ON EXIT', sceneItem);
+    changeArrayItem(objToSend, shot._id);
+    setIsEditing(false);
+    // loadViewerScene(viewer._id);
+    setShotItem('');
+  };
+
   const handleEditing = (e, editName, shot) => {
     e.preventDefault();
     const elm = e.target.getAttribute('data-index');
@@ -270,7 +323,35 @@ const RightPanelBreakdownView = ({
                 {shot.shotName}
               </h3>
             )}
-            <button onClick={handleRemoveShot}>Delete Shot</button>
+
+
+            {isEditing === 'delete' + `${shot._id}` ? (
+              <>
+              <div className="delete-shot-section">
+              <label htmlFor="delete">Type 'delete shot' to delete</label>
+              <input
+                type="text"
+                value={deleteShot}
+                onChange={(e) => setDeleteShot(e.target.value)}
+                onBlur={(e) => {
+                  setTimeout(() => {
+                    setIsEditing(false)
+                    setDeleteShot('')
+                  }, 1000)
+                }
+                }
+              /></div>
+              <button disabled={deleteShot != 'delete shot'} id={shot._id} onClick={handleRemoveShot}>
+              Confirm Delete
+            </button>
+            </>) : (
+                <button id={shot._id} onClick={()=> setIsEditing('delete' + shot._id)}>
+                Delete Shot
+              </button>
+            )
+            }
+            
+            
           </div>
 
           <hr />
@@ -346,8 +427,56 @@ const RightPanelBreakdownView = ({
             )}
           </div>
           <div>
-            <strong>Characters: </strong>
-            {shot.characters.join(', ')}
+            {isEditing === 'characters' + `${shot._id}` ? (
+              <>
+                {shot.characters.map((character, i) => (
+                  <div className="inline">
+                    <input
+                      value={character}
+                      data-index={i}
+                      onChange={(e) => handleCharacterInput(e)}
+                      className="input"
+                      type={'text'}
+                      name={''} // use this field to handle state with [e.target.name]: [e.target.value] in the object
+                      autoComplete={'text' && true}
+                      placeholder={'Enter Character Name'}
+                      disabled={true}
+                    />
+                    <button
+                      data-index={i}
+                      onClick={(e) => removeCharacter(e, 'characters', shot)}>
+                      Delete
+                    </button>
+                  </div>
+                ))}
+
+                <strong>Character: </strong>
+                <select
+                  // value={shotItem.characters}
+                  // onChange={(e) =>
+                  //   handleSelectItem(e, 'characters', shot, shotItem)
+                  // }>
+                  onChange={(e) => addCharacter(e, shot, 'characters')}
+                  autoComplete={'text' && true}>
+                  <option disabled selected value="">
+                    Choose Characters
+                  </option>
+                  {viewer.characters.map((c, i) => (
+                    <option key={i} value={c}>
+                      {c}
+                    </option>
+                  ))}
+                </select>
+              </>
+            ) : (
+              <span
+                data-index={shot._id}
+                onClick={(e) => handleEditing(e, 'characters', shot)}>
+                <strong>Character: </strong>
+                {shot.characters.join(', ')}
+              </span>
+            )}
+
             <br />
             <strong>Assets: </strong>
             {shot.assets}
@@ -445,10 +574,9 @@ const RightPanelBreakdownView = ({
                 data-index={shot._id}
                 onClick={(e) => handleEditing(e, 'shotFocal', shot)}>
                 <strong>Focal Length: </strong>
-            {shot.shotFocal}
+                {shot.shotFocal}
               </span>
             )}
-           
           </div>
           {state &&
           state.checkedOutShot &&
@@ -477,6 +605,10 @@ const RightPanelBreakdownView = ({
         <i className="fas fa-plus fa-2x"></i>
       </div>
       <style jsx>{`
+        .delete-shot-section {
+          display: flex;
+          flex-direction: column;
+        }
         .breakdown-header {
           display: flex;
           flex-direction: row;

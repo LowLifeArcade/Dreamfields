@@ -413,18 +413,40 @@ exports.updateShot = async (req, res) => {
 exports.creatorUpdateShot = async (req, res) => {
   try {
     const shot = await Shot.findByIdAndUpdate(req.params.shotId, req.body);
-   // await shot.update(shotUpdate); 
-   // res.json(shot);
-   console.log('SHOT UPDATE: ', shot)
-   const updatedShots = await Shot.find({forScene: req.params.sceneId});
-  
+    // await shot.update(shotUpdate);
+    // res.json(shot);
+    console.log('SHOT UPDATE: ', shot);
+    const updatedShots = await Shot.find({ forScene: req.params.sceneId });
+
     // const shot = await Shot.findById(req.params.shotId);
     // await shot.update(req.body);
     res.json(updatedShots);
   } catch (error) {
     console.log(error);
   }
-}
+};
+
+exports.creatorUpdateShotArray = async (req, res) => {
+  const { arrayName, itemName } = req.body;
+  try {
+    const shot = await Shot.findByIdAndUpdate(
+      req.params.shotId,
+      { [arrayName]: itemName } ,
+      { new: true }
+    ).exec();
+    // await shot.update(shotUpdate);
+    // res.json(shot);
+    console.log('SHOT UPDATE: ', shot);
+
+    const updatedShots = await Shot.find({ forScene: req.params.sceneId });
+
+    // const shot = await Shot.findById(req.params.shotId);
+    // await shot.update(req.body);
+    res.json(updatedShots);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 // delete shot
 exports.deleteShot = async (req, res) => {

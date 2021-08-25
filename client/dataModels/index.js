@@ -6,6 +6,17 @@ export const machineView = {
   view5: {name: 'Panels'},
 }
 
+export const previewPreset = {
+  name: 'name',
+  image: 'image',
+  description: 'description',
+  id: "id",
+  image: "image",
+  panel: "panel",
+  sceneName: "sceneName",
+  type: "type", // enum ["image", "video"]
+}
+
 export const detailView = {
   edit: 'edit',
   panelDetails: 'panel details',
@@ -22,7 +33,8 @@ export const detailView = {
   assets: 'assets',
   modelSheets: 'modelSheets',
   addScene: 'add scene',
-  addShot: 'add shot'
+  addShot: 'add shot',
+  addBoard: 'add board'
 };
 
 export const shotLength = {

@@ -16,6 +16,72 @@ import { machineView } from '../../../dataModels';
 import axios from 'axios';
 import { detailView } from '../../../dataModels';
 
+
+const App = () => {
+  const [dragId, setDragId] = useState();
+  const [boxes, setBoxes] = useState([
+    {
+      id: "Box-1",
+      color: "red",
+      order: 1
+    },
+    {
+      id: "Box-2",
+      color: "green",
+      order: 2
+    },
+    {
+      id: "Box-3",
+      color: "blue",
+      order: 3
+    }
+  ]);
+
+  const handleDrag = (e) => {
+    setDragId(e.currentTarget.id);
+  };
+
+  const handleDrop = (e) => {
+    const dragBox = boxes.find((box) => box.id === dragId);
+    const dropBox = boxes.find((box) => box.id === e.currentTarget.id);
+
+    const dragBoxOrder = dragBox.order;
+    const dropBoxOrder = dropBox.order;
+
+    const newBoxState = boxes.map((box) => {
+      if (box.id === dragId) {
+        box.order = dropBoxOrder;
+      }
+      if (box.id === e.currentTarget.id) {
+        box.order = dragBoxOrder;
+      }
+      return box;
+    });
+
+    setBoxes(newBoxState);
+  };
+
+  return (
+    <div className="App">
+      {boxes
+        .sort((a, b) => a.order - b.order)
+        .map((box) => (
+          <div
+            key={box.id}
+            draggable={true}
+            id={box.id}
+            onDragOver={(e) => e.preventDefault()}
+            onDragStart={handleDrag}
+            onDrop={handleDrop}
+          >
+            {box.id}
+          </div>
+        ))}
+    </div>
+  );
+};
+
+
 const SceneMachineStripArea = () => {
   const setPreview = useContext(PreviewProviderContext);
   const [scenes, setScenes] = useState(['']);

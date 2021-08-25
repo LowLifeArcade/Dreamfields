@@ -27,7 +27,8 @@ const {
   createShot,
   readShots,
   deleteShot,
-  creatorUpdateShot
+  creatorUpdateShot,
+  creatorUpdateShotArray
 } = require('../controllers/scene');
 
 // image
@@ -67,6 +68,7 @@ router.post(
 router.post('/create-shot', requireSignin, isCreator, createShot);
 router.get('/shots/:sceneId', readShots);
 router.post('/shot/:shotId/:sceneId', requireSignin, isCreator, creatorUpdateShot);
+router.post('/shot-array/:shotId/:sceneId', requireSignin, isCreator, creatorUpdateShotArray);
 // router.get('/shot/:shotId', read);
 router.delete('/shot/:sceneId/:shotId', deleteShot);
 // router.post(

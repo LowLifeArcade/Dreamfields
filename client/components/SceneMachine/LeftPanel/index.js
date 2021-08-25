@@ -129,11 +129,11 @@ const SceneMachineLeftPanel = () => {
             {preview.type !== 'image' && preview.type !== 'video' && (
               <img
                 className="media img"
-                src="https://picsum.photos/id/237/500"
+                src="https://picsum.photos/id/212/500"
                 alt=""
               />
             )}
-            {preview.type === 'image' && <img src={preview.image} alt="" />}
+            {preview.type === 'image' && <img className="media img" src={preview.image} alt="" />}
             {preview.type === 'video' && (
               <div>
                 <video ref={videoRef} className="video" controls>

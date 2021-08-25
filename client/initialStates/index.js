@@ -247,7 +247,7 @@ export const initialNewSceneForm = {
   // id: '',
   sceneName: '', // done
   description: '', // done
-  characters: [''], // done
+  characters: [], // done
   setting: '', // done
   script: {
     script: ``,
@@ -337,6 +337,16 @@ export const initPreviewState = {
   id: '',
   type: 'default',
   default: 'https://picsum.photos/id/237/500'
+};
+
+export const initAddBoardState = {
+  image: 'https://picsum.photos/id/168/500',
+  video: '',
+  sceneName: 'New Board',
+  panel: '',
+  id: '',
+  type: 'image',
+  default: 'https://picsum.photos/id/117/500'
 };
 //unsplash.it/id/1/400/225
 

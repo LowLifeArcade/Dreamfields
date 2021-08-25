@@ -11,10 +11,9 @@ const ButtonUpload = ({
   ...props
 }) => {
   return (
-    <div>
+    <div >
       <label
         disabled={disabled}
-
         className={disabled ? 'disabledBtn' : 'btn'}
         type="submit"
         >

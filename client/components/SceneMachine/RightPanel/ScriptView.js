@@ -8,7 +8,8 @@ const RightPanelScriptView = ({state, viewer, view}) => {
     // TODO: add undo function to changes in text area. Maybe store viewer.script.script in a backup field when you hit edit button.
     <div className="transport-script">
     Revision: {viewer.script.rev}
-    {state.machineState !== view.edit ? (
+    {true ? (
+    // {state.machineState !== view.edit ? (
       <>
         <div
           dangerouslySetInnerHTML={{

@@ -58,6 +58,10 @@ const ShotSchema = new Schema(
       default: 'medium',
       enum: ['easy', 'medium', 'hard', 'expert'],
     },
+    shotNumber: {
+      type: Number,
+      require: true,
+    },
     shotLength: {
       type: String,
       default: 'medium',

@@ -202,4 +202,15 @@ describe('GET / ', () => {
   //   // test to get shots
 
   //   // test to get one shot
+
+//   upload boards
+test('Upload board', async () => {
+   // let { data } = await axios.post('/api/boards/upload-image', {
+   //    smallImage: uri,
+   //    fullImage: file,
+   //  });
+
+   
+   
+})
 });

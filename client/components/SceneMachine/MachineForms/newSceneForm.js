@@ -2,16 +2,48 @@ import { useState, useContext, useEffect } from 'react';
 import { initialNewSceneForm } from '../../../initialStates';
 import FormCard from '../../formlayout/FormCard';
 import axios from 'axios';
-import { frameRate } from '../../../dataModels';
+import { frameRate, production, aspectRatio } from '../../../dataModels';
 import { ProjectContext } from '../../../contexts/SceneMachineProviders';
 import { SetDetailViewContext } from '../../../contexts/SceneMachineProviders';
 
 const NewSceneForm = () => {
-  const [state, setState] = useState(initialNewSceneForm);
+  const [state, setState] = useState({// id: '',
+    sceneName: '', // done
+    description: '', // done
+    characters: [], // done
+    setting: '', // done
+    script: {
+      script: ``,
+      rev: 1,
+    },
+    mainImage: '',
+    stripImage: '',
+    forProject: '', // use ObjectId
+    forReel: '', // use ObjectId
+    
+    launched: false,
+    productionStage: production.pre, 
+    frameRate: frameRate.true24, // done
+    aspectRatio: aspectRatio.HDTV, // done
+  
+    boards: [
+      {
+        name: '',
+        board: {}, // s3 location
+        shot: '', // use ObjectId
+        artist: '',
+        revision: '',
+      },
+    ],
+    
+    animatic: '',
+    video: { Location: '', videoName: '', revision: 1 },
+    revision: 1,});
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
   const project = useContext(ProjectContext);
   const setDetail = useContext(SetDetailViewContext);
+  const [newCharacter, setNewCharacter] = useState();
 
   // console.log('PROJECT DATA', project)
   useEffect(() => {
@@ -83,6 +115,14 @@ const NewSceneForm = () => {
       [name]: [...state[name], ''],
     });
   };
+  const addNewCharacter = (e, name) => {
+    e.preventDefault();
+    setState({
+      ...state,
+      [name]: [...state[name], newCharacter],
+    });
+    setNewCharacter('')
+  };
 
   const removeCharacter = (e, name) => {
     const i = e.target.getAttribute('data-index');
@@ -105,6 +145,20 @@ const NewSceneForm = () => {
       characters: [...characters],
     });
   };
+  // const handleCharacterInput = (e) => {
+  //   e.preventDefault();
+  //   const i = e.target.getAttribute('data-index');
+  //   let characters = [...state.characters];
+  //   let oneCharacter = characters[i];
+  //   oneCharacter = e.target.value;
+  //   characters[i] = oneCharacter;
+
+  //   setState({
+  //     ...state,
+  //     characters: [...characters],
+  //   });
+  // };
+
   const handleArrayInput = (e, name, item) => {
     e.preventDefault();
     const i = e.target.getAttribute('data-index');
@@ -217,7 +271,7 @@ const NewSceneForm = () => {
                   name={''} // use this field to handle state with [e.target.name]: [e.target.value] in the object
                   autoComplete={'text' && true}
                   placeholder={'Enter Character Name'}
-                  disabled={false}
+                  disabled={true}
                 />
                 <button
                   data-index={i}
@@ -226,12 +280,25 @@ const NewSceneForm = () => {
                 </button>
               </div>
             ))}
-            <button onClick={(e) => addCharacter(e, 'characters')}>
-              Add Character
+            <div className="inline">
+            <input
+              value={newCharacter}
+              // data-index={i}
+              onChange={(e) => setNewCharacter(e.target.value)}
+              className="input"
+              type={'text'}
+              name={''} // use this field to handle state with [e.target.name]: [e.target.value] in the object
+              autoComplete={'text' && true}
+              placeholder={'Enter Character Name'}
+              disabled={false}
+            />
+            <button onClick={(e) => addNewCharacter(e, 'characters')}>
+              Add 
             </button>
           </div>
+          </div>
 
-          <div id="scene-assets" className="section">
+          {/* <div id="scene-assets" className="section">
             <label className="label" htmlFor="assets">
               Assets {state.assets.length}
             </label>
@@ -332,7 +399,7 @@ const NewSceneForm = () => {
             <button onClick={(e) => addCharacter(e, 'backgrounds')}>
               Add Asset
             </button>
-          </div>
+          </div> */}
           <div id="scene-script" className="section">
             <label className="label" htmlFor="Script">
               Script
