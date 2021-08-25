@@ -62,7 +62,8 @@ const NewBoardForm = () => {
     try {
       const { data } = await axios.post(`/api/create-board`, {newBoard, image});
       console.log('BOARD CREATION SUCCESSFUL: ', data);
-      setDetail(detailView.boards)
+      // window.location.reload();
+      await data && setDetail(detailView.boards)
     } catch (error) {
       console.log(error);
     }
@@ -152,18 +153,24 @@ const NewBoardForm = () => {
             <select
               value={newBoard.forShot}
               onChange={(e) =>
-                setNewBoard({
+                {
+                  const value = JSON.parse(e.target.value)
+                  setNewBoard({
                   ...newBoard,
-                  forShot: e.target.value,
-                })
+                  forShot: value.id,
+                  shotNumber: value.number,
+                })}
               }
               name=""
               id="">
                 <option selected disabled value="">Select Shot</option>
               {shots?.map((shot, i) => (
-                <option key={i} id={shot._id} value={shot._id}>
+                <option key={i}  value={`{"id":"${shot._id}", "number":${shot.shotNumber}}`}>
                   {shot.shotNumber}
                 </option>
+                // <option key={i}  value={JSON.stringify(`{"id":"${shot._id}", "number":"${shot.shotNumber}"}`)}>
+                //   {shot.shotNumber}
+                // </option>
               ))}
             </select>
 

@@ -18,6 +18,7 @@ export const previewPreset = {
 }
 
 export const detailView = {
+  boards: 'boards',
   edit: 'edit',
   panelDetails: 'panel details',
   main: 'main',

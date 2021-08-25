@@ -15,6 +15,7 @@ const {
   removeImage,
   create,
   read,
+  getBoards
   // deleteScene,
   // uploadVideo,
   // removeVideo,
@@ -36,7 +37,7 @@ router.post('/board/remove-image', removeImage);
 // Boards
 router.post('/create-board', requireSignin, isCreator, create);
 router.get('/board/:boardId', requireSignin, read);
-router.get('/scene-boards', requireSignin, read);
+router.get('/boards/:sceneId', requireSignin, getBoards);
 // router.delete('/board/:shotId/:fieldId', deleteScene);
 // router.post(
 //   '/scene/video-upload/:sceneId',

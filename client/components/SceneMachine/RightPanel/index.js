@@ -35,6 +35,19 @@ const SceneMachineRightPanel = () => {
   const showModal = useContext(ModalContext);
   const setShowModal = useContext(SetModalContext);
   const preview = useContext(PreviewStateContext);
+  /**
+   * `preview` = {
+   * - name: string,
+   * - image: string,
+   * - description: string,
+   * - id: string,
+   * - image: string,
+   * - panel: string,
+   * - sceneName: string,
+   * - type: string, // enum ["image", "video"]
+   * - }
+   * 
+   */
   const setPreview = useContext(PreviewProviderContext);
   const dispatch = useContext(MachineStateDispatchContext);
   const state = useContext(MachineStateStateContext);
@@ -145,6 +158,7 @@ const SceneMachineRightPanel = () => {
           {detail === view.boards && (
             <RightPanelBoardsView
               activeShot={activeShot}
+              setActiveShot={setActiveShot}
               viewer={viewer}
               setPreview={setPreview}
               preview={preview}

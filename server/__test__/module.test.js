@@ -213,4 +213,28 @@ test('Upload board', async () => {
    
    
 })
+
+test('Create Board', async () => {
+  const user = await User.findOne({ name: 'Joe' });
+  const scene = await Scene.findOne({ sceneName: 'test' });
+  const board = await new Board({
+    forScene: scene._id,
+    name: 'test board',
+  });
+  await board.save();
+  expect(board.id).toBeDefined();
+})
+
+test('Get boards', async () => {
+  // const {data} = await axios.get(`/api/boards/${sceneId}`);
+  // expect(data).toBeDefined();
+
+  const scene = await Scene.findOne({ sceneName: 'test' });
+
+  const boards = await Board.find({forScene: scene._id});
+
+  expect(boards).toHaveLength(1);
+
+})
+
 });

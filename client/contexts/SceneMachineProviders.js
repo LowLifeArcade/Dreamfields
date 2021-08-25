@@ -140,6 +140,19 @@ export const ControlPanelButtonsProvider = ({ children }) => {
 
 // Sets the preview window. Usefull for preview of any and all media
 export const PreviewStateContext = createContext();
+/**
+ * `preview` = {
+ * - name: string,
+ * - image: string,
+ * - description: string,
+ * - id: string,
+ * - image: string,
+ * - panel: string,
+ * - sceneName: string,
+ * - type: string, // enum ["image", "video"]
+ * - }
+ * 
+ */
 export const PreviewProviderContext = createContext();
 export const PreviewContextProvider = ({ children }) => {
   const [preview, setPreview] = useStateAndLocalStorage(
@@ -195,6 +208,36 @@ export const DetailViewProvider = ({ children }) => {
           {children}
         </SetDetailViewContext.Provider>
       </DetailViewContext.Provider>
+    </>
+  );
+};
+
+export const BoardsContext = createContext();
+export const SetBoardsContext = createContext();
+export const BoardsProvider = ({ children }) => {
+  const [boards, setBoards] = useStateAndLocalStorage(
+    'boards',
+    detailView.boards
+  );
+
+  /**
+   * 
+   * @param {string} sceneId use viewer._id to get boards for a scene
+   */
+  const getBoards = async (sceneId) => {
+    console.log('GET BOARDS CONTEXT: ')
+    const {data} = await axios.get(`/api/boards/${sceneId}`);
+    await console.log('BOARDS: ', data)
+    await setBoards(data)
+  }
+  
+  return (
+    <>
+      <BoardsContext.Provider value={boards}>
+        <SetBoardsContext.Provider value={getBoards}>
+          {children}
+        </SetBoardsContext.Provider>
+      </BoardsContext.Provider>
     </>
   );
 };

@@ -139,6 +139,7 @@ exports.create = async (req, res) => {
       forShot: newBoard.forShot,
       name: newBoard.name,
       artist: newBoard.artist,
+      shotNumber: newBoard.shotNumber,
       slug: slugify(newBoard.name),
       smallImage: image.smallImage,
       fullImage: image.fullImage,
@@ -169,6 +170,16 @@ exports.read = async (req, res) => {
     res.json(field);
   } catch (err) {}
 };
+
+exports.getBoards = async (req, res) => {
+  console.log('GET BOARDS REACHED')
+  try {
+    // const { sceneId } = req.query;
+    const boards = await Board.find({forScene: req.params.sceneId}).exec();
+    await console.log('BOARDS: ', boards)
+    await res.json(boards);
+  } catch (err) {}
+}
 
 exports.getScenes = async (req, res) => {
   try {

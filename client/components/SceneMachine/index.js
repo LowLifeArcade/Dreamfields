@@ -20,10 +20,9 @@ import {
   MachineStateContext,
   ModalProvider,
   DetailViewProvider,
-  ProjectProvider
+  BoardsProvider,
+  ProjectProvider,
 } from '../../contexts/SceneMachineProviders';
-
-
 
 /**
  * These Provider provide both the values and setters
@@ -31,32 +30,32 @@ import {
  * @returns context values and setters
  */
 const Providers = ({ children }) => {
-
   return (
     <>
-      <MachineStateContext>
-        <ModalProvider>
-          <ViewerProvider>
-            <PreviewContextProvider>
-              <TitleButtonProvider>
-                <ControlPanelButtonsProvider>
-                  <DetailViewProvider>
-                    {/* <ProjectProvider> */}
-                    {children}
-                    {/* </ProjectProvider> */}
-                  </DetailViewProvider>
-                </ControlPanelButtonsProvider>
-              </TitleButtonProvider>
-            </PreviewContextProvider>
-          </ViewerProvider>
-        </ModalProvider>
-      </MachineStateContext>
+      <BoardsProvider>
+        <MachineStateContext>
+          <ModalProvider>
+            <ViewerProvider>
+              <PreviewContextProvider>
+                <TitleButtonProvider>
+                  <ControlPanelButtonsProvider>
+                    <DetailViewProvider>
+                      {/* <ProjectProvider> */}
+                      {children}
+                      {/* </ProjectProvider> */}
+                    </DetailViewProvider>
+                  </ControlPanelButtonsProvider>
+                </TitleButtonProvider>
+              </PreviewContextProvider>
+            </ViewerProvider>
+          </ModalProvider>
+        </MachineStateContext>
+      </BoardsProvider>
     </>
   );
 };
 
 const SceneMachine = () => {
-  
   return (
     <>
       <head>
@@ -65,7 +64,7 @@ const SceneMachine = () => {
           rel="stylesheet"
         />
       </head>
-      <Spinner opacity={0}/> 
+      <Spinner opacity={0} />
       <Providers>
         <SceneMachineBody>
           <SceneMachineTitle />
