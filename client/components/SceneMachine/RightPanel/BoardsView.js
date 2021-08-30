@@ -33,12 +33,13 @@ const RightPanelBoardsView = ({
     console.log('VIEWER ID', viewer._id);
     getBoards(viewer._id);
     console.log('BOARDS: ', boards);
-  }, [detail]);
+  }, [viewer]);
   console.log('ACTIVE SHOT: ', activeShot);
 
-  useEffect(() => {
-    if (boards.length === 0) setDetail(detailView.addBoard);
-  }, [boards]);
+  // useEffect(() => {
+  //   if (viewer.shotList.length === 0) setDetail(detailView.addShot)
+  //   if (boards.length === 0) setDetail(detailView.addBoard);
+  // }, [viewer]);
 
   // const getCurrentShots = async () => {
   //   try {
@@ -66,6 +67,7 @@ const RightPanelBoardsView = ({
     setPreview({
       type: 'image',
       image: board.smallImage.Location,
+      fullImage: board.fullImage.Location,
       sceneName: viewer.sceneName,
       panel: i + 1,
       shotNumber: board.shotNumber,
@@ -88,7 +90,7 @@ const RightPanelBoardsView = ({
       {
         viewer.shotList?.length === 0 && (
           <div className="board-titles">
-            <h3>Please add a breakdown first</h3>
+            <h3>Please add a breakdown first!</h3>
           </div>
         )
         // <div className="transport-panels">
@@ -99,7 +101,7 @@ const RightPanelBoardsView = ({
         // </section>
         //   </div>
       }
-      {true && (
+      {viewer.shotList?.length > 0 && (
         <>
           {' '}
           <div className="board-titles">Boards</div>
@@ -110,7 +112,9 @@ const RightPanelBoardsView = ({
                   (activeShot.shot === board.shotNumber && (
                     <>
                       {console.log('BOARD: ', board)}
-                      <div onClick={() => handleSelect(i, board)} className="transport-panel">
+                      <div
+                        onClick={() => handleSelect(i, board)}
+                        className="transport-panel">
                         <div className="transport-label">{board.panel}</div>
                         <div className="panel-index">{i + 1}</div>
                         <div className="panel-shot">{board.shotNumber}</div>

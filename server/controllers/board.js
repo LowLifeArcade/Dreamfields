@@ -98,7 +98,7 @@ exports.uploadImage = async (req, res) => {
     //   return data;
     // });
     // await console.log('smallData and largeData', smallData, largeData);
-    await console.log('S3 BOARD UPLOADS: ',smallData, largeData);
+    await console.log('S3 BOARD UPLOADS: ', smallData, largeData);
     await res.json({ smallImage: smallData, fullImage: largeData });
   } catch (err) {
     console.log('ERROR UPLOADING: ', err);
@@ -130,10 +130,9 @@ exports.removeImage = async (req, res) => {
 
 exports.create = async (req, res) => {
   console.log('CREATE BOARD', req.body);
-  const { newBoard, image} = req.body;
+  const { newBoard, image } = req.body;
   // return
   try {
-
     const board = await new Board({
       forScene: newBoard.forScene,
       forShot: newBoard.forShot,
@@ -145,11 +144,19 @@ exports.create = async (req, res) => {
       fullImage: image.fullImage,
     }).save();
 
-    const scene = await Scene.findByIdAndUpdate(board.forScene, {
-      $push: {
-        boards: {boardId: board._id, boardName: board.name, boardLocation: image.smallImage.Location},
+    const scene = await Scene.findByIdAndUpdate(
+      board.forScene,
+      {
+        $push: {
+          boards: {
+            boardId: board._id,
+            boardName: board.name,
+            boardLocation: image.smallImage.Location,
+          },
+        },
       },
-    }).exec();
+      { new: true }
+    ).exec();
 
     await console.log('BOARD CREATED: ', board);
     await console.log('UPDATED SCENE: ', scene);
@@ -172,14 +179,14 @@ exports.read = async (req, res) => {
 };
 
 exports.getBoards = async (req, res) => {
-  console.log('GET BOARDS REACHED')
+  console.log('GET BOARDS REACHED');
   try {
     // const { sceneId } = req.query;
-    const boards = await Board.find({forScene: req.params.sceneId}).exec();
-    await console.log('BOARDS: ', boards)
+    const boards = await Board.find({ forScene: req.params.sceneId }).exec();
+    await console.log('BOARDS: ', boards);
     await res.json(boards);
   } catch (err) {}
-}
+};
 
 exports.getScenes = async (req, res) => {
   try {

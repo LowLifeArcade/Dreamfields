@@ -8,7 +8,7 @@ const previewReducer = (state, action) => {
   if (state.previewState == 'playing') {
     switch (action) {
       case 'PLAY':
-        return { ...state, player: 'pause',  previewState: 'paused' };
+        return { ...state, player: 'pause', previewState: 'paused' };
       case 'STOP':
         return { ...state, player: 'pause', previewState: 'stopped' };
       case 'PAUSE':
@@ -74,7 +74,12 @@ const previewReducer = (state, action) => {
   if (state.previewState == 'stopped' || state.previewState == 'idle') {
     switch (action) {
       case 'PLAY':
-        return { ...state, player: 'play',  previewState: 'playing', effect: 'synced' };
+        return {
+          ...state,
+          player: 'play',
+          previewState: 'playing',
+          effect: 'synced',
+        };
       case 'FORWARD':
         return { ...state, previewState: 'fast forward' };
       case 'BACKWARD':
@@ -103,15 +108,16 @@ const SceneMachineLeftPanel = () => {
   const [state, dispatch] = useReducer(previewReducer, initPrevState);
   const [video, setVideo] = useState();
   const videoRef = useRef();
+  const imgRef = useRef();
   const preview = useContext(PreviewStateContext);
   useEffect(() => {
     // setVideo(preview.video);
     videoRef.current?.load();
-  },[preview.video]);
+  }, [preview.video]);
 
   useEffect(() => {
     // console.log(state.player)
-    videoRef.current && videoRef.current[state?.player]()
+    videoRef.current && videoRef.current[state?.player]();
   }, [state]);
 
   // get item at end of string by period
@@ -119,6 +125,17 @@ const SceneMachineLeftPanel = () => {
     const index = str?.lastIndexOf(delim);
     return str?.substr(index + 1);
   };
+
+  const handleFullScreen = () => {
+    if (imgRef.current.fullscreenElement) {
+      imgRef.current?.exitFullscreen();
+    } else {
+      imgRef.current?.requestFullscreen();
+    }
+
+    // exit fullscreen
+  };
+
   // `video/${getItemAtEnd(preview.video, '.')}`
   return (
     <>
@@ -133,7 +150,15 @@ const SceneMachineLeftPanel = () => {
                 alt=""
               />
             )}
-            {preview.type === 'image' && <img className="media img" src={preview.image} alt="" />}
+            {preview.type === 'image' && (
+              <img
+                ref={imgRef}
+                className="media img"
+                onClick={handleFullScreen}
+                src={preview.image}
+                alt=""
+              />
+            )}
             {preview.type === 'video' && (
               <div>
                 <video ref={videoRef} className="video" controls>

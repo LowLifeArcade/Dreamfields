@@ -5,9 +5,11 @@ import axios from 'axios';
 import { frameRate, production, aspectRatio } from '../../../dataModels';
 import { ProjectContext } from '../../../contexts/SceneMachineProviders';
 import { SetDetailViewContext } from '../../../contexts/SceneMachineProviders';
+import Resizer from 'react-image-file-resizer';
 
 const NewSceneForm = () => {
-  const [state, setState] = useState({// id: '',
+  const [state, setState] = useState({
+    // id: '',
     sceneName: '', // done
     description: '', // done
     characters: [], // done
@@ -20,40 +22,81 @@ const NewSceneForm = () => {
     stripImage: '',
     forProject: '', // use ObjectId
     forReel: '', // use ObjectId
-    
+
     launched: false,
-    productionStage: production.pre, 
+    productionStage: production.pre,
     frameRate: frameRate.true24, // done
     aspectRatio: aspectRatio.HDTV, // done
-  
-    boards: [
-      {
-        name: '',
-        board: {}, // s3 location
-        shot: '', // use ObjectId
-        artist: '',
-        revision: '',
-      },
-    ],
-    
+
+    boards: [],
+
     animatic: '',
     video: { Location: '', videoName: '', revision: 1 },
-    revision: 1,});
+    revision: 1,
+  });
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
   const project = useContext(ProjectContext);
   const setDetail = useContext(SetDetailViewContext);
   const [newCharacter, setNewCharacter] = useState();
+  const [imgPreview, setImgPreview] = useState();
+  const [isLoading, setIsLoading] = useState(false);
 
   // console.log('PROJECT DATA', project)
   useEffect(() => {
+    console.log('NEW PROJECT LOADED IN NEW SCENE FORM: ', project);
     setState({ ...state, forProject: project._id });
-  }, []);
+  }, [project]);
   // const [newSceneForm, setNewSceneForm] = useState(initialNewSceneForm);
   // console.log('new scene form state', state);
   // TODO: The new scene form only sets up the basics. We get a scene overview from this with description and scene name and hopefully script. From there the creator will go through and add assets if needed, backgrounds, FX and a shot list with breakdowns and launch the scene.
 
   // a scene card will show up if there is no image uploaded
+
+  const handleImg = (e) => {
+    let file = e.target.files[0];
+    let formData = new FormData();
+    formData.append('fullImage', file);
+
+    setImgPreview(window.URL.createObjectURL(file));
+    setIsLoading(true);
+
+    // resize image
+    Resizer.imageFileResizer(file, 1300, 731, 'JPEG', 100, 0, async (uri) => {
+      formData.append('smallImage', uri);
+      try {
+        let { data } = await axios.post('/api/board/upload-image', formData);
+        await console.log('SCENE IMAGE UPLOADED', data);
+
+        // setImage(data);
+        setState({...state, image: data});
+        setIsLoading(false);
+      } catch (err) {
+        setIsLoading(false);
+        // toast.warning('failed uploadd');
+        console.log('failed upload');
+      }
+    });
+  };
+
+  const handleImageRemove = async () => {
+    let confirm = window.confirm('Do you want to remove this image?');
+
+    if (confirm) {
+      try {
+        setIsLoading(true);
+        await axios.post('/api/field/remove-image', { image });
+        setNewBoard({ ...newBoard, boardData: '' });
+        setImgPreview('');
+        setIsLoading(false);
+      } catch (err) {
+        console.log(err);
+        setIsLoading(false);
+        // toast.warn('Image upload failed.');
+        console.log('Image upload failed');
+      }
+    }
+  };
 
   const handleVideo = async (e) => {
     try {
@@ -121,7 +164,7 @@ const NewSceneForm = () => {
       ...state,
       [name]: [...state[name], newCharacter],
     });
-    setNewCharacter('')
+    setNewCharacter('');
   };
 
   const removeCharacter = (e, name) => {
@@ -281,21 +324,21 @@ const NewSceneForm = () => {
               </div>
             ))}
             <div className="inline">
-            <input
-              value={newCharacter}
-              // data-index={i}
-              onChange={(e) => setNewCharacter(e.target.value)}
-              className="input"
-              type={'text'}
-              name={''} // use this field to handle state with [e.target.name]: [e.target.value] in the object
-              autoComplete={'text' && true}
-              placeholder={'Enter Character Name'}
-              disabled={false}
-            />
-            <button onClick={(e) => addNewCharacter(e, 'characters')}>
-              Add 
-            </button>
-          </div>
+              <input
+                value={newCharacter}
+                // data-index={i}
+                onChange={(e) => setNewCharacter(e.target.value)}
+                className="input"
+                type={'text'}
+                name={''} // use this field to handle state with [e.target.name]: [e.target.value] in the object
+                autoComplete={'text' && true}
+                placeholder={'Enter Character Name'}
+                disabled={false}
+              />
+              <button onClick={(e) => addNewCharacter(e, 'characters')}>
+                Add
+              </button>
+            </div>
           </div>
 
           {/* <div id="scene-assets" className="section">
@@ -506,13 +549,69 @@ const NewSceneForm = () => {
           <hr />
           <br />
 
-          <div id="scene-image" className="section">
+          {/* <div id="scene-image" className="section">
             <label className="label" htmlFor="scene-image">
               Upload Scene Image
             </label>
             <section>
               <button>Upload Image</button>
             </section>
+          </div> */}
+
+          <div id="scene-image" className="section">
+            {/* <div className="button-label">Board Image</div> */}
+            <label className="label" htmlFor="scene-image">
+              Upload Scene Image
+            </label>
+            <div className="button-flex">
+              <label
+                disabled={isLoading || imgPreview}
+                // className={isLoading || imgPreview ? 'disabledBtn' : 'btn'}
+                htmlFor="uploader"
+                type="submit">
+                {imgPreview ? 'Preview' : 'Upload '}
+                <input
+                  type="file"
+                  accept="image"
+                  name="image"
+                  onChange={handleImg}
+                />
+              </label>
+              {/* <ButtonUpload
+                color={'#3f3f3f'}
+                disabled={isLoading || imgPreview}
+                uploadType="image"
+                buttonName={imgPreview ? 'Preview' : 'Upload Banner Image'}
+                onChange={handleImg}
+              /> */}
+            </div>
+            {imgPreview ? (
+              <div>
+                <div
+                  onClick={handleImageRemove}
+                  className="banner-preview-container">
+                  <img className="banner-preview" src={imgPreview} alt="" />
+                </div>
+                {/* <div className="banner-preview-container">
+                  <img className="banner-preview" src={image.Location} alt="" />
+                </div> */}
+              </div>
+            ) : (
+              <div className="description">
+                {/* Upload jpegs of any size */}
+              </div>
+            )}
+            {/* <div className="button-flex">
+                <button onClick={handleSubmit} disabled={isLoading}>
+                  {isLoading ? '...saving' : 'Save and Upload'}
+                </button>
+                {/* <Button
+                color={'#3f3f3f'}
+                disabled={isLoading}
+                buttonName={isLoading ? '...saving' : 'Save and Continue'}
+                onClick={handleSubmit}
+              /> *
+              </div> */}
           </div>
 
           {state.productionStage === 'Production' && (
@@ -656,6 +755,14 @@ const NewSceneForm = () => {
               width: 100%;
               border: solid 1px rgb(196, 188, 163);
               border-radius: 3px;
+            }
+            .banner-preview-container {
+              margin: 20px 0;
+            }
+            .banner-preview {
+              // height: 200px;
+              width: 100%;
+              object-fit: cover;
             }
           `}</style>
         </FormCard>

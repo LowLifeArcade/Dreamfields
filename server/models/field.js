@@ -65,6 +65,9 @@ const fieldSchema = new Schema(
     contributors: [String],
     rev: Number,
   },
+  {
+    strict: false,
+  },
   { timestamps: true }
 );
 

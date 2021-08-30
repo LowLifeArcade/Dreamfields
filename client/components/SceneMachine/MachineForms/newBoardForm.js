@@ -1,6 +1,9 @@
 import { useState, useContext, useEffect } from 'react';
 import FormCard from '../../formlayout/FormCard';
-import { SetDetailViewContext, ViewerContext } from '../../../contexts/SceneMachineProviders';
+import {
+  SetDetailViewContext,
+  ViewerContext,
+} from '../../../contexts/SceneMachineProviders';
 import Resizer from 'react-image-file-resizer';
 import axios from 'axios';
 import ButtonUpload from '../../ButtonUpload';
@@ -56,14 +59,24 @@ const NewBoardForm = () => {
 
   useEffect(() => {
     getCurrentShots();
-  }, []);
+  }, [viewer]);
+
+  // useEffect(() => {
+  //   if (shots?.length > 0) setDetail(detailView.boards);
+  // }, [shots]);
 
   const handleSubmit = async (e) => {
     try {
-      const { data } = await axios.post(`/api/create-board`, {newBoard, image});
+      const { data } = await axios.post(`/api/create-board`, {
+        newBoard,
+        image,
+      });
+
       console.log('BOARD CREATION SUCCESSFUL: ', data);
       // window.location.reload();
-      await data && setDetail(detailView.boards)
+      setTimeout(() => {
+        setDetail(detailView.boards);
+      }, 1000);
     } catch (error) {
       console.log(error);
     }
@@ -78,7 +91,8 @@ const NewBoardForm = () => {
     setIsLoading(true);
 
     // resize image
-    Resizer.imageFileResizer(file, 1300, 731, 'JPEG', 100, 0, async (uri) => {
+    // Resizer.imageFileResizer(file, 1300, 731, 'JPEG', 100, 0, async (uri) => {
+    Resizer.imageFileResizer(file, 2000, 1200, 'JPEG', 100, 0, async (uri) => {
       formData.append('smallImage', uri);
       try {
         let { data } = await axios.post('/api/board/upload-image', formData);
@@ -113,68 +127,87 @@ const NewBoardForm = () => {
     }
   };
 
+  const Redirect = () => (
+    <>
+      <div className="title-dx">
+        <h3>Please add a breakdown first</h3>
+      </div>
+      <style jsx>{`
+        .title-dx {
+          color: #313131;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+          height: 100%;
+        }
+      `}</style>
+    </>
+  );
+
   return (
     <>
+        {shots?.length === 0 && <Redirect />}
       <div className="new-scene-form">
-        {shots?.length === 0 &&  
-          <div>
-            <h3>Please add a breakdown first</h3>
-          </div>
-        }
-       {shots?.length > 0 && <FormCard
-          title={
-            newBoard.name
-              ? `${viewer.sceneName}: ${newBoard.name} `
-              : `${viewer.sceneName}: New Board`
-          }>
-          <div id="scene-name" className="section">
-            <label className="label" htmlFor="board">
-              Board Name
-            </label>
-            <input
-              value={newBoard.sceneName}
-              onChange={(e) =>
-                setNewBoard({ ...newBoard, name: e.target.value })
-              }
-              className="input"
-              type={'text'}
-              name={''} // use this field to handle state with [e.target.name]: [e.target.value] in the object
-              autoComplete={'text' && true}
-              placeholder={'Enter Shot Name'}
-              disabled={false}
-            />
-          </div>
-          {/* Shot Number */}
+        {shots?.length > 0 && (
+          <FormCard
+            title={
+              newBoard.name
+                ? `${viewer.sceneName}: ${newBoard.name} `
+                : `${viewer.sceneName}: New Board`
+            }>
+            <div id="scene-name" className="section">
+              <label className="label" htmlFor="board">
+                Board Name
+              </label>
+              <input
+                value={newBoard.sceneName}
+                onChange={(e) =>
+                  setNewBoard({ ...newBoard, name: e.target.value })
+                }
+                className="input"
+                type={'text'}
+                name={''} // use this field to handle state with [e.target.name]: [e.target.value] in the object
+                autoComplete={'text' && true}
+                placeholder={'Enter Shot Name'}
+                disabled={false}
+              />
+            </div>
+            {/* Shot Number */}
 
-          <div id="shot-number" className="section">
-            <label className="label" htmlFor="shot">
-              Shot Number
-            </label>
-            <select
-              value={newBoard.forShot}
-              onChange={(e) =>
-                {
-                  const value = JSON.parse(e.target.value)
+            <div id="shot-number" className="section">
+              <label className="label" htmlFor="shot">
+                Shot Number
+              </label>
+              <select
+                value={newBoard.forShot}
+                onChange={(e) => {
+                  const value = JSON.parse(e.target.value);
                   setNewBoard({
-                  ...newBoard,
-                  forShot: value.id,
-                  shotNumber: value.number,
-                })}
-              }
-              name=""
-              id="">
-                <option selected disabled value="">Select Shot</option>
-              {shots?.map((shot, i) => (
-                <option key={i}  value={`{"id":"${shot._id}", "number":${shot.shotNumber}}`}>
-                  {shot.shotNumber}
+                    ...newBoard,
+                    forShot: value.id,
+                    shotNumber: value.number,
+                  });
+                }}
+                name=""
+                id="">
+                <option selected disabled value="">
+                  Select Shot
                 </option>
-                // <option key={i}  value={JSON.stringify(`{"id":"${shot._id}", "number":"${shot.shotNumber}"}`)}>
-                //   {shot.shotNumber}
-                // </option>
-              ))}
-            </select>
+                {shots?.map((shot, i) => (
+                  <option
+                    key={i}
+                    value={`{"id":"${shot._id}", "number":${shot.shotNumber}}`}>
+                    {shot.shotNumber}
+                  </option>
+                  // <option key={i}  value={JSON.stringify(`{"id":"${shot._id}", "number":"${shot.shotNumber}"}`)}>
+                  //   {shot.shotNumber}
+                  // </option>
+                ))}
+              </select>
 
-            {/* <input
+              {/* <input
               value={newBoard.shot}
               onChange={(e) => setNewBoard({ ...newBoard, forShot: e.target.value })}
               className="input"
@@ -184,65 +217,62 @@ const NewBoardForm = () => {
               placeholder={'Enter Shot Number'}
               disabled={false}
             /> */}
-          </div>
+            </div>
 
-          <div className="submit-section">
-            <div className="button-label">Banner Image</div>
-            <div className="button-flex">
-              <label
-                disabled={isLoading || imgPreview}
-                // className={isLoading || imgPreview ? 'disabledBtn' : 'btn'}
-                htmlFor="uploader"
-                type="submit">
-                {imgPreview ? 'Preview' : 'Upload '}
-                <input
-                  type="file"
-                  accept="image"
-                  name="image"
-                  onChange={handleImg}
-                />
-              </label>
-              {/* <ButtonUpload
+            <div className="submit-section">
+              <div className="button-label">Board Image</div>
+              <div className="button-flex">
+                <label
+                  disabled={isLoading || imgPreview}
+                  // className={isLoading || imgPreview ? 'disabledBtn' : 'btn'}
+                  htmlFor="uploader"
+                  type="submit">
+                  {imgPreview ? 'Preview' : 'Upload '}
+                  <input
+                    type="file"
+                    accept="image"
+                    name="image"
+                    onChange={handleImg}
+                  />
+                </label>
+                {/* <ButtonUpload
                 color={'#3f3f3f'}
                 disabled={isLoading || imgPreview}
                 uploadType="image"
                 buttonName={imgPreview ? 'Preview' : 'Upload Banner Image'}
                 onChange={handleImg}
               /> */}
-            </div>
-            {imgPreview ? (
-              <div>
-                <div
-                  onClick={handleImageRemove}
-                  className="banner-preview-container">
-                  <img className="banner-preview" src={imgPreview} alt="" />
-                </div>
-                {/* <div className="banner-preview-container">
+              </div>
+              {imgPreview ? (
+                <div>
+                  <div
+                    onClick={handleImageRemove}
+                    className="banner-preview-container">
+                    <img className="banner-preview" src={imgPreview} alt="" />
+                  </div>
+                  {/* <div className="banner-preview-container">
                   <img className="banner-preview" src={image.Location} alt="" />
                 </div> */}
-              </div>
-            ) : (
-              <div className="description">
-                Think of this as the image you want to represent your dream. It
-                should have the characters and a setting you want to convey in
-                the story. The dimensions should stretch across the screen at
-                about 1200 x 600
-              </div>
-            )}
-            <div className="button-flex">
-              <button onClick={handleSubmit} disabled={isLoading}>
-                {isLoading ? '...saving' : 'Save and Upload'}
-              </button>
-              {/* <Button
+                </div>
+              ) : (
+                <div className="description">
+                  Upload jpegs of any size
+                </div>
+              )}
+              <div className="button-flex">
+                <button onClick={handleSubmit} disabled={isLoading}>
+                  {isLoading ? '...saving' : 'Save and Upload'}
+                </button>
+                {/* <Button
                 color={'#3f3f3f'}
                 disabled={isLoading}
                 buttonName={isLoading ? '...saving' : 'Save and Continue'}
                 onClick={handleSubmit}
               /> */}
+              </div>
             </div>
-          </div>
-        </FormCard>
-        }
+          </FormCard>
+        )}
       </div>
       <style jsx>{`
         #scene-video-delete {
@@ -360,7 +390,7 @@ const NewBoardForm = () => {
           margin: 20px 0;
         }
         .banner-preview {
-          height: 200px;
+          // height: 200px;
           width: 100%;
           object-fit: cover;
         }

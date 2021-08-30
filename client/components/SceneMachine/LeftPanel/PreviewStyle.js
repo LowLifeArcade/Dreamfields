@@ -1,13 +1,22 @@
 export const PreviewStyle = () => {
   return (
     <style jsx>{`
-      .img, .video {
+      .img {
+        width: 100%;
+        // aspect-ratio: 1.7777777777777777;
+        // max-height: 20rem;
+        cursor: pointer;
+        border-radius: 18px;
+        box-shadow: 0 0 5px rgba(240, 240, 240, 0.212), 0 0 7px rgba(240, 240, 240, 0.452), 0 0 13px rgba(233, 224, 194, 0.822), 0 0 1px, inset 0 0 15px rgba(238, 238, 238, 0.849);
+      }
+      .video {
         width: 100%;
         aspect-ratio: 1.7777777777777777;
         // max-height: 20rem;
         border-radius: 8px;
         box-shadow: 0 0 5px rgb(0, 0, 0), 0 0 7px, 0 0 8px, 0 0 1px, inset 0 0 10px rgba(63, 63, 63, 0.699);
       }
+
       .left-panel {
         padding: 10px;
         width: 40%;
@@ -26,8 +35,9 @@ export const PreviewStyle = () => {
       .viewer-media {
         position: relative;
         // max-height: 90%;
-        padding: 13px;
+        padding: 18px;
         // height: 100%;
+        // background: rgb(66, 66, 66);
         width: 100%;
 
         // max-height: 270px;

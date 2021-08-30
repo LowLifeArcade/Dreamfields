@@ -50,11 +50,7 @@ const sceneSchema = new Schema(
       },
     ],
     shotList: [],
-    boards: {
-      boardId: { type: ObjectId, ref: 'Board' },
-      boardName: String,
-      boardLocation: String,
-    },
+    boards: [],
     // shotList: [
     //   {
     //     shotId: { type: ObjectId, ref: 'Shot' },

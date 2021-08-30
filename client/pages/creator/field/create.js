@@ -12,7 +12,7 @@ import Resizer from 'react-image-file-resizer';
 import axios from 'axios';
 import router from 'next/router';
 import { production, frameRate, aspectRatio } from '../../../dataModels';
-import { ProjectContext } from '../../../contexts/SceneMachineProviders';
+import { ProjectContext, setProjectContext } from '../../../contexts/SceneMachineProviders';
 import { Context } from '../../../context';
 
 const fakeData = ['Love Story', 'Adventure', 'Comedy'];
@@ -80,6 +80,7 @@ const CreateField = () => {
   const [image, setImage] = useState({});
   const project = useContext(ProjectContext);
   const user = useContext(Context);
+  const dispatch = useContext(setProjectContext);
 
   useEffect(() => {
     let storageValues = window.localStorage.getItem('new-scene-form', values);
@@ -251,10 +252,13 @@ const CreateField = () => {
         image,
       });
       // toast.success('Awesome! Now we can start adding scenes to your field.');
-      console.log('success');
-      setTimeout(() => {
-        router.push('/creator');
-      }, 2000);
+      console.log('success', data);
+      await dispatch(['LOAD_PROJECT', {data} ]);
+      // data.ok && window.location.reload();
+      // setTimeout(() => {
+         data && router.push('/edit/creator');
+        // data.ok && router.push('/creator');
+      // }, 2000);
     } catch (err) {
       // toast.error(err.response.data);
       console.log(err.response.data);

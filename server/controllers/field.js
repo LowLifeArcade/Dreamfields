@@ -100,6 +100,40 @@ exports.create = async (req, res) => {
   }
 };
 
+exports.deleteField = async (req, res) => {
+  try {
+    const field = await Field.findByIdAndDelete(req.params.fieldId);
+    // TODO: delete all scenes
+    // const scenes = await Scene.find({ forProject: field.slug });
+    // scenes.forEach(async (scene) => {
+    //   await scene.remove();
+    // });
+    // const shots = await Shot.find({ forProject: field.slug });
+    // shots.forEach(async (shot) => {
+    //   await shot.remove();
+    // });
+    // TODO: delete all shots
+    res.json({ok: true});
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+exports.updateFieldItem = async (req, res) => {
+  console.log('FIELD UPDATE OBJECT: ',req.body)
+  const itemObject = req.body;
+  try {
+    const field = await Field.findByIdAndUpdate(
+      req.params.fieldId ,
+      { $set: itemObject },
+      { new: true }
+    );
+    res.json(field);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 exports.read = async (req, res) => {
   try {
     console.log('GET FIELD')

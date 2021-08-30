@@ -6,6 +6,8 @@ import { frameRate } from '../../../dataModels';
 import {
   DetailViewContext,
   ProjectContext,
+  SetShotsContext,
+  ShotsContext,
   ViewerContext,
 } from '../../../contexts/SceneMachineProviders';
 import { SetDetailViewContext } from '../../../contexts/SceneMachineProviders';
@@ -36,6 +38,7 @@ const NewShotForm = () => {
     shotAngle: shotAngle.normal,
     shotFocal: shotFocal.normal,
     forScene: '',
+    forProject: '',
     complexity: shotComplexity.medium,
     characters: [],
     setting: '',
@@ -49,10 +52,19 @@ const NewShotForm = () => {
   const setDetail = useContext(SetDetailViewContext);
   const detail = useContext(DetailViewContext);
   const viewer = useContext(ViewerContext); // all the scene data is in here
+  const shots = useContext(ShotsContext)
+  const getShots = useContext(SetShotsContext)
   console.log('viewer', viewer)
-  const shotNumbersData = viewer.shotList
-    ? [(viewer.shotList?.length + 1)]
+
+  let shotNumbersData = shots
+    ? [(shots?.length + 1)]
     : [1];
+
+    useEffect(() => {
+      shotNumbersData = shots 
+      ? [(shots?.length + 1)]
+      : [1];
+    }, [shots]);
   // const shotNumbersData = viewer.shotList
   //   ? [...viewer?.shotList?.map((shot) => shot.shotNumber), (viewer.shotList?.length + 1)]
   //   : [1];
@@ -64,7 +76,7 @@ const NewShotForm = () => {
   }, [detail]);
 
   useEffect(() => {
-    setState({ ...state, forScene: viewer._id, shotNumber: viewer.shotList.length + 1 });
+    setState({ ...state, forScene: viewer._id, forProject: viewer.forProject, shotNumber: viewer.shotList.length + 1 });
   }, [shotNumbers]);
 
   const addCharacter = (e) => {
@@ -135,8 +147,9 @@ const NewShotForm = () => {
       });
 
       console.log('Added Shot Succesfully', data.response);
+      await getShots(viewer._id)
       // redirect user to home page
-      setDetail('breakdown');
+      await setDetail('breakdown');
       window.onbeforeunload = function () {
         window.scrollTo(0, 0);
       };

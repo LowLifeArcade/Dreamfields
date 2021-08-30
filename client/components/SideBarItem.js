@@ -3,12 +3,11 @@ import { useContext, useEffect } from 'react';
 import { setProjectContext, ProjectContext } from '../contexts/SceneMachineProviders';
 import axios from 'axios';
 
-const SideBarItem = ({ index,slug, image, title, clicked, ...rest }) => {
+const SideBarItem = ({ index, slug, image, title, clicked, ...rest }) => {
   const dispatch = useContext(setProjectContext);
   const  project  = useContext(ProjectContext);
 
-
-  
+// load field when project is loaded
 
   // useEffect(() => {
   //   const loadFieldFromLocalStorage = async (slug) => {
@@ -97,6 +96,7 @@ const Style = () => {
     border-radius: 50%;
     width: 50px;
     height: 50px;
+    object-fit: cover;
     background-size: cover;
     
     transition: ease-in 0.1s;

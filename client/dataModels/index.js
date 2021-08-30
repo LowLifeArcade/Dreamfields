@@ -1,5 +1,5 @@
 export const machineView = {
-  view1: {name: 'Reels'},
+  view1: {name: 'Dream Field'},
   view2: {name: 'Acts'},
   view3: {name: 'Sequences'},
   view4: {name: 'Scenes'},

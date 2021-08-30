@@ -1,6 +1,7 @@
 import { useState, useContext, useEffect } from 'react';
 import SideBarItem from './SideBarItem';
 import SideBarItemAdd from './SideBarItemAdd';
+import { ProjectContext } from '../contexts/SceneMachineProviders';
 import axios from 'axios';
 import styles from '../styles/SideBar.module.css';
 
@@ -74,14 +75,15 @@ const initialFavorites = [
 ];
 
 const SideBar = ({ onLogoClick, showSideMenu }) => {
-  const [clicked, setClicked] = useState(false);
-  const [projects, setProjects] = useState(initialProjects);
-  const [favorites, setFavorites] = useState(initialFavorites);
+  // const [clicked, setClicked] = useState(false);
+  // const [projects, setProjects] = useState(initialProjects);
+  // const [favorites, setFavorites] = useState(initialFavorites);
   const [fields, setFields] = useState([]);
+  const project = useContext(ProjectContext)
 
   useEffect(() => {
     loadFields();
-  }, []);
+  }, [project]);
 
   const loadFields = async () => {
     const { data } = await axios.get('/api/creator-fields');

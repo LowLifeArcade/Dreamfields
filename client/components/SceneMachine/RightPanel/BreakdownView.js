@@ -1,9 +1,9 @@
 import { useEffect, useContext, useState, useRef } from 'react';
-import { initialBreakdown } from '../../../initialStates';
 import {
   DetailViewContext,
   MachineStateDispatchContext,
   SetDetailViewContext,
+  SetShotsContext,
 } from '../../../contexts/SceneMachineProviders';
 import {
   detailView,
@@ -30,6 +30,7 @@ const RightPanelBreakdownView = ({
   const [isEditing, setIsEditing] = useState(false);
   const [error, setError] = useState(null);
   const [deleteShot, setDeleteShot] = useState();
+  const getShots = useContext(SetShotsContext)
 
   const shotKeys = {
     shotnumber: 'shot number',
@@ -47,34 +48,14 @@ const RightPanelBreakdownView = ({
     breakdown: '',
     contributors: [],
   };
-  // const descRef = useRef();
-
-  // useEffect(() => {
-  //   if (isEditing == 'sceneName') {
-  //     titleRef.current.focus();
-  //   }
-  //   if (isEditing == 'description') {
-  //     descRef.current.focus();
-  //   }
-  //   if (isEditing == 'setting') {
-  //     settingRef.current.focus();
-  //   }
-  //   if (isEditing == 'characters') {
-  //     charRef.current.focus();
-  //   }
-  // }, [isEditing]);
-
-  useEffect(() => {
-    console.log('GLOBAL SHOT ITEM: ', shotItem);
-  });
 
   useEffect(() => {
     setActiveShot('');
   }, [viewer]);
 
-  const getCurrentShots = async () => {
+  const getCurrentShots = async (sceneId) => {
     try {
-      const shots = await axios.get(`/api/shots/${viewer._id}`);
+      const shots = await axios.get(`/api/shots/${sceneId}`);
       console.log('SHOTS: ', shots.data);
       setShots(shots.data);
     } catch (error) {
@@ -83,7 +64,7 @@ const RightPanelBreakdownView = ({
   };
 
   useEffect(() => {
-    getCurrentShots();
+    getCurrentShots(viewer._id);
     console.log('SHOT ITEM UF ', shotItem);
   }, [shotItem, viewer]);
 
@@ -108,7 +89,9 @@ const RightPanelBreakdownView = ({
     try {
       const shot = await axios.delete(`/api/shot/${viewer._id}/${e.target.id}`);
       console.log('SHOTS: ', shot.data);
-      getCurrentShots();
+      await getCurrentShots(viewer._id);
+      // await setShots(shot.data)
+      await getShots(viewer._id);
     } catch (error) {
       console.log(error);
     }
@@ -212,7 +195,6 @@ const RightPanelBreakdownView = ({
   };
 
   const handleAddBreakdown = () => {
-    // dispatch(['ADD_BREAKDOWN']);
     setDetail(detailView.newShot);
   };
 

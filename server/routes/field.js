@@ -30,6 +30,8 @@ const {
   uploadVideo,
   uploadScript,
   removeScript,
+  updateFieldItem, 
+  deleteField
 } = require('../controllers/field');
 
 // image
@@ -43,6 +45,11 @@ router.post('/field/remove-script', removeScript);
 // fields
 router.post('/field', requireSignin, isCreator, create);
 router.get('/field/:slug', read);
+// const { data } = await axios.put(`/api/field/${fieldId}`, { [key]: value });
+router.put('/field/:fieldId', requireSignin, isCreator, updateFieldItem);
+// const {data} = await axios.delete(`/api/field/${project._id}`)
+router.delete('/field/:fieldId', requireSignin, isCreator, deleteField);
+
 // router.post('/field/video-upload', requireSignin, formidable(), uploadVideo);
 
 // field scenes

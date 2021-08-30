@@ -16,25 +16,24 @@ import { machineView } from '../../../dataModels';
 import axios from 'axios';
 import { detailView } from '../../../dataModels';
 
-
 const App = () => {
   const [dragId, setDragId] = useState();
   const [boxes, setBoxes] = useState([
     {
-      id: "Box-1",
-      color: "red",
-      order: 1
+      id: 'Box-1',
+      color: 'red',
+      order: 1,
     },
     {
-      id: "Box-2",
-      color: "green",
-      order: 2
+      id: 'Box-2',
+      color: 'green',
+      order: 2,
     },
     {
-      id: "Box-3",
-      color: "blue",
-      order: 3
-    }
+      id: 'Box-3',
+      color: 'blue',
+      order: 3,
+    },
   ]);
 
   const handleDrag = (e) => {
@@ -72,15 +71,13 @@ const App = () => {
             id={box.id}
             onDragOver={(e) => e.preventDefault()}
             onDragStart={handleDrag}
-            onDrop={handleDrop}
-          >
+            onDrop={handleDrop}>
             {box.id}
           </div>
         ))}
     </div>
   );
 };
-
 
 const SceneMachineStripArea = () => {
   const setPreview = useContext(PreviewProviderContext);
@@ -98,13 +95,14 @@ const SceneMachineStripArea = () => {
   //   handleLoadScenes()
   // }, [viewer]);
 
-
   // TODO: might need to fix this beahvior. It loads the scene and defaults to the overview, but I might not want that.
   useEffect(() => {
     project.scenes && project.scenes[0]
       ? loadViewerScene(project.scenes[0])
       : setViewer(initialViewerState);
-    setDetail(project.scenes?.length === 0 ? detailView.newScene : detailView.overview);
+    setDetail(
+      project.scenes?.length === 0 ? detailView.newScene : detailView.overview
+    );
     console.log('PROJECT IN STRIP AREA', project.scenes && project);
   }, [project]);
 
@@ -125,8 +123,11 @@ const SceneMachineStripArea = () => {
       const stripScenes = await scenes.map((scene) => ({
         id: scene._id,
         sceneName: scene.sceneName,
-        stripImage: scene.stripImage,
+        image: scene.image?.smallImage.Location,
+        // stripImage: scene.stripImage,
       }));
+
+      console.log('STRIP SCENES: ', stripScenes);
 
       await setScenes(stripScenes);
     };
@@ -147,9 +148,9 @@ const SceneMachineStripArea = () => {
     // TODO: find way to set scroll to top of scene overview display
     setPreview((preview) => ({
       ...preview,
-      image: scene.stripImage,
+      image: scene.image,
       sceneName: scene.sceneName,
-      type: scene.stripImage ? 'image' : 'default',
+      type: scene.image ? 'image' : 'default',
       panel: 'Cover',
       id: scene.id,
     }));
@@ -172,7 +173,6 @@ const SceneMachineStripArea = () => {
     setDetail('new scene');
   };
 
-  
   return (
     <>
       <StripStyle />
@@ -191,14 +191,14 @@ const SceneMachineStripArea = () => {
                         className={`empty-strip ${
                           scene.id === viewer?._id && ' active'
                         }`}>
-                        {scene.stripImage ? (
+                        {scene.image ? (
                           <img
                             style={{ opacity: loaded ? 1 : 0 }}
                             className={
                               'scene-strip-img ' + scene.id === viewer._id &&
                               ' active'
                             }
-                            src={scene.stripImage}
+                            src={scene.image}
                             alt="scene-thumbnail"
                             onLoad={() => setLoaded(true)}
                           />

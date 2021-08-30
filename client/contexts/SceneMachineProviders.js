@@ -49,9 +49,7 @@ const useStateAndLocalStorage = (key, initState) => {
 //   return [state, dispatch];
 // };
 
-
-
-// ------------------------- 
+// -------------------------
 // PROVIDERS
 // -------------------------
 
@@ -127,6 +125,9 @@ export const ControlPanelButtonsProvider = ({ children }) => {
     'controlbuttons',
     initialButtonState
   );
+  useEffect(() => {
+    console.log('BUTTON CTX: ', buttons);
+  }, [buttons]);
   return (
     <>
       <ControlPanelButtonsContext.Provider value={buttons}>
@@ -151,7 +152,7 @@ export const PreviewStateContext = createContext();
  * - sceneName: string,
  * - type: string, // enum ["image", "video"]
  * - }
- * 
+ *
  */
 export const PreviewProviderContext = createContext();
 export const PreviewContextProvider = ({ children }) => {
@@ -171,7 +172,13 @@ export const PreviewContextProvider = ({ children }) => {
   );
 };
 
-// sets the detail window (right panel) up with content. We need this to set up the preview window otherwise it just shows the thumbnail for the scene selected in the strip editor
+/**
+ * sets the detail window (right panel) content.
+ * We need this to set up the preview window
+ * otherwise it just shows the thumbnail for the
+ * scene selected in the strip editor
+ *
+ */
 export const ViewerContext = createContext();
 export const SetViewerContext = createContext();
 export const ViewerProvider = ({ children }) => {
@@ -180,8 +187,8 @@ export const ViewerProvider = ({ children }) => {
     initialViewerState
   );
   useEffect(() => {
-    console.log('VIEWER PROVIDER', viewer)
-   });
+    console.log('VIEWER PROVIDER', viewer);
+  });
   return (
     <>
       <ViewerContext.Provider value={viewer}>
@@ -193,6 +200,35 @@ export const ViewerProvider = ({ children }) => {
   );
 };
 
+export const ShotsContext = createContext();
+export const SetShotsContext = createContext();
+export const ShotsProvider = ({ children }) => {
+  const [shots, setShots] = useStateAndLocalStorage('shots', { shots: [] });
+
+  const getShots = async (sceneId) => {
+    try {
+      const shots = await axios.get(`/api/shots/${sceneId}`);
+      setShots(shots.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    console.log('SHOTS: ', shots);
+  });
+
+  return (
+    <>
+      <ShotsContext.Provider value={shots}>
+        <SetShotsContext.Provider value={getShots}>
+          {children}
+        </SetShotsContext.Provider>
+      </ShotsContext.Provider>
+    </>
+  );
+};
+
 export const DetailViewContext = createContext();
 export const SetDetailViewContext = createContext();
 export const DetailViewProvider = ({ children }) => {
@@ -200,7 +236,7 @@ export const DetailViewProvider = ({ children }) => {
     'detail',
     detailView.overview
   );
-  
+
   return (
     <>
       <DetailViewContext.Provider value={detail}>
@@ -221,16 +257,16 @@ export const BoardsProvider = ({ children }) => {
   );
 
   /**
-   * 
+   *
    * @param {string} sceneId use viewer._id to get boards for a scene
    */
   const getBoards = async (sceneId) => {
-    console.log('GET BOARDS CONTEXT: ')
-    const {data} = await axios.get(`/api/boards/${sceneId}`);
-    await console.log('BOARDS: ', data)
-    await setBoards(data)
-  }
-  
+    console.log('GET BOARDS CONTEXT: ');
+    const { data } = await axios.get(`/api/boards/${sceneId}`);
+    await console.log('BOARDS: ', data);
+    await setBoards(data);
+  };
+
   return (
     <>
       <BoardsContext.Provider value={boards}>
@@ -278,7 +314,7 @@ export const MachineStateContext = ({ children }) => {
     switch (type) {
       // case "ADD_BREAKDOWN": {
       //   // console.log('machine state: add breakdown')
-        
+
       // }
 
       case 'FETCH_SCENES': {
@@ -425,31 +461,20 @@ export const setProjectContext = createContext();
 
 export const ProjectProvider = ({ children }) => {
 
-
-  // const fetchData = async (slug) => {
-  //   const { data } = await axios.get(`/api/field/${slug}`);
-  //   console.log(data);
-  //   return { ...data };
-  // };
-
-  // const loadViewerScene = async (id) => {
-  //   const { data } = await axios.get(`/api/scene/${id}`);
-  //   await setViewer(data);
-  //  }
+  const loadField = async (slug) => {
+    const { data } = await axios.get(`/api/field/${slug}`);
+    projectDispatch(['LOAD_PROJECT', {data, slug}])
+    localStorage.setItem('projectslug', JSON.stringify(slug));
+  };
 
   const initialProject = {};
-
   const projectReducer = (state, [type, payload]) => {
     switch (type) {
-      /**payload should be slug */
-      // case 'FETCH_PROJECT':
-      //   // localStorage.setItem('project', JSON.stringify(payload));
-      //   return fetchData(payload);
-        
+      // loads project into state from payload given
       case 'LOAD_PROJECT':
         return { ...payload.data };
-      // case 'FETCH_SCENE':
-      //   loadViewerScene(payload);
+      case 'LOAD_SLUG': 
+        return loadField(payload.slug);
       default:
         state;
     }
@@ -460,25 +485,20 @@ export const ProjectProvider = ({ children }) => {
     initialProject
   );
 
+  // only for loading from localStorage when the page is refreshed or loaded
   const loadFieldFromLocalStorage = async (slug) => {
     const { data } = await axios.get(`/api/field/${slug}`);
     await console.log('field from provider', data);
-    await projectDispatch(['LOAD_PROJECT', {data, slug}])
+    await projectDispatch(['LOAD_PROJECT', { data, slug }]);
   };
-  useEffect(() => {
-   const slug = localStorage.getItem('projectslug');
-   if (slug) {
-    loadFieldFromLocalStorage(JSON.parse(slug));
-   }
-  }, []);
 
-  
-  // const loadField = async () => {
-  //   const { data } = await axios.get(`/api/field/${slug}`);
-  //   // setField(data);
-  //   dispatch(['LOAD_PROJECT', data])
-  //   localStorage.setItem('projectslug', JSON.stringify(slug));
-  // };
+  // loading project from local storage if it exists
+  useEffect(() => {
+    const slug = localStorage.getItem('projectslug');
+    if (slug) {
+      loadFieldFromLocalStorage(JSON.parse(slug));
+    }
+  }, []);
 
   return (
     <>

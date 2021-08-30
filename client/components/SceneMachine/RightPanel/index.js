@@ -10,6 +10,11 @@ import {
   DetailViewContext,
   SetDetailViewContext,
   ProjectContext,
+  BoardsContext,
+  SetBoardsContext,
+  ShotsContext,
+  SetShotsContext,
+
 } from '../../../contexts/SceneMachineProviders';
 import { Context } from '../../../context';
 import { SceneMachineRightPanelStyle } from './SceneMachineRightPanelStyle';
@@ -24,10 +29,12 @@ import RightPanelFrame from './PanelFrame';
 import VideoView from './VideoView';
 import TransportControls from './TransportControls';
 import { detailView as view, bgPresets } from '../../../dataModels';
+import axios from 'axios';
 
 const SceneMachineRightPanel = () => {
   const userContext = useContext(Context);
   const [activeShot, setActiveShot] = useState('');
+  const [scenes, setScenes] = useState();
   const detail = useContext(DetailViewContext);
   const setDetail = useContext(SetDetailViewContext);
   const [background, setBackground] = useState(bgPresets.overview);
@@ -35,6 +42,13 @@ const SceneMachineRightPanel = () => {
   const showModal = useContext(ModalContext);
   const setShowModal = useContext(SetModalContext);
   const preview = useContext(PreviewStateContext);
+  const boards = useContext(BoardsContext);
+  const getBoards = useContext(SetBoardsContext);
+  const shots = useContext(ShotsContext);
+  const getShots = useContext(SetShotsContext);
+  const project = useContext(ProjectContext);
+
+  
   /**
    * `preview` = {
    * - name: string,
@@ -46,12 +60,11 @@ const SceneMachineRightPanel = () => {
    * - sceneName: string,
    * - type: string, // enum ["image", "video"]
    * - }
-   * 
+   *
    */
   const setPreview = useContext(PreviewProviderContext);
   const dispatch = useContext(MachineStateDispatchContext);
   const state = useContext(MachineStateStateContext);
-  const project = useContext(ProjectContext);
 
   // useEffect(() => {
   //  console.log('PREVIEW IN RIGHT PANEL', preview)
@@ -64,7 +77,7 @@ const SceneMachineRightPanel = () => {
   // shotNumber: "9",
   // type: "video",
   // }
-  
+
   // console.log('viewer in right panel',viewer)
   // useEffect(() => {
   //   setDetail(view.overview);
@@ -74,25 +87,68 @@ const SceneMachineRightPanel = () => {
   // handles backgrounds
   useLayoutEffect(() => {
     switch (detail) {
-      case 'overview':
+      case view.overview:
         setBackground(bgPresets.overview);
         break;
-      case 'script':
+      case view.script:
         setBackground(bgPresets.script);
         break;
-      case 'breakdown':
+      case view.breakdown:
+        if (shots.length === 0) setDetail(view.newShot);
         setBackground(bgPresets.breakdown);
         break;
-      case 'boards':
+      case view.boards:
+        // if(boards.length === 0 && shots.length === 0) setDetail(view.breakdown)
+        if (boards.length === 0) setDetail(view.addBoard);
         setBackground(bgPresets.boards);
         break;
-      case 'video':
+      case view.video:
         setBackground(bgPresets.video);
         break;
+      case view.addBoard:
+        setBackground(bgPresets.overview);
+        break;
+      // case view.addBoard:
+      //   if (shots.length === 0) setDetail(view.newShot);
+      //   break;
       default:
         break;
     }
   }, [detail]);
+
+  // useEffect(() => {
+  //   if (detail === view.boards && boards.length === 0) setDetail(view.addBoard);
+  // }, [boards]);
+
+  useEffect(() => {
+   console.log('shots in right panel', project)
+  });
+  
+
+  const getScenes = async () => {
+    const { data } = await axios.get(`/api/field/${project._id}/scenes`);
+    const scenes = await [...data];
+    setScenes(scenes);
+  };
+
+  useEffect(() => {
+    getScenes()
+    // viewer.scenes?.length != 0 && setDetail(view.overview);
+    viewer._id && getShots(viewer._id);
+    viewer._id && getBoards(viewer._id);
+  }, [viewer]);
+
+  useEffect(() => {
+    setPreview({
+      image: project.image?.Location,
+      type: 'image'
+    })
+  }, [project])
+
+  useEffect(() => {
+    scenes?.length != 0 && setDetail(view.overview);
+    scenes?.length === 0 && setDetail(view.newScene);
+  }, [scenes]);
 
   // useEffect(() => {
   //   preview.sceneName === 'New Scene' && setDetail(view.newScene);

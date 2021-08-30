@@ -1,7 +1,12 @@
-import { useState, useContext } from "react";
-import { ControlPanelButtonsContext, ProjectContext } from "../../../contexts/SceneMachineProviders";
-import TitleButtons from "./TitleButtons";
-import { machineView } from "../../../dataModels";
+import { useState, useContext } from 'react';
+import {
+  ControlPanelButtonsContext,
+  ProjectContext,
+  setProjectContext,
+} from '../../../contexts/SceneMachineProviders';
+import TitleButtons from './TitleButtons';
+import { machineView } from '../../../dataModels';
+import axios from 'axios';
 
 const SceneMachineTitle = () => {
   // TODO: if scene order changes make share available.
@@ -12,9 +17,10 @@ const SceneMachineTitle = () => {
   };
   const [sceneEdit, setSceneEdit] = useState(initialSceneEditState);
   const buttons = useContext(ControlPanelButtonsContext);
-  const field = useContext(ProjectContext)
+  const field = useContext(ProjectContext);
+  const dispatch = useContext(setProjectContext);
+  // const [isEditing, setIsEditing] = useState(false);
 
-  
   const SceneMachineTitleStyle = () => {
     return (
       <style jsx>{`
@@ -27,22 +33,23 @@ const SceneMachineTitle = () => {
           margin-bottom: 6px;
           margin-top: 5px;
         }
-        .scene-machine > div > h1 {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: rgb(107, 105, 105);
-          box-shadow: inset 0 0 15px rgb(14, 13, 12),
-            inset 0 0 15px rgb(39, 38, 31), inset 0 0 30px rgb(55, 55, 75),
-            inset 0 0 20px rgb(55, 55, 75);
-          background: rgb(247, 229, 229);
-          font-size: 1.2rem;
-          padding: 6px 30px;
-          border-radius: 10px;
-          box-shadow: 0 0px 10px rgba(95, 98, 104, 0.4),
-            0 0px 10px rgba(200, 200, 256, 0.1), 0 0 10px rgba(200, 180, 0, 0.2),
-            inset 0 0 10px, inset 0 0 3px, inset 0 0 1px, inset 0 0 2px;
-        }
+        // .scene-machine > div > span > h1 {
+        //   cursor: pointer;
+        //   display: flex;
+        //   align-items: center;
+        //   justify-content: center;
+        //   color: rgb(107, 105, 105);
+        //   box-shadow: inset 0 0 15px rgb(14, 13, 12),
+        //     inset 0 0 15px rgb(39, 38, 31), inset 0 0 30px rgb(55, 55, 75),
+        //     inset 0 0 20px rgb(55, 55, 75);
+        //   background: rgb(247, 229, 229);
+        //   font-size: 1.2rem;
+        //   padding: 6px 30px;
+        //   border-radius: 10px;
+        //   box-shadow: 0 0px 10px rgba(95, 98, 104, 0.4),
+        //     0 0px 10px rgba(200, 200, 256, 0.1), 0 0 10px rgba(200, 180, 0, 0.2),
+        //     inset 0 0 10px, inset 0 0 3px, inset 0 0 1px, inset 0 0 2px;
+        // }
         .title-buttons-left {
           display: flex;
           align-items: flex-start;
@@ -54,6 +61,9 @@ const SceneMachineTitle = () => {
           align-items: center;
           justify-content: center;
         }
+        // .title-input {
+        //   padding: 5px 5px;
+        // }
         // .btn-ctrl {
         //   width: 40px;
         //   height: 40px;
@@ -117,6 +127,78 @@ const SceneMachineTitle = () => {
       `}</style>
     );
   };
+
+  const Title = ({ children }) => {
+    const [isEditing, setIsEditing] = useState(false);
+    const [title, setTitle] = useState(field.name);
+
+    const changeFieldItem = async (key, value, fieldId) => {
+      const { data } = await axios.put(`/api/field/${fieldId}`, {
+        [key]: value,
+      });
+      console.log('FIELD CHANGED: ', data);
+      // setField(data);
+      dispatch(['LOAD_PROJECT', {data, fieldId}])
+    };
+
+    const handleNameChange = (e) => {
+      e.preventDefault();
+      console.log('EDIT NAME: ');
+      changeFieldItem(e.target.id, title, field._id);
+      setIsEditing(false);
+    };
+    const handleNameChangeEnter = (e) => {
+      if (e.keyCode === 13) {
+      e.preventDefault();
+      console.log('EDIT NAME: ');
+      changeFieldItem(e.target.id, title, field._id);
+      setIsEditing(false);
+      }
+    };
+
+    return (
+      <>
+        <span onClick={() => setIsEditing(true)}>
+          {isEditing ? (
+            <input
+              value={title}
+              id="name"
+              className="title-input"
+              type="text"
+              onChange={(e) => setTitle(e.target.value)}
+              onBlur={handleNameChange}
+              onKeyDown={handleNameChangeEnter}
+            />
+          ) : (
+            <h1 className="scene-machine-title">{children}</h1>
+          )}
+        </span>
+        <style jsx>{`
+          .title-input {
+            padding: 10px;
+          }
+          .scene-machine-title {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgb(107, 105, 105);
+            box-shadow: inset 0 0 15px rgb(14, 13, 12),
+              inset 0 0 15px rgb(39, 38, 31), inset 0 0 30px rgb(55, 55, 75),
+              inset 0 0 20px rgb(55, 55, 75);
+            background: rgb(247, 229, 229);
+            font-size: 1.2rem;
+            padding: 6px 30px;
+            border-radius: 10px;
+            box-shadow: 0 0px 10px rgba(95, 98, 104, 0.4),
+              0 0px 10px rgba(200, 200, 256, 0.1),
+              0 0 10px rgba(200, 180, 0, 0.2), inset 0 0 10px, inset 0 0 3px,
+              inset 0 0 1px, inset 0 0 2px;
+          }
+        `}</style>
+      </>
+    );
+  };
   return (
     <>
       <SceneMachineTitleStyle />
@@ -126,7 +208,12 @@ const SceneMachineTitle = () => {
         </div>
         {/* <h1>{buttons.machine === 'scene' ? 'Scene' : 'Asset'} Machine</h1> */}
         {/* <h1>{`{ ${field.name} }`}</h1> */}
-        <h1>{field.name}</h1>
+        {/* <span onClick={() => setIsEditing(true)}>
+          {isEditing ? (
+          <input className="title-input" type="text" onBlur={()=> setIsEditing(false)} />
+          ): <h1>{field.name}</h1>}
+        </span> */}
+        <Title>{field.name}</Title>
         <div className="title-buttons-right">
           {false && (
             <>
@@ -138,39 +225,43 @@ const SceneMachineTitle = () => {
               </div>
             </>
           )}
-          {buttons.display === machineView.view1.name && <>
-          <div className="btn-mini">
-            <i className="fas fa-trash-alt"></i>
-          </div>
-          <div className="btn-mini">
-            <i class="fas fa-film"></i>
-          </div>
-          {true && (
-            <div className="btn-mini">
-              <i class="far fa-share-square"></i>
-            </div>
+          {buttons.display === machineView.view1.name && (
+            <>
+              <div className="btn-mini">
+                <i className="fas fa-trash-alt"></i>
+              </div>
+              <div className="btn-mini">
+                <i class="fas fa-film"></i>
+              </div>
+              {true && (
+                <div className="btn-mini">
+                  <i class="far fa-share-square"></i>
+                </div>
+              )}
+            </>
           )}
-          </>}
-          {buttons.display === machineView.view4.name && <>
-          <div className="btn-mini">
-            <i className="fas fa-trash-alt"></i>
-          </div>
-          <div className="btn-mini">
-            <i className="fas fa-cut"></i>
-          </div>
-          <div className="btn-mini">
-            <i class="far fa-clone"></i>
-          </div>
-          {true && (
-            <div className="btn-mini">
-              <i class="far fa-share-square"></i>
-            </div>
+          {buttons.display === machineView.view4.name && (
+            <>
+              <div className="btn-mini">
+                <i className="fas fa-trash-alt"></i>
+              </div>
+              <div className="btn-mini">
+                <i className="fas fa-cut"></i>
+              </div>
+              <div className="btn-mini">
+                <i class="far fa-clone"></i>
+              </div>
+              {true && (
+                <div className="btn-mini">
+                  <i class="far fa-share-square"></i>
+                </div>
+              )}
+            </>
           )}
-          </>}
         </div>
       </div>
     </>
   );
 };
 
-export default SceneMachineTitle
+export default SceneMachineTitle;
