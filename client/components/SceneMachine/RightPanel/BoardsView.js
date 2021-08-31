@@ -30,11 +30,9 @@ const RightPanelBoardsView = ({
 
   // reload viewer when detail view is changed
   useEffect(() => {
-    console.log('VIEWER ID', viewer._id);
     getBoards(viewer._id);
     console.log('BOARDS: ', boards);
   }, [viewer]);
-  console.log('ACTIVE SHOT: ', activeShot);
 
   // useEffect(() => {
   //   if (viewer.shotList.length === 0) setDetail(detailView.addShot)
@@ -88,7 +86,7 @@ const RightPanelBoardsView = ({
         <div>Layouts | Beat Boards | Scene Boards</div>
       </div>
       {
-        viewer.shotList?.length === 0 && (
+        boards?.length === 0 && (
           <div className="board-titles">
             <h3>Please add a breakdown first!</h3>
           </div>
@@ -101,7 +99,8 @@ const RightPanelBoardsView = ({
         // </section>
         //   </div>
       }
-      {viewer.shotList?.length > 0 && (
+      {boards.length > 0 && (
+      // {viewer.shotList?.length > 0 && (
         <>
           {' '}
           <div className="board-titles">Boards</div>

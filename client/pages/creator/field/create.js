@@ -12,7 +12,10 @@ import Resizer from 'react-image-file-resizer';
 import axios from 'axios';
 import router from 'next/router';
 import { production, frameRate, aspectRatio } from '../../../dataModels';
-import { ProjectContext, setProjectContext } from '../../../contexts/SceneMachineProviders';
+import {
+  ProjectContext,
+  setProjectContext,
+} from '../../../contexts/SceneMachineProviders';
 import { Context } from '../../../context';
 
 const fakeData = ['Love Story', 'Adventure', 'Comedy'];
@@ -140,7 +143,7 @@ const CreateField = () => {
     setValues({ ...values, loading: true });
 
     // resize image
-    Resizer.imageFileResizer(file, 720, 500, 'JPEG', 100, 0, async (uri) => {
+    Resizer.imageFileResizer(file, 2020, 1000, 'JPEG', 100, 0, async (uri) => {
       try {
         let { data } = await axios.post('/api/field/upload-image', {
           image: uri,
@@ -253,11 +256,11 @@ const CreateField = () => {
       });
       // toast.success('Awesome! Now we can start adding scenes to your field.');
       console.log('success', data);
-      await dispatch(['LOAD_PROJECT', {data} ]);
+      await dispatch(['LOAD_PROJECT', { data }]);
       // data.ok && window.location.reload();
       // setTimeout(() => {
-         data && router.push('/edit/creator');
-        // data.ok && router.push('/creator');
+      await data && router.push('/edit/creator');
+      // data.ok && router.push('/creator');
       // }, 2000);
     } catch (err) {
       // toast.error(err.response.data);

@@ -9,6 +9,9 @@ import {
   ControlPanelButtonsContext,
   ProjectContext,
   SetDetailViewContext,
+  ControlSetPanelButtonsContext,
+  ProjectScenesContext,
+  SetProjectScenesContext
 } from '../../../contexts/SceneMachineProviders';
 import StripStyle from './StripAreaStyle';
 import { initialViewerState } from '../../../initialStates';
@@ -79,7 +82,7 @@ const App = () => {
   );
 };
 
-const SceneMachineStripArea = () => {
+const SceneMachineStripArea = ({scene}) => {
   const setPreview = useContext(PreviewProviderContext);
   const [scenes, setScenes] = useState(['']);
   const viewer = useContext(ViewerContext);
@@ -87,13 +90,36 @@ const SceneMachineStripArea = () => {
   const dispatch = useContext(MachineStateDispatchContext);
   const state = useContext(MachineStateStateContext);
   const buttons = useContext(ControlPanelButtonsContext);
+  const setButtons = useContext(ControlSetPanelButtonsContext);
   const [loaded, setLoaded] = useState(false);
   const project = useContext(ProjectContext);
   const setDetail = useContext(SetDetailViewContext);
+  const projectScenes = useContext(ProjectScenesContext)
+  const setProjectScenes = useContext(SetProjectScenesContext)
+ 
+  useEffect(() => {
+    if (projectScenes.length === []) return
+    const stripScenes = projectScenes.map((scene) => ({
+      _id: scene._id,
+      sceneName: scene.sceneName,
+      image: scene.image?.smallImage?.Location,
+      // stripImage: scene.stripImage,
+    }));
 
-  // useEffect(() => {
-  //   handleLoadScenes()
-  // }, [viewer]);
+     setScenes(stripScenes);
+  }, [projectScenes]);
+
+  useEffect(() => {
+    if (scene === undefined) return
+    const stripScene = {
+      _id: scene._id,
+      sceneName: scene.sceneName,
+      image: scene.image?.smallImage?.Location,
+      // stripImage: scene.stripImage,
+    }
+    handleViewer(stripScene)
+    console.log('STRIP SCENE: ', scene)
+  }, [scene]);
 
   // TODO: might need to fix this beahvior. It loads the scene and defaults to the overview, but I might not want that.
   useEffect(() => {
@@ -105,6 +131,8 @@ const SceneMachineStripArea = () => {
     );
     console.log('PROJECT IN STRIP AREA', project.scenes && project);
   }, [project]);
+
+  console.log('SCENES: ', projectScenes)
 
   useEffect(() => {
     /**
@@ -121,9 +149,9 @@ const SceneMachineStripArea = () => {
       // console.log('SCENES IN STRIP AREA', scenes);
 
       const stripScenes = await scenes.map((scene) => ({
-        id: scene._id,
+        _id: scene._id,
         sceneName: scene.sceneName,
-        image: scene.image?.smallImage.Location,
+        image: scene.image?.smallImage?.Location,
         // stripImage: scene.stripImage,
       }));
 
@@ -143,8 +171,8 @@ const SceneMachineStripArea = () => {
     await setViewer(data);
   };
 
-  const handleViewer = (e, scene) => {
-    e.preventDefault();
+  const handleViewer = (scene) => {
+    // e.preventDefault();
     // TODO: find way to set scroll to top of scene overview display
     setPreview((preview) => ({
       ...preview,
@@ -152,10 +180,10 @@ const SceneMachineStripArea = () => {
       sceneName: scene.sceneName,
       type: scene.image ? 'image' : 'default',
       panel: 'Cover',
-      id: scene.id,
+      id: scene._id,
     }));
 
-    loadViewerScene(scene.id);
+    loadViewerScene(scene._id);
 
     dispatch(['RESET_VIEWER']); // not working yet
   };
@@ -163,6 +191,15 @@ const SceneMachineStripArea = () => {
   const handleNewScene = (e) => {
     e.preventDefault();
     // TODO: find way to set scroll to top of scene overview display
+    // buttons.display === machineView.view4.name
+    setButtons({
+      ...buttons,
+      display: machineView.view4.name,
+      button4: { active: true },
+      button1: { active: false },
+      button2: { active: false },
+      button3: { active: false },
+    });
     setPreview((preview) => ({
       ...preview,
       sceneName: 'New Scene',
@@ -184,18 +221,18 @@ const SceneMachineStripArea = () => {
                 scenes.map((scene, i) => (
                   <>
                     <div
-                      key={scene.id}
-                      onClick={(e) => handleViewer(e, scene)}
+                      key={scene._id}
+                      onClick={() => handleViewer(scene)}
                       className="scene-strip">
                       <div
                         className={`empty-strip ${
-                          scene.id === viewer?._id && ' active'
+                          scene._id === viewer?._id && ' active'
                         }`}>
                         {scene.image ? (
                           <img
                             style={{ opacity: loaded ? 1 : 0 }}
                             className={
-                              'scene-strip-img ' + scene.id === viewer._id &&
+                              'scene-strip-img ' + scene._id === viewer._id &&
                               ' active'
                             }
                             src={scene.image}
@@ -206,7 +243,7 @@ const SceneMachineStripArea = () => {
                           <img
                             style={{ opacity: loaded ? 1 : 0 }}
                             className={
-                              'scene-strip-img ' + scene.id === viewer?.id &&
+                              'scene-strip-img ' + scene._id === viewer?.id &&
                               ' active'
                             }
                             src={`https://picsum.photos/id/1${i}/400/200`}

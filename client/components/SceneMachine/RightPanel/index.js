@@ -31,7 +31,7 @@ import TransportControls from './TransportControls';
 import { detailView as view, bgPresets } from '../../../dataModels';
 import axios from 'axios';
 
-const SceneMachineRightPanel = () => {
+const SceneMachineRightPanel = ({setScene, scene}) => {
   const userContext = useContext(Context);
   const [activeShot, setActiveShot] = useState('');
   const [scenes, setScenes] = useState();
@@ -195,7 +195,7 @@ const SceneMachineRightPanel = () => {
         <div className="transport-overview">
           {/* <div className="transport-overview-frame"> */}
 
-          {detail === view.overview && <RightPanelOverview viewer={viewer} />}
+          {detail === view.overview && <RightPanelOverview setScene={setScene} scene={scene} viewer={viewer} />}
 
           {detail === view.script && (
             <RightPanelScriptView state={state} view={view} viewer={viewer} />
@@ -237,7 +237,7 @@ const SceneMachineRightPanel = () => {
           {detail === view.modelSheets && <div>model sheets</div>}
           {detail === view.backgrounds && <div>backgrounds</div>}
 
-          {detail === view.newScene && <NewSceneForm />}
+          {detail === view.newScene && <NewSceneForm setScene={setScene} />}
           {detail === view.newShot && <NewShotForm />}
           {detail === view.addBoard && <NewBoardForm />}
         </div>

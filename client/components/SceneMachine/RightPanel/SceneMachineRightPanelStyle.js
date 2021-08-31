@@ -72,6 +72,7 @@ export const SceneMachineRightPanelStyle = ({ background }) => {
         display: flex;
         flex-direction: column;
         align-items: center;
+        width: 100%;
       }
       .transport-description > h3 {
         margin-bottom: 20px;
@@ -81,10 +82,14 @@ export const SceneMachineRightPanelStyle = ({ background }) => {
       }
 
       .transport-description-detail {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         background: #fff;
         line-height: 1.8rem;
         // text-indent: 2rem;
         padding: 20px;
+        width: 100%;
         border: solid 1px;
       }
       .details-table {

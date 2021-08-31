@@ -248,6 +248,27 @@ export const DetailViewProvider = ({ children }) => {
   );
 };
 
+
+export const ProjectScenesContext = createContext();
+export const SetProjectScenesContext = createContext();
+export const ProjectScenesProvider = ({ children }) => {
+  const [scenes, setScenes] = useStateAndLocalStorage(
+    'project-scenes',
+    []
+  );
+
+  console.log('PROJ SCENES: ', scenes )
+  return (
+    <>
+      <ProjectScenesContext.Provider value={scenes}>
+        <SetProjectScenesContext.Provider value={setScenes}>
+          {children}
+        </SetProjectScenesContext.Provider>
+      </ProjectScenesContext.Provider>
+    </>
+  );
+};
+
 export const BoardsContext = createContext();
 export const SetBoardsContext = createContext();
 export const BoardsProvider = ({ children }) => {

@@ -17,6 +17,7 @@ import {
   shotAngle,
   shotFocal,
   shotFrame,
+  detailView,
   view,
 } from '../../../dataModels';
 
@@ -52,19 +53,15 @@ const NewShotForm = () => {
   const setDetail = useContext(SetDetailViewContext);
   const detail = useContext(DetailViewContext);
   const viewer = useContext(ViewerContext); // all the scene data is in here
-  const shots = useContext(ShotsContext)
-  const getShots = useContext(SetShotsContext)
-  console.log('viewer', viewer)
+  const shots = useContext(ShotsContext);
+  const getShots = useContext(SetShotsContext);
+  console.log('viewer', viewer);
 
-  let shotNumbersData = shots
-    ? [(shots?.length + 1)]
-    : [1];
+  let shotNumbersData = shots ? [shots?.length + 1] : [1];
 
-    useEffect(() => {
-      shotNumbersData = shots 
-      ? [(shots?.length + 1)]
-      : [1];
-    }, [shots]);
+  useEffect(() => {
+    shotNumbersData = shots ? [shots?.length + 1] : [1];
+  }, [shots]);
   // const shotNumbersData = viewer.shotList
   //   ? [...viewer?.shotList?.map((shot) => shot.shotNumber), (viewer.shotList?.length + 1)]
   //   : [1];
@@ -76,7 +73,12 @@ const NewShotForm = () => {
   }, [detail]);
 
   useEffect(() => {
-    setState({ ...state, forScene: viewer._id, forProject: viewer.forProject, shotNumber: viewer.shotList.length + 1 });
+    setState({
+      ...state,
+      forScene: viewer._id,
+      forProject: viewer.forProject,
+      shotNumber: viewer.shotList.length + 1,
+    });
   }, [shotNumbers]);
 
   const addCharacter = (e) => {
@@ -147,9 +149,12 @@ const NewShotForm = () => {
       });
 
       console.log('Added Shot Succesfully', data.response);
-      await getShots(viewer._id)
+      await getShots(viewer._id);
       // redirect user to home page
-      await setDetail('breakdown');
+      // setTimeout(() => {
+        setDetail(detailView.boards);
+      // }, 1000);
+
       window.onbeforeunload = function () {
         window.scrollTo(0, 0);
       };

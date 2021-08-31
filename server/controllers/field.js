@@ -108,12 +108,16 @@ exports.deleteField = async (req, res) => {
     // scenes.forEach(async (scene) => {
     //   await scene.remove();
     // });
+    const fields = await Field.find({creator: req.user._id})
+
+    const returnField = await fields[0] ? fields[0] : {}
+    
     // const shots = await Shot.find({ forProject: field.slug });
     // shots.forEach(async (shot) => {
     //   await shot.remove();
     // });
     // TODO: delete all shots
-    res.json({ok: true});
+    res.json(returnField);
   } catch (err) {
     console.log(err);
   }

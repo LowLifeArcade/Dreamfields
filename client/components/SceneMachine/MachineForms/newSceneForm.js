@@ -2,12 +2,12 @@ import { useState, useContext, useEffect } from 'react';
 import { initialNewSceneForm } from '../../../initialStates';
 import FormCard from '../../formlayout/FormCard';
 import axios from 'axios';
-import { frameRate, production, aspectRatio } from '../../../dataModels';
-import { ProjectContext } from '../../../contexts/SceneMachineProviders';
+import { frameRate, production, aspectRatio, detailView } from '../../../dataModels';
+import { ProjectContext, ProjectScenesContext, SetProjectScenesContext } from '../../../contexts/SceneMachineProviders';
 import { SetDetailViewContext } from '../../../contexts/SceneMachineProviders';
 import Resizer from 'react-image-file-resizer';
 
-const NewSceneForm = () => {
+const NewSceneForm = ({setScene}) => {
   const [state, setState] = useState({
     // id: '',
     sceneName: '', // done
@@ -18,6 +18,7 @@ const NewSceneForm = () => {
       script: ``,
       rev: 1,
     },
+    image: '', // done
     mainImage: '',
     stripImage: '',
     forProject: '', // use ObjectId
@@ -38,6 +39,8 @@ const NewSceneForm = () => {
   const [progress, setProgress] = useState(0);
   const project = useContext(ProjectContext);
   const setDetail = useContext(SetDetailViewContext);
+  const projectScenes = useContext(ProjectScenesContext)
+  const setProjectScenes = useContext(SetProjectScenesContext)
   const [newCharacter, setNewCharacter] = useState();
   const [imgPreview, setImgPreview] = useState();
   const [isLoading, setIsLoading] = useState(false);
@@ -220,14 +223,16 @@ const NewSceneForm = () => {
   const handleAddScene = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post(`/api/create-scene`, {
+      const {data} = await axios.post(`/api/create-scene`, {
         ...state,
       });
-
-      console.log('Added Scene Succesfully', data.response);
       // redirect user to home page
-      setDetail('overview');
-      window.location.reload();
+      console.log('CREATE SCENE SUCCESS: ', {data})
+      setProjectScenes(data.scenes)
+      setScene(data.newScene)
+      setDetail(detailView.overview);
+      // setDetail(detailView.overview);
+      // window.location.reload();
     } catch (err) {
       console.log(err.response.data);
     }
@@ -674,11 +679,11 @@ const NewSceneForm = () => {
               </div>
             </>
           )}
-          {loading && <>Upload: {progress} %</>}
+          {/* {isLoading && <>Upload: {progress} %</>} */}
           <div id="scene-submit" className="section">
             <section>
               <button
-                disabled={loading}
+                disabled={isLoading}
                 className="submit-btn"
                 onClick={handleAddScene}>
                 Create Scene

@@ -1,4 +1,4 @@
-import { useEffect, useContext } from 'react';
+import { useEffect, useContext, useState } from 'react';
 // /@ts-check
 import Spinner from './Spinner';
 import SceneMachineTitle from './TitleArea';
@@ -24,9 +24,11 @@ import {
   DetailViewProvider,
   BoardsProvider,
   ProjectProvider,
+  ProjectScenesProvider,
   ShotsProvider,
   ControlPanelButtonsContext,
   ProjectContext,
+  setProjectContext,
 } from '../../contexts/SceneMachineProviders';
 
 /**
@@ -46,9 +48,9 @@ const Providers = ({ children }) => {
                   <ControlPanelButtonsProvider>
                     <DetailViewProvider>
                       <ShotsProvider>
-                        {/* <ProjectProvider> */}
-                        {children}
-                        {/* </ProjectProvider> */}
+                        <ProjectScenesProvider>
+                          {children}
+                        </ProjectScenesProvider>
                       </ShotsProvider>
                     </DetailViewProvider>
                   </ControlPanelButtonsProvider>
@@ -64,58 +66,81 @@ const Providers = ({ children }) => {
 
 const FieldOverview = () => {
   const project = useContext(ProjectContext);
+  const dispatch = useContext(setProjectContext);
+  const [deleteField, setDeleteField] = useState();
 
-  console.log('project', project);
+  const handleDeleteField = async () => {
+    setDeleteField('')
+    const { data } = await axios.delete(`/api/field/${project._id}`);
+    const slug = data.slug;
+    dispatch(['LOAD_PROJECT', { data, slug }]);
+  };
 
-const handleDeleteField = async () => {
-  // axios delete field
-  const {data} = await axios.delete(`/api/field/${project._id}`)
-
-  console.log('DELETED FIELD', data)
-  window.location.reload();
-  // const slug = data.slug
-  // res should give me last project to put in project context
-  // await projectDispatch(['LOAD_PROJECT', {data, slug}])
-
-} 
-  
+  // console.log('PROJECT FIELD OVERVIEW: ', Object.keys(project).length === 0)
   return (
     <>
       {/* <SceneMachineRightPanel /> */}
       <div className="page">
+        <div>
+          {project.name}
+        </div>
         {/* <h3>{machineView.view1.name}</h3> */}
-        <pre>{JSON.stringify(project, null, 4)}</pre>
+        {/* <pre>{JSON.stringify(project, null, 4)}</pre> */}
 
-        <label htmlFor="delete-button">Delete Field</label>
-        <button onClick={handleDeleteField} >Delete Field</button>
+        {Object.keys(project).length !== 0 && <div className="delete-field-section">
+          <label htmlFor="delete">Type 'delete field' to delete</label>
+          <input
+            type="text"
+            value={deleteField}
+            onChange={(e) => setDeleteField(e.target.value)}
+          />
+          <button
+            disabled={deleteField != 'delete field'}
+            onClick={handleDeleteField}>
+            Delete Field
+          </button>
+        </div>}
+
+        {/* <label htmlFor="delete-button">Delete Field</label> */}
+        {/* <button onClick={handleDeleteField} >Delete Field</button> */}
       </div>
-        
-        <style jsx>{`
-          button {
-            padding: 10px;
-          }
-          label {
-            padding: 20px;
-          }
-          .page {
-            // background: rgb(133, 133, 133);
-            margin: 20px;
-            background: #eee;
-            color: #1d1d1d;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            //justify-content: center;
-            flex-direction: column;
-          }
-        `}</style>
+
+      <style jsx>{`
+        button {
+          padding: 10px;
+          cursor: pointer;
+        }
+        input {
+          padding: 10px;
+        }
+        label {
+          padding: 20px;
+        }
+
+        .delete-field-section {
+          display: flex;
+          flex-direction: column;
+        }
+        .page {
+          // background: rgb(133, 133, 133);
+          margin: 20px;
+          background: #eee;
+          color: #1d1d1d;
+          width: 100%;
+          display: flex;
+          align-items: center;
+          //justify-content: center;
+          flex-direction: column;
+        }
+      `}</style>
     </>
   );
 };
 
 const SceneMachineComponents = () => {
   const { display } = useContext(ControlPanelButtonsContext);
-  
+  const [scene, setScene] = useState()
+
   return (
     <>
       <head>
@@ -124,10 +149,10 @@ const SceneMachineComponents = () => {
           rel="stylesheet"
         />
       </head>
-      <Spinner opacity={0} />
+      {/* <Spinner opacity={0} /> */}
       <SceneMachineBody>
         <SceneMachineTitle />
-        <SceneMachineStripArea />
+        <SceneMachineStripArea scene={scene} />
         <SceneMachineControlPanel>
           <ControlPanelDisplay />
           <ControlPanelButtons />
@@ -172,7 +197,7 @@ const SceneMachineComponents = () => {
           {display === machineView.view4.name && (
             <>
               <SceneMachineLeftPanel />
-              <SceneMachineRightPanel />
+              <SceneMachineRightPanel scene={scene} setScene={setScene} />
             </>
           )}
           {display === machineView.view5.name && (

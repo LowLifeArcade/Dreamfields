@@ -24,6 +24,7 @@ const FieldView = () => {
 
   useEffect(() => {
    setField(project)
+   console.log('FIELD: ', field)
   }, [project]);
   // useEffect(() => {
   //   if (project.slug === slug) return
@@ -363,8 +364,8 @@ const Style = () => (
     .banner-img {
       // top: 50px;
 
-      // width: 80vw;
-      height: 740px;
+      width: 100vw;
+      // height: 740px;
       object-fit: contain;
     }
 

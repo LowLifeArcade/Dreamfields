@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect } from 'react';
 import SideBarItem from './SideBarItem';
 import SideBarItemAdd from './SideBarItemAdd';
-import { ProjectContext } from '../contexts/SceneMachineProviders';
+import { ProjectContext, setProjectContext } from '../contexts/SceneMachineProviders';
 import axios from 'axios';
 import styles from '../styles/SideBar.module.css';
 
@@ -80,14 +80,27 @@ const SideBar = ({ onLogoClick, showSideMenu }) => {
   // const [favorites, setFavorites] = useState(initialFavorites);
   const [fields, setFields] = useState([]);
   const project = useContext(ProjectContext)
+  const dispatch = useContext(setProjectContext)
+  const loadField = async (data) => {
+    console.log('FIELD: ', data)
+    const slug = data.slug
+    // const { data } = await axios.get(`/api/field/${slug}`);
+    dispatch(['LOAD_PROJECT', {data, slug}])
+    localStorage.setItem('projectslug', JSON.stringify(slug));
+  };
 
   useEffect(() => {
     loadFields();
   }, [project]);
 
+  // useEffect(() => {
+  //   loadField(fields[0])
+  // }, []);
+
   const loadFields = async () => {
     const { data } = await axios.get('/api/creator-fields');
     setFields(data);
+    // loadField(fields[0])
   };
 
 

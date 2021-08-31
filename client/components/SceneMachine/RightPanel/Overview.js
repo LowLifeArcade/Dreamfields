@@ -1,13 +1,15 @@
 import { useEffect, useState, useContext, useRef } from 'react';
 import axios from 'axios';
 import {
+  DetailViewContext,
   setProjectContext,
+  SetProjectScenesContext,
   SetViewerContext,
-  ViewerContext
+  ViewerContext,
 } from '../../../contexts/SceneMachineProviders';
 import BecomeCreator from '../../../pages/user/become-creator';
 
-const RightPanelOverview = () => {
+const RightPanelOverview = ({ scene, setScene }) => {
   const [deleteScene, setDeleteScene] = useState();
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
@@ -16,10 +18,16 @@ const RightPanelOverview = () => {
   const dispatch = useContext(setProjectContext);
   const setViewer = useContext(SetViewerContext);
   const viewer = useContext(ViewerContext);
+  const detail = useContext(DetailViewContext);
+  const setProjectScenes = useContext(SetProjectScenesContext);
   const titleRef = useRef();
   const descRef = useRef();
   const settingRef = useRef();
   const charRef = useRef();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [scene]);
 
   useEffect(() => {
     if (isEditing == 'sceneName') {
@@ -71,15 +79,20 @@ const RightPanelOverview = () => {
 
   const handleDelete = async (event) => {
     event.preventDefault();
+    // window.scrollTo(0, 0);
+
     // return
     const { _id } = viewer;
-    const {forProject} = viewer;
+    const { forProject } = viewer;
     const { data } = await axios.delete(`/api/scene/${_id}/${forProject}`);
     // await setViewer(data);
-    window.location.reload();
+    setDeleteScene('');
+    setProjectScenes(data);
+    setScene(data[0])
+    // window.location.reload();
 
-    console.log('RESPONSE SCENE',data)
-  }
+    console.log('RESPONSE SCENE', data);
+  };
 
   const changeItem = async (sceneItem) => {
     try {
@@ -96,7 +109,6 @@ const RightPanelOverview = () => {
   };
 
   const changeArrayItem = async (sceneItem) => {
-
     try {
       await axios.post(`/api/scene/overview-array/${viewer._id}`, sceneItem);
       const { data } = await axios.get(`/api/scene/${viewer._id}`);
@@ -124,8 +136,11 @@ const RightPanelOverview = () => {
 
   const exitArrayEdit = (e, key, objWithArray) => {
     if (e.key === 'Enter') {
-      const objToSend = {arrayName: key, itemName: objWithArray[key].split(',')}
-      console.log('ARRAY TO SEND', objToSend)
+      const objToSend = {
+        arrayName: key,
+        itemName: objWithArray[key].split(','),
+      };
+      console.log('ARRAY TO SEND', objToSend);
 
       // setSceneItem({ arrayName: [key], itemName: arrayValue });
       // console.log('ARRAY ITEM ON EXIT', sceneItem);
@@ -156,10 +171,10 @@ const RightPanelOverview = () => {
   };
 
   const handleEditing = (e, editName) => {
-    if (isEditing === editName) return
+    if (isEditing === editName) return;
     const el = e.target.getAttribute('data-index');
-    setSceneItem({[editName]: viewer[editName]})
-    console.log('HANDLE EDITING', sceneItem)
+    setSceneItem({ [editName]: viewer[editName] });
+    console.log('HANDLE EDITING', sceneItem);
     e.preventDefault();
     // set focus on the input
     setIsEditing(editName);
@@ -218,7 +233,10 @@ const RightPanelOverview = () => {
             onKeyDown={(e) => exitEdit(e, sceneItem)}
             onBlur={(e) => setIsEditing(false)}></textarea>
         ) : (
-          viewer.description
+          <>
+          <h3>Description</h3>
+          {viewer.description}
+          </>
         )}
       </div>
       <table className="details-table">
@@ -327,27 +345,33 @@ const RightPanelOverview = () => {
           </tr>
         </tbody>
       </table>
-      <div className="delete-section" >
+      <div className="delete-section">
         <label htmlFor="delete">Type 'delete scene' to delete</label>
-        <input type="text" value={deleteScene} onChange={(e)=>setDeleteScene(e.target.value)} />
-        <button disabled={deleteScene != 'delete scene'} onClick={handleDelete}>Delete Scene</button>
+        <input
+          type="text"
+          value={deleteScene}
+          onChange={(e) => setDeleteScene(e.target.value)}
+        />
+        <button disabled={deleteScene != 'delete scene'} onClick={handleDelete}>
+          Delete Scene
+        </button>
       </div>
       <style jsx>{`
-      .delete-section {
-        display: flex;
-        flex-direction: column;
-      }
-      .delete-section input {
-        padding: 5px;
-      }
-      .delete-section button {
-        padding: 5px;
-        cursor: pointer;
-      }
-      .delete-section label {
-        color: #535353;
-        padding: 5px;
-      }
+        .delete-section {
+          display: flex;
+          flex-direction: column;
+        }
+        .delete-section input {
+          padding: 5px;
+        }
+        .delete-section button {
+          padding: 5px;
+          cursor: pointer;
+        }
+        .delete-section label {
+          color: #535353;
+          padding: 5px;
+        }
       `}</style>
     </div>
   );

@@ -3,13 +3,14 @@ import FormCard from '../../formlayout/FormCard';
 import {
   SetDetailViewContext,
   ViewerContext,
+  SetBoardsContext
 } from '../../../contexts/SceneMachineProviders';
 import Resizer from 'react-image-file-resizer';
 import axios from 'axios';
 import ButtonUpload from '../../ButtonUpload';
 import Button from '../../Button';
 import { Context } from '../../../context';
-import { PreviewStateContext } from '../../../contexts/SceneMachineProviders';
+import { PreviewStateContext, PreviewProviderContext } from '../../../contexts/SceneMachineProviders';
 import { detailView } from '../../../dataModels';
 
 const NewBoardForm = () => {
@@ -28,13 +29,29 @@ const NewBoardForm = () => {
   const viewer = useContext(ViewerContext);
   const user = useContext(Context);
   const preview = useContext(PreviewStateContext);
+  /**
+ * `preview` = {
+ * - name: string,
+ * - image: string,
+ * - description: string,
+ * - id: string,
+ * - image: string,
+ * - panel: string,
+ * - sceneName: string,
+ * - type: string, // enum ["image", "video"]
+ * - }
+ *
+ */
+  const setPreview = useContext(PreviewProviderContext)
   const [imgPreview, setImgPreview] = useState();
   const setDetail = useContext(SetDetailViewContext);
+  const getBoards = useContext(SetBoardsContext)
 
   useEffect(() => {
     setNewBoard({
       ...newBoard,
       forScene: viewer._id,
+      forProject: viewer.forProject,
       artist: {
         userName: user.state.user.name,
         userId: user.state.user._id,
@@ -73,8 +90,23 @@ const NewBoardForm = () => {
       });
 
       console.log('BOARD CREATION SUCCESSFUL: ', data);
+
+      // set preview to data
+      data && setPreview({
+        name: data.name,
+        image: data.fullImage.Location,
+        description: data.description,
+        id: data._id,
+        panel: data.panel,
+        sceneName: data.name,
+      });
+      
       // window.location.reload();
+      data && getBoards(viewer._id)
       setTimeout(() => {
+        
+        console.log('PREVIEW: ', preview);
+
         setDetail(detailView.boards);
       }, 1000);
     } catch (error) {
@@ -260,7 +292,7 @@ const NewBoardForm = () => {
                 </div>
               )}
               <div className="button-flex">
-                <button onClick={handleSubmit} disabled={isLoading}>
+                <button onClick={handleSubmit} disabled={isLoading || !image}>
                   {isLoading ? '...saving' : 'Save and Upload'}
                 </button>
                 {/* <Button

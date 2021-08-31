@@ -4,6 +4,7 @@ const AWS = require('aws-sdk');
 const { nanoid } = require('nanoid');
 // import Scene from '../models/scene';
 const Scene = require('../models/scene');
+const Board = require('../models/board');
 // import slugify from 'slugify';
 const slugify = require('slugify');
 // import { readFileSync } from 'fs'; // fs.readFileSync
@@ -115,6 +116,7 @@ exports.create = async (req, res) => {
     );
 
     console.log('field updated', field);
+    const scenes = await Scene.find({ forProject: scene.forProject }).exec();
 
     // Link.findOneAndUpdate({ _id: id }, updatedLink, { new: true }).exec(
     //   (err, updated) => {
@@ -128,7 +130,8 @@ exports.create = async (req, res) => {
     // );
 
     // console.log('SCENE SAVED', scene)
-    res.json(scene);
+    const newScene = scene;
+    res.json({scenes, newScene});
     console.log('RESPONSE SENT');
   } catch (err) {
     console.log(err);
@@ -150,25 +153,44 @@ exports.read = async (req, res) => {
 
 exports.deleteScene = async (req, res) => {
   console.log('DELETE SCENE', req.params.sceneId, req.params.fieldId);
-
   const fieldId = req.params.fieldId;
+
   try {
+
     const sceneObjectId = await Field.findOneAndUpdate(
       { _id: fieldId },
       { $pull: { scenes: req.params.sceneId } }
-    ).exec((err, updatedField) => {
-      if (err) {
-        console.log(err);
-        return res.status(400).send('Error while updating field');
-      }
-      console.log('field updated', updatedField);
-      res.sendStatus(200);
-    });
+    ).exec(
+    //   (err, updatedField) => {
+    //   if (err) {
+    //     console.log(err);
+    //     return res.status(400).send('Error while updating field');
+    //   }
+    //   // console.log('field updated', updatedField);
+    //   // res.sendStatus(200);
+    // }
+    );
+
     const scene = await Scene.findOneAndRemove({
       _id: req.params.sceneId,
     }).exec();
-    // .populate('creator', '_id name')
-    res.json(scene, sceneObjectId);
+
+    // find and remove shots
+    const shots = await Shot.find({ forScene: req.params.sceneId }).exec();
+    shots.forEach((shot) => {
+      Shot.findOneAndRemove({ _id: shot._id }).exec();
+    });
+
+    // find and remove boards
+    const boards = await Board.find({ forScene: req.params.sceneId }).exec();
+    boards.forEach((board) => {
+      Board.findOneAndRemove({ _id: board._id }).exec();
+    });
+
+    const scenes = await Scene.find({forProject: fieldId})
+
+    console.log('SCENES AFTER DELETE: ', scenes)
+    res.json(scenes);
   } catch (err) {
     console.log('ERROR deleting scene', err);
   }
