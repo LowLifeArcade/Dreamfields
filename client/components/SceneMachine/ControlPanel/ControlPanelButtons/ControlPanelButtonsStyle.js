@@ -9,6 +9,8 @@ export const ControlPanelButtonsStyle = () => {
         align-items: center;
         margin: 5px;
         // width: 30px;
+        box-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
+        padding: 30px;
       }
 
       // .control-panel-display {
@@ -45,6 +47,7 @@ export const ControlPanelButtonsStyle = () => {
         display: flex;
         align-items: center;
         justify-content: center;
+        // box-shadow: 0 0 1px rgba(0, 0, 0, 0.8);
         // cursor: pointer;
       }
 

@@ -3,7 +3,11 @@ import { Context } from '../context';
 import NavBar from './NavBar';
 import SideBar from './SideBar';
 import DashboardSideBar from './dashboard/DashboardSidebar';
-import { ProjectContext } from '../contexts/SceneMachineProviders';
+import {
+  ProjectContext,
+  PreviewContextProvider,
+} from '../contexts/SceneMachineProviders';
+// import PreviewContextProvider from '../contexts/PreviewContext';
 
 const Style = () => {
   return (
@@ -33,19 +37,35 @@ const Style = () => {
 };
 
 const Layout = (props) => {
-  const project = useContext(ProjectContext)
-  console.log('PROJECT IN APP', project)
+  const project = useContext(ProjectContext);
+  console.log('PROJECT IN APP', project);
   const fakeMenuItems = [
     { slug: '/', icon: <i class="fas fa-home"></i>, name: 'Home' },
-    { slug: '/edit/creator', icon: <i class="far fa-edit"></i>, name: 'Scene Machine' },
+    {
+      slug: '/edit/creator',
+      icon: <i class="far fa-edit"></i>,
+      name: 'Scene Machine',
+    },
     { slug: '/creator', icon: <i class="fas fa-cog"></i>, name: 'Settings' },
     ,
   ];
   const fakeMenuItems2 = [
-    { slug: '/projects', icon: <i class="fas fa-photo-video"></i>, name: 'Library' },
-    { slug: `/creator/field/view/${project?.slug}`, icon: <i class="fas fa-phone-square-alt"></i>, name: 'Field' },
+    {
+      slug: '/projects',
+      icon: <i class="fas fa-photo-video"></i>,
+      name: 'Library',
+    },
+    {
+      slug: `/creator/field/view/${project?.slug}`,
+      icon: <i class="fas fa-phone-square-alt"></i>,
+      name: 'Field',
+    },
     { slug: '/creator', icon: <i class="fas fa-poll"></i>, name: 'Stats' },
-    { slug: '/creator/field/create', icon: <i class="far fa-plus-square"></i>, name: 'Create New' }
+    {
+      slug: '/creator/field/create',
+      icon: <i class="far fa-plus-square"></i>,
+      name: 'Create New',
+    },
   ];
   const [showSideMenu, setShowSideMenu] = useState(true); // lifted and shared state for sidebar and navbar
 
@@ -54,33 +74,39 @@ const Layout = (props) => {
   } = useContext(Context);
   return (
     <>
-      <div className="layout-container">
-        <div className="flex-layout">
-          {!user && <NavBar showSideMenu={showSideMenu} onLogoClick={setShowSideMenu} />}
-          {props.showSideBar && user && (
-            <>
-              <div className="sidebar">
-                <SideBar
-                  showSideMenu={showSideMenu}
-                  onLogoClick={setShowSideMenu}
-                  />
-              </div>
-
-              
-              <DashboardSideBar
+      <PreviewContextProvider>
+        <div className="layout-container">
+          <div className="flex-layout">
+            {!user && (
+              <NavBar
                 showSideMenu={showSideMenu}
-                items1={fakeMenuItems}
-                items2={fakeMenuItems2}
+                onLogoClick={setShowSideMenu}
               />
-            </>
-          )}
+            )}
+            {props.showSideBar && user && (
+              <>
+                <div className="sidebar">
+                  <SideBar
+                    showSideMenu={showSideMenu}
+                    onLogoClick={setShowSideMenu}
+                  />
+                </div>
 
-          <div className="content">{props.children}</div>
-          <div></div>
+                <DashboardSideBar
+                  showSideMenu={showSideMenu}
+                  items1={fakeMenuItems}
+                  items2={fakeMenuItems2}
+                />
+              </>
+            )}
+
+            <div className="content">{props.children}</div>
+            <div></div>
+          </div>
         </div>
-      </div>
 
-      <Style />
+        <Style />
+      </PreviewContextProvider>
     </>
   );
 };

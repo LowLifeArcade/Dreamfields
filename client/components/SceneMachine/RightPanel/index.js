@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect, useLayoutEffect } from 'react';
+import { useContext, useState, useEffect, useLayoutEffect, useRef } from 'react';
 import {
   ViewerContext,
   ModalContext,
@@ -47,9 +47,11 @@ const SceneMachineRightPanel = ({setScene, scene}) => {
   const shots = useContext(ShotsContext);
   const getShots = useContext(SetShotsContext);
   const project = useContext(ProjectContext);
+  // const scene = useContext(ProjectScenesContext);
+  const overviewRef = useRef();
 
-  
-  /**
+   
+  /** 
    * `preview` = {
    * - name: string,
    * - image: string,
@@ -85,7 +87,15 @@ const SceneMachineRightPanel = ({setScene, scene}) => {
   // }, [viewer]);
 
   // handles backgrounds
+
+  // useEffect(() => {
+  //   console.log('OVERVIEW REF: ', overviewRef.current)
+  //  overviewRef.current && overviewRef.current.scrollIntoView({ behavior: 'smooth' });
+  // });
+  
   useLayoutEffect(() => {
+
+    
     switch (detail) {
       case view.overview:
         setBackground(bgPresets.overview);
@@ -137,14 +147,20 @@ const SceneMachineRightPanel = ({setScene, scene}) => {
     viewer._id && getShots(viewer._id);
     viewer._id && getBoards(viewer._id);
   }, [viewer]);
+ 
+  // TODO: problem: This loads the image from the project when rerendering the component
+  // useEffect(() => {
+  //   console.log('SCENE IN RP: ', scene)
+  //   if (scene === undefined) return;
+  //   setPreview({
+  //     image: scene.image.smallImage?.Location,
+  //     type: 'image' 
+  //   }) 
+  // }, [scene])    
 
   useEffect(() => {
-    setPreview({
-      image: project.image?.Location,
-      type: 'image'
-    })
-  }, [project])
-
+// 
+  }, []);
   useEffect(() => {
     scenes?.length != 0 && setDetail(view.overview);
     scenes?.length === 0 && setDetail(view.newScene);
@@ -195,7 +211,7 @@ const SceneMachineRightPanel = ({setScene, scene}) => {
         <div className="transport-overview">
           {/* <div className="transport-overview-frame"> */}
 
-          {detail === view.overview && <RightPanelOverview setScene={setScene} scene={scene} viewer={viewer} />}
+          {detail === view.overview && <RightPanelOverview ref={overviewRef} setScene={setScene} scene={scene} viewer={viewer} />}
 
           {detail === view.script && (
             <RightPanelScriptView state={state} view={view} viewer={viewer} />

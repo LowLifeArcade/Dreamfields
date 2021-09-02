@@ -55,7 +55,7 @@ const Style = () => {
         height: 50px;
         background-size: cover;
         background: #f3f3f3;
-        border: solid 1px;
+        border: solid 1px #889296;
         color: #333;
       }
 

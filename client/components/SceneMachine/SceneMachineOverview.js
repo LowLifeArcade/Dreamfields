@@ -9,7 +9,6 @@ const SceneMachineOverview = ({ children }) => {
           background: rgba(46, 35, 35, 0.6);
           margin-bottom: 10px;
           width: 100%;
-
           display: flex;
           border: solid 1px rgb(22, 19, 19);
           border-radius: 10px;

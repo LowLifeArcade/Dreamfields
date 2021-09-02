@@ -1,9 +1,14 @@
 import { useState, useContext, useEffect } from 'react';
 import SideBarItem from './SideBarItem';
 import SideBarItemAdd from './SideBarItemAdd';
-import { ProjectContext, setProjectContext } from '../contexts/SceneMachineProviders';
+import {
+  ProjectContext,
+  setProjectContext,
+} from '../contexts/SceneMachineProviders';
+import { Context } from '../context';
 import axios from 'axios';
 import styles from '../styles/SideBar.module.css';
+import router from 'next/router';
 
 // setup endpoint that just gets basic info about project OR using context get only basic info to use here.
 const initialProjects = [
@@ -79,15 +84,30 @@ const SideBar = ({ onLogoClick, showSideMenu }) => {
   // const [projects, setProjects] = useState(initialProjects);
   // const [favorites, setFavorites] = useState(initialFavorites);
   const [fields, setFields] = useState([]);
-  const project = useContext(ProjectContext)
-  const dispatch = useContext(setProjectContext)
-  const loadField = async (data) => {
-    console.log('FIELD: ', data)
-    const slug = data.slug
-    // const { data } = await axios.get(`/api/field/${slug}`);
-    dispatch(['LOAD_PROJECT', {data, slug}])
-    localStorage.setItem('projectslug', JSON.stringify(slug));
+  const project = useContext(ProjectContext);
+  // const dispatch = useContext(setProjectContext)
+  const { state, dispatch } = useContext(Context);
+  const { user: loggedIn } = state;
+
+  // useEffect(() => {
+  //   process.browser && setCurrent(window.location.pathname);
+  // }, [process.browser && window.location.pathname]);
+
+  const logOut = async () => {
+    dispatch({ type: 'LOGOUT' });
+    window.localStorage.removeItem('user');
+    const { data } = await axios.get('/api/logout');
+    // toast.warn(data.message);
+    router.push('/login'); // instead of const router = useRouter()
   };
+
+  // const loadField = async (data) => {
+  //   console.log('FIELD: ', data)
+  //   const slug = data.slug
+  //   // const { data } = await axios.get(`/api/field/${slug}`);
+  //   dispatch(['LOAD_PROJECT', {data, slug}])
+  //   localStorage.setItem('projectslug', JSON.stringify(slug));
+  // };
 
   useEffect(() => {
     loadFields();
@@ -103,7 +123,6 @@ const SideBar = ({ onLogoClick, showSideMenu }) => {
     // loadField(fields[0])
   };
 
-
   return (
     <>
       <Style />
@@ -111,17 +130,19 @@ const SideBar = ({ onLogoClick, showSideMenu }) => {
         <div className="top">
           <span>
             <div className="home" onClick={() => onLogoClick(!showSideMenu)}>
-              <i
-                
-                class="far fa-caret-square-right fa-2x"></i>{' '}
+              {showSideMenu && <i className="fas fa-indent fa-2x icons"></i>}
+              {!showSideMenu && (
+                <i className="far fa-caret-square-left fa-2x icons"></i>
+              )}
+              {/* <i class="far fa-caret-square-right fa-2x"></i>{' '} */}
             </div>
           </span>
           <div className="topContent">
             {fields.map((project, i) => (
               <>
-                <div key={i} className="sideBarImageName">
+                {/* <div key={i} className="sideBarImageName">
                   {project.title}
-                </div>
+                </div> */}
                 <SideBarItem
                   index={Math.floor(Math.random() * 20)}
                   {...project}
@@ -140,13 +161,14 @@ const SideBar = ({ onLogoClick, showSideMenu }) => {
           </div> */}
         <div className="bottomContent">
           <div className="bottom-item">
-            <span>
-              <i class="fas fa-palette fa-2x"></i>
+            <span onClick={() => router.push('/edit/creator')}>
+              <i class="fas fa-toolbox fa-2x"></i>
+              {/* <i class="fas fa-palette fa-2x"></i> */}
             </span>
           </div>
 
           <div className="bottom-item">
-            <span>
+            <span onClick={loggedIn ? logOut : () => router.push('/login')}>
               <i class="fas fa-cog fa-2x"></i>
             </span>
           </div>
@@ -166,6 +188,10 @@ export default SideBar;
 const Style = () => {
   return (
     <style jsx>{`
+      .icons {
+        opacity: 1;
+        transition: 1s ease-in-out;
+      }
       .home {
         color: rgb(107, 107, 107);
         padding-bottom: 10px;
@@ -201,7 +227,8 @@ const Style = () => {
         top: 0;
         /* transition: .2s ease-in-out; */
         // background: rgb(34, 36, 37);
-        background: #dedfe0;
+        background: #d2dee0;
+        // background: #dedfe0;
         // background: rgb(240, 237, 230);
         border-right: 1px solid rgb(167, 167, 167);
         // border-right: 1px solid #a1a2a3;
@@ -264,6 +291,7 @@ const Style = () => {
       .bottom-item {
         color: rgb(82, 82, 82);
         padding-top: 20px;
+        cursor: pointer;
       }
       .sideBarItem {
         display: flex;

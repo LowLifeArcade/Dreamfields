@@ -117,7 +117,7 @@ const SceneMachineLeftPanel = () => {
 
   useEffect(() => {
     // console.log(state.player)
-    videoRef.current && videoRef.current[state?.player]();
+    // videoRef.current && videoRef.current[state?.player]();
   }, [state]);
 
   // get item at end of string by period

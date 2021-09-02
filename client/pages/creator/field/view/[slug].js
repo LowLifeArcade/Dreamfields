@@ -55,15 +55,19 @@ const FieldView = () => {
                         src="https://cdnb.artstation.com/p/assets/images/images/020/562/285/large/sonny-sortzen-illustration136.jpg?1568253414"
                         alt=""
                       /> */}
+                      
                       <img
                         className="banner-img"
-                        src={field.image ? field.image.Location : 'https://picsum.photos/id/222/1000/500'}
+                        src={field.image?.Location ?? 'https://picsum.photos/id/222/1000/500'}
                         alt=""
                       />
                     </div>
                   </div>
 
                   <div className="fo-content">
+                  {/* <pre>
+                        {JSON.stringify(field, null, 4)}
+                      </pre> */}
                   <h1 className='fo-title' >{field.name}</h1>
                     <div
                       id="corkboard-container"
@@ -134,7 +138,7 @@ const FieldView = () => {
                       </div>
                     </div>
                     <div className="scene-machine-container">
-                      <SceneMachine id="scene-machine" />
+                      {/* <SceneMachine id="scene-machine" /> */}
                     </div>
                   </div>
                 </div>
@@ -198,7 +202,7 @@ const Style = () => (
       width: 100%;
       overflow-y: scroll;
       height: 100vh;
-      padding-top: 64vh;
+      // padding-top: 64vh;
     }
 
     .fo-title {
@@ -344,15 +348,17 @@ const Style = () => (
       transform: rotate(-2deg);
     }
     .banner {
-      background: rgb(179, 175, 169);
+      // background: rgb(179, 175, 169);
       width: 100%;
-      top: -40px;
-      left: 50%;
-      transform: translateX(-50%);
+      // top: -40px;
+      // left: 50%;
+      // transform: translateX(-50%);
       display: flex;
       justify-content: center;
-      position: fixed;
-      z-index: -1;
+      position: sticky;
+      // object-fit: contain;
+      // overflow: hidden;
+      // z-index: -1;
     }
     .banner-items {
       display: flex;
@@ -364,7 +370,7 @@ const Style = () => (
     .banner-img {
       // top: 50px;
 
-      width: 100vw;
+      width: 100%;
       // height: 740px;
       object-fit: contain;
     }

@@ -57,7 +57,10 @@ const RightPanelBoardsView = ({
 
   const handleAddBoard = () => {
     console.log('add board');
-    setPreview(initAddBoardState);
+    setPreview({
+      ...preview,
+      sceneName: 'new board'
+    });
     setDetail(detailView.addBoard);
   };
 

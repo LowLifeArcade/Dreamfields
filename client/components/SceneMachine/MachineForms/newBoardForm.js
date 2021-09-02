@@ -93,8 +93,10 @@ const NewBoardForm = () => {
 
       // set preview to data
       data && setPreview({
-        name: data.name,
+        sceneName: data.forScene,
+        shot: data.name,
         image: data.fullImage.Location,
+        type: 'image',
         description: data.description,
         id: data._id,
         panel: data.panel,

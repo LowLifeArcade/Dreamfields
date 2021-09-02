@@ -1,9 +1,13 @@
 export const machineView = {
-  view1: {name: 'Dream Field'},
-  view2: {name: 'Acts'},
+  view1: {name: 'Project Details'},
+  view2: {name: 'Script'},
   view3: {name: 'Sequences'},
   view4: {name: 'Scenes'},
   view5: {name: 'Panels'},
+}
+export const machineType = {
+  scene: 'scene',
+  asset: 'asset'
 }
 
 export const previewPreset = {

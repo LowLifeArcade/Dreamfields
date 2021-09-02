@@ -138,7 +138,7 @@ const SceneMachineTitle = () => {
       });
       console.log('FIELD CHANGED: ', data);
       // setField(data);
-      dispatch(['LOAD_PROJECT', {data, fieldId}])
+      dispatch(['LOAD_PROJECT', { data, fieldId }]);
     };
 
     const handleNameChange = (e) => {
@@ -149,10 +149,10 @@ const SceneMachineTitle = () => {
     };
     const handleNameChangeEnter = (e) => {
       if (e.keyCode === 13) {
-      e.preventDefault();
-      console.log('EDIT NAME: ');
-      changeFieldItem(e.target.id, title, field._id);
-      setIsEditing(false);
+        e.preventDefault();
+        console.log('EDIT NAME: ');
+        changeFieldItem(e.target.id, title, field._id);
+        setIsEditing(false);
       }
     };
 
@@ -170,10 +170,16 @@ const SceneMachineTitle = () => {
               onKeyDown={handleNameChangeEnter}
             />
           ) : (
-            <h1 className="scene-machine-title">{children}</h1>
+            <div className="title-box">
+              <h1 className="scene-machine-title">{children}</h1>
+            </div>
           )}
         </span>
         <style jsx>{`
+          .title-box {
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
+            padding: 1px 50px;
+          }
           .title-input {
             padding: 10px;
           }

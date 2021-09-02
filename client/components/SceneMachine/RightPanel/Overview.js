@@ -9,7 +9,7 @@ import {
 } from '../../../contexts/SceneMachineProviders';
 import BecomeCreator from '../../../pages/user/become-creator';
 
-const RightPanelOverview = ({ scene, setScene }) => {
+const RightPanelOverview = ({ scene, setScene, ref }) => {
   const [deleteScene, setDeleteScene] = useState();
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
@@ -24,9 +24,10 @@ const RightPanelOverview = ({ scene, setScene }) => {
   const descRef = useRef();
   const settingRef = useRef();
   const charRef = useRef();
+  const overviewRef = useRef();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    overviewRef.current.scrollTo(0, 0);
   }, [scene]);
 
   useEffect(() => {
@@ -196,7 +197,7 @@ const RightPanelOverview = ({ scene, setScene }) => {
   };
 
   return (
-    <div id="scene-card" className="transport-description">
+    <div ref={overviewRef} id="scene-card" className="transport-description">
       <div
         className="transport-description"
         onClick={(e) => handleEditing(e, 'sceneName')}>

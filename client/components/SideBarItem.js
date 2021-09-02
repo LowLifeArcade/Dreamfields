@@ -1,11 +1,12 @@
 import Link from 'next/link';
 import { useContext, useEffect } from 'react';
-import { setProjectContext, ProjectContext } from '../contexts/SceneMachineProviders';
+import { setProjectContext, ProjectContext, PreviewProviderContext } from '../contexts/SceneMachineProviders';
 import axios from 'axios';
 
 const SideBarItem = ({ index, slug, image, title, clicked, ...rest }) => {
   const dispatch = useContext(setProjectContext);
   const  project  = useContext(ProjectContext);
+  const setPreview = useContext(PreviewProviderContext)
 
 // load field when project is loaded
 
@@ -25,7 +26,13 @@ const SideBarItem = ({ index, slug, image, title, clicked, ...rest }) => {
   // TODO: change to dispatch and use the action to load the project by slug
   const loadField = async () => {
     const { data } = await axios.get(`/api/field/${slug}`);
+    console.log('LOADED FIELD: ' , data.image.Location)
     dispatch(['LOAD_PROJECT', {data, slug}])
+    setPreview({
+      sceneName: data.name,
+      image: data.image?.Location,
+      type: data.image?.Location ? 'image' : 'default'
+    })
     localStorage.setItem('projectslug', JSON.stringify(slug));
   };
   return (
@@ -76,6 +83,7 @@ const Style = () => {
     align-items: center;
     padding: 6px 4px;
    cursor: pointer;
+   
   }
   
   .sideBarItem:hover img {
@@ -98,6 +106,7 @@ const Style = () => {
     height: 50px;
     object-fit: cover;
     background-size: cover;
+    border: solid 1px #9fabaf;
     
     transition: ease-in 0.1s;
     /* background-position: top center; */

@@ -623,14 +623,14 @@ const NewShotForm = () => {
         <hr />
         <br /> */}
 
-          <div id="scene-image" className="section">
+          {/* <div id="scene-image" className="section">
             <label className="label" htmlFor="scene-image">
               Upload Shot Image
             </label>
             <section>
               <button>Upload Shot</button>
             </section>
-          </div>
+          </div> */}
 
           {/* {state.productionStage === 'Production' && (
           <>
