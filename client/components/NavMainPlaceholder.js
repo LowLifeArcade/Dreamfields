@@ -16,7 +16,7 @@ const NavMainPlaceholder = ({setCurrent, iconName, location, name}) => {
       <style jsx>{`
         .name {
           font-size: 1.6rem;
-          border: solid 1px;
+          // border: solid 1px;
           padding: 3px 30px;
           display: flex;
           align-items: center;

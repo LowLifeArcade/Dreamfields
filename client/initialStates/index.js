@@ -18,7 +18,7 @@ export const initialBreakdown = {
 // scene template
 export const initialViewerState = {
   id: 210501,
-  sceneName: 'Vipers',
+  sceneName: 'Scene Template',
   mainImage: '//unsplash.it/id/12/500/300',
   stripImage: '//unsplash.it/id/12/400/225',
   forProject: 'ObjectId',
@@ -26,7 +26,7 @@ export const initialViewerState = {
   launched: false,
   productionStage: 'pre production', // ['pre', 'beat boards', 'story boards', 'production']
   description:
-    'The final bell has rung and school is out. We see Paul huffing it from a gang of bullies he seems to have ticked off. They chase him off of school grounds and into a field where he falls into a pit of vipers.',
+    'Example: The final bell has rung and school is out. We see Paul huffing it from a gang of bullies he seems to have ticked off. They chase him off of school grounds and into a field where he falls into a pit of vipers.',
   setting: 'ext. School - Day ',
   frameRate: '24',
   aspectRatio: '16:9',

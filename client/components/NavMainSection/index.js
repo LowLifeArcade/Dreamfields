@@ -57,7 +57,7 @@ const NavMainSection = ({ setCurrent, loggedIn, current }) => {
         ) : (
           <NavMainPlaceholder
             setCurrent={setCurrent}
-            name="Dream Fields"
+            name="Sketch To Animate"
             location="/register"
           />
         )}

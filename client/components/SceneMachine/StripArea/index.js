@@ -12,6 +12,7 @@ import {
   ControlSetPanelButtonsContext,
   ProjectScenesContext,
   SetProjectScenesContext,
+  PreviewStateContext
 } from '../../../contexts/SceneMachineProviders';
 import StripStyle from './StripAreaStyle';
 import { initialViewerState } from '../../../initialStates';
@@ -84,6 +85,7 @@ const App = () => {
 
 const SceneMachineStripArea = ({ scene }) => {
   const setPreview = useContext(PreviewProviderContext);
+  const preview = useContext(PreviewStateContext)
   const [scenes, setScenes] = useState(['']);
   const viewer = useContext(ViewerContext);
   const setViewer = useContext(SetViewerContext);
@@ -214,10 +216,10 @@ const SceneMachineStripArea = ({ scene }) => {
     // buttons.display === machineView.view4.name
     setButtons({
       ...buttons,
-      display: machineView.view4.name,
-      button4: { active: true },
+      display: machineView.view2.name,
+      button4: { active: false },
       button1: { active: false },
-      button2: { active: false },
+      button2: { active: true },
       button3: { active: false },
     });
     setPreview((preview) => ({
@@ -321,14 +323,14 @@ const SceneMachineStripArea = ({ scene }) => {
                     </div>
                   </>
                 ))}
-              <div className="scene-strip">
+              {project.name && <div className="scene-strip">
                 <div onClick={handleNewScene} className="empty-strip-area"></div>
                 <div onClick={handleNewScene} className="scene-strip-add">
                   <div>
                     <i class="fas fa-plus "></i>
                   </div>
                 </div>
-              </div>
+              </div>}
             </>
           }
         </div>

@@ -4,7 +4,7 @@ import {
   initPreviewState,
   initialScenes,
 } from '../initialStates';
-import { detailView, machineView } from '../dataModels';
+import { detailView, machineView, machineType } from '../dataModels';
 import axios from 'axios';
 
 // -------------------------
@@ -61,7 +61,7 @@ export const TitleSetButtonContext = createContext();
  * */
 export const TitleButtonProvider = ({ children }) => {
   const [machine, setMachine] = useStateAndLocalStorage('titlebutton', {
-    machine: 'Scene',
+    machine: machineType.scene,
   });
   // uselocalstorage to set machine
 
@@ -492,6 +492,8 @@ export const ProjectProvider = ({ children }) => {
   const projectReducer = (state, [type, payload]) => {
     switch (type) {
       // loads project into state from payload given
+      case 'UNLOAD_PROJECT':
+        return {}
       case 'LOAD_PROJECT':
         return { ...payload.data };
       case 'LOAD_SLUG': 

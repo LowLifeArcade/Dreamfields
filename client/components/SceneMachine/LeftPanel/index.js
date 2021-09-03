@@ -174,16 +174,19 @@ const SceneMachineLeftPanel = () => {
             {/* <div className="preview-state">{state.previewState}</div> */}
           </div>
         </div>
+        <div className="transport-title-container">
+
         <div className="transport-title">
-          <div>
-            <p>Scene:</p> {preview.sceneName || '0'}
-          </div>
           <div>
             <p>Panel:</p> {preview.panel || '0'}
           </div>
           <div>
+            <p>Scene:</p> {preview.sceneName || '0'}
+          </div>
+          <div>
             <p>Shot:</p> {preview.shotNumber || '0'}
           </div>
+        </div>
         </div>
         <div className="transport-viewer-controls">
           <button onClick={() => dispatch('BACKWARD')}>

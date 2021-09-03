@@ -158,50 +158,62 @@ const SceneMachineTitle = () => {
 
     return (
       <>
-        <span onClick={() => setIsEditing(true)}>
-          {isEditing ? (
-            <input
-              value={title}
-              id="name"
-              className="title-input"
-              type="text"
-              onChange={(e) => setTitle(e.target.value)}
-              onBlur={handleNameChange}
-              onKeyDown={handleNameChangeEnter}
-            />
-          ) : (
-            <div className="title-box">
-              <h1 className="scene-machine-title">{children}</h1>
-            </div>
-          )}
-        </span>
-        <style jsx>{`
-          .title-box {
-            box-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
-            padding: 1px 50px;
-          }
-          .title-input {
-            padding: 10px;
-          }
-          .scene-machine-title {
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: rgb(107, 105, 105);
-            box-shadow: inset 0 0 15px rgb(14, 13, 12),
-              inset 0 0 15px rgb(39, 38, 31), inset 0 0 30px rgb(55, 55, 75),
-              inset 0 0 20px rgb(55, 55, 75);
-            background: rgb(247, 229, 229);
-            font-size: 1.2rem;
-            padding: 6px 30px;
-            border-radius: 10px;
-            box-shadow: 0 0px 10px rgba(95, 98, 104, 0.4),
-              0 0px 10px rgba(200, 200, 256, 0.1),
-              0 0 10px rgba(200, 180, 0, 0.2), inset 0 0 10px, inset 0 0 3px,
-              inset 0 0 1px, inset 0 0 2px;
-          }
-        `}</style>
+        <div className="scene-machine-top">
+          <span onClick={() => setIsEditing(true)}>
+            {isEditing ? (
+              <input
+                value={title}
+                id="name"
+                className="title-input"
+                type="text"
+                onChange={(e) => setTitle(e.target.value)}
+                onBlur={handleNameChange}
+                onKeyDown={handleNameChangeEnter}
+              />
+            ) : (
+              <div className="title-box">
+                <h1 className="scene-machine-title">{children}</h1>
+              </div>
+            )}
+          </span>
+          <style jsx>{`
+            .scene-machine-top {
+              height: 40px;
+              display: flex;
+              align-items: center;
+            }
+            .title-box {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              //box-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
+              padding: 30px 50px;
+              overflow: hidden;
+            }
+            .title-input {
+              padding: 10px;
+            }
+            .scene-machine-title {
+              cursor: pointer;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              color: rgb(107, 105, 105);
+              box-shadow: inset 0 0 15px rgb(14, 13, 12),
+                inset 0 0 15px rgb(39, 38, 31), inset 0 0 30px rgb(55, 55, 75),
+                inset 0 0 20px rgb(55, 55, 75);
+              background: rgb(248, 239, 239);
+              font-size: 1.2rem;
+              padding: 6px 30px;
+              border-radius: 3px;
+              box-shadow: inset 0 0px 10px rgba(95, 98, 104, 0.4),
+                inset 0 0px 10px rgba(200, 200, 256, 0.1),
+                inset 0 0 10px rgba(200, 180, 0, 0.2), inset 0 0 10px, inset 0 0 3px,
+                inset 0 0 1px, inset 0 0 2px;
+              border: solid 1px #333;
+            }
+          `}</style>
+        </div>
       </>
     );
   };

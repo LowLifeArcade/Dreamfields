@@ -22,7 +22,7 @@ const Login = () => {
 
   useEffect(() => {
 
-    user && router.push('/')
+    user && router.push('/edit/creator')
 
   }, [user]);
 
@@ -48,7 +48,7 @@ const Login = () => {
       setEmail('')
       setPassword('')
       // redirect
-      router.push('/')
+      router.push('/edit/creator')
 
       // toast.warning('Login successfull', {
       //   position: 'bottom-left',
@@ -156,6 +156,7 @@ const Login = () => {
               height: 120vh;
               filter: blur(4px);
             }
+            
             .loginlink {
               font-size: 0.8rem;
               margin-top: 15px;

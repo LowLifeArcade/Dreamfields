@@ -95,11 +95,11 @@ const Style = () => {
     .input {
       display: flex;
       align-items: center;
-      background: #d9e9f8;
+      background: #e9ecee;
       padding: 0.4rem;
       margin-left: 0.6rem;
       border-radius: .2rem;
-      box-shadow: inset 0px 0px 5px rgba(0, 0, 0, 0.5), inset 0px 0px 1px rgba(0, 0, 0, 0.5);
+      box-shadow: inset 0px 0px 3px rgba(0, 0, 0, 0.212), inset 0px 0px 1px rgba(0, 0, 0, 0.5);
     }
 
     .input > i {

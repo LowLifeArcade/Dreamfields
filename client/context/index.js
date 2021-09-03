@@ -1,4 +1,4 @@
-import { useReducer, createContext, useEffect } from 'react';
+import { useReducer, createContext, useEffect, useContext } from 'react';
 import axios from 'axios';
 import router from 'next/router';
 
@@ -15,6 +15,7 @@ const rootReducer = (state, action) => {
     case 'LOGIN':
       return { ...state, user: action.payload };
     case 'LOGOUT':
+      window.localStorage.removeItem('projectslug');
       return { ...state, user: null };
     default:
       return state;
@@ -57,19 +58,19 @@ const Provider = ({ children }) => {
             });
         });
       }
-      return Promise.reject(error)
+      return Promise.reject(error);
     }
   );
 
   useEffect(() => {
     const getCsrfToken = async () => {
-        const {data} = await axios.get('/api/csrf-token')
-        // console.log('CSRF', data)
-        axios.defaults.headers['X-CSRF-Token'] = data.getCsrfToken 
-    }
-    getCsrfToken()
+      const { data } = await axios.get('/api/csrf-token');
+      // console.log('CSRF', data)
+      axios.defaults.headers['X-CSRF-Token'] = data.getCsrfToken;
+    };
+    getCsrfToken();
   }, []);
-  
+
   return (
     <>
       <Context.Provider value={{ state, dispatch }}>

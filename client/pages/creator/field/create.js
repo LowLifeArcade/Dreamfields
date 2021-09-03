@@ -272,7 +272,7 @@ const CreateField = () => {
     <CreatorRoute>
       <FormLayout rightBoxItems={values}>
         <FormCard title="Create Field">
-          <button onClick={handleClearForm}>Clear Form</button>
+          {/* <button onClick={handleClearForm}>Clear Form</button> */}
           <FormInput
             onChange={handleChange}
             value={values.name}

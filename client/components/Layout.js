@@ -40,7 +40,7 @@ const Layout = (props) => {
   const project = useContext(ProjectContext);
   console.log('PROJECT IN APP', project);
   const fakeMenuItems = [
-    { slug: '/', icon: <i class="fas fa-home"></i>, name: 'Home' },
+    { slug: '/', icon: <i class="far fa-newspaper"></i>, name: 'Classifieds' },
     {
       slug: '/edit/creator',
       icon: <i class="far fa-edit"></i>,
@@ -60,7 +60,7 @@ const Layout = (props) => {
       icon: <i class="fas fa-phone-square-alt"></i>,
       name: 'Field',
     },
-    { slug: '/creator', icon: <i class="fas fa-poll"></i>, name: 'Stats' },
+    { slug: '/projects/stats', icon: <i class="fas fa-poll"></i>, name: 'Stats' },
     {
       slug: '/creator/field/create',
       icon: <i class="far fa-plus-square"></i>,

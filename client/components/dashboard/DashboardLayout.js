@@ -2,7 +2,7 @@ import DashboardSidebar from './DashboardSidebar';
 const DashboardLayout = ({ title, children, ...restProps }) => {
   // TODO: fix scrolling issue 
   return (
-    <div>
+    <>
       {/* <h1 className="mini-jumboTron">{title}</h1> */}
       <div className="layout-container">
         {/* <DashboardSidebar  items={items} />{' '} */}
@@ -15,6 +15,7 @@ const DashboardLayout = ({ title, children, ...restProps }) => {
         .layout-container {
           display: flex;
           //position: fixed;
+          height: 100%;
           width: 100%;
           background: rgb(209, 209, 209);
           justify-content: space-between;
@@ -104,7 +105,7 @@ const DashboardLayout = ({ title, children, ...restProps }) => {
           }
         }
       `}</style>
-    </div>
+    </>
   );
 };
 

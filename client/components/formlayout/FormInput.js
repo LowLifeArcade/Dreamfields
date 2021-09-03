@@ -23,7 +23,7 @@ const FormInput = ({
         <input
           value={value}
           onChange={name ? onChange : (e) => onChange(e.target.value)}
-          className="input"
+          className="input-field"
           type={type}
           name={name} // use this field to handle state with [e.target.name]: [e.target.value] in the object
           autoComplete={'text' && true}
@@ -43,7 +43,7 @@ const FormInput = ({
           color: rgb(105, 100, 85);
         }
 
-        .input {
+        .input-field {
           margin: 5px 0;
           margin-top: 9px;
           padding: 8px;

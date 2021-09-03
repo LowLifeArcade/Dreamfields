@@ -1,7 +1,7 @@
 import { useEffect, useContext, useState } from 'react';
 // /@ts-check
 import Spinner from './Spinner';
-import FieldView from '../../pages/creator/field/view/[slug]'
+import FieldView from '../../pages/creator/field/view/[slug]';
 import SceneMachineTitle from './TitleArea';
 import SceneMachineStripArea from './StripArea';
 import SceneMachineLeftPanel from './LeftPanel';
@@ -80,85 +80,108 @@ const FieldOverview = () => {
   return (
     <>
       {/* <SceneMachineRightPanel /> */}
-      <div className="page">
-        <img src={project.image?.Location} alt="" />
+      {project.name && (
+        <div className="page">
+          <img src={project.image?.Location} alt="" />
 
-        <h3>{project.name}</h3>
-        <p>{project.description}</p>
-        <table>
-          <thead>
-            <tr>
-              <th>Item</th>
-              <th>Detail</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Project Name</td>
-              <td>{project.name}</td>
-            </tr>
-            <tr>
-              <td>Funded</td>
-              <td>{JSON.stringify(project.funding.funded)}</td>
-            </tr>
-            <tr>
-              <td>Amount</td>
-              <td>{JSON.stringify(project.funding.amount)}</td>
-            </tr>
-            <tr>
-              <td>Scene Count</td>
-              <td>{project.scenes?.length}</td>
-            </tr>
-            <tr>
-              <td>Script Rev</td>
-              <td>{project.script?.rev}</td>
-            </tr>
-            <tr>
-              <td>Production Stage</td>
-              <td>{project.production}</td>
-            </tr>
-            <tr>
-              <td>Frame Rate</td>
-              <td>{project.frameRate}</td>
-            </tr>
-            <tr>
-              <td>Aspect Ratio</td>
-              <td>{project.aspectRatio}</td>
-            </tr>
-            <tr>
-              <td>Category</td>
-              <td>{project.category}</td>
-            </tr>
-            <tr>
-              <td>Contributors</td>
-              <td>{project.contributors}</td>
-            </tr>
-          </tbody>
-        </table>
-        {/* <pre>{JSON.stringify(project, null, 4)}</pre> */}
+          <h3>{project.name}</h3>
+          <p>{project.description}</p>
+          <table>
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Detail</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Project Name</td>
+                <td>{project.name}</td>
+              </tr>
+              <tr>
+                <td>Funded</td>
+                <td>{JSON.stringify(project.funding.funded)}</td>
+              </tr>
+              <tr>
+                <td>Amount</td>
+                <td>{JSON.stringify(project.funding.amount)}</td>
+              </tr>
+              <tr>
+                <td>Scene Count</td>
+                <td>{project.scenes?.length}</td>
+              </tr>
+              <tr>
+                <td>Script Rev</td>
+                <td>{project.script?.rev}</td>
+              </tr>
+              <tr>
+                <td>Production Stage</td>
+                <td>{project.production}</td>
+              </tr>
+              <tr>
+                <td>Frame Rate</td>
+                <td>{project.frameRate}</td>
+              </tr>
+              <tr>
+                <td>Aspect Ratio</td>
+                <td>{project.aspectRatio}</td>
+              </tr>
+              <tr>
+                <td>Category</td>
+                <td>{project.category}</td>
+              </tr>
+              <tr>
+                <td>Contributors</td>
+                <td>{project.contributors}</td>
+              </tr>
+            </tbody>
+          </table>
+          {/* <pre>{JSON.stringify(project, null, 4)}</pre> */}
 
-        {/* <h3>{machineView.view1.name}</h3> */}
-        {/* <pre>{JSON.stringify(project, null, 4)}</pre> */}
+          {/* <h3>{machineView.view1.name}</h3> */}
+          {/* <pre>{JSON.stringify(project, null, 4)}</pre> */}
 
-        {Object.keys(project).length !== 0 && (
-          <div className="delete-field-section">
-            <label htmlFor="delete">Type 'delete field' to delete</label>
-            <input
-              type="text"
-              value={deleteField}
-              onChange={(e) => setDeleteField(e.target.value)}
-            />
-            <button
-              disabled={deleteField != 'delete field'}
-              onClick={handleDeleteField}>
-              Delete Field
-            </button>
+          {Object.keys(project).length !== 0 && (
+            <div className="delete-field-section">
+              <label htmlFor="delete">Type 'delete field' to delete</label>
+              <input
+                type="text"
+                value={deleteField}
+                onChange={(e) => setDeleteField(e.target.value)}
+              />
+              <button
+                disabled={deleteField != 'delete field'}
+                onClick={handleDeleteField}>
+                Delete Field
+              </button>
+            </div>
+          )}
+
+          {/* <label htmlFor="delete-button">Delete Field</label> */}
+          {/* <button onClick={handleDeleteField} >Delete Field</button> */}
+        </div>
+      )}
+      {!project.name && (
+        <div className="page">
+          <h3>Create A Project</h3>
+          <div className="inner-page">
+            Start by clicking the Add Button on the sidebar.
+            <br />
+            Fill out the form and submit to create a new project.
+            <br />
+            From there proceed to add scenes.
+            <br />
+            From there proceed to add breakdowns of the shots in the scenes.
+            <br />
+            From there proceed to add content (boards/panels/animation
+            frames/videos).
+            <br />
+            As you do this, open your project to the classifieds. This will
+            allow others to see your project and join in helping to complete it.
+            
           </div>
-        )}
-
-        {/* <label htmlFor="delete-button">Delete Field</label> */}
-        {/* <button onClick={handleDeleteField} >Delete Field</button> */}
-      </div>
+        </div>
+      )}
 
       <style jsx>{`
         h3 {
@@ -216,6 +239,23 @@ const FieldOverview = () => {
           overflow: scroll;
           border-radius: 3px;
         }
+        .inner-page {
+          // background: rgb(133, 133, 133);
+          line-height: 50px;
+          padding: 50px;
+          margin: 50px;
+          background: #eee;
+          color: #1d1d1d;
+          width: 80%;
+          display: flex;
+
+          //justify-content: center;
+          flex-direction: column;
+
+          border: 1px solid #333333b9;
+          //overflow: scroll;
+          border-radius: 3px;
+        }
       `}</style>
     </>
   );
@@ -237,24 +277,23 @@ const SceneMachineComponents = () => {
       {/* <Spinner opacity={0} /> */}
       <SceneMachineBody>
         <SceneMachineTitle />
-        {machine.machine === machineType.asset &&
-        <>
-          <SceneMachineOverview>
-          {/* <FieldOverview /> */}
-          <div className='asset-container' >
-
-          <FieldView />
-          <style jsx>{`
-          .asset-container {
-            margin: 10px;
-            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
-          }
-          `}</style>
-          </div>
-          </SceneMachineOverview>
-        </>
-        }
-        {machine.machine === machineType.scene &&
+        {machine.machine === machineType.asset && (
+          <>
+            <SceneMachineOverview>
+              {/* <FieldOverview /> */}
+              <div className="asset-container">
+                <FieldView />
+                <style jsx>{`
+                  .asset-container {
+                    margin: 10px;
+                    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+                  }
+                `}</style>
+              </div>
+            </SceneMachineOverview>
+          </>
+        )}
+        {machine.machine === machineType.scene && (
           <>
             <SceneMachineStripArea scene={scene} />
             <SceneMachineControlPanel>
@@ -264,7 +303,7 @@ const SceneMachineComponents = () => {
             </SceneMachineControlPanel>
             <SceneMachineOverview>
               {display === machineView.view1.name && <FieldOverview />}
-              {display === machineView.view2.name && (
+              {display === machineView.view4.name && (
                 <>
                   {/* <SceneMachineRightPanel /> */}
                   <div className="page">
@@ -298,7 +337,7 @@ const SceneMachineComponents = () => {
                   </div>
                 </>
               )}
-              {display === machineView.view4.name && (
+              {display === machineView.view2.name && (
                 <>
                   <SceneMachineLeftPanel />
                   <SceneMachineRightPanel scene={scene} setScene={setScene} />
@@ -323,7 +362,7 @@ const SceneMachineComponents = () => {
               )}
             </SceneMachineOverview>
           </>
-        }
+        )}
       </SceneMachineBody>
     </>
   );

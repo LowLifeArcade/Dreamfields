@@ -85,7 +85,7 @@ const SideBar = ({ onLogoClick, showSideMenu }) => {
   // const [favorites, setFavorites] = useState(initialFavorites);
   const [fields, setFields] = useState([]);
   const project = useContext(ProjectContext);
-  // const dispatch = useContext(setProjectContext)
+  const projectDispatch = useContext(setProjectContext)
   const { state, dispatch } = useContext(Context);
   const { user: loggedIn } = state;
 
@@ -95,10 +95,13 @@ const SideBar = ({ onLogoClick, showSideMenu }) => {
 
   const logOut = async () => {
     dispatch({ type: 'LOGOUT' });
+    projectDispatch(['UNLOAD_PROJECT'])
     window.localStorage.removeItem('user');
     const { data } = await axios.get('/api/logout');
     // toast.warn(data.message);
-    router.push('/login'); // instead of const router = useRouter()
+    // setTimeout(() => {
+      router.push('/login');
+    // }, 1000); // instead of const router = useRouter()
   };
 
   // const loadField = async (data) => {

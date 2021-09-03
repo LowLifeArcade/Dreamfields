@@ -30,8 +30,8 @@ const CreatorIndex = () => {
   return (
     <CreatorRoute>
       <DashboardLayout title="Creator Dashboard">
-        <FormCard>
           <div className="page">
+        <FormCard>
             <h1>Welcome back {user && user.name}</h1>
             <Button
               color="#276a72"
@@ -98,14 +98,19 @@ const CreatorIndex = () => {
             <pre>{JSON.stringify(fields, null, 4)}</pre>
               </div> */}
             <style jsx>{`
+              h1 {
+                padding-bottom: 20px;
+              }
               .pointer {
                 cursor: pointer;
               }
               .page {
                 padding: 20px;
+                height: 100%;
+                background: rgb(126, 126, 126);
               }
               .text-primary {
-                color: blue;
+                color: rgb(44, 112, 114);
               }
               .media-json {
                 outline: solid 1px;
@@ -115,13 +120,14 @@ const CreatorIndex = () => {
               }
               .media {
                 outline: solid 1px;
-                padding: 20px 10px;
-                margin: 10px 0;
+
+                padding: 20px 30px;
+                margin: 40px 0;
                 line-height: 2rem;
               }
             `}</style>
-          </div>
         </FormCard>
+          </div>
       </DashboardLayout>
     </CreatorRoute>
   );
