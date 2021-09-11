@@ -1,7 +1,7 @@
 import CreatorRoute from '../../components/routes/CreatorRoute';
 import { useContext, useState, useEffect } from 'react';
 import { Context } from '../../context';
-import UserRoute from '../../components/routes/UserRoute';
+// import UserRoute from '../../components/routes/UserRoute';
 import FormCard from '../../components/formlayout/FormCard';
 import Button from '../../components/Button';
 import router from 'next/router';
