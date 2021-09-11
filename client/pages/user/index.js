@@ -1,6 +1,6 @@
 import { useEffect, useContext } from 'react';
 import { Context } from '../../context';
-import UserRoute from '../../components/routes/UserRoute';
+// import UserRoute from '../../components/routes/UserRoute';
 import Button from '../../components/Button';
 import router from 'next/router';
 import DashboardLayout from '../../components/dashboard/DashboardLayout';
@@ -12,7 +12,7 @@ const UserIndex = () => {
   } = useContext(Context);
 
   return (
-    <UserRoute>
+    // <UserRoute>
       <DashboardLayout title="Artist Dashboard">
         <FormCard>
           <h1>Welcome back {user && user.name}</h1>
@@ -27,7 +27,7 @@ const UserIndex = () => {
           )}
         </FormCard>
       </DashboardLayout>
-    </UserRoute>
+    // </UserRoute> 
   );
 };
 
