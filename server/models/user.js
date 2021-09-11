@@ -27,7 +27,7 @@ const userSchema = new Schema(
     },
     role: {
       type: [String],
-      default: ['Artist'],
+      default: ['Artist', 'Creator'],
       enum: ['Artist', 'Creator', 'Producer', 'Admin'],
     },
     stripe_account_id: '',
@@ -35,10 +35,10 @@ const userSchema = new Schema(
     stripeSession: {},
     PasswordResetCode: {
       data: String,
-      default: ''
-    }
+      default: '',
+    },
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model('User', userSchema)
+module.exports = mongoose.model('User', userSchema);
