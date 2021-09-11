@@ -1,6 +1,6 @@
 import {useContext,useEffect} from 'react'
 import { Context } from '../../context'
-import UserRoute from '../../components/routes/UserRoute'
+// import UserRoute from '../../components/routes/UserRoute'
 import axios from 'axios'
 
 const StripeCallback = () => {
