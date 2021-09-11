@@ -64,6 +64,100 @@ const Providers = ({ children }) => {
   );
 };
 
+const Instructions = () => (
+  <div className="page">
+    <h3>Create A Project</h3>
+    <div className="inner-page">
+      Start by clicking the Add Button on the sidebar.
+      <br />
+      Fill out the form and submit to create a new project.
+      <br />
+      From there proceed to add scenes.
+      <br />
+      From there proceed to add breakdowns of the shots in the scenes.
+      <br />
+      From there proceed to add content (boards/panels/animation frames/videos).
+      <br />
+      As you do this, open your project to the classifieds. This will allow
+      others to see your project and join in helping to complete it.
+    </div>
+    <style jsx>{`
+        h3 {
+          padding: 20px;
+        }
+        button {
+          padding: 10px;
+          cursor: pointer;
+        }
+        input {
+          padding: 10px;
+        }
+        label {
+          padding: 20px;
+        }
+        img {
+          width: 500px;
+        }
+        table {
+          padding: 20px 0px;
+          width: 60vw;
+          min-width: 400px;
+          // border-collapse: collapse;
+          margin: 25px 0;
+          table-layout: fixed;
+          border: #1d1d1d solid 1px;
+        }
+        th,
+        td {
+          padding: 12px 15px;
+        }
+        tbody tr {
+          border-bottom: 1px solid #aaaaaa;
+        }
+        tbody tr:nth-of-type(odd) {
+          background-color: #f3f3f3;
+        }
+        .delete-field-section {
+          display: flex;
+          flex-direction: column;
+        }
+        .page {
+          // background: rgb(133, 133, 133);
+
+          padding: 40px;
+          margin: 20px;
+          background: #eee;
+          color: #1d1d1d;
+          width: 100%;
+          display: flex;
+          align-items: center;
+          //justify-content: center;
+          flex-direction: column;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+          overflow: scroll;
+          border-radius: 3px;
+        }
+        .inner-page {
+          // background: rgb(133, 133, 133);
+          line-height: 50px;
+          padding: 50px;
+          margin: 50px;
+          background: #eee;
+          color: #1d1d1d;
+          width: 80%;
+          display: flex;
+
+          //justify-content: center;
+          flex-direction: column;
+
+          border: 1px solid #333333b9;
+          //overflow: scroll;
+          border-radius: 3px;
+        }
+      `}</style>
+  </div>
+);
+
 const FieldOverview = () => {
   const project = useContext(ProjectContext);
   const dispatch = useContext(setProjectContext);
@@ -162,25 +256,7 @@ const FieldOverview = () => {
         </div>
       )}
       {!project.name && (
-        <div className="page">
-          <h3>Create A Project</h3>
-          <div className="inner-page">
-            Start by clicking the Add Button on the sidebar.
-            <br />
-            Fill out the form and submit to create a new project.
-            <br />
-            From there proceed to add scenes.
-            <br />
-            From there proceed to add breakdowns of the shots in the scenes.
-            <br />
-            From there proceed to add content (boards/panels/animation
-            frames/videos).
-            <br />
-            As you do this, open your project to the classifieds. This will
-            allow others to see your project and join in helping to complete it.
-            
-          </div>
-        </div>
+        <Instructions />
       )}
 
       <style jsx>{`
@@ -307,7 +383,7 @@ const SceneMachineComponents = () => {
                 <>
                   {/* <SceneMachineRightPanel /> */}
                   <div className="page">
-                    <h3>{machineView.view2.name}</h3>
+                    <h3>{machineView.view4.name}</h3>
                     <style jsx>{`
                       .page {
                         color: #e2e2e2;
@@ -347,16 +423,7 @@ const SceneMachineComponents = () => {
                 <>
                   {/* <SceneMachineRightPanel /> */}
                   <div className="page">
-                    <h3>{machineView.view5.name}</h3>
-                    <style jsx>{`
-                      .page {
-                        color: #e2e2e2;
-                        width: 100%;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                      }
-                    `}</style>
+                    <Instructions />
                   </div>
                 </>
               )}

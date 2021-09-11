@@ -162,7 +162,7 @@ const SceneMachineStripArea = ({ scene }) => {
       if (!project._id) return;
       const { data } = await axios.get(`/api/field/${project._id}/scenes`);
       const scenes = await [...data];
-      // console.log('SCENES IN STRIP AREA', scenes);
+      console.log('SCENES IN STRIP AREA', scenes);
       setFullScenes(scenes)
 
       const stripScenes = await scenes.map((scene) => ({
@@ -280,7 +280,7 @@ const SceneMachineStripArea = ({ scene }) => {
         <div id="act1" onDragOver={e => e.preventDefault()} className="scenes-section-strip">
           {
             <>
-              {buttons.display === machineView.view4.name &&
+              {buttons.display === machineView.view2.name &&
                 scenes.map((scene, i) => (
                   <>
                     <div

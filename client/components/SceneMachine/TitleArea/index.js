@@ -172,7 +172,7 @@ const SceneMachineTitle = () => {
               />
             ) : (
               <div className="title-box">
-                <h1 className="scene-machine-title">{children}</h1>
+                <h1 className="scene-machine-title">{children === undefined ? 'The Scene Machine' : children}</h1>
               </div>
             )}
           </span>
@@ -184,7 +184,7 @@ const SceneMachineTitle = () => {
             }
             .title-box {
               display: flex;
-              align-items: center;
+              align-items: center; 
               justify-content: center;
               //box-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
               padding: 30px 50px;
@@ -210,7 +210,7 @@ const SceneMachineTitle = () => {
                 inset 0 0px 10px rgba(200, 200, 256, 0.1),
                 inset 0 0 10px rgba(200, 180, 0, 0.2), inset 0 0 10px, inset 0 0 3px,
                 inset 0 0 1px, inset 0 0 2px;
-              border: solid 1px #333;
+              border: solid 1px rgba(51, 51, 51, 0.829);
             }
           `}</style>
         </div>
