@@ -34,7 +34,7 @@ import axios from 'axios';
 const SceneMachineRightPanel = ({setScene, scene}) => {
   const userContext = useContext(Context);
   const [activeShot, setActiveShot] = useState('');
-  const [scenes, setScenes] = useState();
+  const [scenes, setScenes] = useState([{}]);
   const detail = useContext(DetailViewContext);
   const setDetail = useContext(SetDetailViewContext);
   const [background, setBackground] = useState(bgPresets.overview);
@@ -158,10 +158,9 @@ const SceneMachineRightPanel = ({setScene, scene}) => {
   //   }) 
   // }, [scene])    
 
+
   useEffect(() => {
-// 
-  }, []);
-  useEffect(() => {
+    setDetail(view.newScene)
     scenes?.length === 0 && setDetail(view.newScene);
     scenes?.length != 0 && setDetail(view.overview);
   }, [viewer]);

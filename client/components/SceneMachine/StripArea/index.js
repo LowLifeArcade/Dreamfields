@@ -216,10 +216,10 @@ const SceneMachineStripArea = ({ scene }) => {
     // buttons.display === machineView.view4.name
     setButtons({
       ...buttons,
-      display: machineView.view2.name,
+      display: machineView.view1.name,
       button4: { active: false },
-      button1: { active: false },
-      button2: { active: true },
+      button1: { active: true },
+      button2: { active: false },
       button3: { active: false },
     });
     setPreview((preview) => ({
@@ -280,7 +280,7 @@ const SceneMachineStripArea = ({ scene }) => {
         <div id="act1" onDragOver={e => e.preventDefault()} className="scenes-section-strip">
           {
             <>
-              {buttons.display === machineView.view2.name &&
+              {buttons.display === machineView.view1.name &&
                 scenes.map((scene, i) => (
                   <>
                     <div

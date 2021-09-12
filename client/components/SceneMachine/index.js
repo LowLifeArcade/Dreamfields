@@ -342,6 +342,7 @@ const FieldOverview = () => {
 
 const SceneMachineComponents = () => {
   const { display } = useContext(ControlPanelButtonsContext);
+  // const { setDisplay } = useContext(ControlSetPanelButtonsContext);
   const machine = useContext(TitleButtonContext);
   const [scene, setScene] = useState();
 

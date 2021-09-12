@@ -50,15 +50,15 @@ const Login = () => {
       // redirect
       router.push('/edit/creator')
 
-      toast.warning('Login successfull', {
-        position: 'bottom-left',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      // toast.warning('Login successfull', {
+      //   position: 'bottom-left',
+      //   autoClose: 5000,
+      //   hideProgressBar: false,
+      //   closeOnClick: true,
+      //   pauseOnHover: true,
+      //   draggable: true,
+      //   progress: undefined,
+      // });
 
       
     } catch (err) {
