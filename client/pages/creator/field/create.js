@@ -256,7 +256,9 @@ const CreateField = () => {
       });
       // toast.success('Awesome! Now we can start adding scenes to your field.');
       console.log('success', data);
-      await dispatch(['LOAD_PROJECT', { data }]);
+      const slug = data.slug
+      dispatch(['LOAD_PROJECT', { data, slug }]);
+      // dispatch(['LOAD_PROJECT', {data, slug}])
       // data.ok && window.location.reload();
       // setTimeout(() => {
       await data && router.push('/edit/creator');

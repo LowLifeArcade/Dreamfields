@@ -54,6 +54,7 @@ router.delete('/field/:fieldId', requireSignin, isCreator, deleteField);
 
 // field scenes
 router.get('/field/:fieldSlug/scenes', requireSignin, isCreator, getScenes);
+// /api/field/${project._id}/scenes`);
 // TODO: create isContributor
 
 module.exports = router;

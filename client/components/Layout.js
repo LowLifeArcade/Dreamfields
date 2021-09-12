@@ -38,7 +38,7 @@ const Style = () => {
 
 const Layout = (props) => {
   const project = useContext(ProjectContext);
-  console.log('PROJECT IN APP', project);
+  console.log('PROJECT IN SIDEBAR: ', project);
   const fakeMenuItems = [
     { slug: '/', icon: <i class="far fa-newspaper"></i>, name: 'Classifieds' },
     {

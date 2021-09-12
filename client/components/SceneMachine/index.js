@@ -352,9 +352,9 @@ const SceneMachineComponents = () => {
   const [scene, setScene] = useState();
 
   useEffect(() => {
-    console.log('PROJECT IN MACHINE COMP: ', project.name);
+    console.log('PROJECT IN MACHINE COMP: ', project);
     
-    if (project) {
+    if (project.name) {
       setButtons({
         machine: 'scene',
         display: machineView.view1.name,
@@ -367,7 +367,7 @@ const SceneMachineComponents = () => {
       console.log('yes project is here')
     }
     
-    if (!project.name) {
+    if (project.name === undefined) {
       setButtons({
         machine: 'scene',
         display: machineView.view5.name,

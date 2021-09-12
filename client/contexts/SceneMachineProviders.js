@@ -186,6 +186,11 @@ export const ViewerProvider = ({ children }) => {
     'viewer',
     initialViewerState
   );
+  // const project = useContext(ProjectContext)
+
+  // useEffect(() => {
+  //  project && setViewer(project)
+  // }, [project]);
   useEffect(() => {
     console.log('VIEWER PROVIDER', viewer);
   });
@@ -527,6 +532,10 @@ export const ProjectProvider = ({ children }) => {
       loadFieldFromLocalStorage(JSON.parse(slug));
     }
   }, []);
+
+  useEffect(() => {
+    console.log('PROJECT PROVIDER: ', projectState)
+  });
 
   return (
     <>

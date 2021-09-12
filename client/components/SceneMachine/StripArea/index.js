@@ -217,6 +217,7 @@ const SceneMachineStripArea = ({ scene }) => {
     setButtons({
       ...buttons,
       display: machineView.view1.name,
+      button5: { active: false },
       button4: { active: false },
       button1: { active: true },
       button2: { active: false },
