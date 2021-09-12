@@ -188,7 +188,7 @@ const SceneMachineStripArea = ({ scene }) => {
     await setViewer(data);
     await setPreview({
       sceneName: data.sceneName,
-      image: data.image?.smallImage?.Location,
+      image: data.image?.smallImage?.Location ?? "https://picsum.photos/id/212/500/250",
       type: 'image',
     });
   };

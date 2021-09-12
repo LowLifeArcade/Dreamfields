@@ -31,6 +31,7 @@ import {
   ProjectContext,
   TitleButtonContext,
   setProjectContext,
+  ControlSetPanelButtonsContext,
 } from '../../contexts/SceneMachineProviders';
 
 /**
@@ -68,96 +69,101 @@ const Instructions = () => (
   <div className="page">
     <h2>Create A Project</h2>
     <div className="inner-page">
-      1.) Start by clicking the Add Button on the sidebar and fill out the create project form.
+      1.) Start by clicking the Add Button on the sidebar and fill out the
+      create project form.
       <br />
       <br />
-      2.) From there proceed to add scenes by clicking the add button in the film strip area.
+      2.) From there proceed to add scenes by clicking the add button in the
+      film strip area.
       <br />
       <br />
-      3.) From there proceed to add breakdowns of the shots in the scenes details panel.
+      3.) From there proceed to add breakdowns for the shots in your scene via
+      the details panel.
       <br />
       <br />
-      4.) From there proceed to add content (boards/panels/animation frames/videos).
+      4.) From there proceed to add content
+      (boards/panels/animation-frames/videos).
       <br />
       <br />
       <br />
-      (coming soon) When you are ready, open your project up to the world by posting it to the classifieds section. This will allow
-      others to see your project and join in helping to complete it.
+      (coming soon) When you are ready, open your project up to the world by
+      posting it to the classifieds section. This will allow others to see your
+      project and join in helping to complete it.
     </div>
     <style jsx>{`
-        h3 {
-          padding: 20px;
-        }
-        button {
-          padding: 10px;
-          cursor: pointer;
-        }
-        input {
-          padding: 10px;
-        }
-        label {
-          padding: 20px;
-        }
-        img {
-          width: 500px;
-        }
-        table {
-          padding: 20px 0px;
-          width: 60vw;
-          min-width: 400px;
-          // border-collapse: collapse;
-          margin: 25px 0;
-          table-layout: fixed;
-          border: #1d1d1d solid 1px;
-        }
-        th,
-        td {
-          padding: 12px 15px;
-        }
-        tbody tr {
-          border-bottom: 1px solid #aaaaaa;
-        }
-        tbody tr:nth-of-type(odd) {
-          background-color: #f3f3f3;
-        }
-        .delete-field-section {
-          display: flex;
-          flex-direction: column;
-        }
-        .page {
-          // background: rgb(133, 133, 133);
+      h3 {
+        padding: 20px;
+      }
+      button {
+        padding: 10px;
+        cursor: pointer;
+      }
+      input {
+        padding: 10px;
+      }
+      label {
+        padding: 20px;
+      }
+      img {
+        width: 500px;
+      }
+      table {
+        padding: 20px 0px;
+        width: 60vw;
+        min-width: 400px;
+        // border-collapse: collapse;
+        margin: 25px 0;
+        table-layout: fixed;
+        border: #1d1d1d solid 1px;
+      }
+      th,
+      td {
+        padding: 12px 15px;
+      }
+      tbody tr {
+        border-bottom: 1px solid #aaaaaa;
+      }
+      tbody tr:nth-of-type(odd) {
+        background-color: #f3f3f3;
+      }
+      .delete-field-section {
+        display: flex;
+        flex-direction: column;
+      }
+      .page {
+        // background: rgb(133, 133, 133);
 
-          padding: 40px;
-          margin: 20px;
-          background: #eee;
-          color: #1d1d1d;
-          width: 100%;
-          display: flex;
-          align-items: center;
-          //justify-content: center;
-          flex-direction: column;
-          box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-          overflow: scroll;
-          border-radius: 3px;
-        }
-        .inner-page {
-          // background: rgb(133, 133, 133);
-          // line-height: 50px;
-          padding: 50px;
-          margin: 50px;
-          background: #eee;
-          color: #1d1d1d;
-          width: 80%;
-          display: flex;
+        padding: 40px;
+        margin: 20px;
+        background: #eee;
+        color: #1d1d1d;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        //justify-content: center;
+        flex-direction: column;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        overflow: scroll;
+        border-radius: 3px;
+      }
+      .inner-page {
+        // background: rgb(133, 133, 133);
+        // line-height: 50px;
+        padding: 50px;
+        margin: 50px;
+        background: #eee;
+        color: #1d1d1d;
+        width: 80%;
+        display: flex;
 
-          //justify-content: center;
-          flex-direction: column;
+        //justify-content: center;
+        flex-direction: column;
 
-          border: 1px solid #333333b9;
-          //overflow: scroll;
-          border-radius: 3px;
-        }
-      `}</style>
+        border: 1px solid #333333b9;
+        //overflow: scroll;
+        border-radius: 3px;
+      }
+    `}</style>
   </div>
 );
 
@@ -258,9 +264,7 @@ const FieldOverview = () => {
           {/* <button onClick={handleDeleteField} >Delete Field</button> */}
         </div>
       )}
-      {!project.name && (
-        <Instructions />
-      )}
+      {!project.name && <Instructions />}
 
       <style jsx>{`
         h3 {
@@ -342,9 +346,40 @@ const FieldOverview = () => {
 
 const SceneMachineComponents = () => {
   const { display } = useContext(ControlPanelButtonsContext);
-  // const { setDisplay } = useContext(ControlSetPanelButtonsContext);
+  const setButtons = useContext(ControlSetPanelButtonsContext);
+  const project = useContext(ProjectContext);
   const machine = useContext(TitleButtonContext);
   const [scene, setScene] = useState();
+
+  useEffect(() => {
+    console.log('PROJECT: ', project);
+    
+    if (project.name) {
+      setButtons({
+        machine: 'scene',
+        display: machineView.view1.name,
+        button1: { active: true },
+        button2: { active: false },
+        button3: { active: false },
+        button4: { active: false },
+        button5: { active: false },
+      });
+    }
+    
+    if (!project.name) {
+      setButtons({
+        machine: 'scene',
+        display: machineView.view5.name,
+        button1: { active: false },
+        button2: { active: false },
+        button3: { active: false },
+        button4: { active: false },
+        button5: { active: true },
+      });
+    }
+    
+
+  }, [project]);
 
   return (
     <>
@@ -427,7 +462,7 @@ const SceneMachineComponents = () => {
                 <>
                   {/* <SceneMachineRightPanel /> */}
                   {/* <div className="page"> */}
-                    <Instructions />
+                  <Instructions />
 
                   {/* </div> */}
                 </>
