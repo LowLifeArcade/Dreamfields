@@ -122,7 +122,7 @@ const SceneMachineStripArea = ({ scene }) => {
     };
     setPreview({ ...preview, ...stripScene });
     handleViewer(stripScene);
-    console.log('STRIP SCENE: ', scene);
+    // console.log('STRIP SCENE: ', scene);
   }, [scene]);
 
   // TODO: might need to fix this beahvior. It loads the scene and defaults to the overview, but I might not want that.
@@ -145,10 +145,10 @@ const SceneMachineStripArea = ({ scene }) => {
     setDetail(
       project.scenes?.length === 0 ? detailView.newScene : detailView.overview
     );
-    console.log('PROJECT IN STRIP AREA', project.scenes && project);
+    // console.log('PROJECT IN STRIP AREA', project.scenes && project);
   }, [project]);
 
-  console.log('SCENES: ', projectScenes);
+  // console.log('SCENES: ', projectScenes);
 
   useEffect(() => {
     /**
@@ -162,7 +162,7 @@ const SceneMachineStripArea = ({ scene }) => {
       if (!project._id) return;
       const { data } = await axios.get(`/api/field/${project._id}/scenes`);
       const scenes = await [...data];
-      console.log('SCENES IN STRIP AREA', scenes);
+      // console.log('SCENES IN STRIP AREA', scenes);
       setFullScenes(scenes)
 
       const stripScenes = await scenes.map((scene) => ({
@@ -172,7 +172,7 @@ const SceneMachineStripArea = ({ scene }) => {
         // stripImage: scene.stripImage,
       }));
 
-      console.log('STRIP SCENES: ', stripScenes);
+      // console.log('STRIP SCENES: ', stripScenes);
 
       await setScenes(stripScenes);
     };

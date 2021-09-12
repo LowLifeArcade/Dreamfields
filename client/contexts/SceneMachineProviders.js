@@ -126,7 +126,7 @@ export const ControlPanelButtonsProvider = ({ children }) => {
     initialButtonState
   );
   useEffect(() => {
-    console.log('BUTTON CTX: ', buttons);
+    console.log('BUTTON PROVIDER: ', buttons);
   }, [buttons]);
   return (
     <>
@@ -215,7 +215,7 @@ export const ShotsProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    console.log('SHOTS: ', shots);
+    console.log('SHOTS PROVIDER: ', shots);
   });
 
   return (
@@ -257,7 +257,7 @@ export const ProjectScenesProvider = ({ children }) => {
     []
   );
 
-  console.log('PROJ SCENES: ', scenes )
+  console.log('PROJ SCENES PROVIDER: ', scenes )
   return (
     <>
       <ProjectScenesContext.Provider value={scenes}>
@@ -287,9 +287,8 @@ export const BoardsProvider = ({ children }) => {
    * @param {string} sceneId use viewer._id to get boards for a scene
    */
   const getBoards = async (sceneId) => {
-    console.log('GET BOARDS CONTEXT: ');
     const { data } = await axios.get(`/api/boards/${sceneId}`);
-    await console.log('BOARDS: ', data);
+    // await console.log('BOARDS: ', data);
     await setBoards(data);
   };
 

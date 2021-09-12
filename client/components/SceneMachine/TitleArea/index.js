@@ -143,14 +143,14 @@ const SceneMachineTitle = () => {
 
     const handleNameChange = (e) => {
       e.preventDefault();
-      console.log('EDIT NAME: ');
+      // console.log('EDIT NAME: ');
       changeFieldItem(e.target.id, title, field._id);
       setIsEditing(false);
     };
     const handleNameChangeEnter = (e) => {
       if (e.keyCode === 13) {
         e.preventDefault();
-        console.log('EDIT NAME: ');
+        // console.log('EDIT NAME: ');
         changeFieldItem(e.target.id, title, field._id);
         setIsEditing(false);
       }

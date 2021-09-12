@@ -75,6 +75,7 @@ export const initialViewerState = {
 
   script: {
     script: `<br />
+    <p>EXAMPLE SCRIPT</p>
     <p>EXT. SCHOOL - DAY</p>
     <br>
     <p>
@@ -161,7 +162,7 @@ export const initialViewerState = {
       revision: 1,
     },
   ],
-  storyBoards: [
+  boards: [
     {
       id: 2340,
       name: '',

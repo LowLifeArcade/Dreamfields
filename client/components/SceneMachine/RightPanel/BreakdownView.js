@@ -56,7 +56,7 @@ const RightPanelBreakdownView = ({
   const getCurrentShots = async (sceneId) => {
     try {
       const shots = await axios.get(`/api/shots/${sceneId}`);
-      console.log('SHOTS: ', shots.data);
+      // console.log('SHOTS: ', shots.data);
       setShots(shots.data);
     } catch (error) {
       console.log(error);
@@ -65,7 +65,7 @@ const RightPanelBreakdownView = ({
 
   useEffect(() => {
     getCurrentShots(viewer._id);
-    console.log('SHOT ITEM UF ', shotItem);
+    // console.log('SHOT ITEM UF ', shotItem);
   }, [shotItem, viewer]);
 
   /**

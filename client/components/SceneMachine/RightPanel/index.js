@@ -130,9 +130,9 @@ const SceneMachineRightPanel = ({setScene, scene}) => {
   //   if (detail === view.boards && boards.length === 0) setDetail(view.addBoard);
   // }, [boards]);
 
-  useEffect(() => {
-   console.log('shots in right panel', project)
-  });
+  // useEffect(() => {
+  //  console.log('shots in right panel', project)
+  // });
   
 
   const getScenes = async () => {

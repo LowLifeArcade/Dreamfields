@@ -246,16 +246,16 @@ const FieldOverview = () => {
 
           {Object.keys(project).length !== 0 && (
             <div className="delete-field-section">
-              <label htmlFor="delete">Type 'delete field' to delete</label>
+              <label htmlFor="delete">Type 'delete project' to delete</label>
               <input
                 type="text"
                 value={deleteField}
                 onChange={(e) => setDeleteField(e.target.value)}
               />
               <button
-                disabled={deleteField != 'delete field'}
+                disabled={deleteField != 'delete project'}
                 onClick={handleDeleteField}>
-                Delete Field
+                Delete Project
               </button>
             </div>
           )}
@@ -352,9 +352,9 @@ const SceneMachineComponents = () => {
   const [scene, setScene] = useState();
 
   useEffect(() => {
-    console.log('PROJECT: ', project);
+    console.log('PROJECT IN MACHINE COMP: ', project.name);
     
-    if (project.name) {
+    if (project) {
       setButtons({
         machine: 'scene',
         display: machineView.view1.name,
@@ -364,6 +364,7 @@ const SceneMachineComponents = () => {
         button4: { active: false },
         button5: { active: false },
       });
+      console.log('yes project is here')
     }
     
     if (!project.name) {
@@ -376,6 +377,7 @@ const SceneMachineComponents = () => {
         button4: { active: false },
         button5: { active: true },
       });
+      console.log('nope, no project')
     }
     
 

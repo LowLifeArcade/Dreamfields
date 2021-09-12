@@ -141,7 +141,7 @@ const RightPanelOverview = ({ scene, setScene, ref }) => {
         arrayName: key,
         itemName: objWithArray[key].split(','),
       };
-      console.log('ARRAY TO SEND', objToSend);
+      // console.log('ARRAY TO SEND', objToSend);
 
       // setSceneItem({ arrayName: [key], itemName: arrayValue });
       // console.log('ARRAY ITEM ON EXIT', sceneItem);
@@ -175,7 +175,7 @@ const RightPanelOverview = ({ scene, setScene, ref }) => {
     if (isEditing === editName) return;
     const el = e.target.getAttribute('data-index');
     setSceneItem({ [editName]: viewer[editName] });
-    console.log('HANDLE EDITING', sceneItem);
+    // console.log('HANDLE EDITING', sceneItem);
     e.preventDefault();
     // set focus on the input
     setIsEditing(editName);

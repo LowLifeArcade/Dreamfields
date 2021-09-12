@@ -24,7 +24,7 @@ const FieldView = () => {
 
   useEffect(() => {
    setField(project)
-   console.log('FIELD: ', field)
+  //  console.log('FIELD: ', field)
   }, [project]);
   // useEffect(() => {
   //   if (project.slug === slug) return
