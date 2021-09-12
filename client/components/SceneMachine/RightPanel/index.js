@@ -162,8 +162,8 @@ const SceneMachineRightPanel = ({setScene, scene}) => {
   useEffect(() => {
     console.log('SCENES IN RIGHT PANEL INDEX: ', scenes)
     // setDetail(view.newScene)
-    scenes && scenes[0].sceneName === undefined && setDetail(view.newScene);
-    scenes && scenes[0].sceneName && setDetail(view.overview);
+    scenes && scenes[0]?.sceneName === undefined && setDetail(view.newScene);
+    scenes && scenes[0]?.sceneName && setDetail(view.overview);
   }, [viewer, scenes]);
 
   // useEffect(() => {
