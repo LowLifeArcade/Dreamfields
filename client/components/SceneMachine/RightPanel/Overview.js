@@ -358,6 +358,17 @@ const RightPanelOverview = ({ scene, setScene, ref }) => {
         </button>
       </div>
       <style jsx>{`
+      .transport-description-detail {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background: #fff;
+        line-height: 1.8rem;
+        // text-indent: 2rem;
+        padding: 20px;
+        width: 100%;
+        border: solid 1px rgba(26, 26, 26, 0.418);
+      }
         .delete-section {
           display: flex;
           flex-direction: column;

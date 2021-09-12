@@ -66,19 +66,22 @@ const Providers = ({ children }) => {
 
 const Instructions = () => (
   <div className="page">
-    <h3>Create A Project</h3>
+    <h2>Create A Project</h2>
     <div className="inner-page">
-      Start by clicking the Add Button on the sidebar.
+      1.) Start by clicking the Add Button on the sidebar and fill out the create project form.
       <br />
-      Fill out the form and submit to create a new project.
       <br />
-      From there proceed to add scenes.
+      2.) From there proceed to add scenes by clicking the add button in the film strip area.
       <br />
-      From there proceed to add breakdowns of the shots in the scenes.
       <br />
-      From there proceed to add content (boards/panels/animation frames/videos).
+      3.) From there proceed to add breakdowns of the shots in the scenes details panel.
       <br />
-      As you do this, open your project to the classifieds. This will allow
+      <br />
+      4.) From there proceed to add content (boards/panels/animation frames/videos).
+      <br />
+      <br />
+      <br />
+      (coming soon) When you are ready, open your project up to the world by posting it to the classifieds section. This will allow
       others to see your project and join in helping to complete it.
     </div>
     <style jsx>{`
@@ -139,7 +142,7 @@ const Instructions = () => (
         }
         .inner-page {
           // background: rgb(133, 133, 133);
-          line-height: 50px;
+          // line-height: 50px;
           padding: 50px;
           margin: 50px;
           background: #eee;
@@ -378,7 +381,7 @@ const SceneMachineComponents = () => {
               <ControlPanelContextualMenu />
             </SceneMachineControlPanel>
             <SceneMachineOverview>
-              {display === machineView.view1.name && <FieldOverview />}
+              {display === machineView.view2.name && <FieldOverview />}
               {display === machineView.view4.name && (
                 <>
                   {/* <SceneMachineRightPanel /> */}
@@ -413,7 +416,7 @@ const SceneMachineComponents = () => {
                   </div>
                 </>
               )}
-              {display === machineView.view2.name && (
+              {display === machineView.view1.name && (
                 <>
                   <SceneMachineLeftPanel />
                   <SceneMachineRightPanel scene={scene} setScene={setScene} />
@@ -422,9 +425,10 @@ const SceneMachineComponents = () => {
               {display === machineView.view5.name && (
                 <>
                   {/* <SceneMachineRightPanel /> */}
-                  <div className="page">
+                  {/* <div className="page"> */}
                     <Instructions />
-                  </div>
+
+                  {/* </div> */}
                 </>
               )}
             </SceneMachineOverview>

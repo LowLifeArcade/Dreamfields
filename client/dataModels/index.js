@@ -1,6 +1,6 @@
 export const machineView = {
-  view1: {name: 'Project Details'},
-  view2: {name: 'Scenes'},
+  view1: {name: 'Scenes'},
+  view2: {name: 'Project Details'},
   view3: {name: 'Sequences'},
   view4: {name: 'Script'},
   view5: {name: 'Instructions'},

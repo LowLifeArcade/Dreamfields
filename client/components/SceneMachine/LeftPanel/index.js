@@ -146,7 +146,7 @@ const SceneMachineLeftPanel = () => {
             {preview.type !== 'image' && preview.type !== 'video' && (
               <img
                 className="media img"
-                src="https://picsum.photos/id/212/500"
+                src="https://picsum.photos/id/212/500/250"
                 alt=""
               />
             )}

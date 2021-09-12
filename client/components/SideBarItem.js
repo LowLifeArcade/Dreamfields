@@ -26,7 +26,7 @@ const SideBarItem = ({ index, slug, image, title, clicked, ...rest }) => {
   // TODO: change to dispatch and use the action to load the project by slug
   const loadField = async () => {
     const { data } = await axios.get(`/api/field/${slug}`);
-    console.log('LOADED FIELD: ' , data.image.Location)
+    console.log('LOADED FIELD: ' , data.image?.Location)
     dispatch(['LOAD_PROJECT', {data, slug}])
     setPreview({
       sceneName: data.name,
@@ -53,7 +53,7 @@ const SideBarItem = ({ index, slug, image, title, clicked, ...rest }) => {
                 <div className="sideBarAdd">
                   <img
                   className={`sideBarImage ${project?.slug === slug && ' active'}`}
-                  src={`https://picsum.photos/id/${80}/50`}
+                  src={`https://picsum.photos/id/${74}/50`}
                   alt="Proj"
                   onClick={loadField}
                 />

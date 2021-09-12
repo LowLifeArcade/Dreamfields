@@ -277,6 +277,11 @@ export const BoardsProvider = ({ children }) => {
     detailView.boards
   );
 
+  // const initBoards = [{}]
+  // useEffect(() => {
+  //  setBoards(initBoards)
+  // }, []);
+
   /**
    *
    * @param {string} sceneId use viewer._id to get boards for a scene
@@ -327,7 +332,8 @@ export const MachineStateContext = ({ children }) => {
     }, // access to shot lists to the loaded project where you checked out the shot
     checkedInShot: false, //
     confirmObj: {}, // move this to detail context
-    scenes: [initialScenes],
+    // scenes: [initialScenes],
+    scenes: [],
   };
 
   const machineStateReducer = (state, [type, payload]) => {

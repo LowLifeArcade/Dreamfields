@@ -81,17 +81,17 @@ export const SceneMachineRightPanelStyle = ({ background }) => {
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
       }
 
-      .transport-description-detail {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        background: #fff;
-        line-height: 1.8rem;
-        // text-indent: 2rem;
-        padding: 20px;
-        width: 100%;
-        border: solid 1px;
-      }
+      // .transport-description-detail {
+      //   display: flex;
+      //   flex-direction: column;
+      //   align-items: center;
+      //   background: #fff;
+      //   line-height: 1.8rem;
+      //   // text-indent: 2rem;
+      //   padding: 20px;
+      //   width: 100%;
+      //   border: solid 1px;
+      // }
       .details-table {
         padding: 20px;
         width: 100%;

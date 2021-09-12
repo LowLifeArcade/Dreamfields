@@ -29,6 +29,7 @@ const RightPanelBoardsView = ({
   // }
 
   // reload viewer when detail view is changed
+  console.log('BOARDS PRE UF: ', boards)
   useEffect(() => {
     getBoards(viewer._id);
     console.log('BOARDS: ', boards);

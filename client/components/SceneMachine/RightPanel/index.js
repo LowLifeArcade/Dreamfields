@@ -142,7 +142,7 @@ const SceneMachineRightPanel = ({setScene, scene}) => {
   };
 
   useEffect(() => {
-    getScenes()
+    viewer._id && getScenes()
     // viewer.scenes?.length != 0 && setDetail(view.overview);
     viewer._id && getShots(viewer._id);
     viewer._id && getBoards(viewer._id);
@@ -162,9 +162,9 @@ const SceneMachineRightPanel = ({setScene, scene}) => {
 // 
   }, []);
   useEffect(() => {
-    scenes?.length != 0 && setDetail(view.overview);
     scenes?.length === 0 && setDetail(view.newScene);
-  }, [scenes]);
+    scenes?.length != 0 && setDetail(view.overview);
+  }, [viewer]);
 
   // useEffect(() => {
   //   preview.sceneName === 'New Scene' && setDetail(view.newScene);
