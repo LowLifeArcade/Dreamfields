@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import router from 'next/router';
 import { useContext, useEffect } from 'react';
 import { setProjectContext, ProjectContext, PreviewProviderContext } from '../contexts/SceneMachineProviders';
 import axios from 'axios';
@@ -26,7 +27,7 @@ const SideBarItem = ({ index, slug, image, title, clicked, ...rest }) => {
   // TODO: change to dispatch and use the action to load the project by slug
   const loadField = async () => {
     const { data } = await axios.get(`/api/field/${slug}`);
-    console.log('LOADED FIELD: ' , data.image?.Location)
+    // console.log('LOADED FIELD: ' , data.image?.Location)
     dispatch(['LOAD_PROJECT', {data, slug}])
     setPreview({
       sceneName: data.name,
@@ -34,6 +35,7 @@ const SideBarItem = ({ index, slug, image, title, clicked, ...rest }) => {
       type: data.image?.Location ? 'image' : 'default'
     })
     localStorage.setItem('projectslug', JSON.stringify(slug));
+    router.push('/edit/creator')
   };
   return (
     <>

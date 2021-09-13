@@ -679,7 +679,7 @@ const NewSceneForm = ({setScene}) => {
               </div>
             </>
           )}
-          {/* {isLoading && <>Upload: {progress} %</>} */}
+          {isLoading && <>Upload: {progress} %</>}
           <div id="scene-submit" className="section">
             <section>
               <button
