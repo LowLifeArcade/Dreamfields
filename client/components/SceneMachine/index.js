@@ -14,6 +14,7 @@ import ControlPanelDisplay from './ControlPanel/ControlPanelDisplay';
 import ControlPanelContextualMenu from './ControlPanel/ControlPanelContextualMenu';
 import { machineView, machineType } from '../../dataModels';
 import axios from 'axios';
+import Modal from '../Modal';
 
 import {
   TitleButtonProvider,
@@ -393,6 +394,7 @@ const SceneMachineComponents = () => {
       </head>
       {/* <Spinner opacity={0} /> */}
       <SceneMachineBody>
+       
         <SceneMachineTitle />
         {machine.machine === machineType.asset && (
           <>
@@ -481,6 +483,8 @@ const SceneMachine = () => {
   return (
     <>
       <Providers>
+        <Modal>
+          </Modal>
         <SceneMachineComponents />
       </Providers>
     </>
