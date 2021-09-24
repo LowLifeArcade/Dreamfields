@@ -29,6 +29,7 @@ const SideBarItem = ({ index, slug, image, title, clicked, ...rest }) => {
     const { data } = await axios.get(`/api/field/${slug}`);
     // console.log('LOADED FIELD: ' , data.image?.Location)
     dispatch(['LOAD_PROJECT', {data, slug}])
+    console.log('SIDEBAR ITEM LOAD FIELD')
     setPreview({
       sceneName: data.name,
       image: data.image?.Location,

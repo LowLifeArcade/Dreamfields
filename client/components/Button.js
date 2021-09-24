@@ -26,6 +26,7 @@ const Button = ({
           padding: 7px 20px;
           font-size: 17px;
           border-radius: 3px;
+          opacity: .7;
           border: none;
           cursor: pointer;
           background: ${color};

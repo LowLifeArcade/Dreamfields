@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { Context } from '../context';
 import NavBar from './NavBar';
 import SideBar from './SideBar';
@@ -38,7 +38,10 @@ const Style = () => {
 
 const Layout = (props) => {
   const project = useContext(ProjectContext);
-  console.log('PROJECT IN SIDEBAR: ', project);
+  // console.log('PROJECT IN SIDEBAR: ', project);
+  useEffect(() => {
+    console.log('PROJECT TEST')
+  }, [project]);
   const fakeMenuItems = [
     { slug: '/', icon: <i class="far fa-newspaper"></i>, name: 'Classifieds' },
     {

@@ -33,10 +33,9 @@ function MyApp({ Component, pageProps }) {
           <head lang="en" class="notranslate" translate="no">
             {/* <script src="https://kit.fontawesome.com/69aa58689a.js" crossorigin="anonymous"></script> */}
             <meta
-              nameName="google"
+              name="google"
               content="notranslate"
               lang="en"
-              class="notranslate"
               translate="no"
               className="notranslate"
             />

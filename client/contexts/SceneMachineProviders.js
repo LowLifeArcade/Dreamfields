@@ -481,7 +481,9 @@ export const ModalProvider = ({ children }) => {
   );
 };
 
-/**`project` is the whole project (field with all the scenes and shots)*/
+/**
+ * `project` is the whole project (field with all the scenes and shots)
+ * */
 export const ProjectContext = createContext();
 /**
  * `FETCH_PROJECT` - fetch project from server and set it to the project context. `Payload` should be the project slug.
@@ -495,6 +497,7 @@ export const ProjectProvider = ({ children }) => {
   const loadField = async (slug) => {
     const { data } = await axios.get(`/api/field/${slug}`);
     projectDispatch(['LOAD_PROJECT', {data, slug}])
+    console.log('LOADFIELD FUNCTION IN PROVIDER')
     localStorage.setItem('projectslug', JSON.stringify(slug));
   };
 
@@ -518,6 +521,7 @@ export const ProjectProvider = ({ children }) => {
     initialProject
   );
 
+  // TODO: Extract into async code folder
   // only for loading from localStorage when the page is refreshed or loaded
   const loadFieldFromLocalStorage = async (slug) => {
     const { data } = await axios.get(`/api/field/${slug}`);

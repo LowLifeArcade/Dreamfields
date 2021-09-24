@@ -177,6 +177,7 @@ const FieldOverview = () => {
     setDeleteField('');
     const { data } = await axios.delete(`/api/field/${project._id}`);
     const slug = data.slug;
+    console.log('DELETE FIELD')
     dispatch(['LOAD_PROJECT', { data, slug }]);
   };
 

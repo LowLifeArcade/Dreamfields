@@ -289,6 +289,7 @@ const CreateField = () => {
             cols="10"
             rows="10"
           />
+          div
           <div className="script-section">
             <div className="button-label">Script</div>
             <ButtonUpload
